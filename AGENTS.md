@@ -3,6 +3,13 @@
 Static coming-soon page for dressyou (https://dressyouapp.com). No build step, no
 dependencies, no backend. `dist/` is served verbatim — what is in it is what ships.
 
+## Workflow
+
+- `main` is production: Vercel deploys every merge. Each pull request gets a Vercel preview, which is staging.
+- Short-lived branches `<type>/<slug>` from `main`; squash-merged, so the PR title is the commit:
+  `type(scope): subject`, lowercase, no trailing period, ≤ 72 characters. CI checks it.
+- Comments only for the non-obvious why.
+
 ## Commands
 
 ```sh
