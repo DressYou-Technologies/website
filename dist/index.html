@@ -1,38 +1,39 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#000000">
-    <title>dressyou — the new way to experience fashion</title>
-    <meta name="description" content="dressyou is a Paris-based fashion venture building a new way to experience fashion. The dressyou app is launching soon.">
+    <title>dressyou — la nouvelle façon de vivre la mode</title>
+    <meta name="description" content="dressyou, entreprise de mode basée à Paris : voir un vêtement sur soi avant de l’acheter, avec une réponse de taille distincte. L’application arrive bientôt.">
     <link rel="canonical" href="https://dressyouapp.com/">
+    <link rel="alternate" hreflang="fr" href="https://dressyouapp.com/">
+    <link rel="alternate" hreflang="en" href="https://dressyouapp.com/en/">
+    <link rel="alternate" hreflang="x-default" href="https://dressyouapp.com/">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-
     <!-- Favicons. The mark is white, so every icon carries a black plate to stay
          visible in light-theme tabs and on the white rows of search results. -->
     <link rel="icon" href="/favicon.ico" sizes="48x48">
     <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <link rel="manifest" href="/site.webmanifest">
-
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="dressyou">
-    <meta property="og:locale" content="en_US">
+    <meta property="og:locale" content="fr_FR">
     <meta property="og:url" content="https://dressyouapp.com/">
-    <meta property="og:title" content="dressyou — the new way to experience fashion">
-    <meta property="og:description" content="dressyou is a Paris-based fashion venture. The dressyou app is launching soon.">
+    <meta property="og:title" content="dressyou — la nouvelle façon de vivre la mode">
+    <meta property="og:description" content="dressyou, entreprise de mode basée à Paris : voir un vêtement sur soi avant de l’acheter, avec une réponse de taille distincte. L’application arrive bientôt.">
     <meta property="og:image" content="https://dressyouapp.com/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="The dressyou wordmark and its symbol on black, above the line “the new way to experience fashion.”">
+    <meta property="og:image:alt" content="Le symbole et le nom dressyou sur fond noir, au-dessus de la ligne « the new way to experience fashion. » (en anglais).">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="dressyou — the new way to experience fashion">
-    <meta name="twitter:description" content="dressyou is a Paris-based fashion venture. The dressyou app is launching soon.">
+    <meta name="twitter:title" content="dressyou — la nouvelle façon de vivre la mode">
+    <meta name="twitter:description" content="dressyou, entreprise de mode basée à Paris : voir un vêtement sur soi avant de l’acheter, avec une réponse de taille distincte. L’application arrive bientôt.">
     <meta name="twitter:image" content="https://dressyouapp.com/og-image.jpg">
-
     <link rel="preload" href="/fonts/Manrope.woff2" as="font" type="font/woff2" crossorigin="anonymous">
     <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/site.css">
     <script type="module" src="/app.mjs"></script>
     <script type="application/ld+json">
     {
@@ -43,8 +44,8 @@
           "@id": "https://dressyouapp.com/#organization",
           "name": "dressyou",
           "url": "https://dressyouapp.com/",
-          "slogan": "the new way to experience fashion.",
-          "description": "dressyou is a Paris-based fashion venture building a new way to experience fashion.",
+          "slogan": "la nouvelle façon de vivre la mode.",
+          "description": "dressyou est une entreprise de mode basée à Paris, qui construit une nouvelle façon de vivre la mode.",
           "address": {
             "@type": "PostalAddress",
             "addressLocality": "Paris",
@@ -59,21 +60,26 @@
         },
         {
           "@type": "WebSite",
-          "@id": "https://dressyouapp.com/#website",
+          "@id": "https://dressyouapp.com/#website-fr",
           "url": "https://dressyouapp.com/",
           "name": "dressyou",
-          "description": "dressyou is a Paris-based fashion venture. The dressyou app is launching soon.",
-          "inLanguage": "en",
-          "publisher": { "@id": "https://dressyouapp.com/#organization" }
+          "description": "dressyou, entreprise de mode basée à Paris. L’application dressyou arrive bientôt.",
+          "inLanguage": "fr",
+          "publisher": {
+            "@id": "https://dressyouapp.com/#organization"
+          }
         }
       ]
     }
     </script>
   </head>
   <body>
-    <main class="experience" data-phase="loading" aria-label="dressyou">
-      <section class="loading-scene" aria-label="coming soon">
-        <div class="montage" aria-hidden="true">
+    <a class="skip-link" href="#about">Aller au contenu</a>
+    <main id="main">
+      <h1 class="sr-only">dressyou — la nouvelle façon de vivre la mode</h1>
+      <section class="experience" data-phase="loading" aria-label="dressyou">
+        <section class="loading-scene" aria-label="bientôt">
+          <div class="montage" aria-hidden="true">
           <picture class="shot">
             <source media="(max-aspect-ratio: 2/3)" srcset="/images/01-noir-stride-portrait.webp">
             <source media="(max-aspect-ratio: 19/20)" srcset="/images/01-noir-stride.webp">
@@ -104,33 +110,103 @@
             <source media="(max-aspect-ratio: 19/20)" srcset="/images/06-sage-tailoring.webp">
             <img src="/images/06-sage-tailoring-landscape.webp" alt="" draggable="false">
           </picture>
-        </div>
-        <div class="loading-copy">
-          <!-- The brand line is the real heading for crawlers and screen readers; it is
-               out of flow, so the visible "coming soon" keeps its exact box and fill. -->
-          <h1><span class="sr-only">dressyou — the new way to experience fashion</span>coming soon<span class="progress-fill" aria-hidden="true">coming soon</span></h1>
-          <div class="progress sr-only" role="progressbar" aria-label="loading dressyou introduction" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
-        </div>
-      </section>
-      <section class="identity" aria-label="dressyou logo" inert>
-        <div class="identity-brand">
-          <div class="logo">
-            <img class="logo-mark" src="/images/dressyou-logo.webp" width="256" height="256" alt="dressyou" draggable="false">
           </div>
-          <span class="wordmark" aria-hidden="true">dressyou</span>
-        </div>
-        <div class="identity-details">
-          <p class="tagline" aria-hidden="true">the new way to experience fashion.</p>
-        <button class="replay" type="button" aria-label="replay introduction" title="replay">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 9a8 8 0 1 1-.3 5.3M4.5 4.5V9H9"/></svg>
+          <div class="loading-copy">
+            <!-- Decorative: the page's headings and its availability section say the same in text. -->
+            <p class="loading-title" aria-hidden="true">bientôt<span class="progress-fill" aria-hidden="true">bientôt</span></p>
+            <div class="progress sr-only" role="progressbar" aria-label="chargement de l’introduction dressyou" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+          </div>
+        </section>
+        <section class="identity" aria-label="logo dressyou" inert>
+          <div class="identity-brand">
+            <div class="logo">
+              <img class="logo-mark" src="/images/dressyou-logo.webp" width="256" height="256" alt="dressyou" draggable="false">
+            </div>
+            <span class="wordmark" aria-hidden="true">dressyou</span>
+          </div>
+          <div class="identity-details">
+            <p class="tagline" aria-hidden="true">la nouvelle façon de vivre la mode.</p>
+            <button class="replay" type="button" aria-label="rejouer l’introduction" title="rejouer">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 9a8 8 0 1 1-.3 5.3M4.5 4.5V9H9"/></svg>
+            </button>
+            <div class="hero-links">
+              <a class="hero-link" href="#how">Comment ça marche</a>
+              <a class="hero-link" href="/en/" hreflang="en" lang="en">English</a>
+            </div>
+          </div>
+        </section>
+        <button class="skip" type="button" aria-label="passer l’introduction" title="passer l’introduction">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m7 6 7 6-7 6M17 6v12"/></svg>
         </button>
-        </div>
+        <p class="sr-only status" role="status"></p>
       </section>
-      <button class="skip" type="button" aria-label="skip introduction" title="skip introduction">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m7 6 7 6-7 6M17 6v12"/></svg>
-      </button>
-      <p class="sr-only status" role="status"></p>
+      <div class="content">
+        <section id="about" aria-labelledby="about-title">
+          <h2 id="about-title">Ce que fait DressYou</h2>
+          <p class="lead">DressYou montre un vêtement sur vous avant l’achat, et indique séparément si la taille convient.</p>
+          <p>Deux questions se posent devant un vêtement&nbsp;: l’effet qu’il fait, et la taille qu’il faut. DressYou répond à chacune à part, parce qu’une image ne dit rien de la taille.</p>
+        </section>
+        <section id="how" aria-labelledby="how-title">
+          <h2 id="how-title">Comment ça marche</h2>
+          <ol class="steps" role="list">
+            <li>
+              <h3>Votre jumeau</h3>
+              <p>Des photos de vous, prises dans l’application, servent à générer votre jumeau&nbsp;: une image de vous. Vous l’approuvez avant qu’il serve. Elles servent à cela, et à rien d’autre.</p>
+            </li>
+            <li>
+              <h3>L’essayage</h3>
+              <p>Depuis la page d’un revendeur, DressYou montre le vêtement sur votre jumeau. Chaque image générée est signalée comme telle. L’image montre l’effet possible&nbsp;; elle ne répond jamais à la question de la taille.</p>
+            </li>
+            <li>
+              <h3>La réponse de taille</h3>
+              <p>Une réponse distincte donne une taille, indique sur quoi elle repose et son degré de certitude. Quand les éléments manquent, elle le dit et nomme ce qui permettrait de répondre.</p>
+            </li>
+          </ol>
+        </section>
+        <section id="more" aria-labelledby="more-title">
+          <h2 id="more-title">Autour de l’essayage</h2>
+          <ul class="features" role="list">
+            <li>
+              <h3>Une garde-robe</h3>
+              <p>Tout ce que vous possédez, au même endroit, prêt à composer des tenues.</p>
+            </li>
+            <li>
+              <h3>Un styliste</h3>
+              <p>Il connaît votre garde-robe, propose des tenues à partir d’elle et répond à vos questions.</p>
+            </li>
+            <li>
+              <h3>L’avis de vos proches</h3>
+              <p>Envoyez une tenue pour un oui ou non, ou de deux à quatre options pour un choix. Vos proches votent sans compte.</p>
+            </li>
+          </ul>
+        </section>
+        <section id="availability" aria-labelledby="availability-title">
+          <h2 id="availability-title">Disponibilité</h2>
+          <p>DressYou arrive bientôt sur iPhone et Android, et en extension de navigateur pour l’ordinateur. Le service est réservé aux personnes de 18&nbsp;ans ou plus.</p>
+        </section>
+        <section id="data" aria-labelledby="data-title">
+          <h2 id="data-title">Vos données</h2>
+          <p>Les photos à l’origine de votre jumeau sont privées. Depuis l’application, vous pouvez télécharger tout ce que contient votre compte, ou le supprimer.</p>
+          <ul class="links" role="list">
+            <li><a href="/legal/2026-10-13/privacy/">Confidentialité</a></li>
+            <li><a href="/account-deletion/">Suppression du compte</a></li>
+          </ul>
+        </section>
+      </div>
     </main>
-    <noscript><style>.loading-scene,.skip,.replay{display:none}.identity{visibility:visible;opacity:1}.experience .logo{left:0;translate:0}</style><p class="noscript-copy">coming soon</p></noscript>
+    <footer class="site-footer">
+    <nav aria-label="Liens du site">
+      <ul role="list">
+        <li><a href="/support/">Assistance</a></li>
+        <li><a href="/account-deletion/">Suppression du compte</a></li>
+        <li><a href="/legal/2026-10-13/privacy/">Confidentialité</a></li>
+        <li><a href="/legal/2026-10-13/terms/">Conditions d’utilisation</a></li>
+        <li><a href="/legal/2026-10-13/legal-notice/">Mentions légales</a></li>
+        <li><a href="/dsa/">Signaler un contenu</a></li>
+        <li><a class="language" href="/en/" hreflang="en" lang="en">English</a></li>
+      </ul>
+    </nav>
+  </footer>
+    <noscript><style>.loading-scene,.skip,.replay{display:none}.identity{visibility:visible;opacity:1}.experience .logo{left:0;translate:0}.hero-links{visibility:visible;opacity:1}</style><p class="noscript-copy">bientôt</p></noscript>
   </body>
 </html>
