@@ -127,7 +127,7 @@ function matchesChain(node, chain) {
   for (const step of rest) {
     if (combinator === '>') {
       current = current.parent;
-      if (!current || !matches(current, step.parts)) return false;
+      if (!matches(current, step.parts)) return false;
     } else {
       current = current.parent;
       while (current && !matches(current, step.parts)) current = current.parent;

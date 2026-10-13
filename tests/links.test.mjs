@@ -48,6 +48,10 @@ test('link rules: a dead address, a missing slash, a relative address, a lost fr
   assert.match(reads(linkProblems, mutate(SUPPORT, DSA_LINK, `<a href="https://dressyouapp.com/dsaa/">`)), /does not resolve/);
 });
 
+test('link rules: a mailto or tel address is not a page to resolve', () => {
+  assert.deepEqual(linkProblems(mutate(SUPPORT, DSA_LINK, '<a href="mailto:privacy@dressyouapp.com">x</a><a href="tel:+33100000000">y</a><a href="/dsa/">')), []);
+});
+
 test('link rules: a dead stylesheet, image, source set, script and share image are reported', () => {
   assert.match(reads(linkProblems, mutate(SUPPORT, /<link rel="stylesheet" href="\/site.css">/, '<link rel="stylesheet" href="/gone.css">')), /link element .*gone\.css/);
   assert.match(reads(linkProblems, mutate('/', /src="\/images\/dressyou-logo\.webp" width="256"/, 'src="/images/gone.webp" width="256"')), /image .*gone\.webp/);

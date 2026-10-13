@@ -9,10 +9,6 @@ const LOCALES = { fr: 'fr_FR', en: 'en_US' };
 const CONTROLS_WITHOUT_LABEL = new Set(['hidden', 'submit', 'button', 'reset', 'image']);
 const REFERENCES = ['for', 'aria-labelledby', 'aria-describedby', 'aria-controls'];
 
-const hidden = (node) => {
-  for (let up = node; up; up = up.parent) if (up.attrs?.hidden !== undefined || up.tag === 'template') return true;
-  return false;
-};
 const meta = (page, key, value) => select(page.doc, `meta[${key}=${value}]`)?.attrs.content ?? null;
 const frenchUrl = (url) => (languageOf(url) === 'en' ? twinOf(url) : url);
 
@@ -74,7 +70,7 @@ export function documentProblems(page) {
 }
 
 function headingProblems(page, scope, label) {
-  const headings = selectAll(scope, 'h1, h2, h3, h4, h5, h6').filter((node) => !hidden(node) || label);
+  const headings = selectAll(scope, 'h1, h2, h3, h4, h5, h6');
   const levels = headings.map((node) => Number(node.tag[1]));
   const problems = [];
   if (levels.filter((level) => level === 1).length !== 1) problems.push(`${page.url} ${label ?? 'page'} needs exactly one h1, found ${levels.filter((level) => level === 1).length}`);

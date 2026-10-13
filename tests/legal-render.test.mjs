@@ -92,3 +92,10 @@ test('every document gets its title and a description in its language', () => {
   assert.equal(french.title, 'Mentions légales — dressyou');
   assert.match(french.description, /éditeur/);
 });
+
+test('a table with no numbered heading above it, and a draft that does not start with its title, are refused', () => {
+  assert.throws(() => document('| A | B |\n|---|---|\n| 1 | 2 |'), /needs a numbered heading above it/);
+  assert.throws(() => document('## Unnumbered\n\n| A | B |\n|---|---|\n| 1 | 2 |'), /needs a numbered heading above it/);
+  assert.throws(() => renderLegal({ markdown: `${BANNER}\n\n## 1. A\n\nB.`, document: 'privacy', ...LINKS }), /must start with its title/);
+  assert.throws(() => renderLegal({ markdown: `## 1. A\n\n${BANNER}`, document: 'privacy', ...LINKS }), /must start with its title/);
+});

@@ -48,6 +48,16 @@ test('markers awaiting a founder are not read as copy, and ordinary copy passes'
   assert.deepEqual(voiceProblems(page('Size M. Cut for ease at the chest. Le jumeau est une image.'), { authored: true }), []);
 });
 
+test('what a page says includes its alternative text, labels, titles and descriptions', () => {
+  for (const html of ['<img src="/x.webp" alt="We love it">', '<a href="/" aria-label="We love it">x</a>', '<a href="/" title="We love it">x</a>']) {
+    assert.ok(voiceProblems({ url: '/x/', doc: parse(`<main>${html}</main>`).root }, { authored: false }).length, html);
+  }
+  for (const meta of ['<meta name="description" content="We love it">', '<meta property="og:description" content="We love it">']) {
+    assert.ok(voiceProblems({ url: '/x/', doc: parse(`<head>${meta}</head>`).root }, { authored: false }).length, meta);
+  }
+  assert.deepEqual(voiceProblems({ url: '/x/', doc: parse('<head><meta name="viewport" content="We love it"><script>we()</script><style>.we{}</style></head>').root }, { authored: false }), []);
+});
+
 test('the guard bites a real page: one sentence added to the support page is refused', () => {
   const broken = withPageHtml(site, '/support/', (html) => html.replace('<h2>Dans l’application</h2>', '<h2>Dans l’application</h2><p>Nous répondons vite&nbsp;!</p>'));
   assert.match(voiceProblems(broken.pages.get('/support/'), { authored: true }).join('\n'), /exclamation|first person plural/);

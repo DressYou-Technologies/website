@@ -199,6 +199,23 @@ test('a second press while the first is in flight sends nothing', async () => {
   assert.equal(calls.length, 1);
 });
 
+test('the leak check reads both the words and the attributes of the page', () => {
+  const dom = createDom('<html><body><p data-x="in-attribute">in-text</p></body></html>');
+  assert.match(dom.everything(), /in-text/);
+  assert.match(dom.everything(), /in-attribute/);
+});
+
+test('a password the page allows but the API refuses is explained on the field, not lost', async () => {
+  for (const [code, key] of [['PASSWORD_TOO_SHORT', 'too-short'], ['PASSWORD_TOO_LONG', 'too-long']]) {
+    const { dom } = await open('/auth/reset/', { search: '?token=abc123', languages: ['en-US'], fetch: respond(400, { code, message: 'x' }) });
+    const form = await submitWith(dom, 'en', 'correct horse battery');
+    assert.equal(form.querySelector('.message').textContent, form.querySelector(`[data-message="${key}"]`).textContent);
+    assert.equal(form.elements.newPassword.getAttribute('aria-invalid'), 'true');
+    assert.equal(dom.document.activeElement, form.elements.newPassword);
+    assert.deepEqual(visible(dom), ['form/en']);
+  }
+});
+
 test('a dead token from the API ends in the dead-link state', async () => {
   const { dom } = await open('/auth/reset/', { search: '?token=old', languages: ['en-US'], fetch: respond(400, { code: 'INVALID_TOKEN', message: 'Invalid token' }) });
   await submitWith(dom, 'en', 'correct horse battery');

@@ -120,6 +120,19 @@ test('name rules: links, buttons, images, controls, language links and tables', 
   assert.match(found(nameProblems, PRIVACY, mutate(PRIVACY, /<th scope="col">/, '<th>')), /table header without scope/);
 });
 
+test('name rules: controls that need no label, and a label that wraps its field, are accepted', () => {
+  const inject = (html) => intoMain(SUPPORT, html);
+  assert.equal(found(nameProblems, SUPPORT, inject('<input type="hidden" name="x" value="y"><input type="submit" value="Send">')), '');
+  assert.equal(found(nameProblems, SUPPORT, inject('<label>Name <input type="text" name="n"></label>')), '');
+  assert.equal(found(nameProblems, SUPPORT, inject('<input type="text" aria-label="Name"><input type="text" aria-labelledby="main">')), '');
+});
+
+test('twin rules: a page whose twin is missing is left to the required-pages rule, and a changed link is its own finding', () => {
+  assert.deepEqual(twinProblems(withoutPage(site, SUPPORT_EN)), []);
+  assert.match(twinProblems(mutate(SUPPORT, /<a href="\/dsa\/">/, '<a href="/account-deletion/">')).join('\n'), /\/support\/ and \/en\/support\/ differ in internal links/);
+  assert.doesNotMatch(twinProblems(mutate(SUPPORT, /<a href="\/dsa\/">/, '<a href="/account-deletion/">')).join('\n'), /outline/);
+});
+
 test('twin rules: a missing block, a missing link and a one-sided marker are reported', () => {
   assert.match(twinProblems(mutate(PRIVACY_EN, /<p>/, '<p>x</p><p>')).join('\n'), /differ in outline/);
   assert.match(twinProblems(intoMain(SUPPORT, '<p><a href="/dsa/">x</a></p>')).join('\n'), /differ in/);
@@ -132,6 +145,12 @@ test('bilingual rules: a missing language, a visible start state and a nameless 
   assert.match(bilingualProblems(mutate(RESET, /(<section[^>]*data-state="form"[^>]*lang="en"[^>]*?) hidden/, '$1')).join('\n'), /must start hidden/);
   assert.match(bilingualProblems(mutate(RESET, / data-page="[^"]*"/, '')).join('\n'), /data-page/);
   assert.match(bilingualProblems(mutate(RESET, /(<section[^>]*data-state="form"[^>]*lang="en"[^>]*>)/, '$1<p>extra</p>')).join('\n'), /differs between languages/);
+});
+
+test('bilingual rules: a missing auth page is left to the required-pages rule, and a page with no states is reported', () => {
+  assert.deepEqual(bilingualProblems(withoutPage(site, RESET)), []);
+  const stateless = withPageHtml(site, RESET, (html) => html.replace(/ data-state="[^"]*"/g, ''));
+  assert.match(bilingualProblems(stateless).join('\n'), /\/auth\/reset\/ has no state sections/);
 });
 
 test('bilingual rules: the page keeps a readable fallback in both languages for when its script cannot run', () => {

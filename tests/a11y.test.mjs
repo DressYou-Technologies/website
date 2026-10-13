@@ -39,7 +39,9 @@ test('each stylesheet rule is refused when broken', () => {
   assert.match(found(edit('site.css', /(\.button \{[^}]*)color: #000/, '$1color: #777')), /\.button #777 on #fff is under 4\.5:1/);
   assert.match(found(edit('site.css', /(\.language \{[^}]*)min-height: var\(--control-size\)/, '$1min-height: 1rem')), /\.language must be at least --control-size tall/);
   assert.match(found(edit('style.css', /--control-size: 2\.75rem/, '--control-size: 1rem')), /--control-size must be at least 2\.75rem/);
-  assert.match(found(edit('site.css', /(a:focus-visible, input:focus-visible[^{]*\{ )outline: 2px solid var\(--ink\);/, '$1outline: none;')), /removes the focus ring|2px focus ring/);
+  assert.match(found(edit('site.css', /$/, '\n.x:focus { outline: none; }')), /\.x:focus removes the focus ring/);
+  assert.match(found(edit('site.css', /(a:focus-visible, input:focus-visible[^{]*\{ )outline: 2px solid var\(--ink\);/, '$1outline: 1px solid var(--ink);')), /2px focus ring/);
+  assert.match(found(edit('style.css', /(\.tagline \{[^}]*)color: #999;/, '$1')), /style\.css gives \.tagline no color/);
   assert.match(found(edit('site.css', /a:focus-visible, input:focus-visible/, 'input:focus-visible')), /2px focus ring on links/);
   assert.match(found(edit('style.css', /animation: none !important/, 'animation: none')), /switch off every animation/);
   assert.match(found(edit('site.css', /$/, '\n.x { transition: opacity .2s }')), /must not add motion of its own/);

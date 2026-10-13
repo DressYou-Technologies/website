@@ -28,6 +28,8 @@ test('selectors cover tag, id, class, attribute and descendant or child combinat
   assert.equal(selectAll(root, 'main > a').length, 1);
   assert.equal(selectAll(root, 'li > a[href]').length, 1);
   assert.equal(selectAll(root, 'nav > a').length, 0);
+  assert.equal(selectAll(root, 'nav a').length, 1, 'the link outside the nav is not a descendant of it');
+  assert.equal(selectAll(root, 'section a').length, 0, 'an ancestor that is not there matches nothing');
   assert.deepEqual(selectAll(root, 'li, nav, main > a').map((node) => node.tag), ['nav', 'li', 'a'], 'a selector list matches in document order');
 });
 
@@ -43,4 +45,18 @@ test('self-closing syntax is accepted for foreign elements such as the svg icons
   const { root, errors } = parse('<svg viewBox="0 0 24 24"><path d="M1 1"/><path d="M2 2" /></svg>');
   assert.deepEqual(errors, []);
   assert.equal(selectAll(root, 'svg > path').length, 2);
+});
+
+test('numeric entities, a stray angle bracket and an unclosed script are read or reported', () => {
+  assert.equal(textOf(select(parse('<p>&#39;a&#x27;&#233;</p>').root, 'p')), "'a'é");
+  assert.match(parse('<p>1 < 2</p>').errors.join('\n'), /stray "<"/);
+  assert.match(parse('<script>var x = 1;').errors.join('\n'), /<script> is not closed/);
+});
+
+test('the text of an element leaves out the scripts and styles inside it, and selectors may combine classes', () => {
+  const { root } = parse('<p class="a b">x<script>hidden()</script><style>.c{}</style>y</p><p class="a">z</p>');
+  assert.equal(textOf(select(root, 'p')), 'xy');
+  assert.equal(selectAll(root, 'p.a.b').length, 1);
+  assert.equal(selectAll(root, 'p.a').length, 2);
+  assert.equal(selectAll(root, 'p.b.c').length, 0);
 });
