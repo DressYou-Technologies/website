@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#000000">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; manifest-src 'self'; connect-src https://api.dressyouapp.com; base-uri 'none'; form-action 'none'">
+    <meta name="referrer" content="no-referrer">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Nouveau mot de passe — dressyou</title>
+    <link rel="icon" href="/favicon.ico" sizes="48x48">
+    <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="preload" href="/fonts/Manrope.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/site.css">
+    <script type="module" src="/auth/page.mjs"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="dressyou">
+        <img src="/images/dressyou-logo.webp" width="32" height="32" alt="">
+        <span>dressyou</span>
+      </a>
+    </header>
+    <main id="main" class="auth" data-page="reset">
+      <div data-fallback>
+        <h1>dressyou</h1>
+        <p lang="fr">Cette page a besoin de JavaScript pour enregistrer un nouveau mot de passe. Activez-le et rouvrez le lien de l’e-mail, ou demandez un nouveau lien dans l’application.</p>
+        <p lang="en">This page needs JavaScript to save a new password. Turn it on and open the link in the email again, or request a new link in the app.</p>
+      </div>
+      <section data-state="form" lang="fr" data-title="Nouveau mot de passe — dressyou" hidden>
+        <h1 tabindex="-1">Choisir un nouveau mot de passe</h1>
+        <form novalidate>
+          <div class="field">
+            <label for="password-fr">Nouveau mot de passe</label>
+            <input id="password-fr" name="newPassword" type="password" autocomplete="new-password" required aria-describedby="hint-fr message-fr">
+            <p class="hint" id="hint-fr">De 8 à 128 caractères.</p>
+          </div>
+          <button class="button" type="submit">Enregistrer le mot de passe</button>
+          <p class="message" id="message-fr" role="alert"></p>
+          <div hidden>
+            <p data-message="saving">Enregistrement…</p>
+            <p data-message="too-short">Le mot de passe doit compter au moins 8 caractères.</p>
+            <p data-message="too-long">Le mot de passe doit compter 128 caractères au plus.</p>
+            <p data-message="rate-limited">Trop d’essais à l’instant. Patientez un moment, puis réessayez.</p>
+            <p data-message="unavailable">La réponse n’est pas revenue&nbsp;: le changement n’est pas confirmé. Réessayez dans un moment&nbsp;; si le lien ne fonctionne plus, demandez-en un nouveau dans l’application.</p>
+          </div>
+        </form>
+      </section>
+      <section data-state="success" lang="fr" data-title="Mot de passe modifié — dressyou" hidden>
+        <h1 tabindex="-1">Mot de passe modifié</h1>
+        <p>Connectez-vous avec le nouveau mot de passe. DressYou a déconnecté tous vos appareils.</p>
+      </section>
+      <section data-state="invalid" lang="fr" data-title="Lien non valide — dressyou" hidden>
+        <h1 tabindex="-1">Lien non valide</h1>
+        <p>Ce lien de réinitialisation est invalide ou a expiré. Dans l’application, choisissez «&nbsp;Mot de passe oublié&nbsp;?&nbsp;» pour en recevoir un nouveau.</p>
+      </section>
+      <section data-state="form" lang="en" data-title="New password — dressyou" hidden>
+        <h1 tabindex="-1">Choose a new password</h1>
+        <form novalidate>
+          <div class="field">
+            <label for="password-en">New password</label>
+            <input id="password-en" name="newPassword" type="password" autocomplete="new-password" required aria-describedby="hint-en message-en">
+            <p class="hint" id="hint-en">From 8 to 128 characters.</p>
+          </div>
+          <button class="button" type="submit">Save new password</button>
+          <p class="message" id="message-en" role="alert"></p>
+          <div hidden>
+            <p data-message="saving">Saving…</p>
+            <p data-message="too-short">The password needs at least 8 characters.</p>
+            <p data-message="too-long">The password can have at most 128 characters.</p>
+            <p data-message="rate-limited">Too many tries just now. Wait a moment, then try again.</p>
+            <p data-message="unavailable">The answer did not come back, so the change is not confirmed. Try again in a moment; if the link no longer works, request a new one in the app.</p>
+          </div>
+        </form>
+      </section>
+      <section data-state="success" lang="en" data-title="Password changed — dressyou" hidden>
+        <h1 tabindex="-1">Password changed</h1>
+        <p>Sign in with your new password. DressYou has signed out every device.</p>
+      </section>
+      <section data-state="invalid" lang="en" data-title="Link not valid — dressyou" hidden>
+        <h1 tabindex="-1">Link not valid</h1>
+        <p>This reset link is invalid or has expired. In the app, choose “Forgot password?” to get a new one.</p>
+      </section>
+    </main>
+  </body>
+</html>

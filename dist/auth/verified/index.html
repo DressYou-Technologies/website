@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#000000">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; manifest-src 'self'; connect-src https://api.dressyouapp.com; base-uri 'none'; form-action 'none'">
+    <meta name="referrer" content="no-referrer">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Adresse e-mail confirmée — dressyou</title>
+    <link rel="icon" href="/favicon.ico" sizes="48x48">
+    <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="preload" href="/fonts/Manrope.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/site.css">
+    <script type="module" src="/auth/page.mjs"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="dressyou">
+        <img src="/images/dressyou-logo.webp" width="32" height="32" alt="">
+        <span>dressyou</span>
+      </a>
+    </header>
+    <main id="main" class="auth" data-page="verified">
+      <div data-fallback>
+        <h1>dressyou</h1>
+        <p lang="fr">Cette page a besoin de JavaScript. Retournez dans l’application DressYou&nbsp;; si votre adresse n’est pas confirmée, demandez un nouvel e-mail depuis l’application.</p>
+        <p lang="en">This page needs JavaScript. Go back to the DressYou app; if your address is not confirmed, request a new email from the app.</p>
+      </div>
+      <section data-state="verified" lang="fr" data-title="Adresse e-mail confirmée — dressyou" hidden>
+        <h1 tabindex="-1">Adresse e-mail confirmée</h1>
+        <p>Vous pouvez vous connecter à DressYou. Retournez dans l’application.</p>
+      </section>
+      <section data-state="failed" lang="fr" data-title="Lien non confirmé — dressyou" hidden>
+        <h1 tabindex="-1">Lien non confirmé</h1>
+        <p>Ce lien de vérification n’a pas pu être confirmé. Dans l’application, demandez un nouvel e-mail.</p>
+      </section>
+      <section data-state="verified" lang="en" data-title="Email address confirmed — dressyou" hidden>
+        <h1 tabindex="-1">Email address confirmed</h1>
+        <p>You can sign in to DressYou. Go back to the app.</p>
+      </section>
+      <section data-state="failed" lang="en" data-title="Link not confirmed — dressyou" hidden>
+        <h1 tabindex="-1">Link not confirmed</h1>
+        <p>This verification link could not be confirmed. In the app, request a new email.</p>
+      </section>
+    </main>
+  </body>
+</html>
