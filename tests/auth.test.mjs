@@ -121,6 +121,7 @@ const submitWith = async (dom, language, password) => {
 test('the verification page confirms in the browser\'s language and titles itself to match', async () => {
   const { dom, calls } = await open('/auth/verified/', { languages: ['fr-FR'] });
   assert.deepEqual(visible(dom), ['verified/fr']);
+  assert.equal(dom.document.querySelector('[data-fallback]').hidden, true, 'the no-script fallback gives way once the page runs');
   assert.equal(dom.document.documentElement.lang, 'fr');
   assert.equal(dom.document.title, sectionOf(dom, 'verified', 'fr').dataset.title);
   assert.deepEqual(calls, [], 'the page makes no request');
@@ -138,6 +139,7 @@ test('a failed or foreign verification link says so, in English when the browser
 test('a reset link opens the form and takes the token out of the address bar', async () => {
   const { dom, calls } = await open('/auth/reset/', { search: '?token=abc123', languages: ['en-US'] });
   assert.deepEqual(visible(dom), ['form/en']);
+  assert.equal(dom.document.querySelector('[data-fallback]').hidden, true);
   assert.deepEqual(dom.history.replacements, ['/auth/reset/']);
   assert.equal(dom.location.search, '');
   assert.deepEqual(calls, []);

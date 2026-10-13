@@ -12,23 +12,24 @@ let runs = 0;
 async function load(url, { reducedMotion }) {
   const root = landing(url);
   const text = { '.wordmark': textOf(select(root, '.wordmark')), '.tagline': textOf(select(root, '.tagline')) };
-  const element = (extra = {}) => ({ style: { props: {}, setProperty(name, value) { this.props[name] = value; } }, dataset: {}, textContent: '', setAttribute() {}, addEventListener() {}, focus() {}, replaceChildren(...children) { this.children = children; }, ...extra });
+  const element = (extra = {}) => ({ style: { props: {}, setProperty(name, value) { this.props[name] = value; } }, dataset: {}, textContent: '', setAttribute() {}, listeners: {}, addEventListener(type, handler) { this.listeners[type] = handler; }, focus() {}, replaceChildren(...children) { this.children = children; }, ...extra });
   const elements = Object.fromEntries(SELECTORS.map((selector) => [selector, element({ textContent: text[selector] ?? '' })]));
   const image = { naturalWidth: 1122, decode: () => Promise.resolve() };
   const shot = { querySelector: () => image, classList: { remove() {}, toggle() {} } };
   const frames = [];
+  const media = { matches: reducedMotion, listeners: {}, addEventListener(type, handler) { this.listeners[type] = handler; } };
   Object.assign(globalThis, {
     document: {
       querySelector: (selector) => elements[selector], querySelectorAll: () => [shot], createElement: () => element(), images: [image],
       fonts: { ready: Promise.resolve() }, addEventListener() {}, hidden: false, activeElement: null,
     },
-    matchMedia: () => ({ matches: reducedMotion, addEventListener() {} }),
+    matchMedia: () => media,
     requestAnimationFrame: (callback) => { frames.push(callback); return frames.length; },
     cancelAnimationFrame() {},
   });
   Object.defineProperty(globalThis, 'performance', { value: { now: () => 0 }, configurable: true });
   await import(`../dist/app.mjs?run=${++runs}`);
-  return { elements, frames, text };
+  return { elements, frames, text, media };
 }
 
 for (const [url, language] of [['/', 'French'], ['/en/', 'English']]) {
@@ -57,3 +58,17 @@ for (const [url, language] of [['/', 'French'], ['/en/', 'English']]) {
     assert.equal(frames.length, 1, 'one frame is waiting');
   });
 }
+
+test('replaying honours the preference, and turning it on mid-intro finishes at once', async () => {
+  const still = await load('/', { reducedMotion: true });
+  still.elements['.replay'].listeners.click();
+  assert.equal(still.elements['.experience'].dataset.phase, 'rest', 'replay with reduced motion lands on the final identity');
+  assert.equal(still.frames.length, 0);
+
+  const moving = await load('/', { reducedMotion: false });
+  moving.elements['.replay'].listeners.click();
+  assert.equal(moving.elements['.experience'].dataset.phase, 'loading', 'replay without it plays the intro again');
+  moving.media.matches = true;
+  moving.media.listeners.change();
+  assert.equal(moving.elements['.experience'].dataset.phase, 'rest', 'enabling the preference mid-intro skips to the end');
+});
