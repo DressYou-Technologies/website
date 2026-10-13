@@ -43,4 +43,6 @@ test('each stylesheet rule is refused when broken', () => {
   assert.match(found(edit('site.css', /a:focus-visible, input:focus-visible/, 'input:focus-visible')), /2px focus ring on links/);
   assert.match(found(edit('style.css', /animation: none !important/, 'animation: none')), /switch off every animation/);
   assert.match(found(edit('site.css', /$/, '\n.x { transition: opacity .2s }')), /must not add motion of its own/);
+  assert.match(found(edit('site.css', /$/, '\nbody { color: #d9d9d9; }')), /sets color on body/);
+  assert.match(found(edit('site.css', /$/, '\nhtml { line-height: 2; }')), /sets line-height on html/);
 });

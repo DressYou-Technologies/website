@@ -11,7 +11,8 @@
   --wide: 64rem;
 }
 [hidden] { display: none !important; }
-body { background: #000; color: var(--ink-body); font-size: 1rem; line-height: 1.6; }
+/* The hero keeps its own colour and spacing: body text styles apply to the content areas only. */
+.page, .content, .auth { color: var(--ink-body); font-size: 1rem; line-height: 1.6; }
 a { color: var(--ink); text-underline-offset: .2em; }
 a:hover { text-decoration-thickness: 2px; }
 a:focus-visible, input:focus-visible, .button:focus-visible, .table-wrap:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }

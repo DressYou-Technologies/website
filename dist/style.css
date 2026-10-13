@@ -61,7 +61,7 @@ button:focus-visible { outline: 1px solid #fff; outline-offset: 5px; border-radi
 .hero-links { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0 1.25rem; visibility: hidden; opacity: 0; transition: opacity .5s ease; }
 .hero-link { display: inline-flex; align-items: center; min-height: var(--control-size); padding: 0 .25rem; color: #a6a6a6; font-size: .875rem; letter-spacing: .01em; text-underline-offset: .25em; }
 .hero-link:hover { color: #fff; }
-.hero-link:focus-visible { outline: 1px solid #fff; outline-offset: 2px; }
+.hero-link:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 [data-phase="rest"] .hero-links { visibility: visible; opacity: 1; }
 .skip { position: absolute; right: var(--edge-gutter); bottom: var(--edge-gutter); width: var(--control-size); height: var(--control-size); display: grid; place-items: center; padding: 0; border: 0; background: transparent; color: #777; }
 .skip:hover { color: #fff; }

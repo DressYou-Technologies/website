@@ -63,5 +63,10 @@ export function stylesheetProblems(site) {
     problems.push('style.css must switch off every animation and transition under prefers-reduced-motion');
   }
   if (/\b(?:animation|transition|scroll-behavior)\s*:/.test(content)) problems.push('site.css must not add motion of its own');
+  for (const selector of ['html', 'body', ':root']) {
+    for (const property of ['color', 'background', 'line-height', 'font-size']) {
+      if (declared(content, selector, property)) problems.push(`site.css sets ${property} on ${selector}; the hero's approved look is style.css's alone`);
+    }
+  }
   return problems;
 }
