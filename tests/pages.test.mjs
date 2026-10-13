@@ -74,6 +74,18 @@ test('document rules: language, viewport, metadata, canonical, share tags and al
   assert.match(found(documentProblems, SUPPORT, mutate(SUPPORT, /<link rel="alternate" hreflang="x-default"[^>]*>/, '')), /alternate x-default must be/);
   assert.match(found(documentProblems, RESET, mutate(RESET, /noindex/, 'index')), /must be noindex/);
   assert.match(found(documentProblems, SUPPORT, mutate(SUPPORT, /(<meta name="robots" content=")[^"]*/, '$1noindex')), /must be indexable/);
+  assert.match(found(documentProblems, SUPPORT, mutate(SUPPORT, /<!doctype html>/, '')), /no <!doctype html>/);
+  assert.match(found(documentProblems, SUPPORT, mutate(SUPPORT, /<meta charset="utf-8">/, '')), /no utf-8 charset/);
+  assert.match(found(documentProblems, SUPPORT, mutate(SUPPORT, /<title>[^<]*<\/title>/, '')), /has no <title>/);
+  assert.match(found(documentProblems, SUPPORT, mutate(SUPPORT, /<meta property="og:title"[^>]*>/, '')), /no og:title/);
+  assert.match(found(documentProblems, SUPPORT, mutate(SUPPORT, /<meta property="og:description"[^>]*>/, '')), /no og:description/);
+  assert.match(found(documentProblems, SUPPORT, mutate(SUPPORT, /(<meta property="og:locale" content=")[^"]*/, '$1en_US')), /og:locale must be fr_FR/);
+  assert.match(found(documentProblems, SUPPORT, mutate(SUPPORT, /(<meta property="og:url" content=")[^"]*/, '$1https://dressyouapp.com/x/')), /og:url must be/);
+  assert.match(found(documentProblems, SUPPORT, mutate(SUPPORT, /(<meta property="og:type" content=")[^"]*/, '$1article')), /og:type must be website/);
+  assert.match(found(documentProblems, SUPPORT, mutate(SUPPORT, /(<meta property="og:site_name" content=")[^"]*/, '$1other')), /og:site_name must be dressyou/);
+  assert.match(found(documentProblems, SUPPORT, mutate(SUPPORT, /(<link rel="alternate" hreflang="fr" href=")[^"]*/, '$1https://dressyouapp.com/other/')), /alternate fr must be/);
+  assert.match(found(documentProblems, SUPPORT, mutate(SUPPORT, /(<link rel="alternate" hreflang="en" href=")[^"]*/, '$1https://dressyouapp.com/other/')), /alternate en must be/);
+  assert.match(documentProblems({ ...site.pages.get(SUPPORT), file: 'support.html' }).join('\n'), /is not a directory index/);
 });
 
 test('structure rules: one main, one h1, no skipped level, unique ids, resolving references', () => {
@@ -86,6 +98,13 @@ test('structure rules: one main, one h1, no skipped level, unique ids, resolving
   assert.match(found(structureProblems, SUPPORT, intoMain(SUPPORT, '<nav><a href="/">x</a></nav>')), /nav. without aria-label/);
   assert.match(found(structureProblems, SUPPORT, mutate(SUPPORT, /<main id="main"/, '<main id="other"')), /exactly one <main id="main">/);
   assert.match(found(structureProblems, RESET, mutate(RESET, /(<section[^>]*data-state="form"[^>]*lang="fr"[^>]*>)/, '$1<h1>second</h1>')), /needs exactly one h1/);
+  assert.match(found(structureProblems, SUPPORT, mutate(SUPPORT, /<h2>([^<]*)<\/h2>/, '<h4>$1</h4>')), /skips from h1 to h4/);
+  assert.match(found(structureProblems, SUPPORT, mutate(SUPPORT, /(<a class="skip-link" href=")#main/, '$1#nowhere')), /skip link target #nowhere does not exist/);
+  assert.match(found(structureProblems, SUPPORT, mutate(SUPPORT, /<footer[\s\S]*<\/footer>/, '')), /needs exactly one footer/);
+  assert.match(found(structureProblems, SUPPORT, intoMain(SUPPORT, '<label for="ghost">x</label>')), /label for="ghost" points at nothing/);
+  assert.match(found(structureProblems, SUPPORT, intoMain(SUPPORT, '<p aria-describedby="ghost">x</p>')), /aria-describedby="ghost" points at nothing/);
+  assert.match(found(structureProblems, SUPPORT, intoMain(SUPPORT, '<p aria-controls="ghost">x</p>')), /aria-controls="ghost" points at nothing/);
+  assert.match(found(structureProblems, SUPPORT, mutate(SUPPORT, /(<body>\s*)<a class="skip-link"/, '$1<p>first</p><a class="skip-link"')), /must open with a skip link/);
 });
 
 test('name rules: links, buttons, images, controls, language links and tables', () => {

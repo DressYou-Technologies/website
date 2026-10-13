@@ -1,4 +1,4 @@
-import { DIST, distFiles, readDist, TEXT } from './site.mjs';
+import { DIST, distFiles, KNOWN_BINARY, readDist, TEXT } from './site.mjs';
 
 // Reserved by RFC 2606 and RFC 6761: an address under them can never be a real one.
 const RESERVED_HOST = /\b(?:[\w-]+\.)*(?:example\.(?:com|net|org)|[\w-]+\.(?:test|example|invalid))\b/;
@@ -28,4 +28,9 @@ export function scanDist(root = DIST) {
   return distFiles(root)
     .filter((file) => TEXT.test(file))
     .flatMap((file) => findPlaceholders(readDist(file, root)).map((hit) => ({ file, ...hit })));
+}
+
+/** Files the gate would skip because it can neither read them as text nor knows them as binary. */
+export function unscannedFiles(root = DIST) {
+  return distFiles(root).filter((file) => !TEXT.test(file) && !KNOWN_BINARY.test(file));
 }
