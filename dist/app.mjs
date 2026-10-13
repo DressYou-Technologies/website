@@ -1,4 +1,4 @@
-import { frameAt, timing, taglineText, taglineTimes } from './sequence.mjs';
+import { frameAt, timing, taglineTimesFor } from './sequence.mjs';
 
 const stage = document.querySelector('.experience');
 const progress = document.querySelector('.progress');
@@ -10,6 +10,10 @@ const skip = document.querySelector('.skip');
 const status = document.querySelector('.status');
 const wordmark = document.querySelector('.wordmark');
 const tagline = document.querySelector('.tagline');
+// The page's own text is the tagline, so each language types its own.
+const taglineText = tagline.textContent;
+const taglineTimes = taglineTimesFor(taglineText);
+const wordmarkText = wordmark.textContent;
 const shots = [...document.querySelectorAll('.shot')];
 const motion = matchMedia('(prefers-reduced-motion: reduce)');
 // CSS and the replay timeline use the same entrance duration.
@@ -53,7 +57,7 @@ function paint(elapsed) {
   }
   identity.inert = frame.phase !== 'rest';
   if (frame.phase === 'rest') {
-    status.textContent = `dressyou. ${taglineText}`;
+    status.textContent = `${wordmarkText}. ${taglineText}`;
     if (document.activeElement === skip) replay.focus({ preventScroll: true });
   }
   return frame.phase;

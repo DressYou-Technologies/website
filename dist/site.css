@@ -1,0 +1,77 @@
+/* Everything below the hero and every page that is not the landing. style.css owns the font, the
+   base colours and the hero; the tokens here are the only colours the content uses. */
+:root {
+  --ink: #fff;
+  --ink-body: #d9d9d9;
+  --ink-muted: #a6a6a6;
+  --rule: #333;
+  --field-border: #8c8c8c;
+  --alert: #ff8a80;
+  --measure: 42rem;
+  --wide: 64rem;
+}
+[hidden] { display: none !important; }
+body { background: #000; color: var(--ink-body); font-size: 1rem; line-height: 1.6; }
+a { color: var(--ink); text-underline-offset: .2em; }
+a:hover { text-decoration-thickness: 2px; }
+a:focus-visible, input:focus-visible, .button:focus-visible, .table-wrap:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+.skip-link { position: absolute; left: .5rem; top: -4rem; z-index: 20; padding: .75rem 1rem; background: #fff; color: #000; font-weight: 600; }
+.skip-link:focus { top: .5rem; }
+
+.site-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; max-width: var(--wide); margin: 0 auto; padding: .75rem var(--edge-gutter); }
+.brand { display: inline-flex; align-items: center; gap: .625rem; min-height: var(--control-size); color: var(--ink); font-size: 1.5rem; font-weight: 700; letter-spacing: -.06em; text-decoration: none; }
+.brand img { display: block; width: 2rem; height: 2rem; }
+.language { display: inline-flex; align-items: center; min-height: var(--control-size); padding: 0 .25rem; }
+
+.page { max-width: var(--measure); margin: 0 auto; padding: 1.5rem var(--edge-gutter) 4rem; }
+.page h1, .content h2 { margin: 1rem 0 1.5rem; color: var(--ink); font-size: clamp(2rem, 6vw, 3rem); line-height: 1.1; letter-spacing: -.04em; }
+.page h2 { margin: 3rem 0 1rem; color: var(--ink); font-size: 1.5rem; line-height: 1.25; letter-spacing: -.02em; }
+.page h3 { margin: 2rem 0 .75rem; color: var(--ink); font-size: 1.125rem; line-height: 1.3; }
+.page ul, .page ol { padding-left: 1.5rem; }
+.page li + li { margin-top: .5rem; }
+.page code { font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: .9em; }
+.version { margin: 0 0 2rem; color: var(--ink-muted); font-size: .9375rem; }
+.contents { margin: 0 0 2rem; padding: 1rem 0; border-block: 1px solid var(--rule); }
+.contents ul { margin: 0; padding: 0; list-style: none; columns: 16rem; }
+.contents li { break-inside: avoid; }
+.contents a { display: inline-block; padding: .125rem 0; }
+
+.table-wrap { overflow-x: auto; margin: 1.5rem 0; border: 1px solid var(--rule); }
+.table-wrap table { width: 100%; min-width: 36rem; border-collapse: collapse; font-size: .9375rem; }
+.table-wrap th, .table-wrap td { padding: .75rem 1rem; border-bottom: 1px solid var(--rule); text-align: left; vertical-align: top; }
+.table-wrap th { color: var(--ink); font-weight: 600; }
+.table-wrap tr:last-child td { border-bottom: 0; }
+
+.site-footer { padding: 1.5rem var(--edge-gutter) 3rem; border-top: 1px solid var(--rule); }
+.site-footer ul { display: flex; flex-wrap: wrap; gap: .25rem 1.5rem; max-width: var(--wide); margin: 0 auto; padding: 0; list-style: none; }
+.site-footer a { display: inline-flex; align-items: center; min-height: var(--control-size); color: var(--ink-muted); }
+.site-footer a:hover { color: var(--ink); }
+.site-footer .language { padding: 0; }
+
+.content { max-width: var(--wide); margin: 0 auto; padding: 5rem var(--edge-gutter) 4rem; }
+.content section + section { margin-top: 5rem; }
+.content h2 { margin-top: 0; }
+.lead { max-width: 36ch; margin: 0 0 1.5rem; color: var(--ink); font-size: clamp(1.25rem, 2.6vw, 1.75rem); line-height: 1.4; }
+.content p { max-width: 60ch; }
+.steps, .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 2rem; margin: 2rem 0 0; padding: 0; list-style: none; counter-reset: step; }
+.steps li, .features li { padding-top: 1rem; border-top: 1px solid var(--rule); counter-increment: step; }
+/* The empty alternative keeps the decorative number out of the accessibility tree. */
+.steps h3::before { content: counter(step, decimal-leading-zero) / ''; margin-right: .5rem; color: var(--ink-muted); }
+.content h3 { margin: 0 0 .5rem; color: var(--ink); font-size: 1.25rem; }
+.content li p { margin: 0; }
+.links { display: flex; flex-wrap: wrap; gap: .25rem 1.5rem; margin: 1.5rem 0 0; padding: 0; list-style: none; }
+.links a { display: inline-flex; align-items: center; min-height: var(--control-size); }
+
+.auth { max-width: 28rem; margin: 0 auto; padding: 1rem var(--edge-gutter) 4rem; }
+.auth h1 { margin: 1rem 0 1rem; color: var(--ink); font-size: clamp(1.75rem, 6vw, 2.5rem); line-height: 1.15; letter-spacing: -.04em; }
+.auth h1:focus { outline: none; }
+.field { display: grid; gap: .5rem; margin: 1.5rem 0; }
+.field label { color: var(--ink); font-weight: 600; }
+.field input { box-sizing: border-box; width: 100%; min-height: 3rem; padding: .5rem 1rem; border: 1px solid var(--field-border); border-radius: 0; background: #000; color: var(--ink); font: inherit; }
+.field input[aria-invalid="true"] { border-color: var(--alert); }
+.hint { margin: 0; color: var(--ink-muted); font-size: .9375rem; }
+.button { min-height: 3rem; padding: 0 1.5rem; border: 0; border-radius: 0; background: #fff; color: #000; font: inherit; font-weight: 600; }
+.button[aria-disabled="true"] { opacity: .6; cursor: progress; }
+.message { min-height: 1.6em; margin: 1rem 0 0; padding-left: .75rem; border-left: 3px solid transparent; color: var(--ink); }
+.message:not(:empty) { border-left-color: var(--alert); }

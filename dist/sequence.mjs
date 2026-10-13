@@ -2,7 +2,9 @@
 export const taglineText = 'the new way to experience fashion.';
 const taglineLead = 90;
 const taglineInterval = 40;
-export const taglineTimes = Array.from(taglineText, (_, index) => taglineLead + (index + 1) * taglineInterval);
+// Each page types its own language's tagline at this pace; the English one sets the phase length.
+export const taglineTimesFor = (text) => Array.from(text, (_, index) => taglineLead + (index + 1) * taglineInterval);
+export const taglineTimes = taglineTimesFor(taglineText);
 // The user extended the montage by 50% and requested a slower ease-out into the identity.
 export const timing = { opening: 120, shot: 120, loading: 3000, hold: 80, spawn: 700, shift: 600, write: 900, tagline: taglineTimes.at(-1) + 125 };
 timing.total = timing.loading + timing.spawn + timing.shift + timing.write + timing.tagline;

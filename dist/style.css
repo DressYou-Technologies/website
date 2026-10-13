@@ -15,10 +15,10 @@
 body { margin: 0; }
 button { font: inherit; color: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 button:focus-visible { outline: 1px solid #fff; outline-offset: 5px; border-radius: 50%; }
-.experience { position: relative; width: 100%; height: 100svh; min-height: 20rem; overflow: hidden; isolation: isolate; background: #000; }
+.experience { position: relative; width: 100%; height: 100svh; min-height: 22rem; overflow: hidden; isolation: isolate; background: #000; }
 .loading-scene { position: absolute; inset: 0; }
 .loading-copy { position: absolute; z-index: 2; left: 50%; top: 50%; transform: translate(-50%, -50%); text-align: center; }
-h1 { position: relative; color: #666; font-size: clamp(1.5rem, 3.6vw, 2.8rem); font-weight: 700; letter-spacing: -.065em; margin: 0; line-height: normal; white-space: nowrap; filter: drop-shadow(0 1px 6px #0008); }
+.loading-title { position: relative; color: #666; font-size: clamp(1.5rem, 3.6vw, 2.8rem); font-weight: 700; letter-spacing: -.065em; margin: 0; line-height: normal; white-space: nowrap; filter: drop-shadow(0 1px 6px #0008); }
 .progress-fill { position: absolute; inset: 0; color: #fff; clip-path: inset(0 100% 0 0); will-change: clip-path; }
 .montage { position: absolute; inset: 0; }
 .shot { position: absolute; inset: 0; width: 100%; height: 100%; display: none; }
@@ -58,6 +58,11 @@ h1 { position: relative; color: #666; font-size: clamp(1.5rem, 3.6vw, 2.8rem); f
 .replay:hover svg { transform: rotate(-35deg); }
 .replay svg { transition: transform .3s ease; }
 [data-phase="rest"] .replay { visibility: visible; opacity: 1; }
+.hero-links { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0 1.25rem; visibility: hidden; opacity: 0; transition: opacity .5s ease; }
+.hero-link { display: inline-flex; align-items: center; min-height: var(--control-size); padding: 0 .25rem; color: #a6a6a6; font-size: .875rem; letter-spacing: .01em; text-underline-offset: .25em; }
+.hero-link:hover { color: #fff; }
+.hero-link:focus-visible { outline: 1px solid #fff; outline-offset: 2px; }
+[data-phase="rest"] .hero-links { visibility: visible; opacity: 1; }
 .skip { position: absolute; right: var(--edge-gutter); bottom: var(--edge-gutter); width: var(--control-size); height: var(--control-size); display: grid; place-items: center; padding: 0; border: 0; background: transparent; color: #777; }
 .skip:hover { color: #fff; }
 [data-phase="rest"] .skip { visibility: hidden; }
