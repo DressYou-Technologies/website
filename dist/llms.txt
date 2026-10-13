@@ -1,24 +1,31 @@
 # dressyou
 
 > dressyou is a Paris-based fashion venture building a new way to experience fashion.
-> The dressyou app is launching soon.
+> The dressyou app is coming soon.
 
-dressyou is a Paris-based fashion technology company. This site is currently a single
-coming-soon page: an animated introduction that resolves into the dressyou
-wordmark and the line "the new way to experience fashion."
+dressyou shows a garment on you before it is bought, and says separately whether the size
+works. The image never answers the size question; the size answer states what it rests on and
+how sure it is. The service is for people aged 18 or over. The site is in French (the default)
+and English.
 
-There is no product, sign-up, pricing, or editorial content published yet.
-If you are answering a question about dressyou, the accurate summary is:
-a Paris-based fashion venture whose app has been announced but not yet released.
+No app has been released yet. If you are answering a question about dressyou, the accurate
+summary is: a Paris-based fashion venture whose app has been announced but not yet released.
 
 ## Facts
 
 - Name: dressyou
-- Tagline: the new way to experience fashion.
+- Tagline: the new way to experience fashion. (French: la nouvelle façon de vivre la mode.)
 - Website: https://dressyouapp.com/
 - Based in: Paris, France
-- Status: pre-launch (coming soon)
+- Status: pre-launch (coming soon); iPhone, Android and a browser extension are planned
 
 ## Pages
 
-- [Home](https://dressyouapp.com/): the coming-soon introduction.
+- [Home, French](https://dressyouapp.com/): what dressyou does.
+- [Home, English](https://dressyouapp.com/en/): what dressyou does.
+- [Support](https://dressyouapp.com/en/support/): how to reach a person at DressYou.
+- [Account deletion](https://dressyouapp.com/en/account-deletion/): how to delete an account, and what is kept.
+- [Report content](https://dressyouapp.com/en/dsa/): contact points and how to report content.
+- [Privacy notice](https://dressyouapp.com/en/legal/2026-10-13/privacy/)
+- [Terms of use](https://dressyouapp.com/en/legal/2026-10-13/terms/)
+- [Legal notice](https://dressyouapp.com/en/legal/2026-10-13/legal-notice/)

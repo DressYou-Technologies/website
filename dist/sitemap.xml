@@ -1,9 +1,129 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://dressyouapp.com/</loc>
-    <lastmod>2026-09-13</lastmod>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dressyouapp.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dressyouapp.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dressyouapp.com/"/>
+    <lastmod>2026-10-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dressyouapp.com/account-deletion/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dressyouapp.com/account-deletion/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dressyouapp.com/en/account-deletion/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dressyouapp.com/account-deletion/"/>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://dressyouapp.com/dsa/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dressyouapp.com/dsa/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dressyouapp.com/en/dsa/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dressyouapp.com/dsa/"/>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://dressyouapp.com/en/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dressyouapp.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dressyouapp.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dressyouapp.com/"/>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dressyouapp.com/en/account-deletion/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dressyouapp.com/account-deletion/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dressyouapp.com/en/account-deletion/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dressyouapp.com/account-deletion/"/>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://dressyouapp.com/en/dsa/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dressyouapp.com/dsa/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dressyouapp.com/en/dsa/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dressyouapp.com/dsa/"/>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://dressyouapp.com/en/legal/2026-10-13/legal-notice/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dressyouapp.com/legal/2026-10-13/legal-notice/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dressyouapp.com/en/legal/2026-10-13/legal-notice/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dressyouapp.com/legal/2026-10-13/legal-notice/"/>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://dressyouapp.com/en/legal/2026-10-13/privacy/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dressyouapp.com/legal/2026-10-13/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dressyouapp.com/en/legal/2026-10-13/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dressyouapp.com/legal/2026-10-13/privacy/"/>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://dressyouapp.com/en/legal/2026-10-13/terms/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dressyouapp.com/legal/2026-10-13/terms/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dressyouapp.com/en/legal/2026-10-13/terms/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dressyouapp.com/legal/2026-10-13/terms/"/>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://dressyouapp.com/en/support/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dressyouapp.com/support/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dressyouapp.com/en/support/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dressyouapp.com/support/"/>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://dressyouapp.com/legal/2026-10-13/legal-notice/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dressyouapp.com/legal/2026-10-13/legal-notice/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dressyouapp.com/en/legal/2026-10-13/legal-notice/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dressyouapp.com/legal/2026-10-13/legal-notice/"/>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://dressyouapp.com/legal/2026-10-13/privacy/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dressyouapp.com/legal/2026-10-13/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dressyouapp.com/en/legal/2026-10-13/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dressyouapp.com/legal/2026-10-13/privacy/"/>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://dressyouapp.com/legal/2026-10-13/terms/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dressyouapp.com/legal/2026-10-13/terms/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dressyouapp.com/en/legal/2026-10-13/terms/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dressyouapp.com/legal/2026-10-13/terms/"/>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://dressyouapp.com/support/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dressyouapp.com/support/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dressyouapp.com/en/support/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dressyouapp.com/support/"/>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
 </urlset>
