@@ -199,6 +199,9 @@ export function bilingualProblems(site) {
       if (byLanguage.fr && byLanguage.en && outline(byLanguage.fr).join() !== outline(byLanguage.en).join()) {
         problems.push(`${url} state ${state} differs between languages`);
       }
+      if (byLanguage.fr && byLanguage.en && placeholderKeys(textOf(byLanguage.fr)).join() !== placeholderKeys(textOf(byLanguage.en)).join()) {
+        problems.push(`${url} state ${state} differs between languages in open markers`);
+      }
     }
     if (select(page.doc, 'main')?.attrs['data-page'] === undefined) problems.push(`${url} <main> must name its page in data-page`);
     const fallbacks = selectAll(page.doc, 'main > [data-fallback]');

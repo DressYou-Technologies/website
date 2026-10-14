@@ -1,8 +1,8 @@
-// What the account mail sends people back to, and the one call the reset page makes. Contract,
-// from Better Auth 1.7.7 as the API configures it (api/src/auth.ts, default password bounds):
+// What the account mail sends people back to, and the one call the reset page makes:
 //   verification link  ->  /auth/verified            or  /auth/verified?error=<CODE>
 //   reset link         ->  /auth/reset?token=<token> or  /auth/reset?error=INVALID_TOKEN
 //   POST /api/auth/reset-password { newPassword, token }  ->  200, 400 { code }, or 429
+// The password bounds are the API's.
 export const API_ORIGIN = 'https://api.dressyouapp.com';
 export const RESET_PATH = '/api/auth/reset-password';
 export const PASSWORD_MIN_LENGTH = 8;
@@ -24,14 +24,16 @@ export function chooseLanguage(search, preferred) {
 
 /**
  * Which state a link opens. Only what the API sends counts: a bare verification link, or a reset
- * link with exactly one non-empty token. Anything else fails closed.
+ * link with exactly one non-empty token. A bare reset address is the page reopened after it took
+ * its token out of the address bar; anything else fails closed.
  */
 export function readLink(page, search) {
   const params = new URLSearchParams(search);
   params.delete('lang');
   const entries = [...params];
   if (page === 'verified') return { state: entries.length === 0 ? 'verified' : 'failed' };
-  const [[name, value] = []] = entries;
+  if (entries.length === 0) return { state: 'reopen' };
+  const [name, value] = entries[0];
   return entries.length === 1 && name === 'token' && value ? { state: 'form', token: value } : { state: 'invalid' };
 }
 

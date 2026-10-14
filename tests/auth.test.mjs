@@ -44,9 +44,15 @@ test('a reset link opens the form only with exactly one non-empty token', () => 
   assert.deepEqual(readLink('reset', '?token=abc123'), { state: 'form', token: 'abc123' });
   assert.deepEqual(readLink('reset', '?token=abc123&lang=fr'), { state: 'form', token: 'abc123' });
   assert.deepEqual(readLink('reset', '?token=a%2Bb'), { state: 'form', token: 'a+b' });
-  for (const search of ['', '?token=', '?error=INVALID_TOKEN', '?token=a&token=b', '?token=a&x=1', '?x=1']) {
+  for (const search of ['?token=', '?error=INVALID_TOKEN', '?token=a&token=b', '?token=a&x=1', '?x=1']) {
     assert.deepEqual(readLink('reset', search), { state: 'invalid' }, search);
   }
+});
+
+test('a bare reset address means the page already read its token, so it says to open the emailed link again', () => {
+  // The API never sends one: a reload, or a page the phone discarded, lands here with a link that still works.
+  assert.deepEqual(readLink('reset', ''), { state: 'reopen' });
+  assert.deepEqual(readLink('reset', '?lang=en'), { state: 'reopen' });
 });
 
 test('a password is judged by the API\'s own bounds', () => {
@@ -147,10 +153,19 @@ test('a reset link opens the form and takes the token out of the address bar', a
 });
 
 test('a reset link without a usable token shows the dead-link state and no form', async () => {
-  for (const search of ['', '?error=INVALID_TOKEN', '?token=']) {
+  for (const search of ['?error=INVALID_TOKEN', '?token=']) {
     const { dom } = await open('/auth/reset/', { search, languages: ['fr'] });
     assert.deepEqual(visible(dom), ['invalid/fr'], search);
     assert.deepEqual(dom.history.replacements, []);
+  }
+});
+
+test('reloading after the token was read says to open the link again, in the visitor\'s language', async () => {
+  for (const [languages, expected] of [[['fr'], 'reopen/fr'], [['en-GB'], 'reopen/en']]) {
+    const { dom, calls } = await open('/auth/reset/', { search: '', languages });
+    assert.deepEqual(visible(dom), [expected]);
+    assert.equal(dom.document.title, sectionOf(dom, 'reopen', expected.split('/')[1]).dataset.title);
+    assert.deepEqual(calls, []);
   }
 });
 
@@ -241,15 +256,17 @@ test('a rate limit or a lost connection leaves the form usable, with the message
 // What the pages ship, read as markup.
 const shipped = (url) => parse(readFileSync(new URL(`../dist${url}index.html`, import.meta.url), 'utf8')).root;
 
-test('the auth pages declare a content policy that lets the page reach the API and nothing else', () => {
-  for (const url of ['/auth/verified/', '/auth/reset/']) {
+test('the auth pages declare a content policy that lets each reach what it needs and nothing else', () => {
+  // Only the reset page makes a request; the verification page makes none and may connect to nothing.
+  const connects = { '/auth/verified/': "connect-src 'none'", '/auth/reset/': `connect-src ${API_ORIGIN}` };
+  for (const [url, connect] of Object.entries(connects)) {
     const root = shipped(url);
     const policy = select(root, 'meta[http-equiv="Content-Security-Policy"]')?.attrs.content ?? '';
+    assert.ok(policy.split('; ').includes(connect), `${url} must say ${connect}, found: ${policy}`);
     assert.match(policy, /default-src 'none'/, url);
     assert.match(policy, /script-src 'self'/, url);
     assert.match(policy, /form-action 'none'/, url);
     assert.match(policy, /base-uri 'none'/, url);
-    assert.match(policy, new RegExp(`connect-src ${API_ORIGIN.replace(/\./g, '\\.')}(?:;|$)`), url);
     assert.doesNotMatch(policy, /unsafe-/, url);
     assert.equal(select(root, 'meta[name=referrer]')?.attrs.content, 'no-referrer', url);
     const inline = [];

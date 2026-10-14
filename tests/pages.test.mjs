@@ -153,6 +153,13 @@ test('bilingual rules: a missing auth page is left to the required-pages rule, a
   assert.match(bilingualProblems(stateless).join('\n'), /\/auth\/reset\/ has no state sections/);
 });
 
+test('bilingual rules: a state that waits on an app route waits on it in both languages', () => {
+  // Injected, not taken from the page, so the test still holds once the real marker is answered.
+  const ask = (language, source = site) => mutate(RESET, new RegExp(`(<section[^>]*data-state="invalid"[^>]*lang="${language}"[^>]*>[\\s\\S]*?)</section>`), '$1<p>[[FOUNDER: route-key — the route]]</p></section>', source);
+  assert.match(bilingualProblems(ask('en')).join('\n'), /state invalid differs between languages in open markers/);
+  assert.deepEqual(bilingualProblems(ask('fr', ask('en'))), []);
+});
+
 test('bilingual rules: the page keeps a readable fallback in both languages for when its script cannot run', () => {
   assert.match(bilingualProblems(mutate(RESET, /<div data-fallback>[\s\S]*?<\/div>/, '')).join('\n'), /exactly one fallback/);
   assert.match(bilingualProblems(mutate(RESET, /<p lang="en">[^<]*<\/p>/, '')).join('\n'), /fallback has no en text/);

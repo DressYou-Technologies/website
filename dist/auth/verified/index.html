@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#000000">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; manifest-src 'self'; connect-src https://api.dressyouapp.com; base-uri 'none'; form-action 'none'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; manifest-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'">
     <meta name="referrer" content="no-referrer">
     <meta name="robots" content="noindex, nofollow">
     <title>Adresse e-mail confirmée — dressyou</title>
@@ -26,8 +26,8 @@
     <main id="main" class="auth" data-page="verified">
       <div data-fallback>
         <h1>dressyou</h1>
-        <p lang="fr">Cette page a besoin de JavaScript. Retournez dans l’application DressYou&nbsp;; si votre adresse n’est pas confirmée, demandez un nouvel e-mail depuis l’application.</p>
-        <p lang="en">This page needs JavaScript. Go back to the DressYou app; if your address is not confirmed, request a new email from the app.</p>
+        <p lang="fr">Cette page a besoin de JavaScript. Retournez dans l’application DressYou et connectez-vous.</p>
+        <p lang="en">This page needs JavaScript. Go back to the DressYou app and sign in.</p>
       </div>
       <section data-state="verified" lang="fr" data-title="Adresse e-mail confirmée — dressyou" hidden>
         <h1 tabindex="-1">Adresse e-mail confirmée</h1>
@@ -35,7 +35,7 @@
       </section>
       <section data-state="failed" lang="fr" data-title="Lien non confirmé — dressyou" hidden>
         <h1 tabindex="-1">Lien non confirmé</h1>
-        <p>Ce lien de vérification n’a pas pu être confirmé. Dans l’application, demandez un nouvel e-mail.</p>
+        <p>Ce lien de vérification n’a pas pu être confirmé. [[FOUNDER: verification-entry — la phrase qui dit comment demander un nouvel e-mail de vérification dans l'application, avec les mots de l'application, sur iPhone (les libellés français de connexion arrivent avec K7) et sur Android (AR4)]]</p>
       </section>
       <section data-state="verified" lang="en" data-title="Email address confirmed — dressyou" hidden>
         <h1 tabindex="-1">Email address confirmed</h1>
@@ -43,7 +43,7 @@
       </section>
       <section data-state="failed" lang="en" data-title="Link not confirmed — dressyou" hidden>
         <h1 tabindex="-1">Link not confirmed</h1>
-        <p>This verification link could not be confirmed. In the app, request a new email.</p>
+        <p>This verification link could not be confirmed. [[FOUNDER: verification-entry — the sentence that says how to ask for a new verification email in the app, in the app's own words, on iPhone (the French sign-in strings come with K7) and on Android (AR4)]]</p>
       </section>
     </main>
   </body>

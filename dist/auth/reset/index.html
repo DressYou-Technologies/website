@@ -26,8 +26,8 @@
     <main id="main" class="auth" data-page="reset">
       <div data-fallback>
         <h1>dressyou</h1>
-        <p lang="fr">Cette page a besoin de JavaScript pour enregistrer un nouveau mot de passe. Activez-le et rouvrez le lien de l’e-mail, ou demandez un nouveau lien dans l’application.</p>
-        <p lang="en">This page needs JavaScript to save a new password. Turn it on and open the link in the email again, or request a new link in the app.</p>
+        <p lang="fr">Cette page a besoin de JavaScript pour enregistrer un nouveau mot de passe. Activez-le, puis rouvrez le lien de l’e-mail.</p>
+        <p lang="en">This page needs JavaScript to save a new password. Turn it on, then open the link in the email again.</p>
       </div>
       <section data-state="form" lang="fr" data-title="Nouveau mot de passe — dressyou" hidden>
         <h1 tabindex="-1">Choisir un nouveau mot de passe</h1>
@@ -44,7 +44,7 @@
             <p data-message="too-short">Le mot de passe doit compter au moins 8 caractères.</p>
             <p data-message="too-long">Le mot de passe doit compter 128 caractères au plus.</p>
             <p data-message="rate-limited">Trop d’essais à l’instant. Patientez un moment, puis réessayez.</p>
-            <p data-message="unavailable">La réponse n’est pas revenue&nbsp;: le changement n’est pas confirmé. Réessayez dans un moment&nbsp;; si le lien ne fonctionne plus, demandez-en un nouveau dans l’application.</p>
+            <p data-message="unavailable">La réponse n’est pas revenue&nbsp;: le changement n’est pas confirmé. Réessayez dans un moment.</p>
           </div>
         </form>
       </section>
@@ -54,7 +54,11 @@
       </section>
       <section data-state="invalid" lang="fr" data-title="Lien non valide — dressyou" hidden>
         <h1 tabindex="-1">Lien non valide</h1>
-        <p>Ce lien de réinitialisation est invalide ou a expiré. Dans l’application, choisissez «&nbsp;Mot de passe oublié&nbsp;?&nbsp;» pour en recevoir un nouveau.</p>
+        <p>Ce lien de réinitialisation est invalide ou a expiré. Si le mot de passe vient d’être changé, connectez-vous avec le nouveau&nbsp;; sinon, [[FOUNDER: reset-entry — la phrase qui dit comment demander un nouveau lien de réinitialisation dans l'application, avec les mots de l'application, sur iPhone (les libellés français de connexion arrivent avec K7) et sur Android (AR4)]].</p>
+      </section>
+      <section data-state="reopen" lang="fr" data-title="Rouvrez le lien de l’e-mail — dressyou" hidden>
+        <h1 tabindex="-1">Rouvrez le lien de l’e-mail</h1>
+        <p>Cette page ne garde pas le lien. Pour choisir un mot de passe, rouvrez le lien depuis l’e-mail. Si vous en avez déjà choisi un, connectez-vous avec ce mot de passe. Si le lien ne fonctionne plus, [[FOUNDER: reset-entry — la phrase qui dit comment demander un nouveau lien de réinitialisation dans l'application, avec les mots de l'application, sur iPhone (les libellés français de connexion arrivent avec K7) et sur Android (AR4)]].</p>
       </section>
       <section data-state="form" lang="en" data-title="New password — dressyou" hidden>
         <h1 tabindex="-1">Choose a new password</h1>
@@ -71,7 +75,7 @@
             <p data-message="too-short">The password needs at least 8 characters.</p>
             <p data-message="too-long">The password can have at most 128 characters.</p>
             <p data-message="rate-limited">Too many tries just now. Wait a moment, then try again.</p>
-            <p data-message="unavailable">The answer did not come back, so the change is not confirmed. Try again in a moment; if the link no longer works, request a new one in the app.</p>
+            <p data-message="unavailable">The answer did not come back, so the change is not confirmed. Try again in a moment.</p>
           </div>
         </form>
       </section>
@@ -81,7 +85,11 @@
       </section>
       <section data-state="invalid" lang="en" data-title="Link not valid — dressyou" hidden>
         <h1 tabindex="-1">Link not valid</h1>
-        <p>This reset link is invalid or has expired. In the app, choose “Forgot password?” to get a new one.</p>
+        <p>This reset link is invalid or has expired. If the password was just changed, sign in with the new one; otherwise, [[FOUNDER: reset-entry — the clause that says how to ask for a new reset link in the app, in the app's own words, on iPhone (the French sign-in strings come with K7) and on Android (AR4)]].</p>
+      </section>
+      <section data-state="reopen" lang="en" data-title="Open the link in the email again — dressyou" hidden>
+        <h1 tabindex="-1">Open the link in the email again</h1>
+        <p>This page does not keep the link. To choose a password, open the link in the email again. If you have already chosen one, sign in with that password. If the link no longer works, [[FOUNDER: reset-entry — the clause that says how to ask for a new reset link in the app, in the app's own words, on iPhone (the French sign-in strings come with K7) and on Android (AR4)]].</p>
       </section>
     </main>
   </body>
