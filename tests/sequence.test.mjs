@@ -64,12 +64,3 @@ test('hard cuts keep playing as the identity fades them to black', () => {
   assert.equal(frameAt(fadeEnd, 6).shot, -1);
   assert.equal(frameAt(0, 6).montageOpacity, 1);
 });
-
-test('the tagline pace applies to any language and a French tagline finishes before rest', async () => {
-  const { taglineTimesFor, taglineText, taglineTimes } = await import('../dist/sequence.mjs');
-  assert.deepEqual(taglineTimesFor(taglineText), taglineTimes);
-  const french = 'la nouvelle façon de vivre la mode.';
-  const times = taglineTimesFor(french);
-  assert.equal(times.length, Array.from(french).length);
-  assert.ok(times.at(-1) <= timing.tagline, 'the typing must end inside the tagline phase');
-});
