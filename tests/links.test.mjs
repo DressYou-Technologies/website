@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { assetProblems, internalProblems, linkProblems, metadataProblems, sitemapProblems } from './support/link-rules.mjs';
+import { assetProblems, codeProblems, internalProblems, linkProblems, metadataProblems, sitemapProblems } from './support/link-rules.mjs';
 import { loadSite, withFileText, withPageHtml } from './support/site.mjs';
 
 const site = loadSite();
@@ -19,6 +19,10 @@ test('the sitemap lists each indexable page once, with the alternates the page d
 
 test('the manifest, robots.txt, llms.txt and structured data point at things that exist', () => {
   assert.deepEqual(metadataProblems(site), []);
+});
+
+test('no page embeds another site, runs inline code or carries a handler', () => {
+  assert.deepEqual([...site.pages.values()].flatMap(codeProblems), []);
 });
 
 test('nothing that belongs to the repository or to a developer machine ships', () => {
@@ -60,6 +64,37 @@ test('link rules: a dead stylesheet, image, source set, script and share image a
   assert.match(reads(linkProblems, mutate(SUPPORT, /content="https:\/\/dressyouapp\.com\/og-image\.jpg"/, 'content="https://dressyouapp.com/gone.jpg"')), /og:image .*gone\.jpg/);
 });
 
+test('third-party rules: a frame, an embed, a media file, a form target and a foreign script are all reported', () => {
+  const inject = (html) => mutate(SUPPORT, DSA_LINK, `${html}<a href="/dsa/">`);
+  const foreign = {
+    iframe: '<iframe src="https://www.youtube.com/embed/x" title="video"></iframe>',
+    embed: '<embed src="https://cdn.example.org/x.swf">',
+    object: '<object data="https://cdn.example.org/x.pdf"></object>',
+    video: '<video src="https://cdn.example.org/x.mp4"></video>',
+    audio: '<audio src="https://cdn.example.org/x.mp3"></audio>',
+    source: '<picture><source src="https://cdn.example.org/x.webp"><img src="/images/dressyou-logo.webp" alt=""></picture>',
+    track: '<video><track src="https://cdn.example.org/x.vtt"></video>',
+    form: '<form action="https://forms.example.org/post"></form>',
+    script: '<script src="https://www.googletagmanager.com/gtm.js"></script>',
+  };
+  for (const [name, html] of Object.entries(foreign)) {
+    assert.match(reads(linkProblems, inject(html)), /which no one has approved/, `${name} must be seen by the link rules`);
+  }
+  const code = {
+    'inline script': '<script>track()</script>',
+    'a script that is not JSON-LD': '<script type="text/plain">x</script>',
+    iframe: '<iframe src="/dsa/" title="a frame of our own"></iframe>',
+    embed: '<embed src="/x.swf">',
+    object: '<object data="/x.pdf"></object>',
+    'an inline handler': '<a href="/dsa/" onclick="go()">x</a>',
+    'a javascript address': '<a href="javascript:go()">x</a>',
+  };
+  for (const [name, html] of Object.entries(code)) {
+    assert.ok(codeProblems(inject(html).pages.get(SUPPORT)).length, `${name} must be refused`);
+  }
+  assert.deepEqual(codeProblems(inject('<script type="application/ld+json">{}</script><script type="module" src="/app.mjs"></script>').pages.get(SUPPORT)), []);
+});
+
 test('asset rules: a dead url() and a dead import are reported', () => {
   assert.match(reads(assetProblems, edit('style.css', /$/, "\n.x { background: url('/images/gone.webp'); }")), /style\.css loads \/images\/gone\.webp/);
   assert.match(reads(assetProblems, edit('app.mjs', /'\.\/sequence\.mjs'/, "'./gone.mjs'")), /app\.mjs imports \.\/gone\.mjs/);
@@ -86,6 +121,7 @@ test('metadata rules: a dead icon, a dead start page, a wrong language, a locked
 });
 
 test('internal rules: a developer path, a repository path, a reviewers\' note, a local address and a Markdown link are reported', () => {
-  const bad = ['/Users/teddyadmin/x', 'docs/legal/privacy', 'Working identifier x', 'http://localhost:3000', '<a href="notes.md">x</a>'];
+  const bad = ['/Users/teddyadmin/x', 'docs/legal/privacy', 'Working identifier x', 'http://localhost:3000', '<a href="notes.md">x</a>',
+    'api/src/auth.ts', 'see api/src/account/onboarding.ts', 'Better Auth 1.7.7', 'as better-auth does'];
   for (const text of bad) assert.match(reads(internalProblems, edit('llms.txt', /$/, `\n${text}`)), /llms\.txt:\d+ contains/, text);
 });

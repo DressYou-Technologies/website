@@ -11,6 +11,7 @@ const INTERNAL = [
   [/counsel[- ]brief|-draft\b|working identifier/i, 'a note to reviewers'],
   [/\blocalhost\b|127\.0\.0\.1/, 'a local address'],
   [/href="[^"]*\.md[#"]/, 'a link to a Markdown file'],
+  [/\bapi\/src\b|\bBetter[- ]Auth\b/i, 'a detail of the product repository\'s code'],
 ];
 
 const ids = (page) => {
@@ -29,6 +30,10 @@ function references(page) {
   add('link[href]', 'href', 'link element');
   add('script[src]', 'src', 'script');
   add('img[src]', 'src', 'image');
+  // Whatever else a page can load or send a visitor to: a frame, a plug-in, media, a form target.
+  for (const [selector, attribute] of [['iframe', 'src'], ['embed', 'src'], ['object', 'data'], ['video', 'src'], ['audio', 'src'], ['source', 'src'], ['track', 'src'], ['form', 'action']]) {
+    add(`${selector}[${attribute}]`, attribute, selector);
+  }
   for (const node of selectAll(page.doc, 'source[srcset]')) {
     for (const candidate of node.attrs.srcset.split(',')) found.push(['image source', candidate.trim().split(/\s+/)[0]]);
   }
@@ -65,6 +70,22 @@ export function linkProblems(site) {
     .map(([what, reference]) => [what, reference, check(site, page.url, reference)])
     .filter(([, , problem]) => problem)
     .map(([what, , problem]) => `${page.url} ${what} ${problem}`));
+}
+
+/** Nothing on a content page embeds another page, runs code written in the page, or carries a handler. */
+export function codeProblems(page) {
+  const problems = [];
+  const fail = (message, node) => problems.push(`${page.url} ${message} near line ${node.line}`);
+  for (const script of selectAll(page.doc, 'script')) {
+    if (script.attrs.src === undefined && script.attrs.type !== 'application/ld+json') fail('runs an inline script', script);
+  }
+  for (const node of selectAll(page.doc, 'iframe, embed, object, applet, frame, frameset')) fail(`embeds another page with <${node.tag}>`, node);
+  walk(page.doc, (node) => {
+    if (node.type !== 'element') return;
+    for (const name of Object.keys(node.attrs)) if (/^on/.test(name)) fail(`has the handler ${name} on <${node.tag}>`, node);
+    if (node.tag === 'a' && /^\s*javascript:/i.test(node.attrs.href ?? '')) fail('links to a javascript: address', node);
+  });
+  return problems;
 }
 
 /** CSS `url()` and module imports, resolved from the file that makes them. */
