@@ -12,7 +12,8 @@ const respond = (status, body) => async () => new Response(typeof body === 'stri
 
 // What the API sends, read from Better Auth 1.7.7 (api/src/auth.ts configures it with its defaults):
 // POST /api/auth/reset-password takes { newPassword, token }; passwords run from 8 to 128 characters;
-// the emailed link redirects to /auth/reset?token=… or ?error=INVALID_TOKEN, and /auth/verified or ?error=….
+// the verification link lands on /auth/verified or ?error=…; the reset mail carries the token in the
+// fragment, /auth/reset#token=…, and links mailed before that carried it in the query, ?token=… or ?error=INVALID_TOKEN.
 test('the contract with the API is pinned', () => {
   assert.equal(API_ORIGIN, 'https://api.dressyouapp.com');
   assert.equal(RESET_PATH, '/api/auth/reset-password');
@@ -47,6 +48,29 @@ test('a reset link opens the form only with exactly one non-empty token', () => 
   for (const search of ['?token=', '?error=INVALID_TOKEN', '?token=a&token=b', '?token=a&x=1', '?x=1']) {
     assert.deepEqual(readLink('reset', search), { state: 'invalid' }, search);
   }
+});
+
+test('a reset link carries its token in the fragment, which no server or log ever sees', () => {
+  assert.deepEqual(readLink('reset', '', '#token=abc123'), { state: 'form', token: 'abc123' });
+  assert.deepEqual(readLink('reset', '?lang=fr', '#token=abc123'), { state: 'form', token: 'abc123' });
+  assert.deepEqual(readLink('reset', '', '#token=a%2Bb'), { state: 'form', token: 'a+b' });
+  for (const hash of ['#token=', '#token=a&token=b', '#token=a&x=1', '#x=1', '#error=INVALID_TOKEN', '#abc']) {
+    assert.deepEqual(readLink('reset', '', hash), { state: 'invalid' }, hash);
+  }
+  assert.deepEqual(readLink('reset', '', '#'), { state: 'reopen' }, 'an empty fragment is no fragment');
+});
+
+test('the fragment is the link when there is one: it beats the query, and a bad one is not rescued by it', () => {
+  // Links mailed before the token moved to the fragment carry it in the query and are read until they expire.
+  assert.deepEqual(readLink('reset', '?token=old', '#token=new'), { state: 'form', token: 'new' });
+  assert.deepEqual(readLink('reset', '?utm=x&lang=fr', '#token=abc'), { state: 'form', token: 'abc' }, 'what a mail tool adds to the query');
+  assert.deepEqual(readLink('reset', '?token=good', '#x=1'), { state: 'invalid' });
+  assert.deepEqual(readLink('reset', '?token=good', '#token='), { state: 'invalid' });
+});
+
+test('the verification page has no use for a fragment', () => {
+  assert.deepEqual(readLink('verified', '', '#token=abc'), { state: 'verified' });
+  assert.deepEqual(readLink('verified', '?error=INVALID_TOKEN', '#token=abc'), { state: 'failed' });
 });
 
 test('a bare reset address means the page already read its token, so it says to open the emailed link again', () => {
@@ -100,14 +124,15 @@ test('submitting reports an outcome, whatever the network does', async () => {
 
 // The page module runs against the page's own markup.
 let runs = 0;
-async function open(url, { search = '', languages = ['fr'], fetch } = {}) {
+async function open(url, { search = '', hash = '', languages = ['fr'], fetch } = {}) {
   const html = readFileSync(new URL(`../dist${url}index.html`, import.meta.url), 'utf8');
-  const dom = createDom(html, { search, pathname: url, languages });
+  const dom = createDom(html, { search, hash, pathname: url, languages });
   const calls = [];
   Object.assign(globalThis, {
     document: dom.document,
     location: dom.location,
     history: dom.history,
+    addEventListener: dom.window.addEventListener,
     fetch: async (...args) => { calls.push(args); return (fetch ?? respond(200, { status: true }))(...args); },
   });
   Object.defineProperty(globalThis, 'navigator', { value: dom.navigator, configurable: true });
@@ -142,7 +167,57 @@ test('a failed or foreign verification link says so, in English when the browser
   assert.deepEqual(visible(linked.dom), ['verified/en']);
 });
 
-test('a reset link opens the form and takes the token out of the address bar', async () => {
+test('a reset link with the token in the fragment opens the form and takes it out of the address bar and history', async () => {
+  const { dom, calls } = await open('/auth/reset/', { hash: '#token=abc123', languages: ['en-US'] });
+  assert.deepEqual(visible(dom), ['form/en']);
+  assert.equal(dom.document.querySelector('[data-fallback]').hidden, true);
+  assert.deepEqual(dom.history.replacements, ['/auth/reset/']);
+  assert.equal(dom.location.hash, '');
+  assert.equal(dom.location.search, '');
+  assert.deepEqual(calls, []);
+  assert.doesNotMatch(dom.everything(), /abc123/, 'the token is never written into the page');
+  const reloaded = await open('/auth/reset/', { search: dom.location.search, hash: dom.location.hash, languages: ['en-US'] });
+  assert.deepEqual(visible(reloaded.dom), ['reopen/en'], 'a reload finds the bare address');
+});
+
+test('the token is out of the address before the request leaves, and the request carries it', async () => {
+  let atRequest;
+  const { dom, calls } = await open('/auth/reset/', {
+    hash: '#token=abc123',
+    languages: ['en-US'],
+    fetch: async () => {
+      atRequest = { hash: dom.location.hash, search: dom.location.search, replacements: [...dom.history.replacements] };
+      return new Response(JSON.stringify({ status: true }), { status: 200 });
+    },
+  });
+  await submitWith(dom, 'en', 'correct horse battery');
+  assert.deepEqual(atRequest, { hash: '', search: '', replacements: ['/auth/reset/'] });
+  assert.deepEqual(JSON.parse(calls[0][1].body), { newPassword: 'correct horse battery', token: 'abc123' });
+  assert.deepEqual(visible(dom), ['success/en']);
+});
+
+test('the language still comes from the query when the token is in the fragment', async () => {
+  const { dom } = await open('/auth/reset/', { search: '?lang=fr', hash: '#token=abc123', languages: ['en-US'] });
+  assert.deepEqual(visible(dom), ['form/fr']);
+});
+
+test('a fragment pasted onto the open page is a new link, so the page asks the browser to read it again', async () => {
+  const { dom } = await open('/auth/reset/', { languages: ['en-US'] });
+  assert.deepEqual(visible(dom), ['reopen/en']);
+  assert.equal(dom.location.reloads, 0);
+  dom.location.hash = '#token=abc123';
+  await dom.window.dispatch('hashchange');
+  assert.equal(dom.location.reloads, 1, 'the browser does not reload for a fragment on its own');
+});
+
+test('a fragment that is not exactly one token shows the dead-link state and no form', async () => {
+  for (const hash of ['#token=', '#token=a&x=1', '#error=INVALID_TOKEN']) {
+    const { dom } = await open('/auth/reset/', { hash, languages: ['fr'] });
+    assert.deepEqual(visible(dom), ['invalid/fr'], hash);
+  }
+});
+
+test('a reset link mailed before the token moved to the fragment still opens the form and loses its token', async () => {
   const { dom, calls } = await open('/auth/reset/', { search: '?token=abc123', languages: ['en-US'] });
   assert.deepEqual(visible(dom), ['form/en']);
   assert.equal(dom.document.querySelector('[data-fallback]').hidden, true);

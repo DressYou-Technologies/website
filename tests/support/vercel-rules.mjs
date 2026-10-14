@@ -9,8 +9,8 @@ const REQUIRED = {
   [TOKEN_PAGES]: [['Cache-Control', 'no-store'], ['Referrer-Policy', 'no-referrer']],
 };
 
-// The API mails /auth/verified and /auth/reset?token=… with no trailing slash. Unset, Vercel serves both
-// forms of a path without redirecting, which is what the mail needs.
+// The API mails /auth/verified and /auth/reset#token=… (older links ?token=…) with no trailing slash.
+// Unset, Vercel serves both forms of a path without redirecting, which is what the mail needs.
 const UNSET = {
   trailingSlash: 'true would redirect /auth/verified and /auth/reset, the addresses the API mails (its documentation does not say the query survives), and false every page the site links to',
   cleanUrls: 'it only touches .html addresses, which nothing links to, so it adds redirects and no benefit',

@@ -6,7 +6,7 @@ const kebab = (name) => `data-${name.replace(/[A-Z]/g, (letter) => `-${letter.to
  * Just enough of the browser's DOM to run a page's module against the page's own markup: the
  * tree comes from the real HTML, so a renamed id or a missing attribute fails the test.
  */
-export function createDom(html, { search = '', pathname = '/', languages = ['fr'] } = {}) {
+export function createDom(html, { search = '', hash = '', pathname = '/', languages = ['fr'] } = {}) {
   const { root } = parse(html);
   const wrappers = new WeakMap();
   const listeners = new Map();
@@ -55,15 +55,23 @@ export function createDom(html, { search = '', pathname = '/', languages = ['fr'
     return wrappers.get(node);
   }
 
-  const location = { search, pathname };
+  const location = { search, hash, pathname, reloads: 0, reload() { this.reloads += 1; } };
   const history = {
     replacements: [],
     replaceState(_state, _title, url) {
       this.replacements.push(url);
-      const [path, query = ''] = url.split('?');
+      const [rest, fragment = ''] = url.split('#');
+      const [path, query = ''] = rest.split('?');
       location.pathname = path;
       location.search = query ? `?${query}` : '';
+      location.hash = fragment ? `#${fragment}` : '';
     },
+  };
+  const windowHandlers = new Map();
+  const window = {
+    addEventListener(type, handler) { windowHandlers.set(type, [...(windowHandlers.get(type) ?? []), handler]); },
+    /** Runs the page's handlers for a window event, as the browser would when the visitor navigates. */
+    async dispatch(type) { for (const handler of windowHandlers.get(type) ?? []) await handler({ type }); },
   };
   const document = {
     documentElement: wrap(select(root, 'html')),
@@ -79,5 +87,5 @@ export function createDom(html, { search = '', pathname = '/', languages = ['fr'
     walk(root, (node) => { if (node.type === 'text') parts.push(node.text); else parts.push(...Object.values(node.attrs ?? {})); });
     return parts.join('\n');
   };
-  return { document, location, history, navigator: { languages }, everything, wrap };
+  return { document, location, history, window, navigator: { languages }, everything, wrap };
 }

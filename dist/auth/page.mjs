@@ -2,9 +2,11 @@ import { chooseLanguage, passwordProblem, readLink, submitReset } from './link.m
 
 const main = document.querySelector('main[data-page]');
 const language = chooseLanguage(location.search, navigator.languages);
-const link = readLink(main.dataset.page, location.search);
-// The reset token is a credential: it leaves the address bar before anything else runs.
+const link = readLink(main.dataset.page, location.search, location.hash);
+// The reset token is a credential: it leaves the address bar and the history entry before anything else runs.
 if (link.token) history.replaceState(null, '', location.pathname);
+// A browser does not reload for a fragment pasted onto the open page, so the page reads it again.
+addEventListener('hashchange', () => location.reload());
 const sections = [...main.querySelectorAll('section[data-state]')];
 
 function show(state) {
