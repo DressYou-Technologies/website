@@ -16,7 +16,9 @@ Run `python3 -m http.server 4173 --bind 127.0.0.1 --directory dist`. Check `node
 | Where verification mail lands | `/auth/verified/` (one page, both languages) | |
 | Where password reset mail lands | `/auth/reset/` (one page, both languages) | |
 
-Every internal address is a directory with a trailing slash. The API's mail links go to `/auth/verified` and `/auth/reset?token=…` without one: check on the Vercel preview that both reach the page with the query intact.
+Every internal address is a directory with a trailing slash. The API's mail links go to `/auth/verified` and `/auth/reset?token=…` without one, so `vercel.json` rewrites those two addresses to their directory index: the visitor's address, and its query, never change. `trailingSlash` and `cleanUrls` stay unset on purpose. Vercel's documentation says that unset it serves `/about` and `/about/` alike without redirecting, and that `trailingSlash: true` redirects the paths that lack a slash (308), which is exactly these two; it does not say the query survives that redirect.
+
+The same file sends `X-Content-Type-Options: nosniff` everywhere and, under `/auth/`, `Cache-Control: no-store`, `Referrer-Policy: no-referrer` and `Content-Security-Policy: frame-ancestors 'none'`. Check on the Vercel preview, with `curl -sI`, that `/auth/verified`, `/auth/reset?token=x&lang=en` and `/auth/reset/` each answer 200 with those headers and no redirect.
 
 ## The landing
 
@@ -26,9 +28,9 @@ Manrope is self-hosted under its bundled OFL license. It is a variable subset (w
 
 ## Auth pages
 
-The API redirects the mail links here: `/auth/verified` (or `?error=<CODE>`) and `/auth/reset?token=<token>` (or `?error=INVALID_TOKEN`). `dist/auth/link.mjs` holds the logic, pure and unit-tested; `dist/auth/page.mjs` wires it to the page. Everything the page may say is in its HTML, in both languages, one hidden section per state; the module only chooses which to show and never writes words of its own. The language comes from `?lang=`, then `navigator.languages`, then French.
+The API redirects the mail links here: `/auth/verified` (or `?error=<CODE>`) and `/auth/reset?token=<token>` (or `?error=INVALID_TOKEN`). `dist/auth/link.mjs` holds the logic, pure and unit-tested; `dist/auth/page.mjs` wires it to the page. Everything the page may say is in its HTML, in both languages, one hidden section per state; the module only chooses which to show and never writes words of its own. The language comes from `?lang=`, then `navigator.languages`, then French. The reset page has four states: the form, success, an invalid link, and the bare address with no token, which is what a reload shows once the token has left the address bar. A route that exists only inside the apps, such as asking for a new link, waits as a marker until the apps have it.
 
-The reset page calls `POST https://api.dressyouapp.com/api/auth/reset-password` with `{ newPassword, token }`. That is a cross-origin request with a JSON body, so the API must answer its preflight for the origin `https://dressyouapp.com`; until it does, the page can only say the change is not confirmed. The token leaves the address bar as soon as it is read, and the page carries a content policy that allows the API origin and nothing else.
+The reset page calls `POST https://api.dressyouapp.com/api/auth/reset-password` with `{ newPassword, token }`. That is a cross-origin request with a JSON body, so the API must answer its preflight for the origin `https://dressyouapp.com`; until it does, the page can only say the change is not confirmed. The token leaves the address bar as soon as it is read. Each page carries a content policy: the reset page may reach the API origin and nothing else, and the verification page may connect to nothing. The host still logs the request address, so a reset token appears in Vercel's request logs; it stops working once it is used or expires.
 
 ## Legal pages
 
@@ -48,7 +50,7 @@ A published version is never edited: a new text is a new directory, and every fo
 
 ## Before a pull request merges
 
-Merging deploys to production, and a page that still holds `[[FOUNDER: …]]` or `[[COUNSEL: …]]` is not ready. The test `no placeholder ships` fails while any marker, `TODO`, template field, `lorem ipsum` or reserved example address is in `dist/`. List what is open with `grep -rhoE '\[\[(FOUNDER|COUNSEL): [a-z0-9-]+' dist | sort | uniq -c`; one key is one value, repeated across pages and both languages.
+Merging deploys to production, and a page that still holds `[[FOUNDER: …]]` or `[[COUNSEL: …]]` is not ready. The test `no placeholder ships` fails while any marker, `TODO`, template field, `lorem ipsum` or reserved example address is in `dist/`. List what is open with `grep -rhoE '\[\[(FOUNDER|COUNSEL): [a-z0-9-]+' dist | sort | uniq -c`; one key is one value, repeated across pages and both languages. A sentence about what only the apps can do waits as a marker until the apps have it; `tests/support/claim-rules.mjs` refuses the known ones in plain words, so the commit that fills such a marker also deletes its pattern there.
 
 ## Tests
 
