@@ -26,13 +26,15 @@ test('the two addresses the API mails reach their pages with the query intact, a
   assert.match(problems(wrong), /\/auth\/verified rewrites to \/auth\/verified\/gone\.html, which does not exist/);
 });
 
-test('a trailing-slash or clean-URL setting would redirect exactly the addresses the API mails, so neither is set', () => {
-  for (const key of ['trailingSlash', 'cleanUrls']) {
-    for (const value of [true, false]) {
-      const changed = copy();
-      changed[key] = value;
-      assert.match(problems(changed), new RegExp(`${key} must stay unset`), `${key}: ${value}`);
-    }
+test('trailing slashes and clean URLs stay unset, each for its own reason', () => {
+  for (const value of [true, false]) {
+    const slashed = copy();
+    slashed.trailingSlash = value;
+    assert.match(problems(slashed), /trailingSlash must stay unset: true would redirect \/auth\/verified and \/auth\/reset/, `trailingSlash: ${value}`);
+    const cleaned = copy();
+    cleaned.cleanUrls = value;
+    assert.match(problems(cleaned), /cleanUrls must stay unset: it only touches \.html addresses/, `cleanUrls: ${value}`);
+    assert.doesNotMatch(problems(cleaned), /cleanUrls[^\n]*\/auth\//, 'clean URLs leave the mail addresses alone');
   }
 });
 

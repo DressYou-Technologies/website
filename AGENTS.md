@@ -29,7 +29,7 @@ node tests/support/render-legal.mjs <docs/legal> <version>      # legal pages, f
 - `dist/site.css` — everything below the hero, and every other page.
 - `dist/<page>/index.html`, `dist/en/<page>/index.html` — support, account deletion, reporting (`dsa`) and the versioned legal pages under `legal/<version>/`. Every internal address is a directory with a trailing slash.
 - `dist/auth/` — the two pages the API's account mail lands on (`verified`, `reset`), one document each for both languages. `link.mjs` is the pure logic, `page.mjs` the wiring.
-- `vercel.json` — serves `dist`, rewrites the two mail addresses that carry no trailing slash, and sets the response headers. `trailingSlash` and `cleanUrls` stay unset: either would redirect exactly those two addresses.
+- `vercel.json` — serves `dist`, rewrites the two mail addresses that carry no trailing slash, and sets the response headers. `trailingSlash` stays unset: `true` would redirect exactly those two addresses and `false` every page the site links to. `cleanUrls` only touches `.html` addresses and is left out.
 - `tests/` — Node's built-in runner against the real files and a hand-rolled DOM stub. `tests/support/` holds the HTML reader, the site model and the rules each suite applies, every one also run against a deliberately broken copy. No framework.
 
 Phases (`loading → spawn → shift → write → tagline → rest`) are driven by

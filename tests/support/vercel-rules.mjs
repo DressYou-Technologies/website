@@ -9,14 +9,18 @@ const REQUIRED = {
   [TOKEN_PAGES]: [['Cache-Control', 'no-store'], ['Referrer-Policy', 'no-referrer']],
 };
 
+// The API mails /auth/verified and /auth/reset?token=… with no trailing slash. Unset, Vercel serves both
+// forms of a path without redirecting, which is what the mail needs.
+const UNSET = {
+  trailingSlash: 'true would redirect /auth/verified and /auth/reset, the addresses the API mails (its documentation does not say the query survives), and false every page the site links to',
+  cleanUrls: 'it only touches .html addresses, which nothing links to, so it adds redirects and no benefit',
+};
+
 export function vercelProblems(config, site) {
   const problems = [];
   if (config.outputDirectory !== 'dist') problems.push('outputDirectory must be dist: the site is served as written from there');
-  // The API mails /auth/verified and /auth/reset?token=… with no trailing slash. Unset, Vercel serves
-  // both forms of a path without redirecting; either setting adds a redirect on exactly those
-  // addresses, and its documentation does not say the query string survives a trailing-slash redirect.
-  for (const key of ['trailingSlash', 'cleanUrls']) {
-    if (key in config) problems.push(`${key} must stay unset: it would redirect /auth/verified and /auth/reset, the addresses the API mails`);
+  for (const [key, why] of Object.entries(UNSET)) {
+    if (key in config) problems.push(`${key} must stay unset: ${why}`);
   }
   // The rewrite is the fallback if the directory index were not served: the visitor's address, and so
   // its query, never changes.
