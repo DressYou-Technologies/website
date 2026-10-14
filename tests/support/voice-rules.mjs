@@ -1,4 +1,5 @@
 import { walk } from './html.mjs';
+import { languageOf } from './site.mjs';
 
 // docs/voice.md and AGENTS.md section 7 in the product repository, as far as a pattern can hold them.
 // A pattern cannot judge a sentence; it can refuse the words the rules rule out.
@@ -33,17 +34,18 @@ export function bodySubjectProblem(sentence) {
 }
 
 /** What a page says: its text and its attribute copy, minus the markers that await a founder or counsel. */
-export function copyOf(page) {
+export function copyOf(page, { metadata = true } = {}) {
   const parts = [];
   walk(page.doc, (node) => {
     if (node.type === 'text') {
       if (!['script', 'style'].includes(node.parent.tag)) parts.push(node.text);
     } else if (node.type === 'element') {
       for (const name of ['alt', 'title', 'aria-label']) if (node.attrs[name]) parts.push(node.attrs[name]);
-      if (node.tag === 'meta' && ['description', 'og:description'].includes(node.attrs.name ?? node.attrs.property)) parts.push(node.attrs.content);
+      if (metadata && node.tag === 'meta' && ['description', 'og:description'].includes(node.attrs.name ?? node.attrs.property)) parts.push(node.attrs.content);
     }
   });
-  return parts.join('\n').replace(/\[\[[^\]]*\]\]/g, ' ').replace(/\s+/g, ' ');
+  // Only source whitespace collapses: a non-breaking space is a character the French rule reads.
+  return parts.join('\n').replace(/\[\[[^\]]*\]\]/g, ' ').replace(/[ \t\n\r\f]+/g, ' ');
 }
 
 export function voiceProblems(page, { authored }) {
@@ -60,3 +62,15 @@ export function voiceProblems(page, { authored }) {
 }
 
 export const isAuthored = (page) => !/^(?:\/en)?\/(?:legal|dsa)\//.test(page.url);
+
+// French sets a non-breaking space before : ; ! ? » and after «, so a line never breaks between them.
+const FRENCH_SPACING = [[/ ([:;!?»])/, 'a plain space before'], [/(«) /, 'a plain space after']];
+
+export function frenchSpacingProblems(page) {
+  // English sets no such space, and a marker taken out of an English sentence leaves a plain one before its punctuation.
+  if (languageOf(page.url) === 'en') return [];
+  // A search snippet shows a description as it likes; the rule is for what the page itself shows.
+  const text = copyOf(page, { metadata: false });
+  return FRENCH_SPACING.filter(([pattern]) => pattern.test(text))
+    .map(([pattern, what]) => `${page.url} has ${what} "${text.match(pattern)[1]}": use a non-breaking space`);
+}

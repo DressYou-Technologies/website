@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { parse } from './support/html.mjs';
-import { bodySubjectProblem, isAuthored, voiceProblems } from './support/voice-rules.mjs';
+import { bodySubjectProblem, frenchSpacingProblems, isAuthored, voiceProblems } from './support/voice-rules.mjs';
 import { loadSite, withPageHtml } from './support/site.mjs';
 
 const site = loadSite();
@@ -61,4 +61,19 @@ test('what a page says includes its alternative text, labels, titles and descrip
 test('the guard bites a real page: one sentence added to the support page is refused', () => {
   const broken = withPageHtml(site, '/support/', (html) => html.replace('<h2>Dans l’application</h2>', '<h2>Dans l’application</h2><p>Nous répondons vite&nbsp;!</p>'));
   assert.match(voiceProblems(broken.pages.get('/support/'), { authored: true }).join('\n'), /exclamation|first person plural/);
+});
+
+test('French punctuation keeps its non-breaking space on the pages DressYou wrote', () => {
+  assert.deepEqual([...site.pages.values()].filter(isAuthored).flatMap(frenchSpacingProblems), []);
+  for (const text of ['Voici : oui', 'Vraiment ?', 'Alors ; non', 'Quoi !', 'Il dit « bonjour »', '« bonjour\u00a0»']) {
+    assert.ok(frenchSpacingProblems(page(text)).length, text);
+  }
+  for (const text of ['Voici\u00a0: oui', 'Vraiment\u00a0?', '«\u00a0bonjour\u00a0»', 'Rendez-vous à 10:30', 'https://dressyouapp.com/x?y=1', 'Is it ready? Yes: it is.']) {
+    assert.deepEqual(frenchSpacingProblems(page(text)), [], text);
+  }
+  const broken = withPageHtml(site, '/support/', (html) => html.replace('<h2>', '<p>Voici : un texte</p><h2>'));
+  assert.match(frenchSpacingProblems(broken.pages.get('/support/')).join('\n'), /space before ":"/);
+  const opened = parse('<main><p>appeals: [[FOUNDER: k — v]]; when</p></main>').root;
+  assert.deepEqual(frenchSpacingProblems({ url: '/en/x/', doc: opened }), [], 'a marker taken out of an English sentence');
+  assert.ok(frenchSpacingProblems({ url: '/x/', doc: opened }).length, 'the same text on a French page');
 });
