@@ -1,5 +1,4 @@
 import { lightRays } from './light-rays.mjs';
-import { scrollVelocity } from './scroll-velocity.mjs';
 import { trueFocus } from './true-focus.mjs';
 
 const stage = document.querySelector('.stage');
@@ -30,7 +29,7 @@ lightRays(stage, {
   intro: !still,
 });
 
-// Reduced motion keeps the tagline and the marquee as plain, still text.
+// Reduced motion keeps the tagline as plain, still text.
 if (!still) {
   trueFocus(document.querySelector('.focus'), {
     blurAmount: 4,
@@ -43,10 +42,5 @@ if (!still) {
     gapY: 3,
     duration: 0.5,
     pause: 1,
-  });
-  scrollVelocity(document.querySelector('.marquee'), document.querySelector('.track'), {
-    velocity: 40,
-    skewWithVelocity: 16,
-    scaleWithVelocity: 0.18,
   });
 }

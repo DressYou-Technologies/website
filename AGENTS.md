@@ -23,8 +23,7 @@ node --check dist/app.mjs                                       # syntax
 - `dist/index.html` — markup and all SEO metadata (canonical, Open Graph, JSON-LD).
 - `dist/light-rays.mjs` — the background rays (React Bits' LightRays).
 - `dist/true-focus.mjs` — the tagline's moving focus brackets (React Bits' TrueFocus).
-- `dist/scroll-velocity.mjs` — the draggable "coming soon" band (React Bits' ScrollVelocity).
-  All three are plain-JS ports under `react-bits.LICENSE.txt`, which must ship beside them.
+  Both are plain-JS ports under `react-bits.LICENSE.txt`, which must ship beside them.
   React Bits' `npx shadcn add` installs React components and would break the no-dependency rule.
 - `dist/app.mjs` — starts the effects and holds their settings.
 - `dist/style.css` — layout and type.

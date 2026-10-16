@@ -7,7 +7,7 @@ const html = await readFile(new URL('../dist/index.html', import.meta.url), 'utf
 test('the heading is the mark and the name, followed by the tagline and coming soon', () => {
   assert.match(html, /<h1 class="brand"><img class="mark" src="\/images\/dressyou-logo\.webp"[^>]*alt=""[^>]*>dressyou<\/h1>/);
   assert.match(html, /<p class="focus"><span>the new way to experience<\/span> <span>fashion<\/span><\/p>/);
-  assert.match(html, /<section class="marquee" aria-label="coming soon">/);
+  assert.match(html, /<p class="soon">coming soon<\/p>/);
 });
 
 test('every local asset the page references exists', async () => {

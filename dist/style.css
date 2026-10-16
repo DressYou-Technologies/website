@@ -11,8 +11,5 @@ body { margin: 0; }
 .focus { display: flex; flex-wrap: wrap; justify-content: center; gap: .2em .65em; max-width: calc(100vw - 2rem); margin: 0; font-size: clamp(1rem, 1.8vw, 1.375rem); font-weight: 500; letter-spacing: -.01em; line-height: 1; text-align: center; user-select: none; }
 .focus > span { position: relative; }
 .focus > .focus-frame { position: absolute; left: 0; top: 0; pointer-events: none; }
-/* Last: a quiet, tilted strip near the bottom, faded at both ends; overhanging the sides keeps its ends off-screen. */
-.stage > .marquee { position: absolute; left: -10%; right: -10%; bottom: clamp(2rem, 7svh, 4rem); rotate: -4deg; overflow: hidden; cursor: grab; user-select: none; -webkit-user-select: none; touch-action: pan-y; mask-image: linear-gradient(to right, transparent, #000 15%, #000 85%, transparent); }
-.track { display: flex; white-space: nowrap; font-size: .8125rem; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: #8a8a8a; line-height: 1; padding-block: .3em; }
-.track span { flex-shrink: 0; }
-@media (prefers-reduced-motion: reduce) { .track { justify-content: center; } }
+/* Last: a quiet line pinned to the bottom edge. */
+.stage > .soon { position: absolute; left: 0; right: 0; bottom: clamp(1.25rem, 4svh, 2.5rem); margin: 0; text-align: center; font-size: .75rem; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: #8a8a8a; }
