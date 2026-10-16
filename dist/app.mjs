@@ -1,8 +1,8 @@
-import { ditherVeil } from './dither-veil.mjs';
 import { lightRays } from './light-rays.mjs';
+import { scrollVelocity } from './scroll-velocity.mjs';
+import { trueFocus } from './true-focus.mjs';
 
 const stage = document.querySelector('.stage');
-const lockup = document.querySelector('.lockup');
 const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // Reduced motion renders the rays once, frozen, with no pointer reactions.
@@ -30,29 +30,21 @@ lightRays(stage, {
   intro: !still,
 });
 
-// Reduced motion keeps the static lockup; so does a browser without WebGL2.
+// Reduced motion keeps the tagline and the marquee as plain, still text.
 if (!still) {
-  await lockup.decode();
-  const started = ditherVeil(stage, (context, width) => {
-    // The static lockup's CSS box is the one layout: the canvas paints the image exactly there.
-    const scale = width / stage.clientWidth;
-    const box = lockup.getBoundingClientRect();
-    const origin = stage.getBoundingClientRect();
-    context.drawImage(lockup, (box.left - origin.left) * scale, (box.top - origin.top) * scale,
-      box.width * scale, box.height * scale);
-  }, {
-    pixelSize: 1.5,
-    levels: 2,
-    contrast: 1.15,
-    // Darkened so the solid white letters break into dots too, not only the mark's shading.
-    brightness: -0.2,
-    // Read every frame, so the reveal keeps its proportion to the lockup across resizes.
-    get revealRadius() { return lockup.offsetWidth * 0.2; },
-    softness: 0.6,
-    linger: 1,
-    paperColor: '#ffffff',
-    // Touch screens have no hovering pointer, so the reveal drifts on its own.
-    wander: matchMedia('(hover: none)').matches,
+  trueFocus(document.querySelector('.focus'), {
+    blurAmount: 5,
+    unfocusedOpacity: 1,
+    borderColor: '#ffffff',
+    cornerSize: 16,
+    borderWidth: 3,
+    duration: 0.5,
+    pause: 1,
   });
-  stage.classList.toggle('is-veiled', started);
+  scrollVelocity(document.querySelector('.marquee'), document.querySelector('.track'), {
+    velocity: 100,
+    skewWithVelocity: 16,
+    scaleWithVelocity: 0.18,
+    numCopies: 6,
+  });
 }

@@ -21,29 +21,24 @@ node --check dist/app.mjs                                       # syntax
 ## Layout
 
 - `dist/index.html` — markup and all SEO metadata (canonical, Open Graph, JSON-LD).
-- `dist/dither-veil.mjs` — the WebGL2 dither-and-reveal effect, ported from React Bits'
-  DitherVeil. Its ink is transparent so the rays show through. `diffuse` is pure, unit-tested.
-- `dist/light-rays.mjs` — the background rays, ported from React Bits' LightRays.
-  Both ports are under `react-bits.LICENSE.txt`, which must ship beside them; React Bits'
-  `npx shadcn add` installs React components and would break the no-dependency rule.
-- `dist/app.mjs` — starts both effects and holds their tuning.
-- `dist/style.css` — the lockup's size; the canvas paints the lockup into that same box.
+- `dist/light-rays.mjs` — the background rays (React Bits' LightRays).
+- `dist/true-focus.mjs` — the tagline's moving focus brackets (React Bits' TrueFocus).
+- `dist/scroll-velocity.mjs` — the draggable "coming soon" band (React Bits' ScrollVelocity).
+  All three are plain-JS ports under `react-bits.LICENSE.txt`, which must ship beside them.
+  React Bits' `npx shadcn add` installs React components and would break the no-dependency rule.
+- `dist/app.mjs` — starts the effects and holds their settings.
+- `dist/style.css` — layout and type.
 - `tests/` — Node's built-in runner. No framework.
-
-The `<img class="lockup">` is the single layout: the canvas reads its box, and it stays
-visible as the fallback when motion is reduced or WebGL2 is missing.
 
 ## Conventions
 
 - No dependencies and no build step. Both are deliberate; do not add either.
 - Do not minify. Vercel serves Brotli, and the sources are a few kilobytes.
 - CSS and JS stay unbundled ES modules served as-is.
-- Respect `prefers-reduced-motion`: it must show the static lockup and frozen rays.
+- Respect `prefers-reduced-motion`: it must show still text over frozen rays.
 
 ## Assets
 
-- `dressyou-lockup.webp` is the full lockup (mark + name), a lossless crop of the
-  design system's `dressyou-logo-blanc-2048.png`. Re-derive it from that master.
 - The logo mark is white on transparency. Anything that may sit on a light
   background (favicons, touch icons) needs the black plate baked in, or it
   disappears. Regenerate icons from the mark; do not hand-edit them.

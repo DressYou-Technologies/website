@@ -4,9 +4,10 @@ import test from 'node:test';
 
 const html = await readFile(new URL('../dist/index.html', import.meta.url), 'utf8');
 
-test('the heading is the lockup and names the brand line for assistive tech', () => {
-  assert.match(html, /<h1><img class="lockup" src="\/images\/dressyou-lockup\.webp"[^>]*alt="dressyou"/);
-  assert.match(html, /the new way to experience fashion<\/span><\/h1>\s*<p class="soon">coming soon<\/p>/);
+test('the heading is the mark and the name, followed by the tagline and coming soon', () => {
+  assert.match(html, /<h1 class="brand"><img class="mark" src="\/images\/dressyou-logo\.webp"[^>]*alt=""[^>]*>dressyou<\/h1>/);
+  assert.match(html, /<p class="focus">The new way to experience fashion<\/p>/);
+  assert.match(html, /<section class="marquee" aria-label="coming soon">/);
 });
 
 test('every local asset the page references exists', async () => {
