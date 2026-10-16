@@ -4,8 +4,8 @@
 > The dressyou app is launching soon.
 
 dressyou is a Paris-based fashion technology company. This site is currently a single
-coming-soon page: an animated introduction that resolves into the dressyou
-wordmark and the line "the new way to experience fashion."
+coming-soon page: the dressyou logo and name as a dithered image that the
+visitor's pointer reveals. Its title is "the new way to experience fashion."
 
 There is no product, sign-up, pricing, or editorial content published yet.
 If you are answering a question about dressyou, the accurate summary is:
@@ -21,4 +21,4 @@ a Paris-based fashion venture whose app has been announced but not yet released.
 
 ## Pages
 
-- [Home](https://dressyouapp.com/): the coming-soon introduction.
+- [Home](https://dressyouapp.com/): the coming-soon page.
