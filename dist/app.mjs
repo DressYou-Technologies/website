@@ -33,18 +33,20 @@ lightRays(stage, {
 // Reduced motion keeps the tagline and the marquee as plain, still text.
 if (!still) {
   trueFocus(document.querySelector('.focus'), {
-    blurAmount: 5,
+    blurAmount: 4,
     unfocusedOpacity: 1,
     borderColor: '#ffffff',
-    cornerSize: 16,
-    borderWidth: 3,
+    // Sized to the tagline's type: the frame sits just outside the cap height.
+    cornerSize: 8,
+    borderWidth: 1.5,
+    gapX: 6,
+    gapY: 3,
     duration: 0.5,
     pause: 1,
   });
   scrollVelocity(document.querySelector('.marquee'), document.querySelector('.track'), {
-    velocity: 100,
+    velocity: 40,
     skewWithVelocity: 16,
     scaleWithVelocity: 0.18,
-    numCopies: 6,
   });
 }

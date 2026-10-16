@@ -1,6 +1,6 @@
 # DressYou — Coming soon
 
-Standalone static site. Light rays fall from the top of the page and lean toward the pointer. Under them sit the dressyou mark and name, then “The new way to experience fashion”, whose words come into focus one at a time inside moving brackets. A large “coming soon” band drifts along the bottom and can be grabbed and flung. Reduced-motion preferences show all of it still.
+Standalone static site. Light rays fall from the top of the page and lean toward the pointer. Under them, the dressyou mark and name lead the page. Beneath it, smaller, brackets frame “the new way to experience”, then “fashion”, blurring the other part. A small, tilted “coming soon” strip drifts slowly near the bottom and can be grabbed and flung. Reduced-motion preferences show all of it still.
 
 Run `python3 -m http.server 4173 --bind 127.0.0.1 --directory dist`.
 

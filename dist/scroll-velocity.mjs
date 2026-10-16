@@ -1,5 +1,6 @@
 // An endless row of repeated text that drifts sideways, can be grabbed and flung, and leans into its speed.
-// Ported to plain DOM from React Bits' ScrollVelocity (one row, drag only: this page never scrolls).
+// Ported to plain DOM from React Bits' ScrollVelocity (one row, drag only: this page never scrolls;
+// copies are added to fill the band instead of a fixed count).
 // Copyright (c) 2026 David Haz — MIT + Commons Clause, see react-bits.LICENSE.txt.
 
 // Wraps v into [min, max), so the row loops seamlessly every copy width.
@@ -8,16 +9,22 @@ export function wrap(min, max, v) {
   return ((((v - min) % range) + range) % range) + min;
 }
 
-// `track` holds one copy of the text; it is repeated `numCopies` times and moved every frame.
+// `track` holds one copy of the text; it is repeated until the row covers the band
+// with a copy to spare, then moved every frame.
 export function scrollVelocity(parallax, track, s) {
   const copy = track.firstElementChild;
-  for (let i = 1; i < s.numCopies; i++) {
-    const clone = copy.cloneNode(true);
-    clone.setAttribute('aria-hidden', 'true');
-    track.append(clone);
-  }
-  let copyWidth = copy.offsetWidth;
-  new ResizeObserver(() => { copyWidth = copy.offsetWidth; }).observe(copy);
+  let copyWidth = 0;
+  const fill = () => {
+    copyWidth = copy.offsetWidth;
+    while (copyWidth > 0 && track.children.length * copyWidth < parallax.offsetWidth + copyWidth) {
+      const clone = copy.cloneNode(true);
+      clone.setAttribute('aria-hidden', 'true');
+      track.append(clone);
+    }
+  };
+  const resize = new ResizeObserver(fill);
+  resize.observe(copy);
+  resize.observe(parallax);
 
   let baseX = 0, skewX = 0, scaleY = 1, pace = 1, fling = 0, last = performance.now();
   const drag = { active: false, pointerId: -1, lastX: 0, lastTime: 0, velocity: 0 };
