@@ -1,0 +1,17 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Finale from '../components/Finale.astro';
+import GetDialog from '../components/GetDialog.astro';
+---
+<Base path="/legal" title="Legal notice · DressYou">
+  <Header />
+  <main class="doc"><h1>Legal notice</h1></main>
+  <Finale />
+  <GetDialog />
+</Base>
+
+<script>
+  import { startChrome } from '../scripts/chrome';
+  startChrome();
+</script>

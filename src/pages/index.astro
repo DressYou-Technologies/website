@@ -1,6 +1,17 @@
 ---
 import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Finale from '../components/Finale.astro';
+import GetDialog from '../components/GetDialog.astro';
 ---
 <Base path="/">
+  <Header />
   <main></main>
+  <Finale />
+  <GetDialog />
 </Base>
+
+<script>
+  import { startChrome } from '../scripts/chrome';
+  startChrome();
+</script>

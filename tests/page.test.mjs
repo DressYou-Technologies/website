@@ -61,7 +61,37 @@ test('every image states its size and alt', async () => {
     for (const [img] of (await read(page)).matchAll(/<img\b[^>]*>/g)) {
       assert.match(img, /\swidth="\d+"/, img);
       assert.match(img, /\sheight="\d+"/, img);
-      assert.match(img, /\salt="/, img);
+      assert.match(img, /\salt(="|[\s>])/, img); // Astro writes an empty alt as a bare attribute
     }
   }
+});
+
+const text = (s) => s.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+
+test('a null store link opens a dialog instead of linking', async () => {
+  const { LINKS } = await import('../src/data/site.ts');
+  assert.equal(LINKS.appUrl, null);
+  assert.equal(LINKS.extensionUrl, null);
+  for (const [label, kind] of [['Get the app', 'app'], ['Get the extension', 'extension']]) {
+    const controls = [...html.matchAll(/<(a|button)\b([^>]*)>([\s\S]*?)<\/\1>/g)].filter((m) => text(m[3]) === label);
+    assert.ok(controls.length >= 2, `${label} appears ${controls.length} times`);
+    for (const [, tag, attrs] of controls) {
+      assert.equal(tag, 'button', `${label} is a link`);
+      assert.match(attrs, new RegExp(`data-get="${kind}"`));
+    }
+    const dialog = html.match(new RegExp(`<dialog[^>]*id="get-${kind}"[^>]*>([\\s\\S]*?)</dialog>`));
+    assert.ok(dialog, `no dialog for ${kind}`);
+    assert.ok(text(dialog[1]).includes('coming soon.'));
+  }
+});
+
+test('the footer lists only working links and the AI line', () => {
+  const footer = html.match(/<footer[\s\S]*?<\/footer>/)[0];
+  const links = [...footer.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)].map(([, href, label]) => [text(label), href]);
+  assert.deepEqual(links, [
+    ['hello@dressyouapp.com', 'mailto:hello@dressyouapp.com'],
+    ['How it works', '#how'], ['Wardrobe', '#more'], ['Stylist', '#stylist'],
+    ['Legal notice', '/legal'], ['Privacy', '/privacy'], ['Terms', '/terms'],
+  ]);
+  assert.ok(text(footer).includes('People shown on this page are AI-generated.'));
 });
