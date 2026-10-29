@@ -2,7 +2,7 @@
 // The images are temporary generated placeholders; swapping one is a change here and a new master.
 
 export type ImageId = string;
-export interface Post { handle: string; age: string; image: ImageId }
+export interface Post { handle: string; age: string; image: ImageId; liked?: boolean }
 // Piece i comes from WARDROBE_ROWS[i]; the render is the twin wearing all four.
 export interface Outfit { pieces: [ImageId, ImageId, ImageId, ImageId]; render: ImageId }
 
@@ -64,13 +64,13 @@ export const OUTFITS: Outfit[] = [
 
 export const FEED_TRACKS: [Post[], Post[]] = [
   [
-    { handle: 'naya', age: '2h', image: 'feed-w-trench' },
+    { handle: 'naya', age: '2h', image: 'feed-w-trench', liked: true },
     { handle: 'sasha', age: '1d', image: 'feed-w-mirror' },
     { handle: 'theo', age: '3d', image: 'feed-m-coffee' },
   ],
   [
     { handle: 'mei', age: '5h', image: 'feed-w-bench' },
-    { handle: 'lea', age: '4h', image: 'feed-w-bakery' },
+    { handle: 'lea', age: '4h', image: 'feed-w-bakery', liked: true },
     { handle: 'ines', age: '2d', image: 'feed-w-canal' },
     { handle: 'kofi', age: '1d', image: 'feed-m-lounge' },
   ],
@@ -79,10 +79,12 @@ export const FEED_TRACKS: [Post[], Post[]] = [
 // "In this look" over the feed tile: naya's post.
 export const LOOK_PIECES: ImageId[] = ['g-black-cap', 'g-trench', 'g-white-tank', 'g-barrel-jeans', 'g-brown-boots'];
 
-export const FRIEND_LOOKS: { image: ImageId; label: string; pick: boolean }[] = [
-  { image: 'twin-office', label: 'look 1', pick: false },
-  { image: 'twin-knitset', label: 'look 3', pick: false },
-  { image: 'twin-trench', label: 'look 2', pick: true },
+// Friends by initial; each look lists who voted for it. The fan shows the looks in label order.
+export const FRIENDS = ['M', 'S', 'N', 'J'];
+export const FRIEND_LOOKS: { image: ImageId; label: string; order: number; pick: boolean; votes: string[] }[] = [
+  { image: 'twin-office', label: 'look 1', order: 1, pick: false, votes: ['M'] },
+  { image: 'twin-knitset', label: 'look 3', order: 3, pick: false, votes: [] },
+  { image: 'twin-trench', label: 'look 2', order: 2, pick: true, votes: ['S', 'N', 'J'] },
 ];
 
 export const STYLIST: { dinner: ImageId[]; trip: ImageId[]; find: ImageId } = {

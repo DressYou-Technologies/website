@@ -1,0 +1,188 @@
+---
+import { Image, Picture } from 'astro:assets';
+import { FEED_TRACKS, FRIENDS, FRIEND_LOOKS, LOOK_PIECES, OUTFITS, WARDROBE_ROWS } from '../data/site';
+import { image } from '../lib/image';
+
+// Each row repeats its garments so the spin always has pieces on both sides of where it lands.
+const ROW_REPEATS = 10;
+const rows = WARDROBE_ROWS.map((row) => Array.from({ length: row.length * ROW_REPEATS }, (_, j) => row[j % row.length]));
+// Per outfit, the garment index it picks in each row; the spin lands on these in order.
+const picks = OUTFITS.map((o) => o.pieces.map((piece, row) => WARDROBE_ROWS[row].indexOf(piece)));
+const first = OUTFITS[0];
+const heart = 'M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z';
+const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z';
+---
+<section class="more" id="more">
+  <div class="head"><h2>More than a try-on.</h2></div>
+  <div class="bento">
+    <article class="card wardrobe">
+      <div class="wbuild" aria-hidden="true" data-outfits={JSON.stringify(picks)}>
+        {rows.map((tiles, r) => (
+          <div><div class="wrow" data-n={WARDROBE_ROWS[r].length}><div class="wtrack">{tiles.map((id, j) => (
+            <span class:list={['wg', { picked: j < WARDROBE_ROWS[r].length && id === first.pieces[r] }]}><span class="wimg"><Picture src={image(id)} formats={['avif', 'webp']} widths={[100, 180]} sizes="clamp(64px, 5.8vw, 90px)" alt="" loading="lazy" /></span><span class="wcheck"><svg viewBox="0 0 16 16" width="12" height="12"><path d="M4 8.5l2.5 2.5L12 5.5"></path></svg></span></span>
+          ))}</div></div></div>
+        ))}
+        <span class="edge left"></span><span class="edge right"></span>
+        <div class="wlayer">
+          {first.pieces.map((id) => <Image class="wfly" src={image(id)} width={80} height={80} alt="" loading="lazy" />)}
+          <div class="wout">
+            {OUTFITS.map((outfit, i) => <Picture src={image(outfit.render)} formats={['avif', 'webp']} widths={[240, 480]} sizes="240px" alt="" loading="lazy" pictureAttributes={{ 'data-outfit': String(i), class: i === 0 ? 'shown' : '' }} />)}
+            <span class="wshine"></span>
+          </div>
+        </div>
+      </div>
+      <div class="caption">
+        <div>
+          <h3><span>Fill your wardrobe.</span><span class="nowrap">Build outfits.</span></h3>
+          <p>Add the clothes you own once. Then mix them into outfits and see each one on your twin.</p>
+        </div>
+      </div>
+    </article>
+    <div class="side">
+      <article class="card feedtile">
+        <div class="feeds" aria-hidden="true">
+          {FEED_TRACKS.map((posts, t) => (
+            <div class:list={['col', { lower: t === 1 }]}><div class={t === 0 ? 'ftk-a' : 'ftk-b'}>{[...posts, ...posts].map((post) => (
+              <div class="post">
+                <div class="who"><span class="avatar">{post.handle[0].toUpperCase()}</span><b>{post.handle}</b><span class="age">{post.age}</span></div>
+                <div class="photo"><Picture src={image(post.image)} formats={['avif', 'webp']} widths={[220, 400]} sizes="200px" alt="" loading="lazy" /></div>
+                <div class="actions">
+                  <span class:list={['like', { liked: post.liked }]}><svg viewBox="0 0 24 24" width="13" height="13"><path d={heart}></path></svg></span>
+                  <svg viewBox="0 0 24 24" width="13" height="13"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path></svg>
+                  <span class="save"><svg viewBox="0 0 24 24" width="13" height="13"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg></span>
+                </div>
+              </div>
+            ))}</div></div>
+          ))}
+        </div>
+        <div class="fade"></div>
+        <div class="tlook" aria-hidden="true">
+          <div class="tl-head"><span>in this look</span><span class="count">{LOOK_PIECES.length} pieces</span></div>
+          <div class="tl-grid">{LOOK_PIECES.map((id) => <span class="tl-g"><Picture src={image(id)} formats={['avif', 'webp']} widths={[80, 140]} sizes="48px" alt="" loading="lazy" /></span>)}</div>
+          <span class="tl-cta">try the outfit</span>
+        </div>
+        <span class="scanchip"><svg viewBox="0 0 24 24" aria-hidden="true" width="16" height="16"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><circle cx="12" cy="12" r="1"></circle><path d="M18.944 12.33a1 1 0 0 0 0-.66 7.5 7.5 0 0 0-13.888 0 1 1 0 0 0 0 .66 7.5 7.5 0 0 0 13.888 0"></path></svg>Try on</span>
+        <h3>A feed of real people.</h3>
+        <p>Real photos, never renders. Open any look and try the outfit on your twin.</p>
+      </article>
+      <article class="card friend">
+        <div class="fvis" aria-hidden="true">
+          <div class="ffan">
+            {FRIEND_LOOKS.map((look) => (
+              <div class="fopt" style={`order:${look.order}`}>
+                <div class:list={['fimg', { fwin: look.pick }]}>
+                  {look.pick && <span class="fring"></span>}
+                  <Picture src={image(look.image)} formats={['avif', 'webp']} widths={[200, 320]} sizes="140px" alt="" loading="lazy" />
+                  <span class="flabel">{look.label}</span>
+                  {look.pick && <span class="ftag">their pick</span>}
+                </div>
+                <span class="votes">{look.votes.map((v) => <span class="fvote">{v}</span>)}</span>
+              </div>
+            ))}
+          </div>
+          <div class="share">
+            <span class="fsend"><svg viewBox="0 0 24 24" width="16" height="16"><path d={send}></path><path d="m21.854 2.147-10.94 10.939"></path></svg>Ask friends</span>
+            <span class="fplane"><svg viewBox="0 0 24 24" width="16" height="16"><path d={send}></path><path d="m21.854 2.147-10.94 10.939"></path></svg></span>
+            <span class="ffriends">{FRIENDS.map((f) => <span class="ffr">{f}</span>)}</span>
+            <span class="fsent">shared</span>
+          </div>
+        </div>
+        <div class="caption-friend">
+          <h3>Ask a friend.</h3>
+          <p>Send the looks you can't choose between. Your friends vote live.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  .more { padding: clamp(72px, 9vw, 128px) clamp(16px, 3vw, 48px); background: #0a0a0b; color: #f4f4f2; }
+  .head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px 48px; max-width: 1440px; margin: 0 auto 36px; }
+  h2 { margin: 0; font-size: clamp(2.125rem, 4.6vw, 3.625rem); font-weight: 700; letter-spacing: -.05em; line-height: 1; }
+  .bento { display: flex; flex-wrap: wrap; gap: 16px; max-width: 1440px; margin: 0 auto; }
+  svg { flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  :global(picture) { display: block; }
+  h3 { margin: 0 0 8px; font-weight: 700; letter-spacing: -.045em; line-height: 1.02; }
+  .card p { margin: 0; line-height: 1.5; }
+
+  .wardrobe { flex: 1.35 1 420px; min-width: 0; display: flex; flex-direction: column; min-height: clamp(0px, (100vw - 900px) * 100, 610px); overflow: hidden; border-radius: 28px; background: linear-gradient(180deg, #1b1b1e, #111113); box-shadow: inset 0 0 0 1px rgba(255,255,255,.05); }
+  .wbuild { position: relative; flex: 1; min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); align-content: center; gap: 6px; padding: clamp(24px, 4vw, 40px) 0 8px; }
+  .wrow { position: relative; overflow: hidden; padding: 8px 0; }
+  .wtrack { display: flex; gap: 10px; width: max-content; will-change: transform; }
+  .wg { position: relative; flex: none; width: clamp(64px, 5.8vw, 90px); aspect-ratio: 1; border-radius: 16px; background: #fff; }
+  .wimg { position: absolute; inset: 0; border-radius: 16px; overflow: hidden; }
+  .wimg :global(img), .photo :global(img), .tl-g :global(img), .fimg :global(img), .wout :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .wcheck { position: absolute; top: -6px; right: -6px; width: 22px; height: 22px; border-radius: 50%; background: #f4f4f2; display: grid; place-items: center; box-shadow: 0 4px 10px rgba(0,0,0,.4); opacity: 0; }
+  .wcheck svg { stroke: #0a0a0a; stroke-width: 2.2; }
+  .edge { position: absolute; top: 0; bottom: 0; width: 16%; z-index: 2; pointer-events: none; }
+  .edge.left { left: 0; background: linear-gradient(90deg, #17171a, rgba(23,23,26,0)); }
+  .edge.right { right: 0; background: linear-gradient(270deg, #17171a, rgba(23,23,26,0)); }
+  .wlayer { position: absolute; inset: 0; pointer-events: none; z-index: 3; }
+  .wlayer :global(.wfly) { position: absolute; left: 0; top: 0; width: 80px; height: 80px; border-radius: 16px; object-fit: cover; opacity: 0; box-shadow: 0 14px 34px rgba(0,0,0,.45); }
+  .wout { position: absolute; left: 50%; top: 50%; height: 92%; aspect-ratio: 1 / 1.6; border-radius: 18px; overflow: hidden; background: repeating-linear-gradient(0deg, #0c0c0d 0 6px, #18181b 6px 12px); box-shadow: 0 0 0 1px rgba(255,255,255,.08), 0 30px 70px rgba(0,0,0,.6); }
+  .wout :global(picture) { position: absolute; inset: 0; opacity: 0; visibility: hidden; }
+  .wout :global(picture.shown) { opacity: 1; visibility: visible; }
+  .wout :global(img) { object-position: 50% 15%; }
+  .wshine { position: absolute; left: 0; right: 0; top: 0; height: 35%; background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,.14) 60%, rgba(255,255,255,0)); }
+  /* Without motion: the first outfit picked and shown. GSAP owns these transforms and opacities while it plays. */
+  :global(html:not(.motion)) .picked .wcheck { opacity: 1; }
+  :global(html:not(.motion)) .wout { transform: translate(-50%, -50%); }
+  :global(html.motion) .wout { opacity: 0; }
+  .caption { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px 24px; padding: 16px 28px 28px; }
+  .caption > div { flex: 1 1 260px; min-width: 0; }
+  .caption h3 { max-width: 16ch; font-size: clamp(1.75rem, 2.8vw, 2.5rem); }
+  .caption h3 span { display: block; }
+  .caption .nowrap { white-space: nowrap; }
+  .caption p { max-width: 40ch; color: #a1a1a1; text-wrap: pretty; }
+
+  .side { flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+  .feedtile { position: relative; flex: 1.25 1 auto; min-height: 340px; display: flex; flex-direction: column; justify-content: flex-end; padding: 26px; border-radius: 28px; overflow: hidden; background: #141416; color: #fff; box-shadow: inset 0 0 0 1px rgba(255,255,255,.05); }
+  .feeds { position: absolute; inset: 0; overflow: hidden; display: flex; gap: 10px; -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,0), #000 14%, #000 86%, rgba(0,0,0,0)), linear-gradient(180deg, rgba(0,0,0,0), #000 14%); -webkit-mask-composite: source-in; mask-image: linear-gradient(90deg, rgba(0,0,0,0), #000 14%, #000 86%, rgba(0,0,0,0)), linear-gradient(180deg, rgba(0,0,0,0), #000 14%); mask-composite: intersect; }
+  .feeds .col { flex: 1; min-width: 0; overflow: visible; }
+  .feeds .col.lower { margin-top: -60px; }
+  .ftk-a, .ftk-b { display: flex; flex-direction: column; gap: 10px; }
+  .post { flex: none; border-radius: 14px; overflow: hidden; background: #fff; color: #0a0a0a; }
+  .who { display: flex; align-items: center; gap: 6px; padding: 8px 10px; }
+  .avatar { width: 20px; height: 20px; flex: none; border-radius: 50%; background: #0a0a0a; color: #fff; display: grid; place-items: center; font-size: 9px; font-weight: 700; }
+  .who b { font-size: 11px; font-weight: 600; }
+  .age { margin-left: auto; font-family: var(--font-mono); font-size: 8px; color: rgba(10,10,11,.62); }
+  .photo { position: relative; aspect-ratio: 4 / 5; background: #efeeeb; }
+  .actions { display: flex; align-items: center; gap: 10px; padding: 7px 10px 9px; }
+  .like { display: flex; color: #0a0a0a; }
+  .like.liked { color: #e0245e; }
+  .like.liked svg { fill: currentColor; }
+  .save { margin-left: auto; display: flex; }
+  .fade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 35%, rgba(0,0,0,.72) 62%, rgba(0,0,0,.92) 100%); pointer-events: none; }
+  .tlook { position: absolute; top: 16px; right: 16px; z-index: 3; width: min(270px, calc(100% - 32px)); padding: 14px; border-radius: 22px; color: #0a0a0a; opacity: 0; pointer-events: none; background: rgba(250,250,248,.9); border: 1px solid rgba(255,255,255,.75); box-shadow: inset 0 1px 0 rgba(255,255,255,.95), 0 20px 50px rgba(0,0,0,.3); backdrop-filter: blur(26px) saturate(1.8); -webkit-backdrop-filter: blur(26px) saturate(1.8); }
+  .tl-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; font-size: .875rem; font-weight: 700; }
+  .count { white-space: nowrap; font-family: var(--font-mono); font-size: 9px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: rgba(10,10,11,.62); }
+  .tl-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; }
+  .tl-g { position: relative; display: block; aspect-ratio: 3 / 4; border-radius: 8px; overflow: hidden; background: #efeeeb; }
+  .tl-cta { display: flex; align-items: center; justify-content: center; height: 38px; margin-top: 12px; border-radius: 19px; background: #0a0a0a; color: #fafaf8; font-size: .8125rem; font-weight: 700; }
+  .scanchip { position: absolute; top: 16px; right: 16px; z-index: 2; display: flex; align-items: center; gap: 7px; height: 36px; padding: 0 12px 0 10px; border-radius: 999px; white-space: nowrap; color: #0a0a0a; font-size: .8125rem; font-weight: 600; background: rgba(250,250,248,.72); border: 1px solid rgba(255,255,255,.75); box-shadow: inset 0 1px 0 rgba(255,255,255,.95), 0 6px 18px rgba(10,10,11,.14); backdrop-filter: blur(18px) saturate(1.8); -webkit-backdrop-filter: blur(18px) saturate(1.8); }
+  .scanchip svg { stroke-width: 1.7; }
+  .feedtile h3 { position: relative; max-width: 16ch; font-size: clamp(1.75rem, 2.8vw, 2.5rem); }
+  .feedtile p { position: relative; max-width: 34ch; color: #e6e6e6; }
+
+  .friend { flex: 1 1 auto; display: flex; flex-direction: column; padding: 28px; border-radius: 28px; background: linear-gradient(180deg, #1d1d20, #121214); box-shadow: inset 0 0 0 1px rgba(255,255,255,.05); }
+  .fvis { display: grid; gap: 16px; }
+  .ffan { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; width: 100%; margin: 4px 0 18px; }
+  .fopt { position: relative; }
+  .fimg { position: relative; aspect-ratio: 3 / 4; border-radius: 18px; overflow: hidden; background: #1f1f22; box-shadow: 0 24px 50px rgba(0,0,0,.5); }
+  .fimg :global(img) { object-position: 50% 20%; }
+  .fring { position: absolute; inset: 0; z-index: 2; border-radius: 18px; box-shadow: inset 0 0 0 2.5px #f4f4f2; pointer-events: none; }
+  .flabel { position: absolute; left: 8px; top: 8px; padding: 3px 7px; border-radius: 6px; background: rgba(10,10,10,.72); color: #fff; font-size: 11px; font-weight: 600; white-space: nowrap; }
+  .ftag { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); padding: 4px 9px; border-radius: 6px; background: #f4f4f2; color: #0a0a0a; font-family: var(--font-mono); font-size: 9px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; }
+  .votes { position: absolute; left: 50%; bottom: -13px; z-index: 3; transform: translateX(-50%); display: flex; padding-left: 7px; }
+  .fvote { width: 26px; height: 26px; flex: none; margin-left: -7px; border-radius: 50%; background: #f4f4f2; color: #0a0a0a; display: grid; place-items: center; font-size: 10px; font-weight: 700; box-shadow: 0 0 0 2.5px #17171a; }
+  .share { position: relative; display: flex; align-items: center; gap: 14px; }
+  .fsend { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px 0 14px; border-radius: 999px; background: #f4f4f2; color: #0a0a0a; font-size: .875rem; font-weight: 700; white-space: nowrap; }
+  .fplane { position: absolute; left: 16px; top: 12px; color: #f4f4f2; opacity: 0; }
+  .ffriends { display: flex; padding-left: 6px; }
+  .ffr { width: 22px; height: 22px; flex: none; margin-left: -6px; border-radius: 50%; background: #f4f4f2; color: #0a0a0a; display: grid; place-items: center; font-size: 9px; font-weight: 700; box-shadow: 0 0 0 2px #17171a; }
+  .fsent { font-family: var(--font-mono); font-size: 9px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: #a1a1a1; white-space: nowrap; }
+  .caption-friend { margin-top: auto; padding-top: 22px; }
+  .caption-friend h3 { max-width: 16ch; font-size: clamp(1.5rem, 2.2vw, 2rem); }
+  .caption-friend p { max-width: 38ch; color: #a1a1a1; }
+</style>

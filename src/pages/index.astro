@@ -2,6 +2,8 @@
 import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
+import How from '../components/How.astro';
+import More from '../components/More.astro';
 import Finale from '../components/Finale.astro';
 import GetDialog from '../components/GetDialog.astro';
 ---
@@ -9,6 +11,8 @@ import GetDialog from '../components/GetDialog.astro';
   <Header />
   <main>
     <Hero />
+    <How />
+    <More />
   </main>
   <Finale />
   <GetDialog />
@@ -17,6 +21,8 @@ import GetDialog from '../components/GetDialog.astro';
 <script>
   import { startChrome } from '../scripts/chrome';
   import { startMotion } from '../motion/index';
+  import { fitPhone } from '../motion/how';
   startChrome();
+  fitPhone();
   startMotion();
 </script>

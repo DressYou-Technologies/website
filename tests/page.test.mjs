@@ -95,3 +95,10 @@ test('the footer lists only working links and the AI line', () => {
   ]);
   assert.ok(text(footer).includes('People shown on this page are AI-generated.'));
 });
+
+test("the outfit result shows the outfit's render", async () => {
+  const { OUTFITS } = await import('../src/data/site.ts');
+  const out = html.match(/<div class="wout[^"]*"[\s\S]*?<\/div>\s*<\/div>/)?.[0] ?? '';
+  const pictures = [...out.matchAll(/<picture[^>]*data-outfit="(\d+)"/g)].map((m) => Number(m[1]));
+  assert.deepEqual(pictures, OUTFITS.map((_, i) => i));
+});
