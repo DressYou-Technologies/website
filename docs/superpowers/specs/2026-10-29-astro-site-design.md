@@ -24,7 +24,8 @@ on it is synthetic.
 - No sign-up, waitlist or account flow on the page.
 - English only (release focus since 2026-10-26). The design's language switch has no French copy behind it, so
   it is left out. *My call.*
-- No new sections or copy beyond the design, except the AI-imagery line below.
+- No new sections or copy beyond the design, except the AI-imagery line below. The feed tile keeps its copy
+  with no caption: the generated images are temporary (founder, 2026-10-29).
 
 ## Anti-goals
 
@@ -90,7 +91,6 @@ The founder picked Astro + GSAP; the rest of this list is my call.
 
 ## Left to the founder
 
-- Whether the feed tile keeps "A feed of real people. Real photos, never renders." beside generated images.
 - Where "Get the app" and "Get the extension" point (the app is in TestFlight; the extension is not published).
   Until then they open the design's "coming soon" QR state with no store link.
 - Legal notice fields (RCS/SIREN, share capital, publication director).
