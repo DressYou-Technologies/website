@@ -28,7 +28,8 @@ function anchors() {
     const target = document.getElementById(a.hash.slice(1));
     if (!target) return;
     e.preventDefault();
-    window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY, behavior: motion() ? 'smooth' : 'auto' });
+    const offset = Number(target.dataset.anchorOffset ?? 0);
+    window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY + offset, behavior: motion() ? 'smooth' : 'auto' });
   });
 }
 

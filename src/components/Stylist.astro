@@ -1,0 +1,135 @@
+---
+import { Picture } from 'astro:assets';
+import { STYLIST } from '../data/site';
+import { image } from '../lib/image';
+
+// Icon paths (Lucide, ISC): opinion, day, trip, find, shop; then the context chips and send.
+const ICONS = {
+  opinion: ['M7.9 20A9 9 0 1 0 4 16.1L2 22Z'],
+  day: ['M12 2v2', 'm4.93 4.93 1.41 1.41', 'M20 12h2', 'm19.07 4.93-1.41 1.41', 'M15.947 12.65a4 4 0 0 0-5.925-4.128', 'M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z'],
+  trip: ['M6 20a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2', 'M8 18V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v14', 'M10 20h4'],
+  find: ['M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z'],
+  shop: ['M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z', 'M3 6h18', 'M16 10a4 4 0 0 1-8 0'],
+  weather: ['M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242', 'M16 14v6', 'M8 14v6', 'M12 16v6'],
+  occasion: ['M16 2v4', 'M8 2v4', 'M3 10h18'],
+  taste: ['M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z'],
+  send: ['m5 12 7-7 7 7', 'M12 19V5'],
+};
+const TABS: [keyof typeof ICONS, string][] = [['opinion', 'Ask for an opinion'], ['day', 'Dress for the day'], ['trip', 'Pack for a trip'], ['find', 'Find a piece'], ['shop', 'Shop for you']];
+const CHIPS: [keyof typeof ICONS, string, string][] = [['weather', 'weather', '14° · light rain'], ['occasion', 'occasion', 'dinner date'], ['taste', 'your taste', 'clean, minimal'], ['find', 'wardrobe', '52 pieces']];
+---
+<section class="stylist" id="stylist">
+  <div class="sstage">
+    <div class="shead">
+      <h2>A stylist who knows you.</h2>
+      <ol class="stabs" aria-label="What the stylist does">
+        {TABS.map(([icon, label], i) => (
+          <li class:list={['stab', { on: i === 0 }]}>
+            <span class="sico"><svg viewBox="0 0 24 24" aria-hidden="true">{ICONS[icon].map((d) => <path d={d} />)}{icon === 'trip' && <><circle cx="16" cy="20" r="2" /><circle cx="8" cy="20" r="2" /></>}</svg></span>
+            <span class="slabel">{label}{icon === 'shop' && <span class="soon">soon</span>}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+    <div class="schat" aria-hidden="true">
+      <div class="sview">
+        <div class="strack">
+          <div class="sg" data-q="does this coat work on me?">
+            <p class="sq">does this coat work on me?</p>
+            <div class="sa"><span class="sthink"><i></i><i></i><i></i></span>
+              <p class="sin sbub">yes. the length is right for you. go one size down for a cleaner shoulder.</p>
+            </div>
+          </div>
+          <div class="sg" data-q="dinner date on friday.">
+            <p class="sq">dinner date on friday.</p>
+            <div class="sa"><span class="sthink"><i></i><i></i><i></i></span>
+              <div class="chips">{CHIPS.map(([icon, label, value]) => (
+                <span class="sin chip"><svg viewBox="0 0 24 24" aria-hidden="true">{icon === 'occasion' && <rect width="18" height="18" x="3" y="4" rx="2" />}{ICONS[icon].map((d) => <path d={d} />)}</svg><span class="chip-label">{label}</span><span class="chip-value">{value}</span></span>
+              ))}</div>
+              <p class="sin sbub">the cream knit, your black trousers and the ballet flats. the trench for the rain.</p>
+              <div class="sin pieces">{STYLIST.dinner.map((id) => <span class="piece"><Picture src={image(id)} formats={['avif', 'webp']} widths={[100, 200]} sizes="96px" alt="" loading="lazy" /></span>)}</div>
+              <span class="sin cta">try it</span>
+            </div>
+          </div>
+          <div class="sg" data-q="pack for lisbon, 4 days in may.">
+            <p class="sq">pack for lisbon, 4 days in may.</p>
+            <div class="sa"><span class="sthink"><i></i><i></i><i></i></span>
+              <div class="sin panel"><div class="trip-head"><span class="mono">lisbon · 4 days</span><span class="muted">9 pieces · 6 outfits</span></div><div class="trip">{STYLIST.trip.map((id) => <span class="piece small"><Picture src={image(id)} formats={['avif', 'webp']} widths={[80, 160]} sizes="78px" alt="" loading="lazy" /></span>)}</div></div>
+              <p class="sin sbub">everything comes from your wardrobe. nothing new to buy.</p>
+            </div>
+          </div>
+          <div class="sg" data-q="a black knit dress, under €150.">
+            <p class="sq">a black knit dress, under €150.</p>
+            <div class="sa"><span class="sthink"><i></i><i></i><i></i></span>
+              <div class="sin panel find"><span class="piece large"><Picture src={image(STYLIST.find)} formats={['avif', 'webp']} widths={[120, 220]} sizes="110px" alt="" loading="lazy" /></span><div class="find-copy"><b>knit dress</b><span class="mono muted">€120 · shop link</span><span class="muted">works with 6 pieces you own</span><span class="cta small">try it on</span></div></div>
+            </div>
+          </div>
+          <div class="sg" data-q="buy it for me.">
+            <p class="sq">buy it for me.</p>
+            <div class="sa"><span class="sthink"><i></i><i></i><i></i></span>
+              <div class="sin panel buy"><span class="badge">coming soon</span><span>approve the piece and the stylist checks out for you, in your size.</span><span class="cta outline">buy · €120</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="input">
+        <span class="field"><span class="sph">ask your stylist</span><span class="stype"></span></span>
+        <span class="ssend"><svg viewBox="0 0 24 24" aria-hidden="true">{ICONS.send.map((d) => <path d={d} />)}</svg></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .stylist { position: relative; }
+  .sstage { max-width: 1400px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: clamp(24px, 4.5vw, 64px); padding: clamp(72px, 9vw, 128px) clamp(16px, 3vw, 48px); }
+  .shead { flex: 0 1 380px; min-width: 0; display: grid; gap: clamp(18px, 4svh, 36px); align-content: center; }
+  h2 { margin: 0; font-size: clamp(1.875rem, min(4vw, 7.5svh), 3.375rem); font-weight: 700; letter-spacing: -.05em; line-height: 1; }
+  .stabs { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(10px, 2.2svh, 18px); }
+  .stab { display: flex; align-items: center; gap: 14px; }
+  .sico { width: clamp(38px, 5.5svh, 48px); height: clamp(38px, 5.5svh, 48px); flex: none; border-radius: 32%; display: grid; place-items: center; background: #f4f4f2; color: #0a0a0a; }
+  .stab.on .sico { background: #0a0a0a; color: #fff; }
+  svg { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .slabel { display: flex; align-items: center; gap: 10px; font-size: clamp(1.0625rem, min(1.85vw, 3.4svh), 1.5rem); font-weight: 700; letter-spacing: -.035em; line-height: 1.1; }
+  .soon, .badge { padding: 3px 7px; border-radius: 4px; background: #0a0a0a; color: #fff; font-family: var(--font-mono); font-size: 9px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; }
+  .schat { position: relative; flex: 1 1 440px; min-width: 0; max-width: 820px; display: flex; flex-direction: column; }
+  .sview { position: relative; flex: 1; min-height: 0; overflow: hidden; -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,0), #000 64px); mask-image: linear-gradient(180deg, rgba(0,0,0,0), #000 64px); }
+  .strack { display: flex; flex-direction: column; padding: 40px clamp(18px, 4vw, 36px) 0; }
+  .sg { display: flex; flex-direction: column; gap: 16px; padding-bottom: 28px; }
+  .sq { align-self: flex-end; max-width: 70%; margin: 0; padding: 14px 20px; border-radius: 24px 24px 8px 24px; background: #efefed; font-size: 1.0625rem; line-height: 1.45; }
+  .sa { position: relative; display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
+  .sthink { position: absolute; left: 0; top: 0; display: flex; gap: 5px; padding: 16px 18px; border-radius: 20px 20px 20px 6px; background: #0a0a0a; opacity: 0; }
+  .sthink i { display: block; width: 7px; height: 7px; border-radius: 50%; background: #fff; }
+  .sbub { max-width: min(56ch, 82%); margin: 0; padding: 14px 20px; border-radius: 24px 24px 24px 8px; background: #0a0a0a; color: #fff; font-size: 1.0625rem; line-height: 1.5; text-wrap: pretty; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 14px 0 12px; border-radius: 999px; background: #fff; box-shadow: 0 0 0 1px rgba(10,10,10,.07), 0 8px 18px rgba(0,0,0,.06); }
+  .chip svg { width: 16px; height: 16px; }
+  .chip-label, .mono { font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: #6b6b6b; }
+  .chip-value { font-size: .9375rem; font-weight: 600; }
+  .pieces, .trip { display: flex; flex-wrap: wrap; gap: 10px; }
+  .trip { gap: 8px; }
+  .piece { position: relative; display: block; flex: none; width: clamp(64px, 9vw, 96px); aspect-ratio: 3 / 4; border-radius: 14px; overflow: hidden; background: #fff; box-shadow: 0 6px 16px rgba(0,0,0,.06); }
+  .piece.small { width: clamp(52px, 7vw, 78px); }
+  .piece.large { width: clamp(80px, 10vw, 110px); }
+  .piece :global(picture) { display: block; }
+  .piece :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .cta { display: inline-flex; align-items: center; justify-content: center; height: 44px; padding: 0 22px; border-radius: 22px; background: #0a0a0a; color: #fff; font-size: .9375rem; font-weight: 700; }
+  .cta.small { justify-self: start; height: 38px; margin-top: 4px; }
+  .cta.outline { background: none; color: #0a0a0a; box-shadow: inset 0 0 0 1px rgba(10,10,10,.28); }
+  .panel { padding: 16px; border-radius: 22px; background: #fff; box-shadow: 0 0 0 1px rgba(10,10,10,.06), 0 14px 30px rgba(0,0,0,.08); }
+  .trip-head { display: flex; justify-content: space-between; gap: 16px; align-items: center; margin-bottom: 12px; }
+  .trip-head .mono { letter-spacing: .16em; color: inherit; }
+  .muted { font-size: .875rem; color: #6b6b6b; }
+  .panel.find { display: flex; gap: 16px; align-items: center; padding: 12px 20px 12px 12px; }
+  .find-copy { display: grid; gap: 6px; }
+  .find-copy b { font-size: 1.0625rem; }
+  .find-copy .mono { color: #6b6b6b; }
+  .find-copy .muted { font-size: .9375rem; }
+  .panel.buy { display: grid; gap: 12px; justify-items: start; max-width: 440px; padding: 18px; font-size: 1.0625rem; line-height: 1.5; }
+  .badge { padding: 3px 8px; }
+  .input { flex: none; display: flex; align-items: center; gap: 10px; height: 60px; margin: 10px 14px 14px; padding: 6px 6px 6px 22px; border-radius: 30px; background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,.07), inset 0 0 0 1px rgba(10,10,10,.05); }
+  .field { position: relative; flex: 1; min-width: 0; height: 24px; font-size: 1.0625rem; line-height: 24px; }
+  .sph { position: absolute; inset: 0; color: #6b6b6b; }
+  .stype { position: absolute; inset: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ssend { width: 48px; height: 48px; flex: none; border-radius: 50%; background: #0a0a0a; color: #fff; display: grid; place-items: center; }
+</style>

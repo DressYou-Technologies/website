@@ -4,3 +4,4 @@ export const HEADER_FOLD_AT = 80;          // px scrolled before the header beco
 export const HEADER_COMPACT_AFTER = 160;   // px scrolled before scrolling down compacts it
 export const SCROLL_JITTER_PX = 6;         // smaller moves don't change the scroll direction
 export const HERO_PASSED_OFFSET = 90;      // the header's "Get the app" shows this far before the hero ends
+export const STORY_LENGTH_PX = 3600;       // scroll distance the pinned stylist story plays over
