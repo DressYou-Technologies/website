@@ -1,0 +1,998 @@
+{
+ "twin": {
+  "id": "twin",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 160,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 160
+   },
+   "output_tokens": 1006,
+   "output_tokens_details": {
+    "image_tokens": 1006,
+    "text_tokens": 0
+   },
+   "total_tokens": 1166
+  },
+  "prompt": "Photorealistic full-length studio photograph of an original, fictional woman in her mid-twenties (not resembling any real person or celebrity), slim build, olive skin, long dark wavy hair, natural makeup. She stands facing the camera, relaxed, arms loose at her sides, whole body visible from head to toe with a little space above and below. She wears simple fitted basics: a black long-sleeve scoop-neck top, black leggings and plain black flats. Seamless warm light-grey studio backdrop (#e9e8e5), soft even daylight-like light, gentle floor shadow. Shot on a 50mm lens at chest height, sharp focus, true skin texture, no retouching gloss. No text, no logos, no watermark.",
+  "size": "864x1728",
+  "quality": "high"
+ },
+ "wall-m-athletic": {
+  "id": "wall-m-athletic",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 152,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 152
+   },
+   "output_tokens": 1006,
+   "output_tokens_details": {
+    "image_tokens": 1006,
+    "text_tokens": 0
+   },
+   "total_tokens": 1158
+  },
+  "prompt": "Photorealistic full-length studio photograph of an original, fictional man in his late twenties (not resembling any real person or celebrity), athletic build, light-brown skin, dark wavy hair pushed back. He stands facing the camera at a slight three-quarter angle, one hand in his pocket, whole body visible from head to toe. Outfit: a fitted black crew-neck t-shirt tucked into high-waisted wide-leg black pleated trousers with a black leather belt, chunky black leather loafers. Seamless warm light-grey studio backdrop (#e9e8e5), soft even light, gentle floor shadow. 50mm lens at chest height, sharp, true skin texture. No text, no logos, no watermark.",
+  "size": "864x1728",
+  "quality": "high"
+ },
+ "feed-w-bench": {
+  "id": "feed-w-bench",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 187,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 187
+   },
+   "output_tokens": 1510,
+   "output_tokens_details": {
+    "image_tokens": 1510,
+    "text_tokens": 0
+   },
+   "total_tokens": 1697
+  },
+  "prompt": "Candid iPhone photo for an Instagram fashion post, taken by a friend. An original, fictional East Asian woman in her early twenties (not resembling any real person or celebrity), slim, shoulder-length black hair, thin rectangular black glasses, small silver hoops. She sits sideways on a worn wooden caf\u00e9 bench outside, one knee up, looking past the camera with a relaxed expression. Outfit: a fitted short-sleeve blue-and-white gingham blouse with tiny white frill trim, very wide black trousers, black Mary Jane flats, a small burgundy leather shoulder bag beside her. Setting: a quiet old-town side street with a whitewashed wall, an open wooden door and potted plants. Late-afternoon natural light, slightly warm, a little phone-camera grain and softness, natural skin, real and unposed feeling. Vertical 4:5. No text, no logos, no watermark.",
+  "size": "1024x1280",
+  "quality": "high"
+ },
+ "g-trench": {
+  "id": "g-trench",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 93,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 93
+   },
+   "output_tokens": 1395,
+   "output_tokens_details": {
+    "image_tokens": 1395,
+    "text_tokens": 0
+   },
+   "total_tokens": 1488
+  },
+  "prompt": "E-commerce product photograph of a single cream-beige cotton gabardine trench coat, double-breasted with a tied belt and storm flap, shown front-on on an invisible ghost mannequin so it keeps its shape, no person visible. Centered with even margins on a plain warm light-grey background (#ecebe8), soft shadowless studio light, crisp fabric detail. No text, no logos, no brand labels, no watermark.",
+  "size": "960x1280",
+  "quality": "high"
+ },
+ "g-barrel-jeans": {
+  "id": "g-barrel-jeans",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 74,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 74
+   },
+   "output_tokens": 1395,
+   "output_tokens_details": {
+    "image_tokens": 1395,
+    "text_tokens": 0
+   },
+   "total_tokens": 1469
+  },
+  "prompt": "E-commerce product photograph, no person visible, centered with even margins on a plain warm light-grey background (#ecebe8), soft shadowless studio light, crisp fabric detail. No text, no logos, no brand labels, no watermark. The product: a pair of light-wash high-rise barrel-leg jeans laid flat, front view.",
+  "size": "960x1280",
+  "quality": "high"
+ },
+ "g-black-knit-dress": {
+  "id": "g-black-knit-dress",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 81,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 81
+   },
+   "output_tokens": 1395,
+   "output_tokens_details": {
+    "image_tokens": 1395,
+    "text_tokens": 0
+   },
+   "total_tokens": 1476
+  },
+  "prompt": "E-commerce product photograph, no person visible, centered with even margins on a plain warm light-grey background (#ecebe8), soft shadowless studio light, crisp fabric detail. No text, no logos, no brand labels, no watermark. The product: a black fine-knit short-sleeve mini dress with a row of small black buttons, on an invisible ghost mannequin.",
+  "size": "960x1280",
+  "quality": "high"
+ },
+ "g-black-tee": {
+  "id": "g-black-tee",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 68,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 68
+   },
+   "output_tokens": 1395,
+   "output_tokens_details": {
+    "image_tokens": 1395,
+    "text_tokens": 0
+   },
+   "total_tokens": 1463
+  },
+  "prompt": "E-commerce product photograph, no person visible, centered with even margins on a plain warm light-grey background (#ecebe8), soft shadowless studio light, crisp fabric detail. No text, no logos, no brand labels, no watermark. The product: a fitted black cotton crew-neck t-shirt laid flat.",
+  "size": "960x1280",
+  "quality": "high"
+ },
+ "g-cream-top": {
+  "id": "g-cream-top",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 74,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 74
+   },
+   "output_tokens": 1395,
+   "output_tokens_details": {
+    "image_tokens": 1395,
+    "text_tokens": 0
+   },
+   "total_tokens": 1469
+  },
+  "prompt": "E-commerce product photograph, no person visible, centered with even margins on a plain warm light-grey background (#ecebe8), soft shadowless studio light, crisp fabric detail. No text, no logos, no brand labels, no watermark. The product: a cream fine-knit long-sleeve crew-neck top on an invisible ghost mannequin.",
+  "size": "960x1280",
+  "quality": "high"
+ },
+ "g-taupe-sweater": {
+  "id": "g-taupe-sweater",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 76,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 76
+   },
+   "output_tokens": 1395,
+   "output_tokens_details": {
+    "image_tokens": 1395,
+    "text_tokens": 0
+   },
+   "total_tokens": 1471
+  },
+  "prompt": "E-commerce product photograph, no person visible, centered with even margins on a plain warm light-grey background (#ecebe8), soft shadowless studio light, crisp fabric detail. No text, no logos, no brand labels, no watermark. The product: a taupe-grey wool funnel-neck sweater with soft volume sleeves, on an invisible ghost mannequin.",
+  "size": "960x1280",
+  "quality": "high"
+ },
+ "g-grey-trousers": {
+  "id": "g-grey-trousers",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 75,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 75
+   },
+   "output_tokens": 1395,
+   "output_tokens_details": {
+    "image_tokens": 1395,
+    "text_tokens": 0
+   },
+   "total_tokens": 1470
+  },
+  "prompt": "E-commerce product photograph, no person visible, centered with even margins on a plain warm light-grey background (#ecebe8), soft shadowless studio light, crisp fabric detail. No text, no logos, no brand labels, no watermark. The product: a pair of light-grey wool straight-leg tailored trousers with pressed creases, laid flat.",
+  "size": "960x1280",
+  "quality": "high"
+ },
+ "g-pinstripe-trousers": {
+  "id": "g-pinstripe-trousers",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 71,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 71
+   },
+   "output_tokens": 1395,
+   "output_tokens_details": {
+    "image_tokens": 1395,
+    "text_tokens": 0
+   },
+   "total_tokens": 1466
+  },
+  "prompt": "E-commerce product photograph, no person visible, centered with even margins on a plain warm light-grey background (#ecebe8), soft shadowless studio light, crisp fabric detail. No text, no logos, no brand labels, no watermark. The product: a pair of black pinstripe wide-leg tailored trousers, laid flat.",
+  "size": "960x1280",
+  "quality": "high"
+ },
+ "g-ballet-flats": {
+  "id": "g-ballet-flats",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 74,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 74
+   },
+   "output_tokens": 1395,
+   "output_tokens_details": {
+    "image_tokens": 1395,
+    "text_tokens": 0
+   },
+   "total_tokens": 1469
+  },
+  "prompt": "E-commerce product photograph, no person visible, centered with even margins on a plain warm light-grey background (#ecebe8), soft shadowless studio light, crisp fabric detail. No text, no logos, no brand labels, no watermark. The product: a pair of black patent leather ballet flats with a small bow, three-quarter view.",
+  "size": "960x1280",
+  "quality": "high"
+ },
+ "g-slingbacks": {
+  "id": "g-slingbacks",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 75,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 75
+   },
+   "output_tokens": 1395,
+   "output_tokens_details": {
+    "image_tokens": 1395,
+    "text_tokens": 0
+   },
+   "total_tokens": 1470
+  },
+  "prompt": "E-commerce product photograph, no person visible, centered with even margins on a plain warm light-grey background (#ecebe8), soft shadowless studio light, crisp fabric detail. No text, no logos, no brand labels, no watermark. The product: a pair of nude-beige pointed-toe slingback kitten heels, three-quarter view.",
+  "size": "960x1280",
+  "quality": "high"
+ },
+ "g-chelsea-boots": {
+  "id": "g-chelsea-boots",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 69,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 69
+   },
+   "output_tokens": 1395,
+   "output_tokens_details": {
+    "image_tokens": 1395,
+    "text_tokens": 0
+   },
+   "total_tokens": 1464
+  },
+  "prompt": "E-commerce product photograph, no person visible, centered with even margins on a plain warm light-grey background (#ecebe8), soft shadowless studio light, crisp fabric detail. No text, no logos, no brand labels, no watermark. The product: a single black leather chelsea boot, side view.",
+  "size": "960x1280",
+  "quality": "high"
+ },
+ "g-white-tank": {
+  "id": "g-white-tank",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 67,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 67
+   },
+   "output_tokens": 1395,
+   "output_tokens_details": {
+    "image_tokens": 1395,
+    "text_tokens": 0
+   },
+   "total_tokens": 1462
+  },
+  "prompt": "E-commerce product photograph, no person visible, centered with even margins on a plain warm light-grey background (#ecebe8), soft shadowless studio light, crisp fabric detail. No text, no logos, no brand labels, no watermark. The product: a white ribbed cotton tank top laid flat.",
+  "size": "960x1280",
+  "quality": "high"
+ },
+ "g-black-cap": {
+  "id": "g-black-cap",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 68,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 68
+   },
+   "output_tokens": 1395,
+   "output_tokens_details": {
+    "image_tokens": 1395,
+    "text_tokens": 0
+   },
+   "total_tokens": 1463
+  },
+  "prompt": "E-commerce product photograph, no person visible, centered with even margins on a plain warm light-grey background (#ecebe8), soft shadowless studio light, crisp fabric detail. No text, no logos, no brand labels, no watermark. The product: a washed black cotton baseball cap, three-quarter view.",
+  "size": "960x1280",
+  "quality": "high"
+ },
+ "g-brown-boots": {
+  "id": "g-brown-boots",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 73,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 73
+   },
+   "output_tokens": 1395,
+   "output_tokens_details": {
+    "image_tokens": 1395,
+    "text_tokens": 0
+   },
+   "total_tokens": 1468
+  },
+  "prompt": "E-commerce product photograph, no person visible, centered with even margins on a plain warm light-grey background (#ecebe8), soft shadowless studio light, crisp fabric detail. No text, no logos, no brand labels, no watermark. The product: a pair of dark brown suede slouchy knee-high boots, side view.",
+  "size": "960x1280",
+  "quality": "high"
+ },
+ "wall-w-bob": {
+  "id": "wall-w-bob",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 138,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 138
+   },
+   "output_tokens": 1006,
+   "output_tokens_details": {
+    "image_tokens": 1006,
+    "text_tokens": 0
+   },
+   "total_tokens": 1144
+  },
+  "prompt": "Photorealistic full-length studio photograph of an original, fictional adult (not resembling any real person or celebrity): a woman in her early twenties, East Asian, slim, sleek black bob. She wears a white boxy cotton tee, light-wash barrel jeans and black ballet flats. Seamless warm light-grey studio backdrop (#e9e8e5), soft even daylight-like light, gentle floor shadow. Whole body visible from head to toe with a little space above and below. 50mm lens at chest height, sharp focus, true skin texture, no retouching gloss. No text, no logos, no brand labels, no watermark.",
+  "size": "864x1728",
+  "quality": "high"
+ },
+ "wall-w-braids": {
+  "id": "wall-w-braids",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 143,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 143
+   },
+   "output_tokens": 1006,
+   "output_tokens_details": {
+    "image_tokens": 1006,
+    "text_tokens": 0
+   },
+   "total_tokens": 1149
+  },
+  "prompt": "Photorealistic full-length studio photograph of an original, fictional adult (not resembling any real person or celebrity): a woman in her mid-twenties, Black, slim, long box braids. She wears a cream fine-knit long-sleeve top, a cream knit maxi skirt and tan slingbacks. Seamless warm light-grey studio backdrop (#e9e8e5), soft even daylight-like light, gentle floor shadow. Whole body visible from head to toe with a little space above and below. 50mm lens at chest height, sharp focus, true skin texture, no retouching gloss. No text, no logos, no brand labels, no watermark.",
+  "size": "864x1728",
+  "quality": "high"
+ },
+ "wall-w-linen": {
+  "id": "wall-w-linen",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 141,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 141
+   },
+   "output_tokens": 1006,
+   "output_tokens_details": {
+    "image_tokens": 1006,
+    "text_tokens": 0
+   },
+   "total_tokens": 1147
+  },
+  "prompt": "Photorealistic full-length studio photograph of an original, fictional adult (not resembling any real person or celebrity): a woman in her late twenties, South Asian, slim, long black hair in a low bun. She wears a black ribbed tank, wide ivory linen trousers and flat tan leather sandals. Seamless warm light-grey studio backdrop (#e9e8e5), soft even daylight-like light, gentle floor shadow. Whole body visible from head to toe with a little space above and below. 50mm lens at chest height, sharp focus, true skin texture, no retouching gloss. No text, no logos, no brand labels, no watermark.",
+  "size": "864x1728",
+  "quality": "high"
+ },
+ "wall-w-blonde": {
+  "id": "wall-w-blonde",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 140,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 140
+   },
+   "output_tokens": 1006,
+   "output_tokens_details": {
+    "image_tokens": 1006,
+    "text_tokens": 0
+   },
+   "total_tokens": 1146
+  },
+  "prompt": "Photorealistic full-length studio photograph of an original, fictional adult (not resembling any real person or celebrity): a woman in her mid-twenties, Scandinavian, slim, straight blonde hair. She wears a cream trench coat open over a white tee, straight blue jeans and black loafers. Seamless warm light-grey studio backdrop (#e9e8e5), soft even daylight-like light, gentle floor shadow. Whole body visible from head to toe with a little space above and below. 50mm lens at chest height, sharp focus, true skin texture, no retouching gloss. No text, no logos, no brand labels, no watermark.",
+  "size": "864x1728",
+  "quality": "high"
+ },
+ "wall-w-curls": {
+  "id": "wall-w-curls",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 134,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 134
+   },
+   "output_tokens": 1006,
+   "output_tokens_details": {
+    "image_tokens": 1006,
+    "text_tokens": 0
+   },
+   "total_tokens": 1140
+  },
+  "prompt": "Photorealistic full-length studio photograph of an original, fictional adult (not resembling any real person or celebrity): a woman in her late twenties, Latina, slim, long dark curly hair. She wears a chocolate-brown fine-knit midi dress and black knee boots. Seamless warm light-grey studio backdrop (#e9e8e5), soft even daylight-like light, gentle floor shadow. Whole body visible from head to toe with a little space above and below. 50mm lens at chest height, sharp focus, true skin texture, no retouching gloss. No text, no logos, no brand labels, no watermark.",
+  "size": "864x1728",
+  "quality": "high"
+ },
+ "wall-w-hijab": {
+  "id": "wall-w-hijab",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 142,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 142
+   },
+   "output_tokens": 1006,
+   "output_tokens_details": {
+    "image_tokens": 1006,
+    "text_tokens": 0
+   },
+   "total_tokens": 1148
+  },
+  "prompt": "Photorealistic full-length studio photograph of an original, fictional adult (not resembling any real person or celebrity): a woman in her late twenties, Middle Eastern, slim, wearing a soft cream hijab. She wears a long camel wool coat over a beige knit, wide black trousers and white leather sneakers. Seamless warm light-grey studio backdrop (#e9e8e5), soft even daylight-like light, gentle floor shadow. Whole body visible from head to toe with a little space above and below. 50mm lens at chest height, sharp focus, true skin texture, no retouching gloss. No text, no logos, no brand labels, no watermark.",
+  "size": "864x1728",
+  "quality": "high"
+ },
+ "wall-w-wrap": {
+  "id": "wall-w-wrap",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 137,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 137
+   },
+   "output_tokens": 1006,
+   "output_tokens_details": {
+    "image_tokens": 1006,
+    "text_tokens": 0
+   },
+   "total_tokens": 1143
+  },
+  "prompt": "Photorealistic full-length studio photograph of an original, fictional adult (not resembling any real person or celebrity): a woman in her early thirties, Black, curvy build, short natural hair, gold hoops. She wears a black wrap midi dress and nude pointed slingbacks. Seamless warm light-grey studio backdrop (#e9e8e5), soft even daylight-like light, gentle floor shadow. Whole body visible from head to toe with a little space above and below. 50mm lens at chest height, sharp focus, true skin texture, no retouching gloss. No text, no logos, no brand labels, no watermark.",
+  "size": "864x1728",
+  "quality": "high"
+ },
+ "wall-w-silver": {
+  "id": "wall-w-silver",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 140,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 140
+   },
+   "output_tokens": 1006,
+   "output_tokens_details": {
+    "image_tokens": 1006,
+    "text_tokens": 0
+   },
+   "total_tokens": 1146
+  },
+  "prompt": "Photorealistic full-length studio photograph of an original, fictional adult (not resembling any real person or celebrity): a woman in her fifties, white, slim, sleek silver bob. She wears a charcoal wool coat over a black turtleneck, black straight trousers and black loafers. Seamless warm light-grey studio backdrop (#e9e8e5), soft even daylight-like light, gentle floor shadow. Whole body visible from head to toe with a little space above and below. 50mm lens at chest height, sharp focus, true skin texture, no retouching gloss. No text, no logos, no brand labels, no watermark.",
+  "size": "864x1728",
+  "quality": "high"
+ },
+ "wall-w-red": {
+  "id": "wall-w-red",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 147,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 147
+   },
+   "output_tokens": 1006,
+   "output_tokens_details": {
+    "image_tokens": 1006,
+    "text_tokens": 0
+   },
+   "total_tokens": 1153
+  },
+  "prompt": "Photorealistic full-length studio photograph of an original, fictional adult (not resembling any real person or celebrity): a woman in her mid-twenties, white, slim, long copper-red hair, freckles. She wears a crisp white poplin shirt tucked into navy pinstripe wide trousers with a brown belt, and black flats. Seamless warm light-grey studio backdrop (#e9e8e5), soft even daylight-like light, gentle floor shadow. Whole body visible from head to toe with a little space above and below. 50mm lens at chest height, sharp focus, true skin texture, no retouching gloss. No text, no logos, no brand labels, no watermark.",
+  "size": "864x1728",
+  "quality": "high"
+ },
+ "wall-m-glasses": {
+  "id": "wall-m-glasses",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 141,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 141
+   },
+   "output_tokens": 1006,
+   "output_tokens_details": {
+    "image_tokens": 1006,
+    "text_tokens": 0
+   },
+   "total_tokens": 1147
+  },
+  "prompt": "Photorealistic full-length studio photograph of an original, fictional adult (not resembling any real person or celebrity): a man in his late twenties, Black, slim, short twists, black rectangular glasses. He wears a fitted white long-sleeve tee, black wide-leg trousers and black loafers. Seamless warm light-grey studio backdrop (#e9e8e5), soft even daylight-like light, gentle floor shadow. Whole body visible from head to toe with a little space above and below. 50mm lens at chest height, sharp focus, true skin texture, no retouching gloss. No text, no logos, no brand labels, no watermark.",
+  "size": "864x1728",
+  "quality": "high"
+ },
+ "wall-m-knit": {
+  "id": "wall-m-knit",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 141,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 141
+   },
+   "output_tokens": 1006,
+   "output_tokens_details": {
+    "image_tokens": 1006,
+    "text_tokens": 0
+   },
+   "total_tokens": 1147
+  },
+  "prompt": "Photorealistic full-length studio photograph of an original, fictional adult (not resembling any real person or celebrity): a man in his mid-twenties, East Asian, slim, middle-parted black hair. He wears an oversized grey knit sweater, wide ecru trousers and white leather sneakers. Seamless warm light-grey studio backdrop (#e9e8e5), soft even daylight-like light, gentle floor shadow. Whole body visible from head to toe with a little space above and below. 50mm lens at chest height, sharp focus, true skin texture, no retouching gloss. No text, no logos, no brand labels, no watermark.",
+  "size": "864x1728",
+  "quality": "high"
+ },
+ "wall-m-overshirt": {
+  "id": "wall-m-overshirt",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 141,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 141
+   },
+   "output_tokens": 1006,
+   "output_tokens_details": {
+    "image_tokens": 1006,
+    "text_tokens": 0
+   },
+   "total_tokens": 1147
+  },
+  "prompt": "Photorealistic full-length studio photograph of an original, fictional adult (not resembling any real person or celebrity): a man in his late twenties, South Asian, slim, short beard. He wears a navy cotton overshirt over a white tee, cream pleated trousers and brown suede loafers. Seamless warm light-grey studio backdrop (#e9e8e5), soft even daylight-like light, gentle floor shadow. Whole body visible from head to toe with a little space above and below. 50mm lens at chest height, sharp focus, true skin texture, no retouching gloss. No text, no logos, no brand labels, no watermark.",
+  "size": "864x1728",
+  "quality": "high"
+ },
+ "wall-m-camel": {
+  "id": "wall-m-camel",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 142,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 142
+   },
+   "output_tokens": 1006,
+   "output_tokens_details": {
+    "image_tokens": 1006,
+    "text_tokens": 0
+   },
+   "total_tokens": 1148
+  },
+  "prompt": "Photorealistic full-length studio photograph of an original, fictional adult (not resembling any real person or celebrity): a man in his forties, white, lean, salt-and-pepper beard. He wears a camel overcoat over a grey crewneck, dark straight jeans and brown chelsea boots. Seamless warm light-grey studio backdrop (#e9e8e5), soft even daylight-like light, gentle floor shadow. Whole body visible from head to toe with a little space above and below. 50mm lens at chest height, sharp focus, true skin texture, no retouching gloss. No text, no logos, no brand labels, no watermark.",
+  "size": "864x1728",
+  "quality": "high"
+ },
+ "wall-m-denim": {
+  "id": "wall-m-denim",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 141,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 141
+   },
+   "output_tokens": 1006,
+   "output_tokens_details": {
+    "image_tokens": 1006,
+    "text_tokens": 0
+   },
+   "total_tokens": 1147
+  },
+  "prompt": "Photorealistic full-length studio photograph of an original, fictional adult (not resembling any real person or celebrity): a man in his early thirties, Pacific Islander, broad heavier build, black curly hair. He wears a washed denim jacket over a white tee, relaxed olive chinos and white sneakers. Seamless warm light-grey studio backdrop (#e9e8e5), soft even daylight-like light, gentle floor shadow. Whole body visible from head to toe with a little space above and below. 50mm lens at chest height, sharp focus, true skin texture, no retouching gloss. No text, no logos, no brand labels, no watermark.",
+  "size": "864x1728",
+  "quality": "high"
+ },
+ "wall-m-leather": {
+  "id": "wall-m-leather",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 140,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 140
+   },
+   "output_tokens": 1006,
+   "output_tokens_details": {
+    "image_tokens": 1006,
+    "text_tokens": 0
+   },
+   "total_tokens": 1146
+  },
+  "prompt": "Photorealistic full-length studio photograph of an original, fictional adult (not resembling any real person or celebrity): a man in his mid-twenties, North African, slim, short curly hair. He wears a black leather jacket over a white tee, straight light-blue jeans and black boots. Seamless warm light-grey studio backdrop (#e9e8e5), soft even daylight-like light, gentle floor shadow. Whole body visible from head to toe with a little space above and below. 50mm lens at chest height, sharp focus, true skin texture, no retouching gloss. No text, no logos, no brand labels, no watermark.",
+  "size": "864x1728",
+  "quality": "high"
+ },
+ "feed-w-bakery": {
+  "id": "feed-w-bakery",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 170,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 170
+   },
+   "output_tokens": 1510,
+   "output_tokens_details": {
+    "image_tokens": 1510,
+    "text_tokens": 0
+   },
+   "total_tokens": 1680
+  },
+  "prompt": "Candid iPhone photo for an Instagram fashion post, taken by a friend. Natural light, slightly warm, a little phone-camera grain and softness, natural skin, real and unposed feeling, quiet minimal styling. No text, no logos, no brand labels, no watermark. The person is an original, fictional adult (not resembling any real person or celebrity). A Mediterranean woman in her mid-twenties, slim, long glossy brown hair. Caught mid-stride walking out of a small bakery holding a paper bag, black leather tote on her shoulder, glancing down. Outfit: a fitted sleeveless chocolate-brown ruched top, black wide-leg trousers, pointed black flats. Setting: a Paris street with a dark green shopfront and cream stone. Soft morning light. Vertical 4:5.",
+  "size": "1024x1280",
+  "quality": "high"
+ },
+ "feed-w-canal": {
+  "id": "feed-w-canal",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 175,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 175
+   },
+   "output_tokens": 1510,
+   "output_tokens_details": {
+    "image_tokens": 1510,
+    "text_tokens": 0
+   },
+   "total_tokens": 1685
+  },
+  "prompt": "Candid iPhone photo for an Instagram fashion post, taken by a friend. Natural light, slightly warm, a little phone-camera grain and softness, natural skin, real and unposed feeling, quiet minimal styling. No text, no logos, no brand labels, no watermark. The person is an original, fictional adult (not resembling any real person or celebrity). A blonde woman in her early twenties, slim, long loose waves, gold hoops. She leans back against an old iron railing by a canal, holding an iced matcha, looking off to the side. Outfit: a light-blue short-sleeve cropped button shirt, low-rise baggy mid-wash jeans, black pointed flats, a small beige shoulder bag. Setting: a European canal with pastel townhouses behind. Bright overcast daylight. Vertical 4:5.",
+  "size": "1024x1280",
+  "quality": "high"
+ },
+ "feed-w-mirror": {
+  "id": "feed-w-mirror",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 175,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 175
+   },
+   "output_tokens": 1510,
+   "output_tokens_details": {
+    "image_tokens": 1510,
+    "text_tokens": 0
+   },
+   "total_tokens": 1685
+  },
+  "prompt": "Candid iPhone photo for an Instagram fashion post, taken by a friend. Natural light, slightly warm, a little phone-camera grain and softness, natural skin, real and unposed feeling, quiet minimal styling. No text, no logos, no brand labels, no watermark. The person is an original, fictional adult (not resembling any real person or celebrity). A Black woman in her mid-twenties, slim, long dark hair, thin gold-rimmed glasses. A mirror selfie in a minimalist boutique fitting area, her phone covering the lower part of her face, a cream boucl\u00e9 armchair and a rail of neutral clothes behind her. Outfit: a white ribbed tank top, wide black wool trousers with a black leather belt, white socks and black loafers, a black leather shoulder bag. Vertical 4:5.",
+  "size": "1024x1280",
+  "quality": "high"
+ },
+ "feed-m-coffee": {
+  "id": "feed-m-coffee",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 163,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 163
+   },
+   "output_tokens": 1510,
+   "output_tokens_details": {
+    "image_tokens": 1510,
+    "text_tokens": 0
+   },
+   "total_tokens": 1673
+  },
+  "prompt": "Candid iPhone photo for an Instagram fashion post, taken by a friend. Natural light, slightly warm, a little phone-camera grain and softness, natural skin, real and unposed feeling, quiet minimal styling. No text, no logos, no brand labels, no watermark. The person is an original, fictional adult (not resembling any real person or celebrity). A Southeast Asian man in his late twenties, lean athletic build, short black hair. Crossing a sunny cobbled street holding a takeaway coffee, looking ahead, candid mid-step. Outfit: a fitted black t-shirt, wide pleated charcoal trousers with a black belt, black leather derby shoes, a silver ring. Setting: old cream-stone buildings, a caf\u00e9 terrace and a parked scooter. Vertical 4:5.",
+  "size": "1024x1280",
+  "quality": "high"
+ },
+ "feed-m-lounge": {
+  "id": "feed-m-lounge",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 175,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 175
+   },
+   "output_tokens": 1510,
+   "output_tokens_details": {
+    "image_tokens": 1510,
+    "text_tokens": 0
+   },
+   "total_tokens": 1685
+  },
+  "prompt": "Candid iPhone photo for an Instagram fashion post, taken by a friend. Natural light, slightly warm, a little phone-camera grain and softness, natural skin, real and unposed feeling, quiet minimal styling. No text, no logos, no brand labels, no watermark. The person is an original, fictional adult (not resembling any real person or celebrity). A Black man in his late twenties, slim, short hair, black square glasses, a small earring. He lounges back in a rust-red boucl\u00e9 armchair in a warm hotel lounge, one arm along the armrest, legs crossed, looking out of frame. Outfit: a white long-sleeve tee, black wide trousers, black loafers. A glass of sparkling water on a low table, linen curtains behind. Warm evening light. Vertical 4:5.",
+  "size": "1024x1280",
+  "quality": "high"
+ },
+ "twin-trench": {
+  "id": "twin-trench",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 6388,
+   "input_tokens_details": {
+    "image_tokens": 6258,
+    "text_tokens": 130
+   },
+   "output_tokens": 1006,
+   "output_tokens_details": {
+    "image_tokens": 1006,
+    "text_tokens": 0
+   },
+   "total_tokens": 7394
+  },
+  "prompt": "Keep the person from the first image exactly: same face, hair, skin tone, body and proportions, same studio backdrop, framing and light. Dress them in the garments shown in the other images, keeping each garment's colour, fabric, cut and details exactly. Full-length, standing facing the camera, relaxed. The trench coat is worn open over the tank top.",
+  "size": "864x1728",
+  "quality": "high",
+  "refs": [
+   "twin",
+   "g-trench",
+   "g-white-tank",
+   "g-barrel-jeans",
+   "g-brown-boots"
+  ]
+ },
+ "twin-knitdress": {
+  "id": "twin-knitdress",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 3957,
+   "input_tokens_details": {
+    "image_tokens": 3858,
+    "text_tokens": 99
+   },
+   "output_tokens": 1006,
+   "output_tokens_details": {
+    "image_tokens": 1006,
+    "text_tokens": 0
+   },
+   "total_tokens": 4963
+  },
+  "prompt": "Keep the person from the first image exactly: same face, hair, skin tone, body and proportions, same studio backdrop, framing and light. Dress them in the garments shown in the other images, keeping each garment's colour, fabric, cut and details exactly. Full-length, standing facing the camera, relaxed.",
+  "size": "864x1728",
+  "quality": "high",
+  "refs": [
+   "twin",
+   "g-black-knit-dress",
+   "g-slingbacks"
+  ]
+ },
+ "twin-knitset": {
+  "id": "twin-knitset",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 5176,
+   "input_tokens_details": {
+    "image_tokens": 5058,
+    "text_tokens": 118
+   },
+   "output_tokens": 1006,
+   "output_tokens_details": {
+    "image_tokens": 1006,
+    "text_tokens": 0
+   },
+   "total_tokens": 6182
+  },
+  "prompt": "Keep the person from the first image exactly: same face, hair, skin tone, body and proportions, same studio backdrop, framing and light. Dress them in the garments shown in the other images, keeping each garment's colour, fabric, cut and details exactly. Full-length, standing facing the camera, relaxed. The sweater is worn loose over the trousers.",
+  "size": "864x1728",
+  "quality": "high",
+  "refs": [
+   "twin",
+   "g-taupe-sweater",
+   "g-grey-trousers",
+   "g-ballet-flats"
+  ]
+ },
+ "twin-office": {
+  "id": "twin-office",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 5175,
+   "input_tokens_details": {
+    "image_tokens": 5058,
+    "text_tokens": 117
+   },
+   "output_tokens": 1006,
+   "output_tokens_details": {
+    "image_tokens": 1006,
+    "text_tokens": 0
+   },
+   "total_tokens": 6181
+  },
+  "prompt": "Keep the person from the first image exactly: same face, hair, skin tone, body and proportions, same studio backdrop, framing and light. Dress them in the garments shown in the other images, keeping each garment's colour, fabric, cut and details exactly. Full-length, standing facing the camera, relaxed. The top is tucked into the trousers.",
+  "size": "864x1728",
+  "quality": "high",
+  "refs": [
+   "twin",
+   "g-cream-top",
+   "g-pinstripe-trousers",
+   "g-ballet-flats"
+  ]
+ },
+ "shop-trench": {
+  "id": "shop-trench",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 1302,
+   "input_tokens_details": {
+    "image_tokens": 1200,
+    "text_tokens": 102
+   },
+   "output_tokens": 1006,
+   "output_tokens_details": {
+    "image_tokens": 1006,
+    "text_tokens": 0
+   },
+   "total_tokens": 2308
+  },
+  "prompt": "E-commerce product page photograph: an original, fictional adult (not resembling any real person or celebrity), a slim woman in her late twenties with short dark hair, different from any other image, models this exact trench coat, belted, over light jeans and white sneakers. Full length, standing, plain light-grey studio. Keep the coat's colour and details exactly. No text, no logos, no brand labels, no watermark.",
+  "size": "864x1728",
+  "quality": "high",
+  "refs": [
+   "g-trench"
+  ]
+ },
+ "g-black-wide-trousers": {
+  "id": "g-black-wide-trousers",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 73,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 73
+   },
+   "output_tokens": 1395,
+   "output_tokens_details": {
+    "image_tokens": 1395,
+    "text_tokens": 0
+   },
+   "total_tokens": 1468
+  },
+  "prompt": "E-commerce product photograph, no person visible, centered with even margins on a plain warm light-grey background (#ecebe8), soft shadowless studio light, crisp fabric detail. No text, no logos, no brand labels, no watermark. The product: a pair of black wool wide-leg trousers with front pleats, laid flat.",
+  "size": "960x1280",
+  "quality": "high"
+ },
+ "twin-cap-trench": {
+  "id": "twin-cap-trench",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 7603,
+   "input_tokens_details": {
+    "image_tokens": 7458,
+    "text_tokens": 145
+   },
+   "output_tokens": 1006,
+   "output_tokens_details": {
+    "image_tokens": 1006,
+    "text_tokens": 0
+   },
+   "total_tokens": 8609
+  },
+  "prompt": "Keep the person from the first image exactly: same face, hair, skin tone, body and proportions, same studio backdrop, framing and light. Dress them in the garments shown in the other images, keeping each garment's colour, fabric, cut and details exactly. Full-length, standing facing the camera, relaxed. The trench coat is worn open over the tank top; the cap faces forward.",
+  "size": "864x1728",
+  "quality": "high",
+  "refs": [
+   "twin",
+   "g-black-cap",
+   "g-trench",
+   "g-white-tank",
+   "g-barrel-jeans",
+   "g-brown-boots"
+  ]
+ },
+ "twin-knit-cap": {
+  "id": "twin-knit-cap",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 6377,
+   "input_tokens_details": {
+    "image_tokens": 6258,
+    "text_tokens": 119
+   },
+   "output_tokens": 1006,
+   "output_tokens_details": {
+    "image_tokens": 1006,
+    "text_tokens": 0
+   },
+   "total_tokens": 7383
+  },
+  "prompt": "Keep the person from the first image exactly: same face, hair, skin tone, body and proportions, same studio backdrop, framing and light. Dress them in the garments shown in the other images, keeping each garment's colour, fabric, cut and details exactly. Full-length, standing facing the camera, relaxed.",
+  "size": "864x1728",
+  "quality": "high",
+  "refs": [
+   "twin",
+   "g-taupe-sweater",
+   "g-grey-trousers",
+   "g-ballet-flats",
+   "g-black-cap"
+  ]
+ },
+ "twin-tee-trench": {
+  "id": "twin-tee-trench",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 6384,
+   "input_tokens_details": {
+    "image_tokens": 6258,
+    "text_tokens": 126
+   },
+   "output_tokens": 1006,
+   "output_tokens_details": {
+    "image_tokens": 1006,
+    "text_tokens": 0
+   },
+   "total_tokens": 7390
+  },
+  "prompt": "Keep the person from the first image exactly: same face, hair, skin tone, body and proportions, same studio backdrop, framing and light. Dress them in the garments shown in the other images, keeping each garment's colour, fabric, cut and details exactly. Full-length, standing facing the camera, relaxed. The trench coat is worn open.",
+  "size": "864x1728",
+  "quality": "high",
+  "refs": [
+   "twin",
+   "g-black-tee",
+   "g-pinstripe-trousers",
+   "g-chelsea-boots",
+   "g-trench"
+  ]
+ },
+ "feed-w-trench": {
+  "id": "feed-w-trench",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 6203,
+   "input_tokens_details": {
+    "image_tokens": 6000,
+    "text_tokens": 203
+   },
+   "output_tokens": 1510,
+   "output_tokens_details": {
+    "image_tokens": 1510,
+    "text_tokens": 0
+   },
+   "total_tokens": 7713
+  },
+  "prompt": "Candid iPhone photo for an Instagram fashion post, taken by a friend. Natural light, slightly warm, a little phone-camera grain and softness, natural skin, real and unposed feeling, quiet minimal styling. No text, no logos, no brand labels, no watermark. The person is an original, fictional adult (not resembling any real person or celebrity): a woman in her mid-twenties, slim, long dark hair under the cap. She wears exactly the garments shown in the images, the trench coat open over the tank top, and leans on a stone doorway on a Paris street, glancing at her phone. Keep each garment's colour, fabric, cut and details exactly. Vertical 4:5.",
+  "size": "1024x1280",
+  "quality": "high",
+  "refs": [
+   "g-black-cap",
+   "g-trench",
+   "g-white-tank",
+   "g-barrel-jeans",
+   "g-brown-boots"
+  ]
+ }
+}
