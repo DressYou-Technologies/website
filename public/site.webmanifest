@@ -1,7 +1,7 @@
 {
   "name": "DressYou",
   "short_name": "DressYou",
-  "description": "dressyou is a new way to experience fashion. The dressyou app is launching soon.",
+  "description": "DressYou makes a twin from your own photos, so you can try on clothes from any shop, your wardrobe or the feed before you buy.",
   "lang": "en",
   "start_url": "/",
   "scope": "/",

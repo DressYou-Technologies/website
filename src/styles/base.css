@@ -1,0 +1,4 @@
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--white); color: var(--ink); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; overflow-x: clip; padding-bottom: 12px; }
+a, a:hover { color: inherit; }
+img { display: block; }

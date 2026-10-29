@@ -1,0 +1,28 @@
+# DressYou
+
+> Try it on before it's yours.
+> DressYou makes a twin from your own photos, so you can try on clothes from any shop, your wardrobe or the feed before you buy.
+
+DressYou Technologies is a Paris-based fashion technology company. This site presents the
+DressYou app: a twin made from your own photos, try-ons from a shop link, your wardrobe or the
+feed, outfit building from the clothes you own, asking friends to vote between looks, and a
+stylist that answers from your wardrobe and your taste. The app is not yet released; iOS,
+Android and a browser extension are announced.
+
+The people shown on the site are AI-generated.
+
+## Facts
+
+- Name: DressYou
+- Company: DressYou Technologies, 47 rue Vivienne, 75002 Paris, France
+- Tagline: Try it on before it's yours.
+- Website: https://dressyouapp.com/
+- Contact: hello@dressyouapp.com
+- Status: pre-launch
+
+## Pages
+
+- [Home](https://dressyouapp.com/): what DressYou does, in five sections.
+- [Legal notice](https://dressyouapp.com/legal)
+- [Privacy](https://dressyouapp.com/privacy)
+- [Terms](https://dressyouapp.com/terms)
