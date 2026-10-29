@@ -1,17 +1,15 @@
 ---
-import Base from '../layouts/Base.astro';
-import Header from '../components/Header.astro';
-import Finale from '../components/Finale.astro';
-import GetDialog from '../components/GetDialog.astro';
+import Doc from '../layouts/Doc.astro';
+import { LINKS } from '../data/site';
 ---
-<Base path="/privacy" title="Privacy · DressYou">
-  <Header />
-  <main class="doc"><h1>Privacy</h1></main>
-  <Finale />
-  <GetDialog />
-</Base>
-
-<script>
-  import { startChrome } from '../scripts/chrome';
-  startChrome();
-</script>
+<Doc title="Privacy" path="/privacy" updated="29 October 2026">
+  <p>This notice covers this website only. The DressYou app will come with its own privacy notice.</p>
+  <h2>What this site collects</h2>
+  <p>Nothing on this site asks you for information. It sets no cookies, runs no analytics or advertising, and loads nothing from other companies' servers.</p>
+  <h2>Hosting</h2>
+  <p>Our host, Vercel Inc., processes the technical data every website request carries, such as your IP address and browser type, to deliver the pages and keep the service secure. Vercel acts on our behalf and keeps these logs for a limited time.</p>
+  <h2>Writing to us</h2>
+  <p>If you email <a href={`mailto:${LINKS.email}`}>{LINKS.email}</a>, we use your address and message only to answer you, and delete them when they are no longer needed for that.</p>
+  <h2>Your rights</h2>
+  <p>You can ask us to access, correct or erase data about you, or object to its use, by writing to <a href={`mailto:${LINKS.email}`}>{LINKS.email}</a>. You can also complain to the CNIL, the French data protection authority, at cnil.fr.</p>
+</Doc>

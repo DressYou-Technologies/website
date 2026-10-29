@@ -1,17 +1,17 @@
 ---
-import Base from '../layouts/Base.astro';
-import Header from '../components/Header.astro';
-import Finale from '../components/Finale.astro';
-import GetDialog from '../components/GetDialog.astro';
+import Doc from '../layouts/Doc.astro';
+import { LINKS } from '../data/site';
 ---
-<Base path="/legal" title="Legal notice · DressYou">
-  <Header />
-  <main class="doc"><h1>Legal notice</h1></main>
-  <Finale />
-  <GetDialog />
-</Base>
-
-<script>
-  import { startChrome } from '../scripts/chrome';
-  startChrome();
-</script>
+<Doc title="Legal notice" path="/legal" updated="29 October 2026">
+  <h2>Publisher</h2>
+  <p>This site is published by DressYou Technologies, <span class="todo">[legal form and share capital to be completed]</span>, whose registered office is at 47 rue Vivienne, 75002 Paris, France.</p>
+  <p>Registered with the Paris trade and companies register (RCS) under <span class="todo">[RCS and SIREN to be completed]</span>.</p>
+  <p>Contact: <a href={`mailto:${LINKS.email}`}>{LINKS.email}</a></p>
+  <h2>Publication director</h2>
+  <p><span class="todo">[name to be completed]</span></p>
+  <h2>Host</h2>
+  <p>Vercel Inc., 440 N Barranca Avenue #4133, Covina, CA 91723, United States.</p>
+  <h2>Intellectual property</h2>
+  <p>The dressyou name, logo, design and text of this site belong to DressYou Technologies. Reusing them needs our written permission.</p>
+  <p>The people and garments shown on this site are AI-generated illustrations.</p>
+</Doc>

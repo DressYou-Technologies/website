@@ -102,3 +102,14 @@ test("the outfit result shows the outfit's render", async () => {
   const pictures = [...out.matchAll(/<picture[^>]*data-outfit="(\d+)"/g)].map((m) => Number(m[1]));
   assert.deepEqual(pictures, OUTFITS.map((_, i) => i));
 });
+
+test('the legal pages exist and name the publisher', async () => {
+  const legal = text(await read('legal.html'));
+  for (const fact of ['DressYou Technologies', '47 rue Vivienne, 75002 Paris', 'hello@dressyouapp.com', 'Vercel']) assert.ok(legal.includes(fact), fact);
+  for (const page of ['privacy.html', 'terms.html']) {
+    const body = await read(page);
+    assert.match(body, /<header class="top/, `${page} has no header`);
+    assert.match(body, /<footer class="finale/, `${page} has no footer`);
+    assert.ok(text(body).length > 600, `${page} is still a stub`);
+  }
+});
