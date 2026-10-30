@@ -150,3 +150,16 @@ test('every blur ships unprefixed for Chrome and Firefox and prefixed for Safari
     assert.match(rule, /-webkit-backdrop-filter:/, rule.slice(0, 80));
   }
 });
+
+test('vercel.json hardens every response and caches the hashed files for good', async () => {
+  const config = JSON.parse(await readFile(new URL('../vercel.json', import.meta.url), 'utf8'));
+  const headersFor = (source) => Object.fromEntries((config.headers.find((h) => h.source === source)?.headers ?? []).map((h) => [h.key.toLowerCase(), h.value]));
+  const all = headersFor('/(.*)');
+  const csp = all['content-security-policy'] ?? '';
+  for (const directive of ["default-src 'self'", "script-src 'self'", "frame-ancestors 'none'", "object-src 'none'", "base-uri 'self'", "form-action 'self'"]) assert.ok(csp.includes(directive), directive);
+  assert.equal(all['x-content-type-options'], 'nosniff');
+  assert.equal(all['referrer-policy'], 'strict-origin-when-cross-origin');
+  assert.equal(all['cross-origin-resource-policy'], 'same-site');
+  assert.match(all['permissions-policy'] ?? '', /camera=\(\)/);
+  assert.match(headersFor('/_astro/(.*)')['cache-control'] ?? '', /max-age=31536000, immutable/);
+});
