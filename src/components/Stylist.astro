@@ -61,13 +61,13 @@ const CHIPS: [keyof typeof ICONS, string, string][] = [['weather', 'weather', '1
           <div class="sg" data-q="a black knit dress, under €150.">
             <p class="sq">a black knit dress, under €150.</p>
             <div class="sa"><span class="sthink"><i></i><i></i><i></i></span>
-              <div class="sin panel find"><span class="piece large"><Picture src={image(STYLIST.find)} formats={['avif', 'webp']} widths={[120, 220]} sizes="110px" alt="" loading="lazy" /></span><div class="find-copy"><b>knit dress</b><span class="mono muted">€120 · shop link</span><span class="muted">works with 6 pieces you own</span><span class="cta small">try it on</span></div></div>
+              <div class="sin panel find"><span class="piece large"><Picture src={image(STYLIST.find)} formats={['avif', 'webp']} widths={[120, 220]} sizes="110px" alt="" loading="lazy" /></span><div class="find-copy"><b>knit dress</b><span class="mono">€120 · shop link</span><span class="muted">works with 6 pieces you own</span><span class="cta small">try it on</span></div></div>
             </div>
           </div>
           <div class="sg" data-q="buy it for me.">
             <p class="sq">buy it for me.</p>
             <div class="sa"><span class="sthink"><i></i><i></i><i></i></span>
-              <div class="sin panel buy"><span class="badge">coming soon</span><span>approve the piece and the stylist checks out for you, in your size.</span><span class="cta outline">buy · €120</span></div>
+              <div class="sin panel buy"><span class="badge">coming soon</span><span class="buy-copy">approve the piece and the stylist checks out for you, in your size.</span><span class="cta outline">buy · €120</span></div>
             </div>
           </div>
         </div>
@@ -123,9 +123,10 @@ const CHIPS: [keyof typeof ICONS, string, string][] = [['weather', 'weather', '1
   .panel.find { display: flex; gap: 16px; align-items: center; padding: 12px 20px 12px 12px; }
   .find-copy { display: grid; gap: 6px; }
   .find-copy b { font-size: 1.0625rem; }
-  .find-copy .mono { color: #6b6b6b; }
+  .find-copy .mono { font-weight: 400; }
   .find-copy .muted { font-size: .9375rem; }
-  .panel.buy { display: grid; gap: 12px; justify-items: start; max-width: 440px; padding: 18px; font-size: 1.0625rem; line-height: 1.5; }
+  .panel.buy { display: grid; gap: 12px; justify-items: start; max-width: 440px; padding: 18px; }
+  .buy-copy { font-size: 1.0625rem; line-height: 1.5; }
   .badge { padding: 3px 8px; }
   .input { flex: none; display: flex; align-items: center; gap: 10px; height: 60px; margin: 10px 14px 14px; padding: 6px 6px 6px 22px; border-radius: 30px; background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,.07), inset 0 0 0 1px rgba(10,10,10,.05); }
   .field { position: relative; flex: 1; min-width: 0; height: 24px; font-size: 1.0625rem; line-height: 24px; }
