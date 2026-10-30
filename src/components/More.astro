@@ -19,14 +19,14 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
       <div class="wbuild" aria-hidden="true" data-outfits={JSON.stringify(picks)}>
         {rows.map((tiles, r) => (
           <div><div class="wrow" data-n={WARDROBE_ROWS[r].length}><div class="wtrack">{tiles.map((id, j) => (
-            <span class:list={['wg', { picked: j < WARDROBE_ROWS[r].length && id === first.pieces[r] }]}><span class="wimg"><Picture src={image(id)} formats={['avif', 'webp']} widths={[100, 180]} sizes="clamp(64px, 5.8vw, 90px)" alt="" loading="lazy" /></span><span class="wcheck"><svg viewBox="0 0 16 16" width="12" height="12"><path d="M4 8.5l2.5 2.5L12 5.5"></path></svg></span></span>
+            <span class:list={['wg', { picked: j < WARDROBE_ROWS[r].length && id === first.pieces[r] }]}><span class="wimg"><Picture class="cutout" src={image(id)} formats={['avif', 'webp']} widths={[100, 180]} sizes="clamp(64px, 5.8vw, 90px)" alt="" loading="lazy" /></span><span class="wcheck"><svg viewBox="0 0 16 16" width="12" height="12"><path d="M4 8.5l2.5 2.5L12 5.5"></path></svg></span></span>
           ))}</div></div></div>
         ))}
         <span class="edge left"></span><span class="edge right"></span>
         <div class="wlayer">
-          {first.pieces.map((id) => <Image class="wfly" src={image(id)} width={80} height={80} alt="" loading="lazy" />)}
+          {first.pieces.map((id) => <Image class="wfly cutout" src={image(id)} width={80} height={80} alt="" loading="lazy" />)}
           <div class="wout">
-            {OUTFITS.map((outfit, i) => <Picture src={image(outfit.render)} formats={['avif', 'webp']} widths={[240, 480]} sizes="240px" alt="" loading="lazy" pictureAttributes={{ 'data-outfit': String(i), class: i === 0 ? 'shown' : '' }} />)}
+            {OUTFITS.map((outfit, i) => <Picture class="cutout" src={image(outfit.render)} formats={['avif', 'webp']} widths={[240, 480]} sizes="240px" alt="" loading="lazy" pictureAttributes={{ 'data-outfit': String(i), class: i === 0 ? 'shown' : '' }} />)}
             <span class="wshine"></span>
           </div>
         </div>
@@ -58,7 +58,7 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
         <div class="fade"></div>
         <div class="tlook" aria-hidden="true">
           <div class="tl-head"><span>in this look</span><span class="count">{LOOK_PIECES.length} pieces</span></div>
-          <div class="tl-grid">{LOOK_PIECES.map((id) => <span class="tl-g"><Picture src={image(id)} formats={['avif', 'webp']} widths={[80, 140]} sizes="48px" alt="" loading="lazy" /></span>)}</div>
+          <div class="tl-grid">{LOOK_PIECES.map((id) => <span class="tl-g"><Picture class="cutout" src={image(id)} formats={['avif', 'webp']} widths={[80, 140]} sizes="48px" alt="" loading="lazy" /></span>)}</div>
           <span class="tl-cta">try the outfit</span>
         </div>
         <span class="scanchip"><svg viewBox="0 0 24 24" aria-hidden="true" width="16" height="16"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><circle cx="12" cy="12" r="1"></circle><path d="M18.944 12.33a1 1 0 0 0 0-.66 7.5 7.5 0 0 0-13.888 0 1 1 0 0 0 0 .66 7.5 7.5 0 0 0 13.888 0"></path></svg>Try on</span>
@@ -72,7 +72,7 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
               <div class="fopt" style={`order:${look.order}`}>
                 <div class:list={['fimg', { fwin: look.pick }]}>
                   {look.pick && <span class="fring"></span>}
-                  <Picture src={image(look.image)} formats={['avif', 'webp']} widths={[200, 320]} sizes="140px" alt="" loading="lazy" />
+                  <Picture class="cutout" src={image(look.image)} formats={['avif', 'webp']} widths={[200, 320]} sizes="140px" alt="" loading="lazy" />
                   <span class="flabel">{look.label}</span>
                   {look.pick && <span class="ftag">their pick</span>}
                 </div>
@@ -112,18 +112,19 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
   .wtrack { display: flex; gap: 10px; width: max-content; will-change: transform; }
   .wg { position: relative; flex: none; width: clamp(64px, 5.8vw, 90px); aspect-ratio: 1; border-radius: 16px; background: #fff; }
   .wimg { position: absolute; inset: 0; border-radius: 16px; overflow: hidden; }
-  .wimg :global(img), .photo :global(img), .tl-g :global(img), .fimg :global(img), .wout :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .wimg :global(img), .photo :global(img), .tl-g :global(img), .fimg :global(img), .wout :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .photo :global(img) { object-fit: cover; }
   .wcheck { position: absolute; top: -6px; right: -6px; width: 22px; height: 22px; border-radius: 50%; background: #f4f4f2; display: grid; place-items: center; box-shadow: 0 4px 10px rgba(0,0,0,.4); opacity: 0; }
   .wcheck svg { stroke: #0a0a0a; stroke-width: 2.2; }
   .edge { position: absolute; top: 0; bottom: 0; width: 16%; z-index: 2; pointer-events: none; }
   .edge.left { left: 0; background: linear-gradient(90deg, #17171a, rgba(23,23,26,0)); }
   .edge.right { right: 0; background: linear-gradient(270deg, #17171a, rgba(23,23,26,0)); }
   .wlayer { position: absolute; inset: 0; pointer-events: none; z-index: 3; }
-  .wlayer :global(.wfly) { position: absolute; left: 0; top: 0; width: 80px; height: 80px; border-radius: 16px; object-fit: cover; opacity: 0; box-shadow: 0 14px 34px rgba(0,0,0,.45); }
+  /* The cutout's 10% room taken from its own 80 px: a percentage would measure the whole layer. */
+  .wlayer :global(.wfly) { position: absolute; left: 0; top: 0; width: 80px; height: 80px; padding: 8px; border-radius: 16px; opacity: 0; box-shadow: 0 14px 34px rgba(0,0,0,.45); }
   .wout { position: absolute; left: 50%; top: 50%; height: 92%; aspect-ratio: 1 / 1.6; border-radius: 18px; overflow: hidden; background: repeating-linear-gradient(0deg, #0c0c0d 0 6px, #18181b 6px 12px); box-shadow: 0 0 0 1px rgba(255,255,255,.08), 0 30px 70px rgba(0,0,0,.6); }
   .wout :global(picture) { position: absolute; inset: 0; opacity: 0; visibility: hidden; }
   .wout :global(picture.shown) { opacity: 1; visibility: visible; }
-  .wout :global(img) { object-position: 50% 15%; }
   .wshine { position: absolute; left: 0; right: 0; top: 0; height: 35%; background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,.14) 60%, rgba(255,255,255,0)); }
   /* Without motion: the first outfit picked and shown. GSAP owns these transforms and opacities while it plays. */
   :global(html:not(.motion)) .picked .wcheck { opacity: 1; }
@@ -170,7 +171,8 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
   .ffan { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; width: 100%; margin: 4px 0 18px; }
   .fopt { position: relative; }
   .fimg { position: relative; aspect-ratio: 3 / 4; border-radius: 18px; overflow: hidden; background: #1f1f22; box-shadow: 0 24px 50px rgba(0,0,0,.5); }
-  .fimg :global(img) { object-position: 50% 20%; }
+  /* Room under the feet for the friends' votes along the tile's bottom edge. */
+  .fimg :global(img) { padding-bottom: 24%; }
   .fring { position: absolute; inset: 0; z-index: 2; border-radius: 18px; box-shadow: inset 0 0 0 2.5px #f4f4f2; pointer-events: none; }
   .flabel { position: absolute; left: 8px; top: 8px; padding: 3px 7px; border-radius: 6px; background: rgba(10,10,10,.72); color: #fff; font-size: 11px; font-weight: 600; white-space: nowrap; }
   .ftag { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); padding: 4px 9px; border-radius: 6px; background: #f4f4f2; color: #0a0a0a; font-family: var(--font-mono); font-size: 9px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; }

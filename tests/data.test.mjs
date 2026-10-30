@@ -9,15 +9,22 @@ const MODEL = 'gpt-image-2.5-sunburst';
 const WALL_COLUMNS = 9;
 const WALL_ROWS = 3;
 const WALL_MIN_REPEAT_GAP = 3;
+// Founder, 2026-10-30: the hero shows street photos of 20 people, as many women as men.
+const WALL_PEOPLE = 20;
+const WEBP_ALPHA_FLAG = 0x10; // VP8X header flag: the image carries an alpha channel
 
 const masters = new Map();
 for (const group of GROUPS) {
   for (const file of await readdir(new URL(`${group}/`, ASSETS))) {
-    const id = file.replace(/\.jpg$/, '');
+    const id = file.replace(/\.(jpg|webp)$/, '');
     assert.ok(!masters.has(id), `${id} is in two groups`);
     masters.set(id, group);
   }
 }
+const cutout = async (id) => {
+  const bytes = await readFile(new URL(`${masters.get(id)}/${id}.webp`, ASSETS)).catch(() => null);
+  return bytes !== null && bytes.toString('ascii', 12, 16) === 'VP8X' && (bytes[20] & WEBP_ALPHA_FLAG) !== 0;
+};
 const manifest = JSON.parse(await readFile(new URL('manifest.json', ASSETS), 'utf8'));
 
 // Every string in the data that names an image: anything shaped like an asset id.
@@ -47,8 +54,20 @@ test('the wall is 9 columns of 3 with no repeat close by', () => {
     }
   });
   const wallPeople = [...masters.keys()].filter((id) => id.startsWith('wall-'));
-  assert.equal(wallPeople.length, 16);
+  assert.equal(wallPeople.length, WALL_PEOPLE);
   for (const id of wallPeople) assert.ok(seen.has(id), `${id} is not on the wall`);
+});
+
+test('the wall is street photos only, as many women as men', () => {
+  for (const id of site.WALL.flat()) assert.match(id, /^wall-[wm]-/, `${id} is not a street photo`);
+  const women = [...masters.keys()].filter((id) => id.startsWith('wall-w-')).length;
+  assert.equal(women, WALL_PEOPLE / 2);
+});
+
+test('the twin, its try-ons and every garment are transparent cutouts', async () => {
+  const ids = [...masters.keys()].filter((id) => /^(twin|g-)/.test(id));
+  assert.ok(ids.length > 20);
+  for (const id of ids) assert.ok(await cutout(id), `${id} is not a transparent WebP`);
 });
 
 test('each outfit piece comes from its row', () => {

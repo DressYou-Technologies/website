@@ -47,21 +47,21 @@ const CHIPS: [keyof typeof ICONS, string, string][] = [['weather', 'weather', '1
                 <span class="sin chip"><svg viewBox="0 0 24 24" aria-hidden="true">{icon === 'occasion' && <rect width="18" height="18" x="3" y="4" rx="2" />}{ICONS[icon].map((d) => <path d={d} />)}</svg><span class="chip-label">{label}</span><span class="chip-value">{value}</span></span>
               ))}</div>
               <p class="sin sbub">the cream knit, your black trousers and the ballet flats. the trench for the rain.</p>
-              <div class="sin pieces">{STYLIST.dinner.map((id) => <span class="piece"><Picture src={image(id)} formats={['avif', 'webp']} widths={[100, 200]} sizes="96px" alt="" loading="lazy" /></span>)}</div>
+              <div class="sin pieces">{STYLIST.dinner.map((id) => <span class="piece"><Picture class="cutout" src={image(id)} formats={['avif', 'webp']} widths={[100, 200]} sizes="96px" alt="" loading="lazy" /></span>)}</div>
               <span class="sin cta">try it</span>
             </div>
           </div>
           <div class="sg" data-q="pack for lisbon, 4 days in may.">
             <p class="sq">pack for lisbon, 4 days in may.</p>
             <div class="sa"><span class="sthink"><i></i><i></i><i></i></span>
-              <div class="sin panel"><div class="trip-head"><span class="mono">lisbon · 4 days</span><span class="muted">9 pieces · 6 outfits</span></div><div class="trip">{STYLIST.trip.map((id) => <span class="piece small"><Picture src={image(id)} formats={['avif', 'webp']} widths={[80, 160]} sizes="78px" alt="" loading="lazy" /></span>)}</div></div>
+              <div class="sin panel"><div class="trip-head"><span class="mono">lisbon · 4 days</span><span class="muted">9 pieces · 6 outfits</span></div><div class="trip">{STYLIST.trip.map((id) => <span class="piece small"><Picture class="cutout" src={image(id)} formats={['avif', 'webp']} widths={[80, 160]} sizes="78px" alt="" loading="lazy" /></span>)}</div></div>
               <p class="sin sbub">everything comes from your wardrobe. nothing new to buy.</p>
             </div>
           </div>
           <div class="sg" data-q="a black knit dress, under €150.">
             <p class="sq">a black knit dress, under €150.</p>
             <div class="sa"><span class="sthink"><i></i><i></i><i></i></span>
-              <div class="sin panel find"><span class="piece large"><Picture src={image(STYLIST.find)} formats={['avif', 'webp']} widths={[120, 220]} sizes="110px" alt="" loading="lazy" /></span><div class="find-copy"><b>knit dress</b><span class="mono">€120 · shop link</span><span class="muted">works with 6 pieces you own</span><span class="cta small">try it on</span></div></div>
+              <div class="sin panel find"><span class="piece large"><Picture class="cutout" src={image(STYLIST.find)} formats={['avif', 'webp']} widths={[120, 220]} sizes="110px" alt="" loading="lazy" /></span><div class="find-copy"><b>knit dress</b><span class="mono">€120 · shop link</span><span class="muted">works with 6 pieces you own</span><span class="cta small">try it on</span></div></div>
             </div>
           </div>
           <div class="sg" data-q="buy it for me.">
@@ -112,7 +112,7 @@ const CHIPS: [keyof typeof ICONS, string, string][] = [['weather', 'weather', '1
   .piece.small { width: clamp(52px, 7vw, 78px); }
   .piece.large { width: clamp(80px, 10vw, 110px); }
   .piece :global(picture) { display: block; }
-  .piece :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .piece :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; }
   .cta { display: inline-flex; align-items: center; justify-content: center; height: 44px; padding: 0 22px; border-radius: 22px; background: #0a0a0a; color: #fff; font-size: .9375rem; font-weight: 700; }
   .cta.small { justify-self: start; height: 38px; margin-top: 4px; }
   .cta.outline { background: none; color: #0a0a0a; box-shadow: inset 0 0 0 1px rgba(10,10,10,.28); }

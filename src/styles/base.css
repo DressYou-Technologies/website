@@ -2,6 +2,8 @@
 body { margin: 0; background: var(--white); color: var(--ink); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; overflow-x: clip; padding-bottom: 12px; }
 a, a:hover { color: inherit; }
 img { display: block; }
+/* The twin and the garments are cutouts: whole, centred on the studio grey, with room on every side. */
+img.cutout { object-fit: contain; padding: var(--cutout-pad); background: var(--cutout-bg); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
 }

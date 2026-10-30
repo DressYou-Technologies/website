@@ -22,15 +22,15 @@ export const LINKS: { appUrl: string | null; extensionUrl: string | null; email:
 
 // Column-major: 9 columns on the hero cylinder, 3 tiles each.
 export const WALL: ImageId[][] = [
-  ['wall-w-bob', 'wall-m-athletic', 'twin-trench'],
-  ['wall-m-glasses', 'wall-w-blonde', 'wall-m-knit'],
-  ['wall-w-curls', 'twin-knitdress', 'wall-m-camel'],
-  ['wall-m-overshirt', 'wall-w-braids', 'wall-w-bob'],
-  ['twin-knitset', 'wall-w-hijab', 'wall-m-leather'],
-  ['wall-w-red', 'wall-m-denim', 'wall-m-glasses'],
-  ['wall-m-athletic', 'twin-office', 'wall-w-linen'],
-  ['wall-w-silver', 'wall-m-knit', 'wall-w-curls'],
-  ['wall-w-wrap', 'wall-m-overshirt', 'wall-w-blonde'],
+  ['wall-w-tank', 'wall-m-locs', 'wall-w-silver'],
+  ['wall-m-suit', 'wall-w-braids', 'wall-m-knit'],
+  ['wall-w-curls', 'wall-m-skate', 'wall-w-hijab'],
+  ['wall-m-polo', 'wall-w-blonde', 'wall-m-camel'],
+  ['wall-w-street', 'wall-m-athletic', 'wall-w-wrap'],
+  ['wall-m-denim', 'wall-w-linen', 'wall-m-leather'],
+  ['wall-w-red', 'wall-m-overshirt', 'wall-w-tank'],
+  ['wall-m-skate', 'wall-w-braids', 'wall-m-suit'],
+  ['wall-w-hijab', 'wall-m-polo', 'wall-w-curls'],
 ];
 
 export const HOW: {
@@ -69,7 +69,7 @@ export const FEED_TRACKS: [Post[], Post[]] = [
     { handle: 'theo', age: '3d', image: 'feed-m-coffee' },
   ],
   [
-    { handle: 'mei', age: '5h', image: 'feed-w-bench' },
+    { handle: 'mei', age: '5h', image: 'feed-w-selfie' },
     { handle: 'lea', age: '4h', image: 'feed-w-bakery', liked: true },
     { handle: 'ines', age: '2d', image: 'feed-w-canal' },
     { handle: 'kofi', age: '1d', image: 'feed-m-lounge' },
