@@ -1,4 +1,4 @@
-# dressyou — https://dressyouapp.com
+# DressYou, https://dressyouapp.com
 
 User-agent: *
 Allow: /

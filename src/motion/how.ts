@@ -125,7 +125,7 @@ export const how: Section = (root) => {
   const onResize = () => { clearTimeout(settle); settle = setTimeout(() => { gsap.set(roll, { width: 'auto' }); tl.invalidate(); }, RESIZE_SETTLE_MS); };
   roll.setAttribute('role', 'button');
   roll.setAttribute('tabindex', '0');
-  roll.title = 'Next source';
+  roll.title = roll.dataset.next ?? '';
   roll.addEventListener('click', next);
   roll.addEventListener('keydown', onKey);
   window.addEventListener('resize', onResize);

@@ -3,18 +3,21 @@ import Base from './Base.astro';
 import Header from '../components/Header.astro';
 import Finale from '../components/Finale.astro';
 import GetDialog from '../components/GetDialog.astro';
+import { COPY } from '../i18n/copy';
+import type { Lang } from '../i18n/lang';
 
-interface Props { title: string; path: string; updated?: string; noindex?: boolean }
-const { title, path, updated, noindex = false } = Astro.props;
+interface Props { lang: Lang; title: string; path: string; updated?: string; noindex?: boolean }
+const { lang, title, path, updated, noindex = false } = Astro.props;
+const t = COPY[lang].doc;
 ---
-<Base path={path} title={`${title} · DressYou`} noindex={noindex}>
-  <Header />
+<Base lang={lang} path={path} title={`${title} · DressYou`} noindex={noindex}>
+  <Header lang={lang} path={path} />
   <main>
-    <section class="band"><h1>{title}</h1>{updated && <p>Last updated {updated}</p>}</section>
+    <section class="band"><h1>{title}</h1>{updated && <p>{t.updated} {updated}</p>}</section>
     <article class="doc"><slot /></article>
   </main>
-  <Finale />
-  <GetDialog />
+  <Finale lang={lang} path={path} />
+  <GetDialog lang={lang} />
 </Base>
 
 <script>

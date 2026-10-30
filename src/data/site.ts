@@ -6,12 +6,8 @@ export interface Post { handle: string; age: string; image: ImageId; liked?: boo
 // Piece i comes from WARDROBE_ROWS[i]; the render is the twin wearing all four.
 export interface Outfit { pieces: [ImageId, ImageId, ImageId, ImageId]; render: ImageId }
 
-export const SITE = {
-  name: 'dressyou',
-  url: 'https://dressyouapp.com',
-  tagline: "Try it on before it's yours.",
-  description: 'DressYou makes a twin from your own photos, so you can try on clothes from any shop, your wardrobe or the feed before you buy.',
-};
+// The name, tagline and descriptions are copy, per language (src/i18n/copy.ts).
+export const SITE = { url: 'https://dressyouapp.com' };
 
 // A null store link turns its buttons into the "coming soon." dialog.
 export const LINKS: { appUrl: string | null; extensionUrl: string | null; email: string } = {
@@ -35,7 +31,8 @@ export const WALL: ImageId[][] = [
 
 // A product page on some shop's site: the phone flips through a few, then shares the last one to DressYou.
 // The .example domains are reserved for examples, so no real shop is implied.
-export interface ShopPage { domain: string; name: string; price: string; image: ImageId; cutout: boolean; theme: 'white' | 'sand' }
+// Its name and price are copy, per language, in the same order (src/i18n/copy.ts, how.shopPages).
+export interface ShopPage { domain: string; image: ImageId; cutout: boolean; theme: 'white' | 'sand' }
 export const HOW: {
   shop: { pages: ShopPage[]; render: ImageId };
   wardrobe: { grid: ImageId[]; picks: ImageId[]; render: ImageId };
@@ -43,9 +40,9 @@ export const HOW: {
 } = {
   shop: {
     pages: [
-      { domain: 'nordstudio.example', name: 'Navy overshirt', price: '€89', image: 'g-navy-overshirt', cutout: true, theme: 'white' },
-      { domain: 'maisonclair.example', name: 'Suede loafers', price: '€140', image: 'g-brown-loafers', cutout: true, theme: 'sand' },
-      { domain: 'atelierneuf.example', name: 'Belted trench', price: '€149', image: 'shop-trench', cutout: false, theme: 'white' },
+      { domain: 'nordstudio.example', image: 'g-navy-overshirt', cutout: true, theme: 'white' },
+      { domain: 'maisonclair.example', image: 'g-brown-loafers', cutout: true, theme: 'sand' },
+      { domain: 'atelierneuf.example', image: 'shop-trench', cutout: false, theme: 'white' },
     ],
     render: 'twin-trench',
   },

@@ -2,32 +2,68 @@ import assert from 'node:assert/strict';
 import { access, readdir, readFile } from 'node:fs/promises';
 import test from 'node:test';
 import { SITE } from '../src/data/site.ts';
+import { COPY } from '../src/i18n/copy.ts';
+import { LANGS, localize } from '../src/i18n/lang.ts';
 
 // Runs over the built site: `npm run build` first.
 const DIST = new URL('../dist/', import.meta.url);
 const read = (path) => readFile(new URL(path, DIST), 'utf8');
 const pages = (await readdir(DIST, { recursive: true })).filter((f) => f.endsWith('.html'));
-const html = await read('index.html');
-const meta = (attr, key) => html.match(new RegExp(`<meta[^>]*${attr}="${key}"[^>]*content="([^"]*)"`))?.[1];
-const decode = (s) => s.replaceAll('&#39;', "'").replaceAll('&amp;', '&');
+// A page's built file, from its language and language-neutral path: "/" in English is en.html, "/legal" is en/legal.html.
+const fileOf = (lang, path) => { const url = localize(lang, path); return url === '/' ? 'index.html' : `${url.slice(1)}.html`; };
+const home = Object.fromEntries(await Promise.all(LANGS.map(async (lang) => [lang, await read(fileOf(lang, '/'))])));
+const html = home.fr;
+const metaIn = (page, attr, key) => page.match(new RegExp(`<meta[^>]*${attr}="${key}"[^>]*content="([^"]*)"`))?.[1];
+const decode = (s) => s.replaceAll('&#39;', "'").replaceAll('&amp;', '&').replaceAll('&quot;', '"');
+const INDEXED = ['/', '/legal', '/privacy', '/terms'];
 
-test('the head carries the site name, tagline, description and canonical', () => {
-  assert.ok(decode(html.match(/<title>([^<]*)<\/title>/)[1]).includes(SITE.tagline));
-  assert.equal(decode(meta('name', 'description')), SITE.description);
-  assert.match(html, /<link rel="canonical" href="https:\/\/dressyouapp\.com\/"/);
-  assert.equal(meta('property', 'og:image'), `${SITE.url}/og-image.jpg`);
+test('each home page carries its language, title, description, canonical and alternates', () => {
+  for (const lang of LANGS) {
+    const page = home[lang], meta = COPY[lang].meta;
+    assert.match(page, new RegExp(`<html lang="${lang}"`));
+    assert.equal(decode(page.match(/<title>([^<]*)<\/title>/)[1]), meta.title);
+    assert.equal(decode(metaIn(page, 'name', 'description')), meta.description);
+    assert.equal(metaIn(page, 'property', 'og:locale'), meta.locale);
+    assert.equal(metaIn(page, 'property', 'og:image'), `${SITE.url}/og-image.jpg`);
+    assert.ok(page.includes(`<link rel="canonical" href="${SITE.url}${localize(lang, '/')}"`), `${lang} canonical`);
+    for (const alt of LANGS) assert.ok(page.includes(`<link rel="alternate" hreflang="${alt}" href="${SITE.url}${localize(alt, '/')}"`), `${lang} → ${alt}`);
+    assert.ok(page.includes(`<link rel="alternate" hreflang="x-default" href="${SITE.url}/en"`), `${lang} x-default`);
+  }
 });
 
-test('the JSON-LD, llms.txt and sitemap agree with the head', async () => {
-  const graph = JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1])['@graph'];
-  const website = graph.find((node) => node['@type'] === 'WebSite');
-  assert.equal(website.url, `${SITE.url}/`);
-  assert.equal(website.name, 'DressYou');
-  assert.equal(website.description, SITE.description);
+test('the JSON-LD, llms.txt and sitemap agree with the pages', async () => {
+  for (const lang of LANGS) {
+    const graph = JSON.parse(home[lang].match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1])['@graph'];
+    const website = graph.find((node) => node['@type'] === 'WebSite'), webpage = graph.find((node) => node['@type'] === 'WebPage');
+    assert.equal(website.url, `${SITE.url}/`);
+    assert.equal(website.name, 'DressYou');
+    assert.deepEqual(website.inLanguage, [...LANGS]);
+    assert.equal(webpage.inLanguage, lang);
+    assert.equal(webpage.description, COPY[lang].meta.description);
+  }
   const llms = await read('llms.txt');
-  assert.ok(llms.includes(`${SITE.url}/`) && llms.includes(SITE.tagline));
+  for (const lang of LANGS) assert.ok(llms.includes(`${SITE.url}${localize(lang, '/')}`), `llms.txt names the ${lang} home`);
   const sitemap = await read('sitemap.xml');
-  for (const path of ['/', '/legal', '/privacy', '/terms']) assert.ok(sitemap.includes(`<loc>${SITE.url}${path === '/' ? '/' : path}</loc>`), path);
+  for (const path of INDEXED) for (const lang of LANGS) {
+    assert.ok(sitemap.includes(`<loc>${SITE.url}${localize(lang, path)}</loc>`), `${lang} ${path}`);
+    await access(new URL(fileOf(lang, path), DIST)).catch(() => assert.fail(`${lang} ${path} is in the sitemap but not built`));
+  }
+  assert.doesNotMatch(sitemap, /notified|404/);
+});
+
+// Founder, 2026-10-30: no semicolons or em dashes in what people read. Plus the search plan's copy rules.
+const BANNED = [[';', 'a semicolon'], ['\u2014', 'an em dash'], ['avatar', 'avatar (it is your twin)'], ['see how it fits', 'a fit claim'], ['ça vous va', 'a fit claim'], ['ça me va', 'a fit claim']];
+const readable = (page) => [
+  page.replace(/<script(?![^>]*ld\+json)[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/g, ' ').replace(/<[^>]+>/g, ' '),
+  ...[...page.matchAll(/<(?:meta|img)\b[^>]*(?:content|alt)="([^"]*)"/g)].map((m) => m[1]),
+].map(decode).join('\n');
+
+test('no page, title, description or llms.txt breaks the copy rules', async () => {
+  const sources = [...await Promise.all(pages.map(async (page) => [page, readable(await read(page))])), ['llms.txt', await read('llms.txt')]];
+  for (const [name, body] of sources) for (const [bad, what] of BANNED) {
+    const at = body.toLowerCase().indexOf(bad);
+    assert.equal(at, -1, `${name} has ${what}: …${body.slice(Math.max(0, at - 40), at + 20)}…`);
+  }
 });
 
 test('every local reference exists', async () => {
@@ -68,48 +104,58 @@ test('every image states its size and alt', async () => {
 
 const text = (s) => s.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
 
-test('a null store link opens a dialog instead of linking', async () => {
+test('a null store link opens a dialog instead of linking, in each language', async () => {
   const { LINKS } = await import('../src/data/site.ts');
   assert.equal(LINKS.appUrl, null);
   assert.equal(LINKS.extensionUrl, null);
-  for (const [label, kind] of [['Get the app', 'app'], ['Get the extension', 'extension']]) {
-    const controls = [...html.matchAll(/<(a|button)\b([^>]*)>([\s\S]*?)<\/\1>/g)].filter((m) => text(m[3]) === label);
-    assert.ok(controls.length >= 2, `${label} appears ${controls.length} times`);
-    for (const [, tag, attrs] of controls) {
-      assert.equal(tag, 'button', `${label} is a link`);
-      assert.match(attrs, new RegExp(`data-get="${kind}"`));
+  for (const lang of LANGS) {
+    for (const [label, kind] of [[COPY[lang].get.app, 'app'], [COPY[lang].get.extension, 'extension']]) {
+      const controls = [...home[lang].matchAll(/<(a|button)\b([^>]*)>([\s\S]*?)<\/\1>/g)].filter((m) => decode(text(m[3])) === label);
+      assert.ok(controls.length >= 2, `${lang}: ${label} appears ${controls.length} times`);
+      for (const [, tag, attrs] of controls) {
+        assert.equal(tag, 'button', `${label} is a link`);
+        assert.match(attrs, new RegExp(`data-get="${kind}"`));
+      }
+      assert.ok(home[lang].match(new RegExp(`<dialog[^>]*id="get-${kind}"`)), `no dialog for ${kind}`);
     }
-    assert.ok(html.match(new RegExp(`<dialog[^>]*id="get-${kind}"`)), `no dialog for ${kind}`);
   }
 });
 
-const dialogOf = (kind) => html.match(new RegExp(`<dialog[^>]*id="get-${kind}"[^>]*>([\\s\\S]*?)</dialog>`))[1];
+const dialogOf = (lang, kind) => home[lang].match(new RegExp(`<dialog[^>]*id="get-${kind}"[^>]*>([\\s\\S]*?)</dialog>`))[1];
 
 test('without a store link the app dialog asks for an email to notify', () => {
-  const dialog = dialogOf('app');
-  assert.match(dialog, /<input[^>]*type="email"[^>]*name="email"[^>]*required/);
-  // The bot trap: out of reach for people and assistive tech, filled by bots.
-  assert.match(dialog, /<input[^>]*name="website"[^>]*tabindex="-1"[^>]*aria-hidden="true"/);
-  assert.match(dialog, /<button[^>]*type="submit"[^>]*>Notify me<\/button>/);
-  assert.match(dialog, /href="\/privacy"/);
+  for (const lang of LANGS) {
+    const dialog = dialogOf(lang, 'app'), t = COPY[lang].dialog;
+    assert.match(dialog, /<input[^>]*type="email"[^>]*name="email"[^>]*required/);
+    // The bot trap: out of reach for people and assistive tech, filled by bots.
+    assert.match(dialog, /<input[^>]*name="website"[^>]*tabindex="-1"[^>]*aria-hidden="true"/);
+    assert.ok(dialog.includes(`>${t.notify.submit}</button>`), `${lang} submit`);
+    assert.ok(dialog.includes(`href="${localize(lang, '/privacy')}"`), `${lang} privacy link`);
+    assert.ok(dialog.includes(`data-lang="${lang}"`));
+  }
 });
 
 test('without a store link the extension dialog shows its demo and no link out', () => {
-  const dialog = dialogOf('extension');
-  assert.match(dialog, /class="xdemo"/);
-  assert.ok(text(dialog).includes('Coming soon to Chrome'));
-  assert.doesNotMatch(dialog, /chromewebstore/);
+  for (const lang of LANGS) {
+    const dialog = dialogOf(lang, 'extension');
+    assert.match(dialog, /class="xdemo"/);
+    assert.ok(text(dialog).includes(COPY[lang].dialog.extension.soon));
+    assert.doesNotMatch(dialog, /chromewebstore/);
+  }
 });
 
-test('the footer lists only working links and the AI line', () => {
-  const footer = html.match(/<footer[\s\S]*?<\/footer>/)[0];
-  const links = [...footer.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)].map(([, href, label]) => [text(label), href]);
-  assert.deepEqual(links, [
-    ['hello@dressyouapp.com', 'mailto:hello@dressyouapp.com'],
-    ['How it works', '/#how'], ['Wardrobe', '/#more'], ['Stylist', '/#stylist'],
-    ['Legal notice', '/legal'], ['Privacy', '/privacy'], ['Terms', '/terms'],
-  ]);
-  assert.ok(text(footer).includes('People shown on this page are AI-generated.'));
+test('the footer lists only working links, the other language and the AI line', () => {
+  for (const lang of LANGS) {
+    const footer = home[lang].match(/<footer[\s\S]*?<\/footer>/)[0], t = COPY[lang], other = LANGS.find((l) => l !== lang);
+    const links = [...footer.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)].map(([, href, label]) => [decode(text(label)), href]);
+    const local = (link) => { const [page, hash] = link.split('#'); return localize(lang, page || '/') + (hash ? `#${hash}` : ''); };
+    assert.deepEqual(links, [
+      ['hello@dressyouapp.com', 'mailto:hello@dressyouapp.com'],
+      ...t.finale.columns.flatMap((column) => column.links.map(([label, link]) => [label, local(link)])),
+      [t.lang.switchTo, localize(other, '/')],
+    ]);
+    assert.ok(decode(text(footer)).includes(t.finale.ai));
+  }
 });
 
 test("the outfit result shows the outfit's render", async () => {
@@ -130,14 +176,25 @@ test('every in-page link has its target on the same page', async () => {
   }
 });
 
-test('the legal pages exist and name the publisher', async () => {
-  const legal = text(await read('legal.html'));
-  for (const fact of ['DressYou Technologies', '47 rue Vivienne, 75002 Paris', 'hello@dressyouapp.com', 'Vercel']) assert.ok(legal.includes(fact), fact);
-  for (const page of ['privacy.html', 'terms.html']) {
-    const body = await read(page);
-    assert.match(body, /<header class="top/, `${page} has no header`);
-    assert.match(body, /<footer class="finale/, `${page} has no footer`);
-    assert.ok(text(body).length > 600, `${page} is still a stub`);
+test('the legal pages exist in both languages and name the publisher', async () => {
+  for (const lang of LANGS) {
+    const legal = text(await read(fileOf(lang, '/legal')));
+    for (const fact of ['DressYou Technologies', '47 rue Vivienne, 75002 Paris', 'hello@dressyouapp.com', 'Vercel']) assert.ok(legal.includes(fact), `${lang}: ${fact}`);
+    for (const path of ['/privacy', '/terms']) {
+      const body = await read(fileOf(lang, path));
+      assert.match(body, new RegExp(`<html lang="${lang}"`));
+      assert.match(body, /<header class="top/, `${lang} ${path} has no header`);
+      assert.match(body, /<footer class="finale/, `${lang} ${path} has no footer`);
+      assert.ok(text(body).length > 600, `${lang} ${path} is still a stub`);
+    }
+  }
+});
+
+test('the confirmation and 404 pages stay out of search', async () => {
+  for (const file of ['notified.html', 'en/notified.html', '404.html']) {
+    const body = await read(file);
+    assert.match(body, /<meta name="robots" content="noindex"/, file);
+    assert.doesNotMatch(body, /rel="canonical"/, file);
   }
 });
 

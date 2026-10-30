@@ -2,6 +2,11 @@
 import { Picture } from 'astro:assets';
 import { STYLIST } from '../data/site';
 import { image } from '../lib/image';
+import { COPY } from '../i18n/copy';
+import type { Lang } from '../i18n/lang';
+
+interface Props { lang: Lang }
+const t = COPY[Astro.props.lang].stylist;
 
 // Icon paths (Lucide, ISC): opinion, day, trip, find, shop; then the context chips and send.
 const ICONS = {
@@ -15,18 +20,19 @@ const ICONS = {
   taste: ['M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z'],
   send: ['m5 12 7-7 7 7', 'M12 19V5'],
 };
-const TABS: [keyof typeof ICONS, string][] = [['opinion', 'Ask for an opinion'], ['day', 'Dress for the day'], ['trip', 'Pack for a trip'], ['find', 'Find a piece'], ['shop', 'Shop for you']];
-const CHIPS: [keyof typeof ICONS, string, string][] = [['weather', 'weather', '14° · light rain'], ['occasion', 'occasion', 'dinner date'], ['taste', 'your taste', 'clean, minimal'], ['find', 'wardrobe', '52 pieces']];
+// Icons per tab and per context chip; their words come from the copy, in the same order.
+const TABS = (['opinion', 'day', 'trip', 'find', 'shop'] as const).map((icon, k) => [icon, t.tabs[k]] as const);
+const CHIPS = (['weather', 'occasion', 'taste', 'find'] as const).map((icon, k) => [icon, t.chips[k][0], t.chips[k][1]] as const);
 ---
 <section class="stylist" id="stylist">
   <div class="sstage">
     <div class="shead">
-      <h2>A stylist who knows you.</h2>
-      <ol class="stabs" aria-label="What the stylist does">
+      <h2>{t.title}</h2>
+      <ol class="stabs" aria-label={t.tabsLabel}>
         {TABS.map(([icon, label], i) => (
           <li class:list={['stab', { on: i === 0 }]}>
             <span class="sico"><svg viewBox="0 0 24 24" aria-hidden="true">{ICONS[icon].map((d) => <path d={d} />)}{icon === 'trip' && <><circle cx="16" cy="20" r="2" /><circle cx="8" cy="20" r="2" /></>}</svg></span>
-            <span class="slabel">{label}{icon === 'shop' && <span class="soon">soon</span>}</span>
+            <span class="slabel">{label}{icon === 'shop' && <span class="soon">{t.soon}</span>}</span>
           </li>
         ))}
       </ol>
@@ -34,46 +40,46 @@ const CHIPS: [keyof typeof ICONS, string, string][] = [['weather', 'weather', '1
     <div class="schat" aria-hidden="true">
       <div class="sview">
         <div class="strack">
-          <div class="sg" data-q="does this coat work on me?">
-            <p class="sq">does this coat work on me?</p>
+          <div class="sg" data-q={t.opinion.q}>
+            <p class="sq">{t.opinion.q}</p>
             <div class="sa"><span class="sthink"><i></i><i></i><i></i></span>
-              <p class="sin sbub">yes. the length is right for you. go one size down for a cleaner shoulder.</p>
+              <p class="sin sbub">{t.opinion.a}</p>
             </div>
           </div>
-          <div class="sg" data-q="dinner date on friday.">
-            <p class="sq">dinner date on friday.</p>
+          <div class="sg" data-q={t.day.q}>
+            <p class="sq">{t.day.q}</p>
             <div class="sa"><span class="sthink"><i></i><i></i><i></i></span>
               <div class="chips">{CHIPS.map(([icon, label, value]) => (
                 <span class="sin chip"><svg viewBox="0 0 24 24" aria-hidden="true">{icon === 'occasion' && <rect width="18" height="18" x="3" y="4" rx="2" />}{ICONS[icon].map((d) => <path d={d} />)}</svg><span class="chip-label">{label}</span><span class="chip-value">{value}</span></span>
               ))}</div>
-              <p class="sin sbub">the white oxford, your black trousers and the brown loafers. the overshirt for later.</p>
+              <p class="sin sbub">{t.day.a}</p>
               <div class="sin pieces">{STYLIST.dinner.map((id) => <span class="piece"><Picture class="cutout" src={image(id)} formats={['avif', 'webp']} widths={[100, 200]} sizes="96px" alt="" loading="lazy" /></span>)}</div>
-              <span class="sin cta">try it</span>
+              <span class="sin cta">{t.day.cta}</span>
             </div>
           </div>
-          <div class="sg" data-q="pack for lisbon, 4 days in may.">
-            <p class="sq">pack for lisbon, 4 days in may.</p>
+          <div class="sg" data-q={t.trip.q}>
+            <p class="sq">{t.trip.q}</p>
             <div class="sa"><span class="sthink"><i></i><i></i><i></i></span>
-              <div class="sin panel"><div class="trip-head"><span class="mono">lisbon · 4 days</span><span class="muted">9 pieces · 6 outfits</span></div><div class="trip">{STYLIST.trip.map((id) => <span class="piece small"><Picture class="cutout" src={image(id)} formats={['avif', 'webp']} widths={[80, 160]} sizes="78px" alt="" loading="lazy" /></span>)}</div></div>
-              <p class="sin sbub">everything comes from your wardrobe. nothing new to buy.</p>
+              <div class="sin panel"><div class="trip-head"><span class="mono">{t.trip.head}</span><span class="muted">{t.trip.count}</span></div><div class="trip">{STYLIST.trip.map((id) => <span class="piece small"><Picture class="cutout" src={image(id)} formats={['avif', 'webp']} widths={[80, 160]} sizes="78px" alt="" loading="lazy" /></span>)}</div></div>
+              <p class="sin sbub">{t.trip.a}</p>
             </div>
           </div>
-          <div class="sg" data-q="a black knit polo, under €150.">
-            <p class="sq">a black knit polo, under €150.</p>
+          <div class="sg" data-q={t.find.q}>
+            <p class="sq">{t.find.q}</p>
             <div class="sa"><span class="sthink"><i></i><i></i><i></i></span>
-              <div class="sin panel find"><span class="piece large"><Picture class="cutout" src={image(STYLIST.find)} formats={['avif', 'webp']} widths={[120, 220]} sizes="110px" alt="" loading="lazy" /></span><div class="find-copy"><b>knit polo</b><span class="mono">€120 · shop link</span><span class="muted">works with 6 pieces you own</span><span class="cta small">try it on</span></div></div>
+              <div class="sin panel find"><span class="piece large"><Picture class="cutout" src={image(STYLIST.find)} formats={['avif', 'webp']} widths={[120, 220]} sizes="110px" alt="" loading="lazy" /></span><div class="find-copy"><b>{t.find.name}</b><span class="mono">{t.find.price}</span><span class="muted">{t.find.fit}</span><span class="cta small">{t.find.cta}</span></div></div>
             </div>
           </div>
-          <div class="sg" data-q="buy it for me.">
-            <p class="sq">buy it for me.</p>
+          <div class="sg" data-q={t.buy.q}>
+            <p class="sq">{t.buy.q}</p>
             <div class="sa"><span class="sthink"><i></i><i></i><i></i></span>
-              <div class="sin panel buy"><span class="badge">coming soon</span><span class="buy-copy">approve the piece and the stylist checks out for you, in your size.</span><span class="cta outline">buy · €120</span></div>
+              <div class="sin panel buy"><span class="badge">{t.buy.badge}</span><span class="buy-copy">{t.buy.text}</span><span class="cta outline">{t.buy.cta}</span></div>
             </div>
           </div>
         </div>
       </div>
       <div class="input">
-        <span class="field"><span class="sph">ask your stylist</span><span class="stype"></span></span>
+        <span class="field"><span class="sph">{t.ask}</span><span class="stype"></span></span>
         <span class="ssend"><svg viewBox="0 0 24 24" aria-hidden="true">{ICONS.send.map((d) => <path d={d} />)}</svg></span>
       </div>
     </div>

@@ -1,11 +1,17 @@
 ---
 import '../styles/tokens.css';
 import '../styles/base.css';
-import { SITE } from '../data/site';
+import { LINKS, SITE } from '../data/site';
+import { COPY } from '../i18n/copy';
+import { LANGS, localize, type Lang } from '../i18n/lang';
 
-interface Props { title?: string; description?: string; path: string; noindex?: boolean }
-const { title = `DressYou · ${SITE.tagline}`, description = SITE.description, path, noindex = false } = Astro.props;
-const canonical = `${SITE.url}${path}`;
+// `path` is language-neutral ("/", "/legal"): the page exists at that path in French and under /en in English.
+interface Props { lang: Lang; path: string; title?: string; description?: string; noindex?: boolean }
+const { lang, path, noindex = false } = Astro.props;
+const meta = COPY[lang].meta;
+const title = Astro.props.title ?? meta.title, description = Astro.props.description ?? meta.description;
+const url = (l: Lang) => `${SITE.url}${localize(l, path)}`;
+const canonical = url(lang);
 const ogImage = `${SITE.url}/og-image.jpg`;
 const graph = {
   '@context': 'https://schema.org',
@@ -16,9 +22,9 @@ const graph = {
       name: 'DressYou',
       legalName: 'DressYou Technologies',
       url: `${SITE.url}/`,
-      slogan: SITE.tagline,
-      description: SITE.description,
-      email: 'hello@dressyouapp.com',
+      slogan: meta.tagline,
+      description: meta.description,
+      email: LINKS.email,
       address: { '@type': 'PostalAddress', streetAddress: '47 rue Vivienne', postalCode: '75002', addressLocality: 'Paris', addressCountry: 'FR' },
       logo: { '@type': 'ImageObject', url: `${SITE.url}/icon-512.png`, width: 512, height: 512 },
     },
@@ -27,24 +33,27 @@ const graph = {
       '@id': `${SITE.url}/#website`,
       url: `${SITE.url}/`,
       name: 'DressYou',
-      description: SITE.description,
-      inLanguage: 'en',
+      inLanguage: [...LANGS],
       publisher: { '@id': `${SITE.url}/#organization` },
     },
+    { '@type': 'WebPage', '@id': `${canonical}#webpage`, url: canonical, name: title, description, inLanguage: lang, isPartOf: { '@id': `${SITE.url}/#website` } },
   ],
 };
 ---
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#000000">
     <title>{title}</title>
     <meta name="description" content={description}>
-    {noindex && <meta name="robots" content="noindex" />}
-    <link rel="canonical" href={canonical}>
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="robots" content={noindex ? 'noindex' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'}>
+    {!noindex && <>
+      <link rel="canonical" href={canonical}>
+      {LANGS.map((l) => <link rel="alternate" hreflang={l} href={url(l)} />)}
+      <link rel="alternate" hreflang="x-default" href={url('en')} />
+    </>}
     <!-- The mark is white, so every icon carries a black plate to stay visible in light-theme tabs. -->
     <link rel="icon" href="/favicon.ico" sizes="48x48">
     <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192">
@@ -52,14 +61,15 @@ const graph = {
     <link rel="manifest" href="/site.webmanifest">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="DressYou">
-    <meta property="og:locale" content="en_US">
+    <meta property="og:locale" content={meta.locale}>
+    {LANGS.filter((l) => l !== lang).map((l) => <meta property="og:locale:alternate" content={COPY[l].meta.locale} />)}
     <meta property="og:url" content={canonical}>
     <meta property="og:title" content={title}>
     <meta property="og:description" content={description}>
     <meta property="og:image" content={ogImage}>
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="People in different outfits on a curved wall, with the dressyou logo.">
+    <meta property="og:image:alt" content={meta.ogAlt}>
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content={title}>
     <meta name="twitter:description" content={description}>

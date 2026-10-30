@@ -4,18 +4,16 @@ import appIcon from '../assets/brand/app-icon.png';
 import frame from '../assets/device/iphone-18-pro-burgundy.png';
 import { HOW } from '../data/site';
 import { image } from '../lib/image';
+import { COPY } from '../i18n/copy';
+import type { Lang } from '../i18n/lang';
 
-const STEPS = ['tap try on', 'see it on you', 'get your size', 'ask anything'];
-const WORDS = ['any shop.', 'your wardrobe.', 'the feed.'];
+interface Props { lang: Lang }
+const t = COPY[Astro.props.lang].how;
 const renders = [HOW.shop.render, HOW.wardrobe.render, HOW.feed.render];
-// One scene per source: its size choice, the question asked, and the stylist's answer.
-const SCENES = [
-  { sizes: [['M', 'true fit', 'as designed'], ['L', 'oversized', 'the relaxed look you like']], q: 'can you roll up the sleeves?', a: 'done. rolled to the elbow.' },
-  { sizes: [['M', 'true fit', 'your usual size'], ['L', 'relaxed', 'a looser drape']], q: 'what do you think of the match?', a: 'the white sneakers lighten the navy. it’s a yes.' },
-  { sizes: [['S', 'true fit', 'closer to the body'], ['M', 'oversized', 'the cap-and-trench vibe']], q: 'how many of my pieces go with it?', a: '14 in your wardrobe. want to see them?' },
-];
 const post = HOW.feed.post;
-const shared = HOW.shop.pages[HOW.shop.pages.length - 1];
+// Each shop page's name and price come from the copy, in page order; the last page is the one shared.
+const pages = HOW.shop.pages.map((page, k) => ({ ...page, name: t.shopPages[k][0], price: t.shopPages[k][1] }));
+const shared = pages[pages.length - 1];
 // Lucide icon paths (ISC) for the browser bar and the share sheet.
 const ICON = {
   back: ['m15 18-6-6 6-6'], forward: ['m9 18 6-6-6-6'], share: ['M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8', 'm16 6-4-4-4 4', 'M12 2v13'],
@@ -24,13 +22,13 @@ const ICON = {
   notes: ['M15.5 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8.5Z', 'M15 3v6h6'],
   mail: ['M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z', 'm22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7'],
 };
-const APPS = [['copy', 'Copy'], ['notes', 'Notes'], ['mail', 'Mail']] as const;
+const APPS = (['copy', 'notes', 'mail'] as const).map((icon, k) => [icon, t.apps[k]] as const);
 ---
 <section class="how" id="how">
   <div class="hwrap">
     <div class="copy">
-      <h2><span class="nowrap">Tap try on <span class="soft">from</span></span><span class="nowrap"><span class="hroll">{WORDS.map((w) => <span class="hw">{w}</span>)}<span class="track" aria-hidden="true"><i class="hbar"></i></span></span></span></h2>
-      <ol aria-label="How it works">{STEPS.map((s, i) => <li class="hstep"><span class="num">{String(i + 1).padStart(2, '0')}</span>{s}</li>)}</ol>
+      <h2><span class="nowrap">{t.lead} <span class="soft">{t.from}</span></span><span class="nowrap"><span class="hroll" data-next={t.next}>{t.words.map((w) => <span class="hw">{w}</span>)}<span class="track" aria-hidden="true"><i class="hbar"></i></span></span></span></h2>
+      <ol aria-label={t.stepsLabel}>{t.steps.map((s, i) => <li class="hstep"><span class="num">{String(i + 1).padStart(2, '0')}</span>{s}</li>)}</ol>
     </div>
     <div class="visual">
       <div class="hstage" aria-hidden="true">
@@ -40,7 +38,7 @@ const APPS = [['copy', 'Copy'], ['notes', 'Notes'], ['mail', 'Mail']] as const;
               <div class="screen">
                 <div class="status"><span>9:41</span><span class="battery"><span></span></span></div>
                 <div class="hsrc shop">
-                  <div class="spages">{HOW.shop.pages.map((page) => (
+                  <div class="spages">{pages.map((page) => (
                     <div class:list={['spage', page.theme]}>
                       <div class="url"><span>{page.domain}</span></div>
                       <div class="shot"><Picture class={page.cutout ? 'cutout' : undefined} src={image(page.image)} formats={['avif', 'webp']} widths={[300, 600]} sizes="260px" alt="" loading="lazy" /></div>
@@ -63,29 +61,29 @@ const APPS = [['copy', 'Copy'], ['notes', 'Notes'], ['mail', 'Mail']] as const;
                   </div>
                 </div>
                 <div class="hsrc wardrobe">
-                  <b class="tab-title">Wardrobe</b>
-                  <div class="tabs"><span class="on">items</span><span>outfits</span><span>tried</span></div>
+                  <b class="tab-title">{t.wardrobe.title}</b>
+                  <div class="tabs">{t.wardrobe.tabs.map((tab, k) => <span class={k === 0 ? 'on' : undefined}>{tab}</span>)}</div>
                   <div class="grid">{HOW.wardrobe.grid.map((id) => (
                     <span class:list={['tile', { hpk: HOW.wardrobe.picks.includes(id) }]}><span><Picture class="cutout" src={image(id)} formats={['avif', 'webp']} widths={[160, 260]} sizes="125px" alt="" loading="lazy" /></span></span>
                   ))}</div>
-                  <span class="htry" data-tap>Try on · {HOW.wardrobe.picks.length} pieces<span class="hring"></span></span>
+                  <span class="htry" data-tap>{t.wardrobe.tryOn} · {HOW.wardrobe.picks.length} {t.wardrobe.pieces}<span class="hring"></span></span>
                 </div>
                 <div class="hsrc feed">
-                  <b class="tab-title">Feed</b>
-                  <div class="tabs"><span class="on">everyone</span><span>following</span></div>
+                  <b class="tab-title">{t.feed.title}</b>
+                  <div class="tabs">{t.feed.tabs.map((tab, k) => <span class={k === 0 ? 'on' : undefined}>{tab}</span>)}</div>
                   <div class="who"><span class="avatar">{post.handle[0].toUpperCase()}</span><b>{post.handle}</b><span class="age">{post.age}</span></div>
-                  <div class="post"><Picture src={image(post.image)} formats={['avif', 'webp']} widths={[300, 600]} sizes="260px" alt="" loading="lazy" /><span class="htry light" data-tap>Try on<span class="hring dark"></span></span></div>
-                  <div class="likes"><span>128 likes</span></div>
+                  <div class="post"><Picture src={image(post.image)} formats={['avif', 'webp']} widths={[300, 600]} sizes="260px" alt="" loading="lazy" /><span class="htry light" data-tap>{t.feed.tryOn}<span class="hring dark"></span></span></div>
+                  <div class="likes"><span>{t.feed.likes}</span></div>
                 </div>
                 {renders.map((id, i) => (
-                  <div class:list={['hren', { first: i === 0 }]}><Picture class="hrimg cutout" src={image(id)} formats={['avif', 'webp']} widths={[320, 640]} sizes="280px" alt="" loading="lazy" /><span class="badge">your twin</span><span class="hin"><span class="field"><span class="hph">ask your stylist…</span><span class="htype"></span></span><span class="hsend">send</span></span><span class="hsweep"></span></div>
+                  <div class:list={['hren', { first: i === 0 }]}><Picture class="hrimg cutout" src={image(id)} formats={['avif', 'webp']} widths={[320, 640]} sizes="280px" alt="" loading="lazy" /><span class="badge">{t.twin}</span><span class="hin"><span class="field"><span class="hph">{t.ask}</span><span class="htype"></span></span><span class="hsend">{t.send}</span></span><span class="hsweep"></span></div>
                 ))}
               </div>
             <Picture class="frame" src={frame} formats={['avif', 'webp']} widths={[330, 660, 990]} sizes="330px" alt="" loading="lazy" />
           </div>
-            {SCENES.map(({ sizes, q, a }, i) => (
+            {t.scenes.map(({ sizes, q, a }, i) => (
               <div class:list={['hpop', { first: i === 0 }]}>
-                <div class="hsz"><span class="label">recommended size</span>{sizes.map(([letter, fit, why], k) => (
+                <div class="hsz"><span class="label">{t.sizeLabel}</span>{sizes.map(([letter, fit, why], k) => (
                   <span class:list={['hszr', { chosen: k === 0 }]}><span class="letter">{letter}</span><span class="why"><b>{fit}</b><span>{why}</span></span></span>
                 ))}</div>
                 <div class="hq">{q}</div>

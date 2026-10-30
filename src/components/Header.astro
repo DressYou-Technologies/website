@@ -4,17 +4,25 @@ import GetLink from './GetLink.astro';
 import DownloadIcon from './DownloadIcon.astro';
 import { LINKS } from '../data/site';
 import { qrSvg } from '../lib/qr';
+import { COPY } from '../i18n/copy';
+import { LANGS, localize, type Lang } from '../i18n/lang';
 import mark from '../assets/brand/mark-white.png';
 import logo from '../assets/brand/logo-white.png';
+
+interface Props { lang: Lang; path: string }
+const { lang, path } = Astro.props;
+const t = COPY[lang];
+const other = LANGS.find((l) => l !== lang) ?? lang;
 ---
 <header class="top">
-  <a class="brand" href="/" aria-label="dressyou"><span class="brand-mark"><Image src={mark} width={26} height={26} densities={[1, 2]} alt="" /></span><Image class="brand-full" src={logo} height={28} densities={[1, 2]} alt="dressyou" loading="eager" /></a>
+  <a class="brand" href={localize(lang, '/')} aria-label="DressYou"><span class="brand-mark"><Image src={mark} width={26} height={26} densities={[1, 2]} alt="" /></span><Image class="brand-full" src={logo} height={28} densities={[1, 2]} alt="DressYou" loading="eager" /></a>
   <nav>
-    <GetLink kind="extension" class="hdr-ext"><DownloadIcon size={16} />Get the extension</GetLink>
+    <a class="hdr-lang" href={localize(other, path)} hreflang={other} lang={other} aria-label={t.lang.label}>{other.toUpperCase()}</a>
+    <GetLink kind="extension" class="hdr-ext"><DownloadIcon size={16} />{t.get.extension}</GetLink>
     <span class="hdr-app">
-      <GetLink kind="app">Get the app</GetLink>
+      <GetLink kind="app">{t.get.app}</GetLink>
       {LINKS.appUrl && (
-        <span class="qr-pop"><span><span class="qr-box" role="img" aria-label="QR code to download the app" set:html={qrSvg(LINKS.appUrl)} /></span></span>
+        <span class="qr-pop"><span><span class="qr-box" role="img" aria-label={t.get.qr} set:html={qrSvg(LINKS.appUrl)} /></span></span>
       )}
     </span>
   </nav>
@@ -39,6 +47,8 @@ import logo from '../assets/brand/logo-white.png';
   .compact .brand :global(.brand-full) { height: 20px; }
 
   nav { display: flex; align-items: center; gap: 4px; }
+  .hdr-lang { display: inline-flex; align-items: center; justify-content: center; height: 36px; padding: 0 10px; border-radius: 12px; color: rgba(255,255,255,.78); font-size: .8125rem; font-weight: 700; letter-spacing: .04em; text-decoration: none; }
+  .hdr-lang:hover { color: #fff; background: rgba(255,255,255,.1); }
   nav :global(.hdr-ext) {
     display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 42px;
     max-width: clamp(0px, (100vw - 600px) * 100, 240px); padding: 0 clamp(0px, (100vw - 600px) * 100, 20px); overflow: hidden;

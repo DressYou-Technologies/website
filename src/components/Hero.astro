@@ -6,7 +6,11 @@ import { WALL } from '../data/site';
 import { image } from '../lib/image';
 import { cylinder } from '../lib/cylinder';
 import appIcon from '../assets/brand/app-icon.png';
+import { COPY } from '../i18n/copy';
+import type { Lang } from '../i18n/lang';
 
+interface Props { lang: Lang }
+const t = COPY[Astro.props.lang];
 const columns = cylinder(WALL.length);
 ---
 <section class="hero">
@@ -24,10 +28,10 @@ const columns = cylinder(WALL.length);
     </div>
     <div class="shade" aria-hidden="true"></div>
     <div class="hero-cta">
-      <h1><span class="line"><span>Try it on</span></span><span class="line"><span>before it's yours.</span></span></h1>
+      <h1>{t.hero.lines.map((line) => <span class="line"><span>{line}</span></span>)}</h1>
       <div class="dock">
-        <GetLink kind="app" class="dock-app"><Image src={appIcon} width={40} height={40} densities={[1, 2]} alt="" />Get the app</GetLink>
-        <GetLink kind="extension" class="dock-ext"><DownloadIcon size={18} />Get the extension</GetLink>
+        <GetLink kind="app" class="dock-app"><Image src={appIcon} width={40} height={40} densities={[1, 2]} alt="" />{t.get.app}</GetLink>
+        <GetLink kind="extension" class="dock-ext"><DownloadIcon size={18} />{t.get.extension}</GetLink>
       </div>
     </div>
   </div>

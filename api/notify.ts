@@ -6,7 +6,8 @@ const MAX_BODY_BYTES = 2048;
 const MAX_EMAIL_LENGTH = 254;           // RFC 5321 path limit
 const MIN_HUMAN_MS = 1500;              // a person takes longer than this to type an address
 const BREVO_TIMEOUT_MS = 8000;
-const CONFIRMED_PATH = '/notified';
+// French sits at the root and English under /en, as on the site; anything else gets the French page.
+const CONFIRMED_PATHS: Record<string, string> = { fr: '/notified', en: '/en/notified' };
 // Deliberately loose: one @, something before it, and a dotted domain. Brevo's own check is the strict one.
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -25,7 +26,7 @@ export async function handle(request: Request, env: Env, fetcher: Fetcher): Prom
 
   let body: unknown;
   try { body = JSON.parse(raw); } catch { return answer(400, { error: 'email' }); }
-  const { email, website, elapsed } = (body ?? {}) as Record<string, unknown>;
+  const { email, website, elapsed, lang } = (body ?? {}) as Record<string, unknown>;
   // Bots fill every field and submit at once: tell them it worked and send nothing anywhere.
   if (website !== '' || typeof elapsed !== 'number' || elapsed < MIN_HUMAN_MS) return answer(200, { ok: true });
   if (typeof email !== 'string' || email.length > MAX_EMAIL_LENGTH || !EMAIL.test(email.trim())) return answer(400, { error: 'email' });
@@ -37,7 +38,7 @@ export async function handle(request: Request, env: Env, fetcher: Fetcher): Prom
     const res = await fetcher(BREVO_DOI_URL, {
       method: 'POST',
       headers: { 'api-key': key, 'content-type': 'application/json', accept: 'application/json' },
-      body: JSON.stringify({ email: email.trim(), includeListIds: [Number(list)], templateId: Number(template), redirectionUrl: `${origin}${CONFIRMED_PATH}` }),
+      body: JSON.stringify({ email: email.trim(), includeListIds: [Number(list)], templateId: Number(template), redirectionUrl: `${origin}${CONFIRMED_PATHS[typeof lang === 'string' && Object.hasOwn(CONFIRMED_PATHS, lang) ? lang : 'fr']}` }),
       signal: AbortSignal.timeout(BREVO_TIMEOUT_MS),
     });
     if (res.ok) return answer(200, { ok: true });

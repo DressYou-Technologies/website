@@ -1,13 +1,8 @@
 # DressYou
 
-> Try it on before it's yours.
-> DressYou makes a twin from your own photos, so you can try on clothes from any shop, your wardrobe or the feed before you buy.
+> Essayage virtuel sur votre jumeau. Virtual try-on on your own twin.
 
-DressYou Technologies is a Paris-based fashion technology company. This site presents the
-DressYou app: a twin made from your own photos, try-ons from a shop link, your wardrobe or the
-feed, outfit building from the clothes you own, asking friends to vote between looks, and a
-stylist that answers from your wardrobe and your taste. The app is not yet released; iOS,
-Android and a browser extension are announced.
+DressYou is a fashion app from Paris. Your own photos make your twin, and you try on clothes from any online shop, your wardrobe or the feed before you buy. The app also builds outfits from the clothes you own, lets friends vote between looks, and includes a stylist that answers from your wardrobe. The app is not released yet. iOS, Android and a Chrome extension are announced, and the site takes an email to say when it is out.
 
 The people shown on the site are AI-generated.
 
@@ -15,14 +10,14 @@ The people shown on the site are AI-generated.
 
 - Name: DressYou
 - Company: DressYou Technologies, 47 rue Vivienne, 75002 Paris, France
-- Tagline: Try it on before it's yours.
-- Website: https://dressyouapp.com/
+- Site: https://dressyouapp.com/ in French, https://dressyouapp.com/en in English
 - Contact: hello@dressyouapp.com
 - Status: pre-launch
 
 ## Pages
 
-- [Home](https://dressyouapp.com/): what DressYou does, in five sections.
-- [Legal notice](https://dressyouapp.com/legal)
-- [Privacy](https://dressyouapp.com/privacy)
-- [Terms](https://dressyouapp.com/terms)
+- [Accueil](https://dressyouapp.com/)
+- [Home](https://dressyouapp.com/en)
+- [Mentions légales](https://dressyouapp.com/legal), [Legal notice](https://dressyouapp.com/en/legal)
+- [Confidentialité](https://dressyouapp.com/privacy), [Privacy](https://dressyouapp.com/en/privacy)
+- [Conditions](https://dressyouapp.com/terms), [Terms](https://dressyouapp.com/en/terms)

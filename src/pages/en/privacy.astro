@@ -1,0 +1,18 @@
+---
+import Doc from '../../layouts/Doc.astro';
+import { LINKS } from '../../data/site';
+---
+<Doc lang="en" title="Privacy" path="/privacy" updated="30 October 2026">
+  <p>This notice covers this website only. The DressYou app will come with its own privacy notice.</p>
+  <h2>What this site collects</h2>
+  <p>The site sets no cookies, runs no analytics or advertising, and your browser loads nothing from other companies' servers.</p>
+  <h2>Being notified when the app is out</h2>
+  <p>If you ask to be notified, we keep your email address to send you one message when the DressYou app is available, and for nothing else. Brevo (Sendinblue SAS, 9-17 rue Salneuve, 75017 Paris, France) stores the address for us and first sends you an email to confirm it, so nobody can sign you up without you. We delete the address once the launch email is sent, or as soon as you unsubscribe.</p>
+  <p>The legal basis is your consent. You can withdraw it at any time through the link in every email, or by writing to <a href={`mailto:${LINKS.email}`}>{LINKS.email}</a>.</p>
+  <h2>Hosting</h2>
+  <p>Our host, Vercel Inc., processes the technical data every website request carries, such as your IP address and browser type, to deliver the pages and keep the service secure. Vercel acts on our behalf and keeps these logs for a limited time.</p>
+  <h2>Writing to us</h2>
+  <p>If you email <a href={`mailto:${LINKS.email}`}>{LINKS.email}</a>, we use your address and message only to answer you, and delete them when they are no longer needed for that.</p>
+  <h2>Your rights</h2>
+  <p>You can ask us to access, correct or erase data about you, or object to its use, by writing to <a href={`mailto:${LINKS.email}`}>{LINKS.email}</a>. You can also complain to the CNIL, the French data protection authority, at cnil.fr.</p>
+</Doc>

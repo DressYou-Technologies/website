@@ -4,32 +4,37 @@ import GetLink from './GetLink.astro';
 import DownloadIcon from './DownloadIcon.astro';
 import { LINKS } from '../data/site';
 import logo from '../assets/brand/logo-white.png';
+import { COPY } from '../i18n/copy';
+import { LANGS, localize, type Lang } from '../i18n/lang';
 
-const columns = [
-  { label: 'Product', links: [['How it works', '/#how'], ['Wardrobe', '/#more'], ['Stylist', '/#stylist']] },
-  { label: 'Legal', links: [['Legal notice', '/legal'], ['Privacy', '/privacy'], ['Terms', '/terms']] },
-];
+interface Props { lang: Lang; path: string }
+const { lang, path } = Astro.props;
+const t = COPY[lang];
+const other = LANGS.find((l) => l !== lang) ?? lang;
+// Links are written for the root ("/#how", "/legal") and land on the same language's page.
+const href = (link: string) => { const [page, hash] = link.split('#'); return localize(lang, page || '/') + (hash ? `#${hash}` : ''); };
 ---
 <footer class="finale" id="get">
   <div class="row">
-    <h2 class="mega"><span class="w">Wear it</span><span class="w">first.</span></h2>
+    <h2 class="mega">{t.finale.mega.map((w) => <span class="w">{w}</span>)}</h2>
     <div class="finale-cta">
-      <GetLink kind="app" class="cta-app">Get the app</GetLink>
-      <GetLink kind="extension" class="cta-ext"><DownloadIcon size={18} />Get the extension</GetLink>
+      <GetLink kind="app" class="cta-app">{t.get.app}</GetLink>
+      <GetLink kind="extension" class="cta-ext"><DownloadIcon size={18} />{t.get.extension}</GetLink>
     </div>
   </div>
   <div class="base">
     <div class="who">
-      <Image src={logo} height={26} densities={[1, 2]} alt="dressyou" />
+      <Image src={logo} height={26} densities={[1, 2]} alt="DressYou" />
       <a href={`mailto:${LINKS.email}`}>{LINKS.email}</a>
     </div>
-    <nav aria-label="Footer">
-      {columns.map(({ label, links }) => (
-        <div><p>{label}</p>{links.map(([text, href]) => <a href={href}>{text}</a>)}</div>
+    <nav aria-label={t.finale.footer}>
+      {t.finale.columns.map(({ label, links }) => (
+        <div><p>{label}</p>{links.map(([text, link]) => <a href={href(link)}>{text}</a>)}</div>
       ))}
+      <div><p>{t.lang.heading}</p><a href={localize(other, path)} hreflang={other} lang={other}>{t.lang.switchTo}</a></div>
     </nav>
   </div>
-  <p class="ai">People shown on this page are AI-generated.</p>
+  <p class="ai">{t.finale.ai}</p>
 </footer>
 
 <style>

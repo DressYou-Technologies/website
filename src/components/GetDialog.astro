@@ -4,49 +4,56 @@ import appIcon from '../assets/brand/app-icon.png';
 import { HOW, LINKS } from '../data/site';
 import { image } from '../lib/image';
 import { qrSvg } from '../lib/qr';
+import { COPY } from '../i18n/copy';
+import { localize, type Lang } from '../i18n/lang';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = COPY[lang].dialog, get = COPY[lang].get;
 
 // The extension demo tries on the shop scene's last page: the trench.
-const page = HOW.shop.pages[HOW.shop.pages.length - 1];
+const last = HOW.shop.pages.length - 1, page = HOW.shop.pages[last];
+const [pageName, pagePrice] = COPY[lang].how.shopPages[last];
 ---
 <dialog id="get-app" class="get" aria-labelledby="get-app-title">
   <div class="card">
-    <form method="dialog"><button class="close" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true" width="18" height="18"><path d="M18 6 6 18M6 6l12 12"></path></svg></button></form>
+    <form method="dialog"><button class="close" aria-label={t.close}><svg viewBox="0 0 24 24" aria-hidden="true" width="18" height="18"><path d="M18 6 6 18M6 6l12 12"></path></svg></button></form>
     {LINKS.appUrl
-      ? <><h2 class="title" id="get-app-title">Get the app.</h2><div class="qr" role="img" aria-label="QR code to download the app" set:html={qrSvg(LINKS.appUrl)} /></>
+      ? <><h2 class="title" id="get-app-title">{t.appReady}</h2><div class="qr" role="img" aria-label={get.qr} set:html={qrSvg(LINKS.appUrl)} /></>
       : <>
-          <h2 class="title" id="get-app-title">Be the first to know.</h2>
-          <p class="lede">We'll email you once, when the app is out.</p>
-          <form class="notify" novalidate>
-            <label class="field"><span class="sr">Email</span><input type="email" name="email" required autocomplete="email" inputmode="email" maxlength="254" placeholder="you@example.com" /></label>
+          <h2 class="title" id="get-app-title">{t.notify.title}</h2>
+          <p class="lede">{t.notify.lede}</p>
+          <form class="notify" novalidate data-lang={lang} data-ok={t.says.ok} data-email={t.says.email} data-closed={t.says.closed} data-failed={t.says.failed}>
+            <label class="field"><span class="sr">{t.notify.email}</span><input type="email" name="email" required autocomplete="email" inputmode="email" maxlength="254" placeholder={t.notify.placeholder} /></label>
             <input class="trap" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
-            <button class="cta" type="submit">Notify me</button>
+            <button class="cta" type="submit">{t.notify.submit}</button>
             <p class="status" role="status" aria-live="polite"></p>
           </form>
-          <p class="fine">One email to confirm your address. No spam, unsubscribe anytime. <a href="/privacy">Privacy</a></p>
+          <p class="fine">{t.notify.fine} <a href={localize(lang, '/privacy')}>{t.notify.privacy}</a></p>
         </>}
   </div>
 </dialog>
 
 <dialog id="get-extension" class="get wide" aria-labelledby="get-extension-title">
   <div class="card">
-    <form method="dialog"><button class="close" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true" width="18" height="18"><path d="M18 6 6 18M6 6l12 12"></path></svg></button></form>
-    <h2 class="title" id="get-extension-title">Try on from any shop.</h2>
-    <p class="lede">The extension adds DressYou to every product page in Chrome.</p>
+    <form method="dialog"><button class="close" aria-label={t.close}><svg viewBox="0 0 24 24" aria-hidden="true" width="18" height="18"><path d="M18 6 6 18M6 6l12 12"></path></svg></button></form>
+    <h2 class="title" id="get-extension-title">{t.extension.title}</h2>
+    <p class="lede">{t.extension.lede}</p>
     <div class="xdemo" aria-hidden="true">
       <div class="xbar"><i></i><i></i><i></i><span class="xurl">{page.domain}</span><span class="xext"><Image src={appIcon} width={22} height={22} densities={[1, 2]} alt="" /><span class="xring"></span></span></div>
       <div class="xpage">
         <div class="xshot"><Picture src={image(page.image)} formats={['avif', 'webp']} widths={[240, 480]} sizes="200px" alt="" loading="lazy" /></div>
-        <div class="xinfo"><b>{page.name}</b><span>{page.price}</span><span class="xsizes">{['XS', 'S', 'M', 'L'].map((s) => <i>{s}</i>)}</span><span class="xbag">Add to bag</span></div>
+        <div class="xinfo"><b>{pageName}</b><span>{pagePrice}</span><span class="xsizes">{['XS', 'S', 'M', 'L'].map((s) => <i>{s}</i>)}</span><span class="xbag">{t.extension.bag}</span></div>
       </div>
       <div class="xpanel">
         <div class="xhead"><Image src={appIcon} width={18} height={18} densities={[1, 2]} alt="" /><b>DressYou</b></div>
         <div class="xtwin"><Picture class="cutout" src={image(HOW.shop.render)} formats={['avif', 'webp']} widths={[200, 400]} sizes="150px" alt="" loading="lazy" /></div>
-        <div class="xsize"><span class="xletter">M</span><span><b>true fit</b><span>your usual size</span></span></div>
+        <div class="xsize"><span class="xletter">M</span><span><b>{t.extension.fit}</b><span>{t.extension.usual}</span></span></div>
       </div>
     </div>
     {LINKS.extensionUrl
-      ? <a class="cta" href={LINKS.extensionUrl} target="_blank" rel="noopener">Add to Chrome</a>
-      : <span class="cta soon" aria-disabled="true">Coming soon to Chrome</span>}
+      ? <a class="cta" href={LINKS.extensionUrl} target="_blank" rel="noopener">{t.extension.add}</a>
+      : <span class="cta soon" aria-disabled="true">{t.extension.soon}</span>}
   </div>
 </dialog>
 

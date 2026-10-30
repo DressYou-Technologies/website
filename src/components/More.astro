@@ -2,6 +2,11 @@
 import { Image, Picture, getImage } from 'astro:assets';
 import { FEED_TRACKS, FRIENDS, FRIEND_SETS, LOOK_PIECES, OUTFITS, WARDROBE_ROWS } from '../data/site';
 import { image } from '../lib/image';
+import { COPY } from '../i18n/copy';
+import type { Lang } from '../i18n/lang';
+
+interface Props { lang: Lang }
+const t = COPY[Astro.props.lang].more;
 
 // Each row repeats its garments so the spin always has pieces on both sides of where it lands.
 const ROW_REPEATS = 10;
@@ -19,7 +24,7 @@ const heart = 'M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4
 const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z';
 ---
 <section class="more" id="more">
-  <div class="head"><h2>More than a try-on.</h2></div>
+  <div class="head"><h2>{t.title}</h2></div>
   <div class="bento">
     <article class="card wardrobe">
       <div class="ambient" style={ambientWardrobe} aria-hidden="true"></div><div class="shade" aria-hidden="true"></div>
@@ -39,8 +44,8 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
       </div>
       <div class="caption">
         <div>
-          <h3><span>Fill your wardrobe.</span><span class="nowrap">Build outfits.</span></h3>
-          <p>Add the clothes you own once. Then mix them into outfits and see each one on your twin.</p>
+          <h3><span>{t.wardrobe.lines[0]}</span><span class="nowrap">{t.wardrobe.lines[1]}</span></h3>
+          <p>{t.wardrobe.text}</p>
         </div>
       </div>
     </article>
@@ -63,13 +68,13 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
         </div>
         <div class="fade"></div>
         <div class="tlook" aria-hidden="true">
-          <div class="tl-head"><span>in this look</span><span class="count">{LOOK_PIECES.length} pieces</span></div>
+          <div class="tl-head"><span>{t.feed.inLook}</span><span class="count">{LOOK_PIECES.length} {t.feed.pieces}</span></div>
           <div class="tl-grid">{LOOK_PIECES.map((id) => <span class="tl-g"><Picture class="cutout" src={image(id)} formats={['avif', 'webp']} widths={[80, 140]} sizes="48px" alt="" loading="lazy" /></span>)}</div>
-          <span class="tl-cta">try the outfit</span>
+          <span class="tl-cta">{t.feed.tryOutfit}</span>
         </div>
-        <span class="scanchip"><svg viewBox="0 0 24 24" aria-hidden="true" width="16" height="16"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><circle cx="12" cy="12" r="1"></circle><path d="M18.944 12.33a1 1 0 0 0 0-.66 7.5 7.5 0 0 0-13.888 0 1 1 0 0 0 0 .66 7.5 7.5 0 0 0 13.888 0"></path></svg>Try on</span>
-        <h3>A feed of real people.</h3>
-        <p>Real photos, never renders. Open any look and try the outfit on your twin.</p>
+        <span class="scanchip"><svg viewBox="0 0 24 24" aria-hidden="true" width="16" height="16"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><circle cx="12" cy="12" r="1"></circle><path d="M18.944 12.33a1 1 0 0 0 0-.66 7.5 7.5 0 0 0-13.888 0 1 1 0 0 0 0 .66 7.5 7.5 0 0 0 13.888 0"></path></svg>{t.feed.tryOn}</span>
+        <h3>{t.feed.title}</h3>
+        <p>{t.feed.text}</p>
       </article>
       <article class="card friend">
         <div class="ambient" style={ambientFriend} aria-hidden="true"></div><div class="shade" aria-hidden="true"></div>
@@ -90,15 +95,15 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
           </div>
           ))}</div>
           <div class="share">
-            <span class="fsend"><svg viewBox="0 0 24 24" width="16" height="16"><path d={send}></path><path d="m21.854 2.147-10.94 10.939"></path></svg>Ask friends</span>
+            <span class="fsend"><svg viewBox="0 0 24 24" width="16" height="16"><path d={send}></path><path d="m21.854 2.147-10.94 10.939"></path></svg>{t.friend.ask}</span>
             <span class="fplane"><svg viewBox="0 0 24 24" width="16" height="16"><path d={send}></path><path d="m21.854 2.147-10.94 10.939"></path></svg></span>
             <span class="ffriends">{FRIENDS.map((f) => <span class="ffr">{f}</span>)}</span>
-            <span class="fsent">shared</span>
+            <span class="fsent">{t.friend.shared}</span>
           </div>
         </div>
         <div class="caption-friend">
-          <h3>Ask a friend.</h3>
-          <p>Send the looks you can't choose between. Your friends vote live.</p>
+          <h3>{t.friend.title}</h3>
+          <p>{t.friend.text}</p>
         </div>
       </article>
     </div>

@@ -13,7 +13,7 @@ const brevo = (status = 201, body = '') => {
 const post = (body, { origin = ORIGIN, method = 'POST' } = {}) => new Request(`${ORIGIN}/api/notify`, {
   method, headers: { 'content-type': 'application/json', origin }, body: method === 'POST' ? JSON.stringify(body) : undefined,
 });
-const human = (email) => ({ email, website: '', elapsed: 4000 });
+const human = (email, lang = 'fr') => ({ email, website: '', elapsed: 4000, lang });
 
 test('a valid email starts Brevo\'s double opt-in on the list', async () => {
   const { calls, fetcher } = brevo();
@@ -23,6 +23,14 @@ test('a valid email starts Brevo\'s double opt-in on the list', async () => {
   assert.equal(calls[0].url, 'https://api.brevo.com/v3/contacts/doubleOptinConfirmation');
   assert.equal(calls[0].init.headers['api-key'], 'test-key');
   assert.deepEqual(JSON.parse(calls[0].init.body), { email: 'ana@example.com', includeListIds: [7], templateId: 12, redirectionUrl: `${ORIGIN}/notified` });
+});
+
+test('the confirmation link lands on the page in the language the person signed up in', async () => {
+  const { calls, fetcher } = brevo();
+  await handle(post(human('ana@example.com', 'en')), ENV, fetcher);
+  await handle(post(human('ana@example.com', 'xx')), ENV, fetcher);
+  await handle(post(human('ana@example.com', 'toString')), ENV, fetcher);
+  assert.deepEqual(calls.map((c) => JSON.parse(c.init.body).redirectionUrl), [`${ORIGIN}/en/notified`, `${ORIGIN}/notified`, `${ORIGIN}/notified`]);
 });
 
 test('only a same-origin POST is accepted', async () => {
