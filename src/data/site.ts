@@ -33,12 +33,22 @@ export const WALL: ImageId[][] = [
   ['wall-w-blonde', 'wall-m-preppy', 'wall-w-track'],
 ];
 
+// A product page on some shop's site: the phone flips through a few, then shares the last one to DressYou.
+// The .example domains are reserved for examples, so no real shop is implied.
+export interface ShopPage { domain: string; name: string; price: string; image: ImageId; cutout: boolean; theme: 'white' | 'sand' }
 export const HOW: {
-  shop: { image: ImageId; render: ImageId };
+  shop: { pages: ShopPage[]; render: ImageId };
   wardrobe: { grid: ImageId[]; picks: ImageId[]; render: ImageId };
   feed: { post: Post; render: ImageId };
 } = {
-  shop: { image: 'shop-trench', render: 'twin-trench' },
+  shop: {
+    pages: [
+      { domain: 'nordstudio.example', name: 'Navy overshirt', price: '€89', image: 'g-navy-overshirt', cutout: true, theme: 'white' },
+      { domain: 'maisonclair.example', name: 'Suede loafers', price: '€140', image: 'g-brown-loafers', cutout: true, theme: 'sand' },
+      { domain: 'atelierneuf.example', name: 'Belted trench', price: '€149', image: 'shop-trench', cutout: false, theme: 'white' },
+    ],
+    render: 'twin-trench',
+  },
   wardrobe: {
     grid: ['g-navy-overshirt', 'g-grey-crewneck', 'g-ecru-trousers', 'g-white-sneakers', 'g-black-tee', 'g-chelsea-boots'],
     picks: ['g-grey-crewneck', 'g-ecru-trousers', 'g-white-sneakers', 'g-navy-overshirt'],

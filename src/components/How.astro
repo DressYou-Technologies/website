@@ -1,5 +1,6 @@
 ---
-import { Picture } from 'astro:assets';
+import { Image, Picture } from 'astro:assets';
+import appIcon from '../assets/brand/app-icon.png';
 import frame from '../assets/device/iphone-18-pro-burgundy.png';
 import { HOW } from '../data/site';
 import { image } from '../lib/image';
@@ -14,6 +15,16 @@ const SCENES = [
   { sizes: [['S', 'true fit', 'closer to the body'], ['M', 'oversized', 'the cap-and-trench vibe']], q: 'how many of my pieces go with it?', a: '14 in your wardrobe. want to see them?' },
 ];
 const post = HOW.feed.post;
+const shared = HOW.shop.pages[HOW.shop.pages.length - 1];
+// Lucide icon paths (ISC) for the browser bar and the share sheet.
+const ICON = {
+  back: ['m15 18-6-6 6-6'], forward: ['m9 18 6-6-6-6'], share: ['M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8', 'm16 6-4-4-4 4', 'M12 2v13'],
+  tabs: ['M8 8h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2Z', 'M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2'],
+  copy: ['M8 8h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2Z', 'M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2'],
+  notes: ['M15.5 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8.5Z', 'M15 3v6h6'],
+  mail: ['M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z', 'm22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7'],
+};
+const APPS = [['copy', 'Copy'], ['notes', 'Notes'], ['mail', 'Mail']] as const;
 ---
 <section class="how" id="how">
   <div class="hwrap">
@@ -29,11 +40,27 @@ const post = HOW.feed.post;
               <div class="screen">
                 <div class="status"><span>9:41</span><span class="battery"><span></span></span></div>
                 <div class="hsrc shop">
-                  <div class="url"><span>shop.example</span></div>
-                  <div class="shot"><Picture src={image(HOW.shop.image)} formats={['avif', 'webp']} widths={[300, 600]} sizes="260px" alt="" loading="lazy" /></div>
-                  <div class="title"><b>Belted trench</b><span>€149</span></div>
-                  <div class="sizes">{['XS', 'S', 'M', 'L'].map((s) => <span>{s}</span>)}</div>
-                  <span class="htry">Try on with DressYou<span class="hring"></span></span>
+                  <div class="spages">{HOW.shop.pages.map((page) => (
+                    <div class:list={['spage', page.theme]}>
+                      <div class="url"><span>{page.domain}</span></div>
+                      <div class="shot"><Picture class={page.cutout ? 'cutout' : undefined} src={image(page.image)} formats={['avif', 'webp']} widths={[300, 600]} sizes="260px" alt="" loading="lazy" /></div>
+                      <div class="title"><b>{page.name}</b><span>{page.price}</span></div>
+                      <div class="sizes">{['XS', 'S', 'M', 'L'].map((s) => <span>{s}</span>)}</div>
+                    </div>
+                  ))}</div>
+                  <div class="sbar">
+                    <svg viewBox="0 0 24 24">{ICON.back.map((d) => <path d={d} />)}</svg>
+                    <svg viewBox="0 0 24 24">{ICON.forward.map((d) => <path d={d} />)}</svg>
+                    <span class="sb-share"><svg viewBox="0 0 24 24">{ICON.share.map((d) => <path d={d} />)}</svg><span class="hring dark"></span></span>
+                    <svg viewBox="0 0 24 24">{ICON.tabs.map((d) => <path d={d} />)}</svg>
+                  </div>
+                  <div class="sheet">
+                    <div class="sh-head"><b>{shared.name}</b><span>{shared.domain}</span></div>
+                    <div class="sh-apps">
+                      <span class="app" data-tap><Image src={appIcon} width={50} height={50} densities={[1, 2]} alt="" /><span>DressYou</span><span class="hring dark"></span></span>
+                      {APPS.map(([icon, label]) => <span class="app"><span class="ico"><svg viewBox="0 0 24 24">{ICON[icon].map((d) => <path d={d} />)}</svg></span><span>{label}</span></span>)}
+                    </div>
+                  </div>
                 </div>
                 <div class="hsrc wardrobe">
                   <b class="tab-title">Wardrobe</b>
@@ -41,13 +68,13 @@ const post = HOW.feed.post;
                   <div class="grid">{HOW.wardrobe.grid.map((id) => (
                     <span class:list={['tile', { hpk: HOW.wardrobe.picks.includes(id) }]}><span><Picture class="cutout" src={image(id)} formats={['avif', 'webp']} widths={[160, 260]} sizes="125px" alt="" loading="lazy" /></span></span>
                   ))}</div>
-                  <span class="htry">Try on · {HOW.wardrobe.picks.length} pieces<span class="hring"></span></span>
+                  <span class="htry" data-tap>Try on · {HOW.wardrobe.picks.length} pieces<span class="hring"></span></span>
                 </div>
                 <div class="hsrc feed">
                   <b class="tab-title">Feed</b>
                   <div class="tabs"><span class="on">everyone</span><span>following</span></div>
                   <div class="who"><span class="avatar">{post.handle[0].toUpperCase()}</span><b>{post.handle}</b><span class="age">{post.age}</span></div>
-                  <div class="post"><Picture src={image(post.image)} formats={['avif', 'webp']} widths={[300, 600]} sizes="260px" alt="" loading="lazy" /><span class="htry light">Try on<span class="hring dark"></span></span></div>
+                  <div class="post"><Picture src={image(post.image)} formats={['avif', 'webp']} widths={[300, 600]} sizes="260px" alt="" loading="lazy" /><span class="htry light" data-tap>Try on<span class="hring dark"></span></span></div>
                   <div class="likes"><span>128 likes</span></div>
                 </div>
                 {renders.map((id, i) => (
@@ -105,11 +132,28 @@ const post = HOW.feed.post;
   .battery span { display: block; width: 75%; height: 100%; border-radius: 1.5px; background: #0a0a0a; }
   :global(picture), .screen :global(img) { display: block; }
   .screen :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .shot :global(img), .post :global(img) { object-fit: cover; }
+  .shot :global(img:not(.cutout)), .post :global(img) { object-fit: cover; }
 
   /* Without motion the phone shows the first try-on and its answer; the sources only appear while it plays. */
   .hsrc { position: absolute; inset: 0; padding-top: 46px; background: #fff; opacity: 0; visibility: hidden; }
   .hsrc.shop { padding-top: 44px; }
+  /* Any shop's site: the phone browses a few, then shares the last page to DressYou from the share sheet. */
+  .spages { position: absolute; left: 0; right: 0; top: 44px; bottom: 58px; overflow: hidden; }
+  .spage { position: absolute; inset: 0; background: #fff; }
+  .spage.sand { background: #efe8dd; }
+  .spage.sand .url span { background: rgba(255,255,255,.6); }
+  .sbar { position: absolute; left: 0; right: 0; bottom: 0; height: 58px; display: flex; align-items: center; justify-content: space-around; padding: 0 14px 10px; background: rgba(248,248,246,.96); box-shadow: 0 -1px 0 rgba(10,10,10,.06); color: #0a0a0a; }
+  .shop svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .sb-share { position: relative; display: grid; place-items: center; width: 40px; height: 40px; }
+  .sheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 4; padding: 14px 14px 26px; border-radius: 22px 22px 0 0; background: rgba(244,244,242,.98); box-shadow: 0 -12px 30px rgba(0,0,0,.14); }
+  .sh-head { display: grid; gap: 3px; padding: 2px 4px 12px; box-shadow: 0 1px 0 rgba(10,10,10,.08); }
+  .sh-head b { font-size: 14px; letter-spacing: -.02em; }
+  .sh-head span { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: .04em; color: #6b6b6b; }
+  .sh-apps { display: flex; justify-content: space-between; padding: 14px 4px 0; }
+  .app { position: relative; display: grid; justify-items: center; gap: 6px; width: 54px; font-size: 10px; font-weight: 500; color: #3a3a3a; }
+  .app :global(img), .app .ico { position: static; width: 50px; height: 50px; border-radius: 13px; }
+  .app .ico { display: grid; place-items: center; background: #fff; box-shadow: inset 0 0 0 1px rgba(10,10,10,.08); }
+  .app .ico svg { width: 22px; height: 22px; stroke-width: 1.6; }
   .url { display: flex; align-items: center; gap: 8px; padding: 0 14px 10px; }
   .url span { flex: 1; height: 30px; border-radius: 15px; background: #f2f2f0; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 10px; color: #6b6b6b; }
   .shot { position: relative; margin: 0 14px; height: 300px; border-radius: 14px; overflow: hidden; background: #ececea; }
