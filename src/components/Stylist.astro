@@ -1,7 +1,7 @@
 ---
 import { Picture } from 'astro:assets';
 import StylistChecks from './StylistChecks.astro';
-import { STYLIST } from '../data/site';
+import { HOW, STYLIST } from '../data/site';
 import { image } from '../lib/image';
 import { COPY } from '../i18n/copy';
 import type { Lang } from '../i18n/lang';
@@ -38,7 +38,7 @@ const TABS = (['opinion', 'day', 'trip', 'find', 'shop'] as const).map((icon, k)
       <div class="sview">
         <div class="strack">
           <div class="sg" data-q={t.opinion.q}>
-            <p class="sq">{t.opinion.q}</p>
+            <div class="sq"><span class="sq-item"><span class="piece mini"><Picture class="cutout" src={image(STYLIST.opinion)} formats={['avif', 'webp']} widths={[80, 160]} sizes="44px" alt="" loading="lazy" /></span><span class="sq-meta"><b>{t.opinion.item}</b><span>{HOW.shop.pages[HOW.shop.pages.length - 1].domain}</span></span></span>{t.opinion.q}</div>
             <div class="sa">
               <StylistChecks title={t.checked} checks={t.opinion.checks} />
               <p class="sin sbub">{t.opinion.a}</p>
@@ -65,7 +65,8 @@ const TABS = (['opinion', 'day', 'trip', 'find', 'shop'] as const).map((icon, k)
             <p class="sq">{t.find.q}</p>
             <div class="sa">
               <StylistChecks title={t.checked} checks={t.find.checks} />
-              <div class="sin panel find"><span class="piece large"><Picture class="cutout" src={image(STYLIST.find)} formats={['avif', 'webp']} widths={[120, 220]} sizes="110px" alt="" loading="lazy" /></span><div class="find-copy"><b>{t.find.name}</b><span class="mono">{t.find.price}</span><span class="muted">{t.find.fit}</span><span class="cta small">{t.find.cta}</span></div></div>
+              <div class="sin result"><span class="piece large"><Picture class="cutout" src={image(STYLIST.find)} formats={['avif', 'webp']} widths={[120, 220]} sizes="110px" alt="" loading="lazy" /></span><span class="result-copy"><b>{t.find.name}</b><span>{t.find.price}</span><span class="muted">{t.find.fit}</span></span></div>
+              <span class="sin cta">{t.find.cta}</span>
             </div>
           </div>
           <div class="sg" data-q={t.buy.q}>
@@ -73,7 +74,8 @@ const TABS = (['opinion', 'day', 'trip', 'find', 'shop'] as const).map((icon, k)
             <div class="sa">
               <StylistChecks title={t.checked} checks={t.buy.checks} />
               <p class="sin sbub">{t.buy.a}</p>
-              <div class="sin panel find"><span class="piece large"><Picture class="cutout" src={image(STYLIST.buy)} formats={['avif', 'webp']} widths={[120, 220]} sizes="110px" alt="" loading="lazy" /></span><div class="find-copy"><span class="mono">{t.buy.price}</span><span class="cta small outline">{t.buy.cta}</span></div></div>
+              <div class="sin result"><span class="piece large"><Picture class="cutout" src={image(STYLIST.buy)} formats={['avif', 'webp']} widths={[120, 220]} sizes="110px" alt="" loading="lazy" /></span><span class="result-copy"><b>{t.buy.name}</b><span>{t.buy.price}</span></span></div>
+              <span class="sin cta outline">{t.buy.cta}</span>
             </div>
           </div>
         </div>
@@ -101,7 +103,13 @@ const TABS = (['opinion', 'day', 'trip', 'find', 'shop'] as const).map((icon, k)
   .sview { position: relative; flex: 1; min-height: 0; overflow: hidden; -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,0), #000 64px); mask-image: linear-gradient(180deg, rgba(0,0,0,0), #000 64px); }
   .strack { display: flex; flex-direction: column; padding: 40px clamp(18px, 4vw, 36px) 0; }
   .sg { display: flex; flex-direction: column; gap: 16px; padding-bottom: 28px; }
-  .sq { align-self: flex-end; max-width: 70%; margin: 0; padding: 14px 20px; border-radius: 24px 24px 8px 24px; background: #efefed; font-size: 1.0625rem; line-height: 1.45; }
+  .sq { align-self: flex-end; display: grid; justify-items: start; gap: 10px; max-width: 70%; margin: 0; padding: 14px 20px; border-radius: 24px 24px 8px 24px; background: #efefed; font-size: 1.0625rem; line-height: 1.45; }
+  /* A question about a piece carries the piece, as a link shared from the shop. */
+  .sq-item { display: flex; align-items: center; gap: 10px; margin: -4px -10px 0 -8px; padding: 6px 14px 6px 6px; border-radius: 16px; background: #fff; }
+  .sq-meta { display: grid; gap: 1px; line-height: 1.25; }
+  .sq-meta b { font-size: .875rem; }
+  .sq-meta span { font-size: .75rem; color: #6b6b6b; }
+  .piece.mini { width: 44px; border-radius: 10px; box-shadow: none; background: #f4f4f2; }
   .sa { position: relative; display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
   .sbub { max-width: min(56ch, 82%); margin: 0; padding: 14px 20px; border-radius: 24px 24px 24px 8px; background: #0a0a0a; color: #fff; font-size: 1.0625rem; line-height: 1.5; text-wrap: pretty; }
   .mono { font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: #6b6b6b; }
@@ -113,17 +121,17 @@ const TABS = (['opinion', 'day', 'trip', 'find', 'shop'] as const).map((icon, k)
   .piece :global(picture) { display: block; }
   .piece :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; }
   .cta { display: inline-flex; align-items: center; justify-content: center; height: 44px; padding: 0 22px; border-radius: 22px; background: #0a0a0a; color: #fff; font-size: .9375rem; font-weight: 700; }
-  .cta.small { justify-self: start; height: 38px; margin-top: 4px; }
   .cta.outline { background: none; color: #0a0a0a; box-shadow: inset 0 0 0 1px rgba(10,10,10,.28); }
   .panel { padding: 16px; border-radius: 22px; background: #fff; box-shadow: 0 0 0 1px rgba(10,10,10,.06), 0 14px 30px rgba(0,0,0,.08); }
   .trip-head { display: flex; justify-content: space-between; gap: 16px; align-items: center; margin-bottom: 12px; }
   .trip-head .mono { letter-spacing: .16em; color: inherit; }
   .muted { font-size: .875rem; color: #6b6b6b; }
-  .panel.find { display: flex; gap: 16px; align-items: center; padding: 12px 20px 12px 12px; }
-  .find-copy { display: grid; gap: 6px; }
-  .find-copy b { font-size: 1.0625rem; }
-  .find-copy .mono { font-weight: 400; }
-  .find-copy .muted { font-size: .9375rem; }
+  /* A proposed piece: its image and its words side by side, the button on its own below. */
+  .result { display: flex; gap: 16px; align-items: center; }
+  .result-copy { display: grid; gap: 4px; }
+  .result-copy b { font-size: 1.0625rem; letter-spacing: -.02em; }
+  .result-copy span { font-size: .9375rem; }
+  .result-copy .muted { font-size: .875rem; }
   .input { flex: none; display: flex; align-items: center; gap: 10px; height: 60px; margin: 10px 14px 14px; padding: 6px 6px 6px 22px; border-radius: 30px; background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,.07), inset 0 0 0 1px rgba(10,10,10,.05); }
   .field { position: relative; flex: 1; min-width: 0; height: 24px; font-size: 1.0625rem; line-height: 24px; }
   .sph { position: absolute; inset: 0; color: #6b6b6b; }

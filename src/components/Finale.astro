@@ -1,9 +1,8 @@
 ---
-import { Image, Picture } from 'astro:assets';
+import { Image } from 'astro:assets';
 import GetLink from './GetLink.astro';
 import NotifyForm from './NotifyForm.astro';
-import { FINALE_REEL, LINKS } from '../data/site';
-import { image } from '../lib/image';
+import { LINKS } from '../data/site';
 import logo from '../assets/brand/logo-white.png';
 import { COPY } from '../i18n/copy';
 import { LANGS, localize, type Lang } from '../i18n/lang';
@@ -15,14 +14,10 @@ const other = LANGS.find((l) => l !== lang) ?? lang;
 // Links are written for the root ("/#how", "/legal") and land on the same language's page.
 const href = (link: string) => { const [page, hash] = link.split('#'); return localize(lang, page || '/') + (hash ? `#${hash}` : ''); };
 const year = new Date().getFullYear();
-const [first, second] = t.finale.mega;
 ---
 <footer class="finale" id="get">
   <div class="row">
-    <!-- The headline carries a window onto the hero's people, cycling through them while it is on screen. -->
-    <h2 class="mega"><span class="w">{first} <span class="reel" aria-hidden="true">{FINALE_REEL.map((id, i) => (
-      <Picture src={image(id)} formats={['avif', 'webp']} widths={[120, 240]} sizes="120px" alt="" loading="lazy" pictureAttributes={{ class: i === 0 ? 'on' : '' }} />
-    ))}</span></span><span class="w">{second}</span></h2>
+    <h2 class="mega">{t.finale.mega.map((w) => <span class="w">{w}</span>)}</h2>
     <div class="join">
       <p class="lede">{t.finale.notify}</p>
       <NotifyForm lang={lang} dark />
@@ -47,11 +42,6 @@ const [first, second] = t.finale.mega;
   .row { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 32px 48px; }
   .mega { margin: 0; font-size: clamp(2.875rem, 8vw, 7rem); font-weight: 700; letter-spacing: -.06em; line-height: .95; }
   .w { display: block; white-space: nowrap; }
-  /* An inline window the height of a capital, rounded like the site's cards. */
-  .reel { position: relative; display: inline-block; width: 1.5em; height: .74em; margin-left: .04em; vertical-align: .02em; border-radius: .2em; overflow: hidden; background: #e9e8e5; box-shadow: inset 0 0 0 1px rgba(255,255,255,.12); }
-  .reel :global(picture) { position: absolute; inset: 0; opacity: 0; }
-  .reel :global(picture.on) { opacity: 1; }
-  .reel :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 18%; }
   .join { flex: 0 1 420px; min-width: min(100%, 300px); display: grid; gap: 14px; }
   .lede { margin: 0; color: #cfcfcf; font-size: 1.0625rem; line-height: 1.4; text-wrap: balance; }
   .join :global(.xchip) { justify-self: start; display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 14px 0 12px; border: 0; border-radius: 999px; background: none; color: #cfcfcf; font: inherit; font-size: .875rem; font-weight: 600; text-decoration: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,.16); cursor: pointer; transition: color .2s, box-shadow .2s; }

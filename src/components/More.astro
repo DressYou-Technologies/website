@@ -68,7 +68,6 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
         </div>
         <div class="fade"></div>
         <div class="tlook" aria-hidden="true">
-          <div class="tl-head"><span>{t.feed.inLook}</span><span class="count">{LOOK_PIECES.length} {t.feed.pieces}</span></div>
           <div class="tl-grid">{LOOK_PIECES.map((id) => <span class="tl-g"><Picture class="cutout" src={image(id)} formats={['avif', 'webp']} widths={[80, 140]} sizes="48px" alt="" loading="lazy" /></span>)}</div>
           <span class="tl-cta">{t.feed.tryOutfit}</span>
         </div>
@@ -129,6 +128,7 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
   .wtrack { display: flex; gap: 10px; width: max-content; will-change: transform; }
   .wg { position: relative; flex: none; width: clamp(56px, min(5.8vw, 9svh), 90px); aspect-ratio: 1; border-radius: 16px; background: linear-gradient(180deg, rgba(255,255,255,.94), rgba(250,249,246,.78)); box-shadow: inset 0 1px 0 #fff, inset 0 0 0 1px rgba(255,255,255,.45), 0 10px 24px rgba(0,0,0,.35); }
   .wg :global(img.cutout), .fimg :global(img.cutout) { background: none; }
+  .fimg :global(img.cutout) { --cutout-pad: 5%; }
   .wimg { position: absolute; inset: 0; border-radius: 16px; overflow: hidden; }
   .wimg :global(img), .photo :global(img), .tl-g :global(img), .fimg :global(img), .wout :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; }
   .photo :global(img) { object-fit: cover; }
@@ -170,12 +170,13 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
   .like.liked svg { fill: currentColor; }
   .save { margin-left: auto; display: flex; }
   .fade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 35%, rgba(0,0,0,.72) 62%, rgba(0,0,0,.92) 100%); pointer-events: none; }
-  .tlook { position: absolute; top: 16px; right: 16px; z-index: 3; width: min(270px, calc(100% - 32px)); padding: 14px; border-radius: 22px; color: #0a0a0a; opacity: 0; pointer-events: none; background: rgba(250,250,248,.9); border: 1px solid rgba(255,255,255,.75); box-shadow: inset 0 1px 0 rgba(255,255,255,.95), 0 20px 50px rgba(0,0,0,.3); backdrop-filter: blur(26px) saturate(1.8); }
-  .tl-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; font-size: .875rem; font-weight: 700; }
-  .count { white-space: nowrap; font-family: var(--font-mono); font-size: 9px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: rgba(10,10,11,.62); }
-  .tl-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; }
-  .tl-g { position: relative; display: block; aspect-ratio: 3 / 4; border-radius: 8px; overflow: hidden; background: #efeeeb; }
-  .tl-cta { display: flex; align-items: center; justify-content: center; height: 38px; margin-top: 12px; border-radius: 19px; background: #0a0a0a; color: #fafaf8; font-size: .8125rem; font-weight: 700; }
+  /* The look's pieces on dark glass, like the card around it: round thumbnails and one light action. */
+  .tlook { position: absolute; top: 16px; right: 16px; z-index: 3; display: flex; align-items: center; gap: 12px; padding: 6px 6px 6px 14px; border-radius: 999px; color: #fff; opacity: 0; pointer-events: none; background: rgba(18,18,20,.55); border: 1px solid rgba(255,255,255,.14); box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 16px 40px rgba(0,0,0,.35); backdrop-filter: blur(20px) saturate(1.4); }
+  .tl-grid { display: flex; }
+  .tl-g { position: relative; display: block; width: 34px; height: 34px; margin-left: -8px; border-radius: 50%; overflow: hidden; background: #f1f1ef; box-shadow: 0 0 0 2px #1b1b1e; }
+  .tl-g:first-child { margin-left: 0; }
+  .tl-g :global(img.cutout) { --cutout-pad: 14%; }
+  .tl-cta { display: flex; align-items: center; height: 34px; padding: 0 14px; border-radius: 999px; background: #f4f4f2; color: #0a0a0a; font-size: .8125rem; font-weight: 600; white-space: nowrap; }
   .scanchip, .fsend { background: rgba(250,250,248,.72); border: 1px solid rgba(255,255,255,.75); box-shadow: inset 0 1px 0 rgba(255,255,255,.95), 0 6px 18px rgba(10,10,11,.14); }
   /* Only the feed's chip floats over moving photos, so only it pays for a backdrop blur. */
   .scanchip { backdrop-filter: blur(18px) saturate(1.8); }
@@ -191,10 +192,11 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
   .fvis { display: grid; gap: 16px; }
   /* The two sets share one place; without motion the first shows, while it plays GSAP hands over between them. */
   .fsets { display: grid; grid-template-columns: minmax(0, 1fr); margin: 4px 0 18px; }
-  .ffan { grid-area: 1 / 1; position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; width: 100%; }
+  /* Narrow, tall frames, so each look fills its own instead of floating in it. */
+  .ffan { --look-w: clamp(84px, 8vw, 124px); grid-area: 1 / 1; position: relative; display: grid; grid-template-columns: repeat(3, var(--look-w)); justify-content: center; gap: clamp(12px, 1.6vw, 22px); width: 100%; }
   .ffan:not(.first) { visibility: hidden; }
   .fopt { position: relative; }
-  .fimg { position: relative; aspect-ratio: 3 / 4; border-radius: 18px; overflow: hidden; background: linear-gradient(180deg, rgba(255,255,255,.94), rgba(250,249,246,.8)); box-shadow: inset 0 1px 0 #fff, inset 0 0 0 1px rgba(255,255,255,.45), 0 24px 50px rgba(0,0,0,.5); }
+  .fimg { position: relative; aspect-ratio: 1 / 1.7; border-radius: 18px; overflow: hidden; background: linear-gradient(180deg, rgba(255,255,255,.94), rgba(250,249,246,.8)); box-shadow: inset 0 1px 0 #fff, inset 0 0 0 1px rgba(255,255,255,.45), 0 24px 50px rgba(0,0,0,.5); }
   /* The friends' pick: a hairline round the look and a small check, set with one press, like selecting a photo. */
   .fpick { position: absolute; inset: -5px; z-index: 2; border-radius: 23px; box-shadow: 0 0 0 1.5px #f4f4f2; pointer-events: none; }
   .fcheck { position: absolute; right: -9px; top: -9px; z-index: 3; display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: #f4f4f2; color: #0a0a0a; box-shadow: 0 0 0 2px #151517; pointer-events: none; }
@@ -213,9 +215,15 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
   /* Wide screens: the whole bento reads in one screen under its title; the cards share that height. */
   @media (min-width: 900px) {
     .bento { height: clamp(560px, calc(100svh - 2 * var(--section-pad) - var(--title) - var(--title-gap)), 860px); }
-    .feedtile { flex: 1 1 0; min-height: 0; }
-    .friend { flex: none; padding: 24px 28px; }
-    .fimg { aspect-ratio: auto; height: clamp(130px, 21svh, 230px); }
-    .caption-friend { padding-top: 18px; }
+    /* The feed takes the larger share; the friends' looks size themselves from the height left in their card. */
+    .side { display: grid; grid-template-rows: minmax(0, 1.15fr) minmax(min-content, 1fr); }
+    .feedtile { min-height: 0; }
+    .friend { min-height: 0; padding: 22px 26px; }
+    .fvis { flex: 1; min-height: 0; grid-template-rows: minmax(120px, 1fr) auto; }
+    .fsets { min-height: 0; margin: 2px 0 16px; }
+    .ffan { height: 100%; grid-template-columns: repeat(3, auto); }
+    .fopt { height: 100%; }
+    .fimg { height: 100%; width: auto; }
+    .caption-friend { padding-top: 14px; }
   }
 </style>

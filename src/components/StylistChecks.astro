@@ -1,24 +1,58 @@
 ---
+import type { CheckKind } from '../i18n/copy';
+
 // What the stylist checked before it answers: each row ticks in turn (motion/stylist.ts), all ticked without motion.
-interface Props { title: string; checks: [label: string, value: string][] }
+interface Props { title: string; checks: [kind: CheckKind, label: string, value: string][] }
 const { title, checks } = Astro.props;
+// Lucide icon paths (ISC), one per kind of check; circles and rects the paths leave out are listed beside them.
+const ICON: Record<CheckKind, { paths: string[]; circles?: [number, number, number][]; rect?: true }> = {
+  weather: { paths: ['M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242', 'M16 14v6', 'M8 14v6', 'M12 16v6'] },
+  calendar: { paths: ['M16 2v4', 'M8 2v4', 'M3 10h18'], rect: true },
+  wardrobe: { paths: ['M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z'] },
+  style: { paths: ['M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z'] },
+  budget: { paths: ['M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1', 'M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4'] },
+  size: { paths: ['M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z'], circles: [[7.5, 7.5, 1]] },
+  delivery: { paths: ['M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2', 'M15 18H9', 'M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14'], circles: [[17, 18, 2], [7, 18, 2]] },
+  outfits: { paths: ['M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z', 'M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12', 'M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17'] },
+};
 ---
 <div class="sck">
   <span class="ck-title">{title}</span>
-  {checks.map(([label, value]) => (
-    <span class="ck"><span class="ck-tick"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span><span class="ck-label">{label}</span><span class="ck-value">{value}</span></span>
+  {checks.map(([kind, label, value]) => (
+    <span class:list={['ck', kind]}>
+      <span class="ck-ico"><svg viewBox="0 0 24 24" aria-hidden="true">{ICON[kind].rect && <rect width="18" height="18" x="3" y="4" rx="2" />}{ICON[kind].paths.map((d) => <path d={d} />)}{(ICON[kind].circles ?? []).map(([cx, cy, r]) => <circle cx={cx} cy={cy} r={r} />)}</svg></span>
+      <span class="ck-label">{label}</span>
+      <span class="ck-value">{value}</span>
+      <span class="ck-tick"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>
+    </span>
   ))}
 </div>
 
 <style>
-  .sck { display: grid; gap: 7px; min-width: min(100%, 320px); max-width: 100%; padding: 12px 16px 14px; border-radius: 20px; background: #fff; box-shadow: 0 0 0 1px rgba(10,10,10,.06), 0 10px 26px rgba(0,0,0,.06); }
-  .ck-title { margin-bottom: 2px; font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: #6b6b6b; }
-  .ck { position: relative; display: grid; grid-template-columns: 18px minmax(0, 10.5em) minmax(0, 1fr); align-items: center; gap: 10px; min-height: 22px; }
-  /* The empty circle a check fills. */
-  .ck::before { content: ''; grid-area: 1 / 1; width: 18px; height: 18px; border-radius: 50%; box-shadow: inset 0 0 0 1.5px rgba(10,10,10,.18); }
-  .ck-tick { grid-area: 1 / 1; display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: #0a0a0a; color: #fff; }
-  .ck-tick svg { width: 11px; height: 11px; fill: none; stroke: currentColor; stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
-  .ck-label { font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: #6b6b6b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .ck-value { font-size: .9375rem; font-weight: 600; letter-spacing: -.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  @media (max-width: 480px) { .sck { padding: 10px 12px 12px; } .ck { grid-template-columns: 18px minmax(0, 7.2em) minmax(0, 1fr); gap: 8px; } .ck-label { font-size: 9px; letter-spacing: .08em; } .ck-value { font-size: .875rem; white-space: normal; line-height: 1.25; } }
+  .sck { display: grid; gap: 4px; min-width: min(100%, 340px); max-width: 100%; padding: 14px 14px 12px; border-radius: 20px; background: #fff; box-shadow: 0 0 0 1px rgba(10,10,10,.06), 0 10px 26px rgba(0,0,0,.05); }
+  .ck-title { margin: 0 2px 6px; font-size: .8125rem; font-weight: 600; color: #6b6b6b; }
+  .ck { display: grid; grid-template-columns: 30px minmax(0, 7.5em) minmax(0, 1fr) 16px; align-items: center; gap: 10px; min-height: 34px; padding: 2px; }
+  /* A soft tint per kind of check, never strong: the colour tells kinds apart, the words carry the meaning. */
+  .ck-ico { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 9px; background: var(--tint); color: var(--hue); }
+  .weather { --tint: #e6eef7; --hue: #44698f; }
+  .calendar { --tint: #ece9f5; --hue: #66579a; }
+  .wardrobe { --tint: #f2ece3; --hue: #8a6a43; }
+  .style { --tint: #f6e8ec; --hue: #9b5068; }
+  .budget { --tint: #e5f0e8; --hue: #3f7552; }
+  .size { --tint: #eceae6; --hue: #55524c; }
+  .delivery { --tint: #f7ece1; --hue: #9a6234; }
+  .outfits { --tint: #e8eef0; --hue: #4b6b72; }
+  svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .ck-label { font-size: .875rem; color: #6b6b6b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ck-value { font-size: .9375rem; font-weight: 600; letter-spacing: -.01em; color: #0a0a0a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ck-tick { display: grid; place-items: center; width: 16px; height: 16px; color: #3f7552; }
+  .ck-tick svg { width: 14px; height: 14px; stroke-width: 2.6; }
+  @media (max-width: 480px) {
+    .sck { padding: 12px 10px 10px; }
+    .ck { grid-template-columns: 28px minmax(0, 1fr) 14px; gap: 8px; }
+    .ck-ico { width: 28px; height: 28px; grid-row: span 2; }
+    .ck-label { grid-column: 2; font-size: .75rem; line-height: 1.1; }
+    .ck-value { grid-column: 2; font-size: .875rem; white-space: normal; line-height: 1.2; }
+    .ck-tick { grid-column: 3; grid-row: 1 / span 2; }
+  }
 </style>

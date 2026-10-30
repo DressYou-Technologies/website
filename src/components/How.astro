@@ -32,7 +32,7 @@ const ICON = {
   shirt: ['M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z'],
   layers: ['M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z', 'M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12', 'M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17'],
   history: ['M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8', 'M3 3v5h5', 'M12 7v5l4 2'],
-  chat: ['M7.9 20A9 9 0 1 0 4 16.1L2 22Z'], menu: ['M4 12h16', 'M4 6h16', 'M4 18h16'],
+  chat: ['M7.9 20A9 9 0 1 0 4 16.1L2 22Z'], menu: ['M4 12h16', 'M4 6h16', 'M4 18h16'], bag: ['M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z', 'M3 6h18', 'M16 10a4 4 0 0 1-8 0'],
   home: ['M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8', 'M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'],
   scan: ['M3 7V5a2 2 0 0 1 2-2h2', 'M17 3h2a2 2 0 0 1 2 2v2', 'M21 17v2a2 2 0 0 1-2 2h-2', 'M7 21H5a2 2 0 0 1-2-2v-2', 'M18.944 12.33a1 1 0 0 0 0-.66 7.5 7.5 0 0 0-13.888 0 1 1 0 0 0 0 .66 7.5 7.5 0 0 0 13.888 0'],
   change: ['M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8', 'M21 3v5h-5', 'M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16', 'M8 16H3v5'],
@@ -63,12 +63,16 @@ const SHARE_ROW = MENU_ICONS.indexOf('share');
               <div class="ui">
                 <div class="hsrc shop">
                   <div class="spages">{pages.map((page) => (
-                    <div class:list={['spage', page.theme]}>
-                      <b class="sbrand">{page.brand}</b>
-                      <div class="shot"><Picture class="cutout" src={image(page.image)} formats={['avif', 'webp']} widths={[300, 600]} sizes="260px" alt="" loading="lazy" /></div>
-                      <b class="sname">{page.name}</b>
-                      <span class="sprice">{page.price}</span>
-                      <div class="sizes">{['XS', 'S', 'M', 'L'].map((size) => <span>{size}</span>)}</div>
+                    <div class:list={['spage', page.look]}>
+                      <div class="snav"><svg viewBox="0 0 24 24">{ICON.menu.map((d) => <path d={d} />)}</svg><b class="sbrand">{page.brand}</b><svg viewBox="0 0 24 24">{ICON.bag.map((d) => <path d={d} />)}</svg></div>
+                      <div class="shot"><Picture class="cutout" src={image(page.image)} formats={['avif', 'webp']} widths={[300, 600]} sizes="262px" alt="" loading="lazy" /></div>
+                      <div class="sinfo">
+                        <div class="stitle"><span class="sname">{page.name}</span><span class="sprice">{page.price}</span></div>
+                        <div class="swatches">{page.swatches.map((hex, k) => <i class={k === 0 ? 'on' : undefined} style={`background:${hex}`}></i>)}</div>
+                        <div class="sizes">{page.sizes.map((size) => <span>{size}</span>)}</div>
+                        <span class="sbag">{t.shop.bag}</span>
+                        <span class="sdeliv">{t.shop.delivery}</span>
+                      </div>
                     </div>
                   ))}</div>
                   <div class="toolbar">
@@ -114,8 +118,12 @@ const SHARE_ROW = MENU_ICONS.indexOf('share');
                   <div class="abar"><svg viewBox="0 0 24 24">{ICON.plus.map((d) => <path d={d} />)}</svg><b>{t.feed.title}</b><svg viewBox="0 0 24 24">{ICON.chat.map((d) => <path d={d} />)}</svg></div>
                   <div class="asearch"><span class="pill wide"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" />{ICON.search.map((d) => <path d={d} />)}</svg><span>{t.feed.search}</span></span></div>
                   <div class="ftabs">{t.feed.tabs.map((tab, k) => <span class={k === 0 ? 'on' : undefined}>{tab}</span>)}</div>
-                  <div class="who"><span class="avatar">{post.handle[0].toUpperCase()}</span><b>{post.handle}</b><span class="age">{post.age}</span><svg viewBox="0 0 24 24">{ICON.menu.map((d) => <path d={d} />)}</svg></div>
-                  <div class="post"><Picture src={image(post.image)} formats={['avif', 'webp']} widths={[400, 800]} sizes="262px" alt="" loading="lazy" /><span class="glass scan" data-tap><svg viewBox="0 0 24 24">{ICON.scan.map((d) => <path d={d} />)}<circle cx="12" cy="12" r="1" /></svg><span class="hring dark"></span></span></div>
+                  <div class="fview"><div class="fscroll">{[...HOW.feed.scrolled, post].map((item) => (
+                    <div class="fpost">
+                      <div class="who"><span class="avatar">{item.handle[0].toUpperCase()}</span><b>{item.handle}</b><span class="age">{item.age}</span><svg viewBox="0 0 24 24">{ICON.menu.map((d) => <path d={d} />)}</svg></div>
+                      <div class="post"><Picture src={image(item.image)} formats={['avif', 'webp']} widths={[400, 800]} sizes="262px" alt="" loading="lazy" />{item === post && <span class="glass scan" data-tap><svg viewBox="0 0 24 24">{ICON.scan.map((d) => <path d={d} />)}<circle cx="12" cy="12" r="1" /></svg><span class="hring dark"></span></span>}</div>
+                    </div>
+                  ))}</div></div>
                   <div class="tabbar">
                     <span class="glass tabs"><span><svg viewBox="0 0 24 24">{ICON.home.map((d) => <path d={d} />)}</svg></span><span><svg viewBox="0 0 24 24">{ICON.shirt.map((d) => <path d={d} />)}</svg></span><span class="on"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" />{ICON.search.map((d) => <path d={d} />)}</svg></span><span class="me"></span></span>
                     <span class="glass orb"><Image src={dewai} width={44} height={44} densities={[1, 2]} alt="" /></span>
@@ -203,16 +211,30 @@ const SHARE_ROW = MENU_ICONS.indexOf('share');
   /* Safari: a shop's product page, the bottom toolbar, its page menu and the share sheet. */
   .shop { background: #fff; font-family: -apple-system, BlinkMacSystemFont, var(--font-sans); }
   .spages { position: absolute; inset: 0; overflow: hidden; }
-  .spage { position: absolute; inset: 0; padding: 84px 16px 0; background: #fff; }
-  .spage.sand { background: #f3eee6; }
-  .sbrand { display: block; margin-bottom: 18px; text-align: center; font-size: 16px; font-weight: 700; letter-spacing: .32em; text-transform: uppercase; }
-  .shot { position: relative; height: 470px; background: #f2f1ee; }
-  .sand .shot { background: #ebe4d9; }
-  .shot :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .sname { display: block; margin-top: 18px; font-size: 21px; letter-spacing: -.01em; }
-  .sprice { display: block; margin-top: 2px; color: #6b6b6b; font-size: 17px; }
-  .sizes { display: flex; gap: 10px; margin-top: 14px; }
-  .sizes span { display: grid; place-items: center; width: 52px; height: 46px; box-shadow: inset 0 0 0 1px rgba(10,10,11,.2); font-size: 16px; }
+  /* Three shops, three looks, the way fashion sites differ: a stark sans, a warm serif, a soft serif in capitals. */
+  .spage { --page: #f7f6f3; --plate: #ecebe7; --ink: #111; --button: #111; --radius: 0; position: absolute; inset: 0; padding-top: 54px; background: var(--page); color: var(--ink); }
+  .spage.warm { --page: #f4efe7; --plate: #e9e1d5; --ink: #2b211b; --button: #3b2d24; --radius: 24px; }
+  .spage.soft { --page: #fbfaf8; --plate: #efedea; --ink: #141414; --button: #141414; --radius: 10px; }
+  .snav { display: flex; align-items: center; justify-content: space-between; height: 46px; padding: 0 18px; }
+  .snav svg { width: 22px; height: 22px; stroke-width: 1.5; }
+  .sbrand { font-size: 15px; font-weight: 600; letter-spacing: .42em; text-transform: uppercase; }
+  .warm .sbrand { font-family: ui-serif, 'Iowan Old Style', Georgia, serif; font-size: 25px; font-style: italic; font-weight: 400; letter-spacing: 0; text-transform: none; }
+  .soft .sbrand { font-family: ui-serif, 'Iowan Old Style', Georgia, serif; font-size: 17px; font-weight: 500; letter-spacing: .26em; }
+  .shot { position: relative; height: 416px; background: var(--plate); }
+  .shot :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; --cutout-bg: none; --cutout-pad: 9%; }
+  .sinfo { display: grid; gap: 14px; padding: 16px 18px 0; }
+  .stitle { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .sname { font-size: 15px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; }
+  .warm .sname { font-family: ui-serif, 'Iowan Old Style', Georgia, serif; font-size: 19px; letter-spacing: 0; text-transform: none; }
+  .sprice { font-size: 15px; }
+  .swatches { display: flex; gap: 10px; }
+  .swatches i { width: 18px; height: 18px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(0,0,0,.12); }
+  .swatches i.on { box-shadow: 0 0 0 2px var(--page), 0 0 0 3px var(--ink); }
+  .sizes { display: flex; gap: 6px; }
+  .sizes span { flex: 1; display: grid; place-items: center; height: 38px; border-radius: min(var(--radius), 8px); box-shadow: inset 0 0 0 1px rgba(0,0,0,.16); font-size: 14px; }
+  .sbag { display: grid; place-items: center; height: 50px; border-radius: var(--radius); background: var(--button); color: #fff; font-size: 15px; font-weight: 500; letter-spacing: .04em; }
+  .stark .sbag { text-transform: uppercase; font-size: 13px; letter-spacing: .14em; }
+  .sdeliv { margin-top: -6px; text-align: center; font-size: 12px; color: rgba(0,0,0,.5); }
   .toolbar { position: absolute; left: 33px; right: 34px; bottom: 34px; z-index: 2; display: flex; align-items: center; gap: 8px; height: 48px; }
   .toolbar .round { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; }
   .toolbar .round:first-child svg { color: rgba(10,10,11,.3); }
@@ -274,12 +296,15 @@ const SHARE_ROW = MENU_ICONS.indexOf('share');
   .htry { position: absolute; left: 20px; right: 20px; bottom: 34px; display: flex; align-items: center; justify-content: center; height: 56px; border-radius: 28px; background: #0a0a0b; color: #fff; font-weight: 600; opacity: 0; }
   .ftabs { position: absolute; left: 0; right: 0; top: 176px; display: flex; gap: 32px; height: 44px; padding: 0 24px; box-shadow: 0 1px 0 rgba(10,10,11,.1); font-size: 18px; color: rgba(10,10,11,.45); }
   .ftabs .on { color: #0a0a0b; box-shadow: 0 2px 0 #0a0a0b; }
-  .who { position: absolute; left: 0; right: 0; top: 232px; display: flex; align-items: center; gap: 12px; height: 52px; padding: 0 24px; }
+  /* The feed scrolls under its tabs: a few posts pass, then it stops on the one tried. */
+  .fview { position: absolute; left: 0; right: 0; top: 222px; bottom: 0; overflow: hidden; }
+  .fpost { position: relative; }
+  .who { display: flex; align-items: center; gap: 12px; height: 52px; padding: 0 24px; }
   .avatar { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: #0a0a0b; color: #fff; font-size: 14px; font-weight: 600; }
   .age { margin-left: auto; color: rgba(10,10,11,.5); font-size: 14px; }
-  .post { position: absolute; left: 0; right: 0; top: 290px; bottom: 0; overflow: hidden; background: #e9e8e5; }
+  .post { position: relative; height: 520px; overflow: hidden; background: #e9e8e5; }
   .post :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .scan { position: absolute; right: 18px; bottom: 120px; display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; }
+  .scan { position: absolute; right: 18px; bottom: 20px; display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; }
 
   /* The try-on in the app: the render on its light card, the actions and the stylist's field above the home bar. */
   .hren { opacity: 0; visibility: hidden; }

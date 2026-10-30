@@ -29,24 +29,22 @@ export const WALL: ImageId[][] = [
   ['wall-w-blonde', 'wall-m-preppy', 'wall-w-track'],
 ];
 
-// The footer headline's window cycles through some of the hero's people.
-export const FINALE_REEL: ImageId[] = ['wall-w-knitset', 'wall-m-suit', 'wall-w-red', 'wall-m-preppy', 'wall-w-linen', 'wall-m-camel'];
-
 // A product page on some shop's site: the phone swipes through a few open tabs, then shares the last one to DressYou.
-// The .example domains are reserved for examples, so no real shop is implied; each page shows its piece as a flat lay.
+// The .example domains are reserved for examples, so no real shop is implied. Each shop has its own look, as fashion
+// sites do (wordmark, palette, button), and shows its piece as a flat lay with the colours it comes in.
 // Its name and price are copy, per language, in the same order (src/i18n/copy.ts, how.shopPages).
-export interface ShopPage { domain: string; brand: string; image: ImageId; theme: 'white' | 'sand' }
+export interface ShopPage { domain: string; brand: string; image: ImageId; look: 'stark' | 'warm' | 'soft'; swatches: string[]; sizes: string[] }
 // The phone's try-ons are studio photos in the hero's recipe (founder, 2026-10-30), not cutouts.
 export const HOW: {
   shop: { pages: ShopPage[]; render: ImageId };
   wardrobe: { grid: ImageId[]; picks: ImageId[]; render: ImageId };
-  feed: { post: Post; render: ImageId };
+  feed: { scrolled: Post[]; post: Post; render: ImageId };
 } = {
   shop: {
     pages: [
-      { domain: 'nord.example', brand: 'Nord Studio', image: 'g-navy-overshirt', theme: 'white' },
-      { domain: 'clair.example', brand: 'Maison Clair', image: 'g-brown-loafers', theme: 'sand' },
-      { domain: 'neuf.example', brand: 'Atelier Neuf', image: 'g-brown-coat', theme: 'white' },
+      { domain: 'nord.example', brand: 'Nord Studio', image: 'g-navy-overshirt', look: 'stark', swatches: ['#27324a', '#2b2b2b', '#9c8f78'], sizes: ['XS', 'S', 'M', 'L', 'XL'] },
+      { domain: 'clair.example', brand: 'Maison Clair', image: 'g-brown-loafers', look: 'warm', swatches: ['#5a3a26', '#1f1f1f'], sizes: ['40', '41', '42', '43', '44'] },
+      { domain: 'neuf.example', brand: 'Atelier Neuf', image: 'g-brown-coat', look: 'soft', swatches: ['#4a3326', '#b08a62', '#1c1c1c'], sizes: ['XS', 'S', 'M', 'L'] },
     ],
     render: 'render-w-coat',
   },
@@ -55,7 +53,12 @@ export const HOW: {
     picks: ['g-black-knit-polo', 'g-ecru-trousers', 'g-brown-loafers'],
     render: 'render-m-polo',
   },
-  feed: { post: { handle: 'linh', age: '2h', image: 'feed-w-shirt' }, render: 'render-w-shirt' },
+  // The feed scrolls past a couple of posts and stops on the one tried.
+  feed: {
+    scrolled: [{ handle: 'jun', age: '1h', image: 'feed-m-canal' }, { handle: 'lea', age: '3h', image: 'feed-w-bakery' }],
+    post: { handle: 'linh', age: '4h', image: 'feed-w-shirt' },
+    render: 'render-w-shirt',
+  },
 };
 
 // Tops, bottoms, shoes, layers.
@@ -108,7 +111,8 @@ export const FRIEND_SETS: FriendLook[][] = [
 ];
 
 // The stylist's answers show these pieces; its words are copy (src/i18n/copy.ts, stylist).
-export const STYLIST: { dinner: ImageId[]; trip: ImageId[]; find: ImageId; buy: ImageId } = {
+export const STYLIST: { opinion: ImageId; dinner: ImageId[]; trip: ImageId[]; find: ImageId; buy: ImageId } = {
+  opinion: 'g-brown-coat',
   dinner: ['g-white-oxford-shirt', 'g-black-wide-trousers', 'g-navy-overshirt', 'g-chelsea-boots'],
   trip: ['g-grey-crewneck', 'g-dark-straight-jeans', 'g-black-tee', 'g-ecru-trousers', 'g-white-sneakers', 'g-chelsea-boots'],
   find: 'g-black-knit-polo',

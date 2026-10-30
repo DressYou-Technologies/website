@@ -55,6 +55,8 @@ test('the JSON-LD, llms.txt and sitemap agree with the pages', async () => {
 const BANNED = [[';', 'a semicolon'], ['\u2014', 'an em dash'], ['avatar', 'avatar (it is your twin)'], ['see how it fits', 'a fit claim'], ['ça vous va', 'a fit claim'], ['ça me va', 'a fit claim'],
   // A size comes from clothes the person kept, never from habit (§4.5), and the stylist never checks out (§2, §4.9).
   ['usual size', 'a size from habit'], ['taille habituelle', 'a size from habit'], ['true fit', 'not product vocabulary'], ['taille juste', 'not product vocabulary'],
+  // The site shows what the stylist knows that answers a question, never how it tracks behaviour (founder, 2026-10-30).
+  ['×', 'a wear count'], ['times this', 'a wear count'], ['fois cet', 'a wear count'],
   ['checks out for you', 'a checkout claim'], ['passe commande pour vous', 'a checkout claim'], ['size down', 'fit advice'], ['taille en dessous', 'fit advice']];
 const readable = (page) => [
   page.replace(/<script(?![^>]*ld\+json)[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/g, ' ').replace(/<[^>]+>/g, ' '),
@@ -161,6 +163,7 @@ test('the footer lists only working links, the other language, the company detai
     const words = decode(text(footer));
     for (const fact of [t.finale.ai, `© ${new Date().getFullYear()} DressYou Technologies`, '47 rue Vivienne, 75002 Paris']) assert.ok(words.includes(fact), `${lang}: ${fact}`);
     assert.match(footer, /<form class="notify[^"]*"[^>]*data-lang="/, `${lang}: the footer asks for an email itself`);
+    assert.doesNotMatch(footer, /<picture|<img(?![^>]*alt="DressYou")/, `${lang}: the footer shows no picture besides the logo`);
   }
 });
 
@@ -225,7 +228,7 @@ test('each stylist answer first shows what it checked, in each language', () => 
       assert.ok(group.indexOf('class="sck') < group.indexOf('class="sin'), `${lang} tab ${k}: the answer comes before the checks`);
       const rows = [...card.matchAll(/class="ck-label"[^>]*>([^<]*)<\/span><span class="ck-value"[^>]*>([^<]*)</g)].map(([, label, value]) => [decode(label), decode(value)]);
       assert.ok(rows.length >= 3, `${lang} tab ${k} checks ${rows.length} things`);
-      assert.deepEqual(rows, tabs[k].checks, `${lang} tab ${k}`);
+      assert.deepEqual(rows, tabs[k].checks.map(([, label, value]) => [label, value]), `${lang} tab ${k}`);
     });
   }
 });

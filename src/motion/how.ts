@@ -6,8 +6,9 @@ import type { Section } from './index';
 // Every beat after the tap is timed from the tap press; each source decides how long it plays before it.
 const AFTER_TAP_SECONDS = 6.5;        // render, size, question, answer, then the scene fades
 const WARDROBE_TAP_SECONDS = 3.0;     // three pieces picked, the select bar rises, then the tap
-const FEED_TAP_SECONDS = 1.8;         // the post shows a moment before the tap
-const TAB_SECONDS = 1.4;              // each open shop tab stays this long before the next swipes in
+const FEED_POST_SECONDS = 1.3;        // the feed flicks to each next post this often, then the last one is tapped
+const FEED_SETTLE_SECONDS = 1.1;      // the tried post shows this long before its try-on button is pressed
+const TAB_SECONDS = 1.8;              // each open shop tab stays this long before the next swipes in
 const MENU_SECONDS = .9;              // Safari's page menu shows this long before Share is tapped
 const SHEET_SECONDS = 1.2;            // the share sheet shows this long before DressYou is tapped
 const FIT_MAX = 1.2, FIT_PAD_X = 8, FIT_PAD_Y = 16;
@@ -86,11 +87,19 @@ export const how: Section = (root) => {
     return t + WARDROBE_TAP_SECONDS;
   };
 
+  // The feed: flick past the posts above, settle on the one tried, then press its try-on button.
+  const scroll = (src: HTMLElement, t: number): number => {
+    const track = one(src, '.fscroll'), posts = all(src, '.fpost');
+    tl.set(track, { y: 0 }, t);
+    posts.slice(1).forEach((post, k) => tl.to(track, { y: () => -post.offsetTop, duration: .8, ease: 'power3.out' }, t + FEED_POST_SECONDS * (k + 1) - .6));
+    return t + FEED_POST_SECONDS * (posts.length - 1) + FEED_SETTLE_SECONDS;
+  };
+
   const starts: number[] = [];
   let t = 0;
   srcs.forEach((src, i) => {
     const ren = rens[i], p = pops[i];
-    const P = src.classList.contains('shop') ? share(tl, src, t) : src.classList.contains('wardrobe') ? pick(src, t) : t + FEED_TAP_SECONDS;
+    const P = src.classList.contains('shop') ? share(tl, src, t) : src.classList.contains('wardrobe') ? pick(src, t) : scroll(src, t);
     const end = P + AFTER_TAP_SECONDS, D = end - t;
     starts.push(t);
     const btn = one(src, '[data-tap]'), ring = one(btn, '.hring');
