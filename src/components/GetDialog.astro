@@ -23,7 +23,7 @@ const dialogs = [
   .get { width: min(400px, calc(100% - 40px)); padding: 0; border: 0; border-radius: 28px; background: linear-gradient(180deg, #fff, #efefef); color: #0a0a0a; box-shadow: 0 40px 100px rgba(0,0,0,.35); text-align: center; }
   /* The card fills the dialog box, so a click on the dialog element itself is a click on the backdrop. */
   .card { display: grid; justify-items: center; gap: 16px; padding: 40px 32px 32px; }
-  .get::backdrop { background: rgba(0,0,0,.55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+  .get::backdrop { background: rgba(0,0,0,.55); backdrop-filter: blur(8px); }
   .close { position: absolute; top: 14px; right: 14px; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 50%; background: rgba(10,10,10,.06); color: #0a0a0a; display: grid; place-items: center; cursor: pointer; }
   .close:hover { background: rgba(10,10,10,.12); }
   .close svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }

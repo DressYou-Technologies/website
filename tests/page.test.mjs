@@ -124,3 +124,13 @@ test('the legal pages exist and name the publisher', async () => {
     assert.ok(text(body).length > 600, `${page} is still a stub`);
   }
 });
+
+test('every blur ships unprefixed for Chrome and Firefox and prefixed for Safari before 18', async () => {
+  const css = (await Promise.all((await readdir(new URL('_astro/', DIST))).filter((f) => f.endsWith('.css')).map((f) => read(`_astro/${f}`)))).join('');
+  const rules = css.match(/[^{}]*\{[^{}]*backdrop-filter[^{}]*\}/g) ?? [];
+  assert.ok(rules.length >= 4, 'header, dialog, look card and scan chip blur');
+  for (const rule of rules) {
+    assert.match(rule, /(?:^|[{;])backdrop-filter:/, rule.slice(0, 80));
+    assert.match(rule, /-webkit-backdrop-filter:/, rule.slice(0, 80));
+  }
+});
