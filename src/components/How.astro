@@ -1,15 +1,11 @@
 ---
 import { Picture } from 'astro:assets';
+import frame from '../assets/device/iphone-18-pro-burgundy.png';
 import { HOW } from '../data/site';
 import { image } from '../lib/image';
 
 const STEPS = ['tap try on', 'see it on you', 'get your size', 'ask anything'];
 const WORDS = ['any shop.', 'your wardrobe.', 'the feed.'];
-// The phone's edge: rim layers 2 px apart in mirrored greys, and four side buttons at three depths.
-const RIM = ['#2c2c2f', '#37373a', '#434346', '#4e4e51', '#5a5a5d', '#656568', '#707073'];
-const rim = [...RIM, ...[...RIM].reverse()].map((colour, i) => ({ colour, z: -13 + i * 2 }));
-const BUTTONS = [{ side: 'left', top: '17%', height: '5%' }, { side: 'left', top: '26%', height: '9%' }, { side: 'left', top: '37%', height: '9%' }, { side: 'right', top: '28%', height: '14%' }];
-const BUTTON_DEPTHS = [-4, 0, 4];
 const renders = [HOW.shop.render, HOW.wardrobe.render, HOW.feed.render];
 // One scene per source: its size choice, the question asked, and the stylist's answer.
 const SCENES = [
@@ -28,14 +24,10 @@ const post = HOW.feed.post;
     <div class="visual">
       <div class="hstage" aria-hidden="true">
         <div class="hfit">
-          <div class="shadow"></div>
+          <!-- Apple's iPhone 18 Pro frame, used as Apple's marketing guidelines ask: nothing overlaps it, no added shadow, and only the screen moves. -->
           <div class="hphone">
-            {rim.map(({ colour, z }) => <div class="slab" style={`background:${colour}; transform:translateZ(${z}px)`}></div>)}
-            {BUTTONS.flatMap(({ side, top, height }) => BUTTON_DEPTHS.map((z) => <div class="btn" style={`${side}:-2px; top:${top}; height:${height}; transform:translateZ(${z}px)`}></div>))}
-            <div class="back"><div class="lens"></div></div>
-            <div class="front">
               <div class="screen">
-                <div class="status"><span>9:41</span><span class="island"></span><span class="battery"><span></span></span></div>
+                <div class="status"><span>9:41</span><span class="battery"><span></span></span></div>
                 <div class="hsrc shop">
                   <div class="url"><span>shop.example</span></div>
                   <div class="shot"><Picture src={image(HOW.shop.image)} formats={['avif', 'webp']} widths={[300, 600]} sizes="260px" alt="" loading="lazy" /></div>
@@ -47,7 +39,7 @@ const post = HOW.feed.post;
                   <b class="tab-title">Wardrobe</b>
                   <div class="tabs"><span class="on">items</span><span>outfits</span><span>tried</span></div>
                   <div class="grid">{HOW.wardrobe.grid.map((id) => (
-                    <span class:list={['tile', { hpk: HOW.wardrobe.picks.includes(id) }]}><span><Picture src={image(id)} formats={['avif', 'webp']} widths={[160, 260]} sizes="125px" alt="" loading="lazy" /></span></span>
+                    <span class:list={['tile', { hpk: HOW.wardrobe.picks.includes(id) }]}><span><Picture class="cutout" src={image(id)} formats={['avif', 'webp']} widths={[160, 260]} sizes="125px" alt="" loading="lazy" /></span></span>
                   ))}</div>
                   <span class="htry">Try on · {HOW.wardrobe.picks.length} pieces<span class="hring"></span></span>
                 </div>
@@ -59,21 +51,21 @@ const post = HOW.feed.post;
                   <div class="likes"><span>128 likes</span></div>
                 </div>
                 {renders.map((id, i) => (
-                  <div class:list={['hren', { first: i === 0 }]}><Picture class="hrimg" src={image(id)} formats={['avif', 'webp']} widths={[320, 640]} sizes="280px" alt="" loading="lazy" /><span class="badge">your twin</span><span class="hin"><span class="field"><span class="hph">ask your stylist…</span><span class="htype"></span></span><span class="hsend">send</span></span><span class="hsweep"></span></div>
+                  <div class:list={['hren', { first: i === 0 }]}><Picture class="hrimg cutout" src={image(id)} formats={['avif', 'webp']} widths={[320, 640]} sizes="280px" alt="" loading="lazy" /><span class="badge">your twin</span><span class="hin"><span class="field"><span class="hph">ask your stylist…</span><span class="htype"></span></span><span class="hsend">send</span></span><span class="hsweep"></span></div>
                 ))}
               </div>
-            </div>
+            <Picture class="frame" src={frame} formats={['avif', 'webp']} widths={[330, 660, 990]} sizes="330px" alt="" loading="lazy" />
+          </div>
             {SCENES.map(({ sizes, q, a }, i) => (
               <div class:list={['hpop', { first: i === 0 }]}>
-                <div class="hsz" data-z="90"><span class="label">recommended size</span>{sizes.map(([letter, fit, why], k) => (
+                <div class="hsz"><span class="label">recommended size</span>{sizes.map(([letter, fit, why], k) => (
                   <span class:list={['hszr', { chosen: k === 0 }]}><span class="letter">{letter}</span><span class="why"><b>{fit}</b><span>{why}</span></span></span>
                 ))}</div>
-                <div class="hq" data-z="120">{q}</div>
-                <div class="hdots" data-z="100"><i></i><i></i><i></i></div>
-                <div class="ha" data-z="100"><span>{a}</span></div>
+                <div class="hq">{q}</div>
+                <div class="hdots"><i></i><i></i><i></i></div>
+                <div class="ha"><span>{a}</span></div>
               </div>
             ))}
-          </div>
         </div>
       </div>
     </div>
@@ -97,23 +89,23 @@ const post = HOW.feed.post;
   .hstep:first-child { color: #0a0a0a; }
   .num { font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: .1em; min-width: 2.4ch; }
 
-  .visual { flex: 1.5 1 440px; min-width: 0; }
-  .hstage { position: relative; width: 100%; height: clamp(520px, 140vw, 800px); overflow: visible; }
-  .hfit { position: absolute; left: 50%; top: 50%; width: 460px; height: 660px; margin: -330px 0 0 -230px; perspective: 1800px; }
-  .shadow { position: absolute; left: 50%; bottom: 14px; width: 58%; height: 34px; transform: translateX(-50%); border-radius: 50%; background: radial-gradient(closest-side, rgba(0,0,0,.24), rgba(0,0,0,0)); filter: blur(6px); }
-  .hphone { position: absolute; left: 85px; top: 22px; width: 290px; height: 600px; transform-style: preserve-3d; }
-  .slab { position: absolute; inset: 0; border-radius: 26px; }
-  .btn { position: absolute; width: 6px; border-radius: 2px; background: #3a3a3d; }
-  .back { position: absolute; inset: 0; border-radius: 26px; transform: translateZ(-14px) rotateY(180deg); backface-visibility: hidden; -webkit-backface-visibility: hidden; background: linear-gradient(160deg, #3a3a3d 0%, #1c1c1e 45%, #0c0c0d 100%); box-shadow: inset 0 0 0 1.5px #5a5a5e; }
-  .lens { position: absolute; top: 3.5%; left: 6%; width: 44%; aspect-ratio: 1; border-radius: 24%; background: linear-gradient(145deg, #47474b, #1f1f21); }
-  .front { position: absolute; inset: 0; border-radius: 26px; transform: translateZ(14px); backface-visibility: hidden; -webkit-backface-visibility: hidden; padding: 8px; background: #050505; box-shadow: inset 0 0 0 1.5px #6e6e73, inset 0 0 0 3px #0a0a0a; }
-  .screen { position: relative; height: 100%; border-radius: 19px; overflow: hidden; background: #fff; color: #0a0a0a; }
-  .status { position: absolute; left: 0; right: 0; top: 0; z-index: 5; display: flex; align-items: center; justify-content: space-between; height: 36px; padding: 0 22px; font-size: 12px; font-weight: 700; color: #0a0a0a; }
-  .island { position: absolute; left: 50%; top: 8px; width: 31%; height: 24px; transform: translateX(-50%); border-radius: 999px; background: #000; }
+  .visual { flex: 1.5 1 440px; min-width: 0; container-type: inline-size; }
+  /* The scene is laid out at its own size, then scaled as one piece to its stage (fitPhone). Wide: the bubbles stand beside the phone. */
+  .hstage { --scene-w: 600px; --scene-h: 660px; position: relative; width: 100%; height: clamp(520px, 140vw, 800px); overflow: visible; }
+  /* Centred by half its size, which still holds when the unscaled scene is wider than the stage. */
+  .hfit { position: absolute; left: 50%; top: 50%; width: var(--scene-w); height: var(--scene-h); margin: calc(var(--scene-h) / -2) 0 0 calc(var(--scene-w) / -2); }
+  .hphone { position: absolute; left: 0; top: 30px; height: 600px; aspect-ratio: 1350 / 2760; }
+  .hphone :global(.frame) { position: absolute; inset: 0; z-index: 6; width: 100%; height: 100%; pointer-events: none; }
+  /* The frame's screen opening, measured on Apple's 1350 × 2760 PNG: 72 px in from the sides, 69 px from the top and bottom,
+     corners of 207 px; the screen tucks 1 px under the frame so no edge shows through. */
+  .screen { position: absolute; inset: calc(69 / 2760 * 100% - 1px) calc(72 / 1350 * 100% - 1px); border-radius: calc(600px * 207 / 2760); overflow: hidden; background: #fff; color: #0a0a0a; }
+  /* Centred on the frame's own Dynamic Island, which sits 112–219 px down the PNG. */
+  .status { position: absolute; left: 0; right: 0; top: 0; z-index: 5; display: flex; align-items: center; justify-content: space-between; height: calc(600px * 2 * (165 - 69) / 2760); padding: 0 24px; font-size: 12px; font-weight: 700; color: #0a0a0a; }
   .battery { width: 22px; height: 11px; padding: 1.5px; border-radius: 3px; box-shadow: 0 0 0 1px rgba(10,10,10,.45); }
   .battery span { display: block; width: 75%; height: 100%; border-radius: 1.5px; background: #0a0a0a; }
   :global(picture), .screen :global(img) { display: block; }
-  .screen :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .screen :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .shot :global(img), .post :global(img) { object-fit: cover; }
 
   /* Without motion the phone shows the first try-on and its answer; the sources only appear while it plays. */
   .hsrc { position: absolute; inset: 0; padding-top: 46px; background: #fff; opacity: 0; visibility: hidden; }
@@ -143,9 +135,10 @@ const post = HOW.feed.post;
   .post { position: relative; margin: 0 14px; height: 356px; border-radius: 16px; overflow: hidden; background: #ececea; }
   .likes { display: flex; align-items: center; gap: 14px; padding: 12px 18px 0; color: #0a0a0a; font-size: 13px; font-weight: 600; }
 
-  .hren { position: absolute; inset: 0; background: #ececea; opacity: 0; visibility: hidden; }
+  .hren { position: absolute; inset: 0; background: var(--cutout-bg); opacity: 0; visibility: hidden; }
   .hren.first { opacity: 1; visibility: visible; }
-  .hren :global(.hrimg) { object-position: 50% 22%; }
+  /* The twin stands clear of the status bar and badge above and the ask bar below. */
+  .hren :global(img.hrimg) { padding: 72px 18px 82px; }
   .badge { position: absolute; left: 14px; top: 44px; padding: 4px 8px; border-radius: 4px; background: rgba(10,10,10,.88); color: #fff; font-family: var(--font-mono); font-size: 9px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; white-space: nowrap; }
   .hin { position: absolute; left: 12px; right: 12px; bottom: 14px; display: flex; align-items: center; gap: 8px; height: 52px; padding: 0 7px 0 16px; border-radius: 17px; background: #ffffff; box-shadow: 0 10px 28px rgba(0,0,0,.16), 0 0 0 1px rgba(10,10,10,.06); font-size: 14px; }
   .field { position: relative; flex: 1; min-width: 0; height: 20px; line-height: 20px; }
@@ -154,14 +147,10 @@ const post = HOW.feed.post;
   .hsend { flex: none; display: flex; align-items: center; height: 38px; padding: 0 14px; border-radius: 12px; background: #0a0a0a; color: #fff; font-size: 13px; font-weight: 700; }
   .hsweep { position: absolute; left: 0; right: 0; top: 100%; height: 90px; margin-top: -45px; background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,.85) 50%, rgba(255,255,255,0)); opacity: 0; }
 
-  .hpop { position: absolute; inset: 0; transform-style: preserve-3d; pointer-events: none; }
+  .hpop { position: absolute; inset: 0; pointer-events: none; }
   .hpop > * { opacity: 0; visibility: hidden; }
   .hpop.first > :not(.hdots) { opacity: 1; visibility: visible; }
-  /* GSAP owns these transforms while it plays; without motion the bubbles keep their depth from CSS. */
-  :global(html:not(.motion)) .hsz { transform: translateZ(90px); }
-  :global(html:not(.motion)) .hq { transform: translateZ(120px); }
-  :global(html:not(.motion)) .ha { transform: translateZ(100px); }
-  .hsz { position: absolute; left: 150px; top: 196px; width: max-content; min-width: 226px; display: grid; gap: 6px; padding: 10px; border-radius: 20px; background: #fff; color: #0a0a0a; box-shadow: 0 28px 60px rgba(0,0,0,.22), 0 0 0 1px rgba(10,10,10,.05); }
+  .hsz { position: absolute; left: 322px; top: 150px; width: max-content; min-width: 226px; display: grid; gap: 6px; padding: 10px; border-radius: 20px; background: #fff; color: #0a0a0a; box-shadow: 0 28px 60px rgba(0,0,0,.22), 0 0 0 1px rgba(10,10,10,.05); }
   .label { padding: 2px 4px; font-family: var(--font-mono); font-size: 9px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: #6b6b6b; }
   .hszr { display: flex; align-items: center; gap: 10px; padding: 7px 12px 7px 7px; border-radius: 14px; box-shadow: inset 0 0 0 1px rgba(10,10,10,.12); }
   .hszr.chosen { box-shadow: inset 0 0 0 1.5px #0a0a0a; }
@@ -170,10 +159,18 @@ const post = HOW.feed.post;
   .why { display: grid; gap: 2px; min-width: 0; }
   .why b { font-size: 14px; letter-spacing: -.02em; white-space: nowrap; }
   .why span { font-family: var(--font-mono); font-size: 8.5px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: #6b6b6b; white-space: nowrap; }
-  .hq { position: absolute; left: -78px; top: 356px; max-width: 226px; padding: 12px 16px; border-radius: 20px 20px 6px 20px; background: #0a0a0a; color: #fff; font-size: 15px; font-weight: 600; line-height: 1.35; box-shadow: 0 24px 50px rgba(0,0,0,.28); }
-  .hdots { position: absolute; left: 110px; top: 432px; display: flex; gap: 5px; padding: 14px 16px; border-radius: 20px 20px 20px 6px; background: #fff; box-shadow: 0 20px 44px rgba(0,0,0,.2); }
+  .hq { position: absolute; right: 0; top: 330px; max-width: 226px; padding: 12px 16px; border-radius: 20px 20px 6px 20px; background: #0a0a0a; color: #fff; font-size: 15px; font-weight: 600; line-height: 1.35; box-shadow: 0 24px 50px rgba(0,0,0,.28); }
+  .hdots { position: absolute; left: 322px; top: 410px; display: flex; gap: 5px; padding: 14px 16px; border-radius: 20px 20px 20px 6px; background: #fff; box-shadow: 0 20px 44px rgba(0,0,0,.2); }
   .hdots i { width: 7px; height: 7px; border-radius: 50%; background: #0a0a0a; opacity: .35; }
   .hdots i + i { opacity: .6; }
   .hdots i + i + i { opacity: .85; }
-  .ha { position: absolute; left: 110px; top: 432px; width: 236px; display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: 20px 20px 20px 6px; background: #fff; color: #0a0a0a; font-size: 15px; line-height: 1.35; box-shadow: 0 24px 50px rgba(0,0,0,.22), 0 0 0 1px rgba(10,10,10,.05); }
+  .ha { position: absolute; left: 322px; top: 410px; width: 236px; display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: 20px 20px 20px 6px; background: #fff; color: #0a0a0a; font-size: 15px; line-height: 1.35; box-shadow: 0 24px 50px rgba(0,0,0,.22), 0 0 0 1px rgba(10,10,10,.05); }
+  /* Narrow: the bubbles stack under the phone, so their text keeps its size. */
+  @container (max-width: 559.98px) {
+    .hstage { --scene-w: 460px; --scene-h: 960px; height: calc(100cqw * 960 / 460); }
+    .hphone { top: 0; left: 0; right: 0; margin-inline: auto; }
+    .hsz { left: 24px; top: 624px; }
+    .hq { right: 24px; top: 790px; }
+    .hdots, .ha { left: 24px; top: 866px; }
+  }
 </style>

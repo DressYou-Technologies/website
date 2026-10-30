@@ -4,21 +4,23 @@ import { all, one } from './dom';
 import type { Section } from './index';
 
 const SCENE_SECONDS = 7.6;            // one source: tap, render, size, question, answer
-const SCENE_W = 460, SCENE_H = 660;   // the phone scene's own size, scaled to fit its stage
 const FIT_MAX = 1.2, FIT_PAD_X = 8, FIT_PAD_Y = 16;
 const RESIZE_SETTLE_MS = 120;
 const DIM = '#bdbdbd', INK = '#0a0a0a';
 
 // Layout, not motion: the whole phone scene scales as one piece to its stage, with or without animation.
+// The scene's own size comes from CSS, which switches it between the wide and the stacked layout.
 export function fitPhone() {
   const stage = one(document, '.hstage');
   const scene = one(document, '.hfit');
   const fit = () => {
-    const k = Math.min(FIT_MAX, (stage.clientWidth - FIT_PAD_X) / SCENE_W, (stage.clientHeight - FIT_PAD_Y) / SCENE_H);
+    const k = Math.min(FIT_MAX, (stage.clientWidth - FIT_PAD_X) / scene.offsetWidth, (stage.clientHeight - FIT_PAD_Y) / scene.offsetHeight);
     scene.style.transform = `scale(${k.toFixed(3)})`;
   };
   fit();
-  new ResizeObserver(fit).observe(stage);
+  const observer = new ResizeObserver(fit);
+  observer.observe(stage);
+  observer.observe(scene);
 }
 
 // One phone, three sources: tap try on, the twin wears it, the stylist gives the size, then you ask it something.
@@ -28,7 +30,6 @@ export const how: Section = (root) => {
   const srcs = all(wrap, '.hsrc'), rens = all(wrap, '.hren'), pops = all(wrap, '.hpop');
   const bubbles = all(wrap, '.hpop > *');
   const D = SCENE_SECONDS;
-  gsap.set(bubbles, { z: (_i: number, el: HTMLElement) => Number(el.dataset.z) });
 
   const tl = gsap.timeline({ repeat: -1, paused: true });
   tl.set(srcs, { autoAlpha: 0 }, 0)
