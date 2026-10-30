@@ -173,7 +173,9 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
   .tl-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; }
   .tl-g { position: relative; display: block; aspect-ratio: 3 / 4; border-radius: 8px; overflow: hidden; background: #efeeeb; }
   .tl-cta { display: flex; align-items: center; justify-content: center; height: 38px; margin-top: 12px; border-radius: 19px; background: #0a0a0a; color: #fafaf8; font-size: .8125rem; font-weight: 700; }
-  .scanchip, .flabel, .fvote, .fsend, .ffr { background: rgba(250,250,248,.72); border: 1px solid rgba(255,255,255,.75); box-shadow: inset 0 1px 0 rgba(255,255,255,.95), 0 6px 18px rgba(10,10,11,.14); backdrop-filter: blur(18px) saturate(1.8); }
+  .scanchip, .flabel, .fvote, .fsend, .ffr { background: rgba(250,250,248,.72); border: 1px solid rgba(255,255,255,.75); box-shadow: inset 0 1px 0 rgba(255,255,255,.95), 0 6px 18px rgba(10,10,11,.14); }
+  /* Only the feed's chip floats over moving photos, so only it pays for a backdrop blur. */
+  .scanchip { backdrop-filter: blur(18px) saturate(1.8); }
   .fvote, .ffr, .fsend { background: rgba(250,250,248,.9); }
   .scanchip { position: absolute; top: 16px; right: 16px; z-index: 2; display: flex; align-items: center; gap: 7px; height: 36px; padding: 0 12px 0 10px; border-radius: 999px; white-space: nowrap; color: #0a0a0a; font-size: .8125rem; font-weight: 600; }
   .scanchip svg { stroke-width: 1.7; }
