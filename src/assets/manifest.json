@@ -150,19 +150,19 @@
   "id": "g-barrel-jeans",
   "model": "gpt-image-2.5-sunburst",
   "usage": {
-   "input_tokens": 1267,
+   "input_tokens": 794,
    "input_tokens_details": {
-    "image_tokens": 1200,
-    "text_tokens": 67
+    "image_tokens": 672,
+    "text_tokens": 122
    },
    "output_tokens": 1395,
    "output_tokens_details": {
     "image_tokens": 1395,
     "text_tokens": 0
    },
-   "total_tokens": 2662
+   "total_tokens": 2189
   },
-  "prompt": "Cut out the garment exactly as it is: same shape, colour, fabric, folds, details and light. Remove the background completely so only the garment remains, on a fully transparent background. Add no shadow, mannequin, hanger, person or anything else.",
+  "prompt": "Show this exact garment as an e-commerce flat lay: laid flat and smooth on its back, photographed straight from above, both legs laid straight side by side, waistband flat at the top, no belt. Keep the same colour, fabric, texture, stitching, buttons and details. No volume, no ghost mannequin, no body shape inside it. Centred, soft even light, on a fully transparent background with no shadow, hanger, mannequin, person or props. No text, no logos, no brand labels, no watermark.",
   "size": "960x1280",
   "quality": "high",
   "refs": [
@@ -196,39 +196,42 @@
   "id": "g-black-knit-polo",
   "model": "gpt-image-2.5-sunburst",
   "usage": {
-   "input_tokens": 67,
+   "input_tokens": 1017,
    "input_tokens_details": {
-    "image_tokens": 0,
-    "text_tokens": 67
+    "image_tokens": 896,
+    "text_tokens": 121
    },
    "output_tokens": 1395,
    "output_tokens_details": {
     "image_tokens": 1395,
     "text_tokens": 0
    },
-   "total_tokens": 1462
+   "total_tokens": 2412
   },
-  "prompt": "E-commerce product cutout of a black fine-knit short-sleeve polo shirt, on an invisible ghost mannequin, centred, crisp fabric detail, soft even light, on a fully transparent background with no shadow, mannequin, hanger or person. No text, no logos, no brand labels, no watermark.",
+  "prompt": "Show this exact garment as an e-commerce flat lay: laid flat and smooth on its back, photographed straight from above, sleeves laid straight down beside the body, collar and hem flat, buttons closed. Keep the same colour, fabric, texture, stitching, buttons and details. No volume, no ghost mannequin, no body shape inside it. Centred, soft even light, on a fully transparent background with no shadow, hanger, mannequin, person or props. No text, no logos, no brand labels, no watermark.",
   "size": "960x1280",
-  "quality": "high"
+  "quality": "high",
+  "refs": [
+   "src-g-black-knit-polo"
+  ]
  },
  "g-black-tee": {
   "id": "g-black-tee",
   "model": "gpt-image-2.5-sunburst",
   "usage": {
-   "input_tokens": 1267,
+   "input_tokens": 1110,
    "input_tokens_details": {
-    "image_tokens": 1200,
-    "text_tokens": 67
+    "image_tokens": 992,
+    "text_tokens": 118
    },
    "output_tokens": 1395,
    "output_tokens_details": {
     "image_tokens": 1395,
     "text_tokens": 0
    },
-   "total_tokens": 2662
+   "total_tokens": 2505
   },
-  "prompt": "Cut out the garment exactly as it is: same shape, colour, fabric, folds, details and light. Remove the background completely so only the garment remains, on a fully transparent background. Add no shadow, mannequin, hanger, person or anything else.",
+  "prompt": "Show this exact garment as an e-commerce flat lay: laid flat and smooth on its back, photographed straight from above, sleeves laid straight down beside the body, collar and hem flat. Keep the same colour, fabric, texture, stitching, buttons and details. No volume, no ghost mannequin, no body shape inside it. Centred, soft even light, on a fully transparent background with no shadow, hanger, mannequin, person or props. No text, no logos, no brand labels, no watermark.",
   "size": "960x1280",
   "quality": "high",
   "refs": [
@@ -239,19 +242,19 @@
   "id": "g-black-wide-trousers",
   "model": "gpt-image-2.5-sunburst",
   "usage": {
-   "input_tokens": 1267,
+   "input_tokens": 730,
    "input_tokens_details": {
-    "image_tokens": 1200,
-    "text_tokens": 67
+    "image_tokens": 608,
+    "text_tokens": 122
    },
    "output_tokens": 1395,
    "output_tokens_details": {
     "image_tokens": 1395,
     "text_tokens": 0
    },
-   "total_tokens": 2662
+   "total_tokens": 2125
   },
-  "prompt": "Cut out the garment exactly as it is: same shape, colour, fabric, folds, details and light. Remove the background completely so only the garment remains, on a fully transparent background. Add no shadow, mannequin, hanger, person or anything else.",
+  "prompt": "Show this exact garment as an e-commerce flat lay: laid flat and smooth on its back, photographed straight from above, both legs laid straight side by side, waistband flat at the top, no belt. Keep the same colour, fabric, texture, stitching, buttons and details. No volume, no ghost mannequin, no body shape inside it. Centred, soft even light, on a fully transparent background with no shadow, hanger, mannequin, person or props. No text, no logos, no brand labels, no watermark.",
   "size": "960x1280",
   "quality": "high",
   "refs": [
@@ -328,99 +331,111 @@
   "id": "g-dark-straight-jeans",
   "model": "gpt-image-2.5-sunburst",
   "usage": {
-   "input_tokens": 66,
+   "input_tokens": 666,
    "input_tokens_details": {
-    "image_tokens": 0,
-    "text_tokens": 66
+    "image_tokens": 544,
+    "text_tokens": 122
    },
    "output_tokens": 1395,
    "output_tokens_details": {
     "image_tokens": 1395,
     "text_tokens": 0
    },
-   "total_tokens": 1461
+   "total_tokens": 2061
   },
-  "prompt": "E-commerce product cutout of a pair of dark indigo straight-leg jeans, laid flat, front view, centred, crisp fabric detail, soft even light, on a fully transparent background with no shadow, mannequin, hanger or person. No text, no logos, no brand labels, no watermark.",
+  "prompt": "Show this exact garment as an e-commerce flat lay: laid flat and smooth on its back, photographed straight from above, both legs laid straight side by side, waistband flat at the top, no belt. Keep the same colour, fabric, texture, stitching, buttons and details. No volume, no ghost mannequin, no body shape inside it. Centred, soft even light, on a fully transparent background with no shadow, hanger, mannequin, person or props. No text, no logos, no brand labels, no watermark.",
   "size": "960x1280",
-  "quality": "high"
+  "quality": "high",
+  "refs": [
+   "src-g-dark-straight-jeans"
+  ]
  },
  "g-ecru-trousers": {
   "id": "g-ecru-trousers",
   "model": "gpt-image-2.5-sunburst",
   "usage": {
-   "input_tokens": 69,
+   "input_tokens": 794,
    "input_tokens_details": {
-    "image_tokens": 0,
-    "text_tokens": 69
+    "image_tokens": 672,
+    "text_tokens": 122
    },
    "output_tokens": 1395,
    "output_tokens_details": {
     "image_tokens": 1395,
     "text_tokens": 0
    },
-   "total_tokens": 1464
+   "total_tokens": 2189
   },
-  "prompt": "E-commerce product cutout of a pair of ecru wide-leg pleated cotton trousers, laid flat, front view, centred, crisp fabric detail, soft even light, on a fully transparent background with no shadow, mannequin, hanger or person. No text, no logos, no brand labels, no watermark.",
+  "prompt": "Show this exact garment as an e-commerce flat lay: laid flat and smooth on its back, photographed straight from above, both legs laid straight side by side, waistband flat at the top, no belt. Keep the same colour, fabric, texture, stitching, buttons and details. No volume, no ghost mannequin, no body shape inside it. Centred, soft even light, on a fully transparent background with no shadow, hanger, mannequin, person or props. No text, no logos, no brand labels, no watermark.",
   "size": "960x1280",
-  "quality": "high"
+  "quality": "high",
+  "refs": [
+   "src-g-ecru-trousers"
+  ]
  },
  "g-grey-crewneck": {
   "id": "g-grey-crewneck",
   "model": "gpt-image-2.5-sunburst",
   "usage": {
-   "input_tokens": 67,
+   "input_tokens": 1014,
    "input_tokens_details": {
-    "image_tokens": 0,
-    "text_tokens": 67
+    "image_tokens": 896,
+    "text_tokens": 118
    },
    "output_tokens": 1395,
    "output_tokens_details": {
     "image_tokens": 1395,
     "text_tokens": 0
    },
-   "total_tokens": 1462
+   "total_tokens": 2409
   },
-  "prompt": "E-commerce product cutout of a mid-grey fine-knit merino crewneck sweater, on an invisible ghost mannequin, centred, crisp fabric detail, soft even light, on a fully transparent background with no shadow, mannequin, hanger or person. No text, no logos, no brand labels, no watermark.",
+  "prompt": "Show this exact garment as an e-commerce flat lay: laid flat and smooth on its back, photographed straight from above, sleeves laid straight down beside the body, collar and hem flat. Keep the same colour, fabric, texture, stitching, buttons and details. No volume, no ghost mannequin, no body shape inside it. Centred, soft even light, on a fully transparent background with no shadow, hanger, mannequin, person or props. No text, no logos, no brand labels, no watermark.",
   "size": "960x1280",
-  "quality": "high"
+  "quality": "high",
+  "refs": [
+   "src-g-grey-crewneck"
+  ]
  },
  "g-navy-overshirt": {
   "id": "g-navy-overshirt",
   "model": "gpt-image-2.5-sunburst",
   "usage": {
-   "input_tokens": 70,
+   "input_tokens": 988,
    "input_tokens_details": {
-    "image_tokens": 0,
-    "text_tokens": 70
+    "image_tokens": 864,
+    "text_tokens": 124
    },
    "output_tokens": 1395,
    "output_tokens_details": {
     "image_tokens": 1395,
     "text_tokens": 0
    },
-   "total_tokens": 1465
+   "total_tokens": 2383
   },
-  "prompt": "E-commerce product cutout of a single navy cotton twill overshirt with two chest pockets, on an invisible ghost mannequin, centred, crisp fabric detail, soft even light, on a fully transparent background with no shadow, mannequin, hanger or person. No text, no logos, no brand labels, no watermark.",
+  "prompt": "Show this exact garment as an e-commerce flat lay: laid flat and smooth on its back, photographed straight from above, sleeves laid straight down beside the body, collar and hem flat, buttoned, pockets flat. Keep the same colour, fabric, texture, stitching, buttons and details. No volume, no ghost mannequin, no body shape inside it. Centred, soft even light, on a fully transparent background with no shadow, hanger, mannequin, person or props. No text, no logos, no brand labels, no watermark.",
   "size": "960x1280",
-  "quality": "high"
+  "quality": "high",
+  "refs": [
+   "src-g-navy-overshirt"
+  ]
  },
  "g-pinstripe-trousers": {
   "id": "g-pinstripe-trousers",
   "model": "gpt-image-2.5-sunburst",
   "usage": {
-   "input_tokens": 1267,
+   "input_tokens": 794,
    "input_tokens_details": {
-    "image_tokens": 1200,
-    "text_tokens": 67
+    "image_tokens": 672,
+    "text_tokens": 122
    },
    "output_tokens": 1395,
    "output_tokens_details": {
     "image_tokens": 1395,
     "text_tokens": 0
    },
-   "total_tokens": 2662
+   "total_tokens": 2189
   },
-  "prompt": "Cut out the garment exactly as it is: same shape, colour, fabric, folds, details and light. Remove the background completely so only the garment remains, on a fully transparent background. Add no shadow, mannequin, hanger, person or anything else.",
+  "prompt": "Show this exact garment as an e-commerce flat lay: laid flat and smooth on its back, photographed straight from above, both legs laid straight side by side, waistband flat at the top, no belt. Keep the same colour, fabric, texture, stitching, buttons and details. No volume, no ghost mannequin, no body shape inside it. Centred, soft even light, on a fully transparent background with no shadow, hanger, mannequin, person or props. No text, no logos, no brand labels, no watermark.",
   "size": "960x1280",
   "quality": "high",
   "refs": [
@@ -431,19 +446,19 @@
   "id": "g-taupe-sweater",
   "model": "gpt-image-2.5-sunburst",
   "usage": {
-   "input_tokens": 1267,
+   "input_tokens": 1078,
    "input_tokens_details": {
-    "image_tokens": 1200,
-    "text_tokens": 67
+    "image_tokens": 960,
+    "text_tokens": 118
    },
    "output_tokens": 1395,
    "output_tokens_details": {
     "image_tokens": 1395,
     "text_tokens": 0
    },
-   "total_tokens": 2662
+   "total_tokens": 2473
   },
-  "prompt": "Cut out the garment exactly as it is: same shape, colour, fabric, folds, details and light. Remove the background completely so only the garment remains, on a fully transparent background. Add no shadow, mannequin, hanger, person or anything else.",
+  "prompt": "Show this exact garment as an e-commerce flat lay: laid flat and smooth on its back, photographed straight from above, sleeves laid straight down beside the body, collar and hem flat. Keep the same colour, fabric, texture, stitching, buttons and details. No volume, no ghost mannequin, no body shape inside it. Centred, soft even light, on a fully transparent background with no shadow, hanger, mannequin, person or props. No text, no logos, no brand labels, no watermark.",
   "size": "960x1280",
   "quality": "high",
   "refs": [
@@ -454,19 +469,19 @@
   "id": "g-trench",
   "model": "gpt-image-2.5-sunburst",
   "usage": {
-   "input_tokens": 1267,
+   "input_tokens": 705,
    "input_tokens_details": {
-    "image_tokens": 1200,
-    "text_tokens": 67
+    "image_tokens": 576,
+    "text_tokens": 129
    },
    "output_tokens": 1395,
    "output_tokens_details": {
     "image_tokens": 1395,
     "text_tokens": 0
    },
-   "total_tokens": 2662
+   "total_tokens": 2100
   },
-  "prompt": "Cut out the garment exactly as it is: same shape, colour, fabric, folds, details and light. Remove the background completely so only the garment remains, on a fully transparent background. Add no shadow, mannequin, hanger, person or anything else.",
+  "prompt": "Show this exact garment as an e-commerce flat lay: laid flat and smooth on its back, photographed straight from above, sleeves laid straight down beside the body, collar and hem flat, buttoned, the belt tied loosely at the waist. Keep the same colour, fabric, texture, stitching, buttons and details. No volume, no ghost mannequin, no body shape inside it. Centred, soft even light, on a fully transparent background with no shadow, hanger, mannequin, person or props. No text, no logos, no brand labels, no watermark.",
   "size": "960x1280",
   "quality": "high",
   "refs": [
@@ -477,21 +492,24 @@
   "id": "g-white-oxford-shirt",
   "model": "gpt-image-2.5-sunburst",
   "usage": {
-   "input_tokens": 65,
+   "input_tokens": 989,
    "input_tokens_details": {
-    "image_tokens": 0,
-    "text_tokens": 65
+    "image_tokens": 864,
+    "text_tokens": 125
    },
    "output_tokens": 1395,
    "output_tokens_details": {
     "image_tokens": 1395,
     "text_tokens": 0
    },
-   "total_tokens": 1460
+   "total_tokens": 2384
   },
-  "prompt": "E-commerce product cutout of a white cotton oxford button-down shirt, on an invisible ghost mannequin, centred, crisp fabric detail, soft even light, on a fully transparent background with no shadow, mannequin, hanger or person. No text, no logos, no brand labels, no watermark.",
+  "prompt": "Show this exact garment as an e-commerce flat lay: laid flat and smooth on its back, photographed straight from above, sleeves laid straight down beside the body, collar and hem flat, buttoned, collar laid flat. Keep the same colour, fabric, texture, stitching, buttons and details. No volume, no ghost mannequin, no body shape inside it. Centred, soft even light, on a fully transparent background with no shadow, hanger, mannequin, person or props. No text, no logos, no brand labels, no watermark.",
   "size": "960x1280",
-  "quality": "high"
+  "quality": "high",
+  "refs": [
+   "src-g-white-oxford-shirt"
+  ]
  },
  "g-white-sneakers": {
   "id": "g-white-sneakers",
@@ -517,74 +535,23 @@
   "id": "g-white-tank",
   "model": "gpt-image-2.5-sunburst",
   "usage": {
-   "input_tokens": 1267,
+   "input_tokens": 815,
    "input_tokens_details": {
-    "image_tokens": 1200,
-    "text_tokens": 67
+    "image_tokens": 704,
+    "text_tokens": 111
    },
    "output_tokens": 1395,
    "output_tokens_details": {
     "image_tokens": 1395,
     "text_tokens": 0
    },
-   "total_tokens": 2662
+   "total_tokens": 2210
   },
-  "prompt": "Cut out the garment exactly as it is: same shape, colour, fabric, folds, details and light. Remove the background completely so only the garment remains, on a fully transparent background. Add no shadow, mannequin, hanger, person or anything else.",
+  "prompt": "Show this exact garment as an e-commerce flat lay: laid flat and smooth on its back, photographed straight from above, straps flat, hem straight. Keep the same colour, fabric, texture, stitching, buttons and details. No volume, no ghost mannequin, no body shape inside it. Centred, soft even light, on a fully transparent background with no shadow, hanger, mannequin, person or props. No text, no logos, no brand labels, no watermark.",
   "size": "960x1280",
   "quality": "high",
   "refs": [
    "src-g-white-tank"
-  ]
- },
- "shop-trench": {
-  "id": "shop-trench",
-  "model": "gpt-image-2.5-sunburst",
-  "usage": {
-   "input_tokens": 1449,
-   "input_tokens_details": {
-    "image_tokens": 1200,
-    "text_tokens": 249
-   },
-   "output_tokens": 1510,
-   "output_tokens_details": {
-    "image_tokens": 1510,
-    "text_tokens": 0
-   },
-   "total_tokens": 2959
-  },
-  "prompt": "E-commerce product page photo of an original, fictional adult (not resembling any real person or celebrity): a slim woman in her late twenties with shoulder-length brown hair, wearing exactly this trench coat, belted, over a white tee, straight blue jeans and white leather sneakers. Posed like a calm e-commerce catalogue model, relaxed and natural, never dramatic: shoulders relaxed and level, head level, a calm neutral expression with lips gently closed, arms hanging loosely with a small gap from the body, soft loose hands with fingers gently curved, hands kept clear of the garment's details, feet about hip-width apart, the camera straight on at waist height. Standing front-on with the weight settled on one leg and the other knee softly bent, arms relaxed at the sides, looking into the camera. Seamless warm light-grey studio backdrop, soft even light. True-to-life colours, unretouched natural skin with real texture and no airbrushing, normal phone-camera sharpness with a little noise, not HDR, not hyper-detailed. Whole body from head to shoes with space above and below. No text, no logos, no brand labels, no watermark.",
-  "size": "1024x1280",
-  "quality": "high",
-  "refs": [
-   "src-g-trench"
-  ]
- },
- "twin-cap-trench": {
-  "id": "twin-cap-trench",
-  "model": "gpt-image-2.5-sunburst",
-  "usage": {
-   "input_tokens": 7779,
-   "input_tokens_details": {
-    "image_tokens": 7458,
-    "text_tokens": 321
-   },
-   "output_tokens": 1006,
-   "output_tokens_details": {
-    "image_tokens": 1006,
-    "text_tokens": 0
-   },
-   "total_tokens": 8785
-  },
-  "prompt": "Keep the person from the first image exactly: same face, hair, skin tone, body and proportions, same soft natural light and photo texture. Dress them in the garments shown in the other images, keeping each garment's colour, fabric, cut and details exactly. The trench coat is worn open over the tank top; the cap faces forward. Posed like a calm e-commerce catalogue model, relaxed and natural, never dramatic: shoulders relaxed and level, head level, a calm neutral expression with lips gently closed, arms hanging loosely with a small gap from the body, soft loose hands with fingers gently curved, hands kept clear of the garment's details, feet about hip-width apart, the camera straight on at waist height. Standing front-on with the weight evenly on both feet, arms relaxed at the sides, looking into the camera. Soft natural daylight, like a photo a friend takes near a window. True-to-life colours, unretouched natural skin with real texture and no airbrushing, normal phone-camera sharpness with a little noise, not HDR, not hyper-detailed. Whole body visible from head to toe. Cut out on a fully transparent background, with no floor, shadow or backdrop. No text, no logos, no brand labels, no watermark.",
-  "size": "864x1728",
-  "quality": "high",
-  "refs": [
-   "twin",
-   "src-g-black-cap",
-   "src-g-trench",
-   "src-g-white-tank",
-   "src-g-barrel-jeans",
-   "src-g-brown-boots"
   ]
  },
  "twin-knitdress": {
@@ -1362,5 +1329,117 @@
   "prompt": "Photo of an original, fictional adult (not resembling any real person or celebrity): a woman in her early twenties, Black with dark skin, short natural hair, gold hoops, tall and slim with a long-legged fashion-model build. Elegant: a black wrap midi dress, nude pointed slingbacks. Posed like a calm e-commerce catalogue model, relaxed and natural, never dramatic: shoulders relaxed and level, head level, a calm neutral expression with lips gently closed, arms hanging loosely with a small gap from the body, soft loose hands with fingers gently curved, hands kept clear of the garment's details, feet about hip-width apart, the camera straight on at waist height. Standing front-on with the weight settled on one leg and the other knee softly bent, arms relaxed at the sides, looking into the camera. Full-length studio fashion photo in the style of a clean digital try-on render. Seamless pale clay (#e5d6cc) studio backdrop with a soft gradient and a gentle floor shadow, soft diffused light. True-to-life colours, unretouched natural skin with real texture and no airbrushing, normal phone-camera sharpness with a little noise, not HDR, not hyper-detailed. The whole body shows from head to shoes, with generous space above the head and below the feet: the person takes about three quarters of the frame's height. No text, no logos, no brand labels, no watermark.",
   "size": "864x1728",
   "quality": "medium"
+ },
+ "g-brown-coat": {
+  "id": "g-brown-coat",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 132,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 132
+   },
+   "output_tokens": 1395,
+   "output_tokens_details": {
+    "image_tokens": 1395,
+    "text_tokens": 0
+   },
+   "total_tokens": 1527
+  },
+  "prompt": "A long chocolate-brown double-faced wool coat, single-breasted with notch lapels and no belt. Show this exact garment as an e-commerce flat lay: laid flat and smooth on its back, photographed straight from above, sleeves laid straight down beside the body, buttoned, lapels flat. Keep the same colour, fabric, texture, stitching, buttons and details. No volume, no ghost mannequin, no body shape inside it. Centred, soft even light, on a fully transparent background with no shadow, hanger, mannequin, person or props. No text, no logos, no brand labels, no watermark.",
+  "size": "960x1280",
+  "quality": "high"
+ },
+ "feed-w-shirt": {
+  "id": "feed-w-shirt",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 178,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 178
+   },
+   "output_tokens": 378,
+   "output_tokens_details": {
+    "image_tokens": 378,
+    "text_tokens": 0
+   },
+   "total_tokens": 556
+  },
+  "prompt": "Casual photo posted on Instagram, taken on an iPhone. Natural light. True-to-life colours, unretouched natural skin with real texture and no airbrushing, normal phone-camera sharpness with a little noise, not HDR, not hyper-detailed. Real and unposed. No text, no logos, no brand labels, no watermark. A photo of an original, fictional adult (not resembling any real person or celebrity): a woman in her mid-twenties, Vietnamese, straight black hair to the shoulders, tall and slim with a long-legged fashion-model build. She walks past a pale stone building in Paris, looking away. Outfit: an ivory oversized poplin shirt with the sleeves pushed up, a long black satin slip skirt, black leather ballet flats, a small black leather shoulder bag. The whole outfit shows from head to shoes.",
+  "size": "1024x1280",
+  "quality": "medium"
+ },
+ "render-m-polo": {
+  "id": "render-m-polo",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 3416,
+   "input_tokens_details": {
+    "image_tokens": 3072,
+    "text_tokens": 344
+   },
+   "output_tokens": 408,
+   "output_tokens_details": {
+    "image_tokens": 408,
+    "text_tokens": 0
+   },
+   "total_tokens": 3824
+  },
+  "prompt": "Photo of an original, fictional adult (not resembling any real person or celebrity): a man in his early twenties, Senegalese with deep dark skin, a neat close-cropped haircut, clean-shaven, tall and slim with a long-legged fashion-model build. He wears the black knit polo tucked into the ecru pleated trousers, with the brown suede loafers, each exactly as in the images. Posed like a calm e-commerce catalogue model, relaxed and natural, never dramatic: shoulders relaxed and level, head level, a calm neutral expression with lips gently closed, arms hanging loosely with a small gap from the body, soft loose hands with fingers gently curved, hands kept clear of the garment's details, feet about hip-width apart, the camera straight on at waist height. Standing front-on with the weight evenly on both feet, arms relaxed at the sides, looking into the camera. Full-length studio fashion photo in the style of a clean digital try-on render. Seamless warm light grey (#e9e8e5) studio backdrop with a soft gradient and a gentle floor shadow, soft diffused light. True-to-life colours, unretouched natural skin with real texture and no airbrushing, normal phone-camera sharpness with a little noise, not HDR, not hyper-detailed. The whole body shows from head to shoes, with generous space above the head and below the feet: the person takes about three quarters of the frame's height. No text, no logos, no brand labels, no watermark.",
+  "size": "1152x1536",
+  "quality": "medium",
+  "refs": [
+   "g-black-knit-polo",
+   "g-ecru-trousers",
+   "g-brown-loafers"
+  ]
+ },
+ "render-w-coat": {
+  "id": "render-w-coat",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 1547,
+   "input_tokens_details": {
+    "image_tokens": 1200,
+    "text_tokens": 347
+   },
+   "output_tokens": 408,
+   "output_tokens_details": {
+    "image_tokens": 408,
+    "text_tokens": 0
+   },
+   "total_tokens": 1955
+  },
+  "prompt": "Photo of an original, fictional adult (not resembling any real person or celebrity): a woman in her early twenties, of mixed Moroccan and French heritage with light olive skin, dark hair slicked back into a neat low bun with a clean middle part, no jewellery, tall and slim with a long-legged fashion-model build. She wears the coat from the image, open, exactly as it is, over a black fine-knit turtleneck, slim black tailored trousers and black pointed leather slingbacks. Posed like a calm e-commerce catalogue model, relaxed and natural, never dramatic: shoulders relaxed and level, head level, a calm neutral expression with lips gently closed, arms hanging loosely with a small gap from the body, soft loose hands with fingers gently curved, hands kept clear of the garment's details, feet about hip-width apart, the camera straight on at waist height. Standing front-on with the weight settled on one leg and the other knee softly bent, arms relaxed at the sides, looking into the camera. Full-length studio fashion photo in the style of a clean digital try-on render. Seamless warm light grey (#e9e8e5) studio backdrop with a soft gradient and a gentle floor shadow, soft diffused light. True-to-life colours, unretouched natural skin with real texture and no airbrushing, normal phone-camera sharpness with a little noise, not HDR, not hyper-detailed. The whole body shows from head to shoes, with generous space above the head and below the feet: the person takes about three quarters of the frame's height. No text, no logos, no brand labels, no watermark.",
+  "size": "1152x1536",
+  "quality": "medium",
+  "refs": [
+   "g-brown-coat"
+  ]
+ },
+ "render-w-shirt": {
+  "id": "render-w-shirt",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 3070,
+   "input_tokens_details": {
+    "image_tokens": 2732,
+    "text_tokens": 338
+   },
+   "output_tokens": 408,
+   "output_tokens_details": {
+    "image_tokens": 408,
+    "text_tokens": 0
+   },
+   "total_tokens": 3478
+  },
+  "prompt": "Keep the person from the first image exactly: same face, hair, skin tone, body and proportions, same studio, light and photo texture. Dress her in the outfit the woman in the second image wears: the ivory oversized poplin shirt, the long black satin slip skirt, the black leather ballet flats and the small black shoulder bag, each exactly as it is. Take nothing else from the second image. Posed like a calm e-commerce catalogue model, relaxed and natural, never dramatic: shoulders relaxed and level, head level, a calm neutral expression with lips gently closed, arms hanging loosely with a small gap from the body, soft loose hands with fingers gently curved, hands kept clear of the garment's details, feet about hip-width apart, the camera straight on at waist height. Standing at a very slight angle, both hands loosely together in front of the hips, feet close together, looking into the camera. Full-length studio fashion photo in the style of a clean digital try-on render. Seamless warm light grey (#e9e8e5) studio backdrop with a soft gradient and a gentle floor shadow, soft diffused light. True-to-life colours, unretouched natural skin with real texture and no airbrushing, normal phone-camera sharpness with a little noise, not HDR, not hyper-detailed. The whole body shows from head to shoes, with generous space above the head and below the feet: the person takes about three quarters of the frame's height. No text, no logos, no brand labels, no watermark.",
+  "size": "1152x1536",
+  "quality": "medium",
+  "refs": [
+   "render-w-coat",
+   "feed-w-shirt"
+  ]
  }
 }

@@ -1,7 +1,8 @@
 ---
 import { Image, Picture } from 'astro:assets';
 import appIcon from '../assets/brand/app-icon.png';
-import frame from '../assets/device/iphone-18-pro-burgundy.png';
+import dewai from '../assets/brand/dewai-face.png';
+import frame from '../assets/device/iphone-18-pro-black.png';
 import { HOW } from '../data/site';
 import { image } from '../lib/image';
 import { COPY } from '../i18n/copy';
@@ -14,15 +15,37 @@ const post = HOW.feed.post;
 // Each shop page's name and price come from the copy, in page order; the last page is the one shared.
 const pages = HOW.shop.pages.map((page, k) => ({ ...page, name: t.shopPages[k][0], price: t.shopPages[k][1] }));
 const shared = pages[pages.length - 1];
-// Lucide icon paths (ISC) for the browser bar and the share sheet.
+// Lucide icon paths (ISC). Safari's and the share sheet's follow iOS 27's glyphs; the app's follow the app kit.
 const ICON = {
-  back: ['m15 18-6-6 6-6'], forward: ['m9 18 6-6-6-6'], share: ['M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8', 'm16 6-4-4-4 4', 'M12 2v13'],
+  back: ['m15 18-6-6 6-6'], page: ['M21 5H3', 'M15 12H3', 'M17 19H3'], reload: ['M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8', 'M21 3v5h-5'],
   tabs: ['M8 8h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2Z', 'M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2'],
+  translate: ['m5 8 6 6', 'm4 14 6-6 2-3', 'M2 5h12', 'M7 2h1', 'm22 22-5-10-5 10', 'M14 18h6'],
+  share: ['M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8', 'm16 6-4-4-4 4', 'M12 2v13'],
+  bookmark: ['m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z'],
+  bookmarkTo: ['m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z', 'M12 7v6', 'M15 10H9'],
+  find: ['M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z', 'M14 2v6h6', 'm16 18-1.6-1.6'],
+  zoom: ['m21 21-4.3-4.3', 'M11 8v6', 'M8 11h6'],
   copy: ['M8 8h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2Z', 'M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2'],
-  notes: ['M15.5 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8.5Z', 'M15 3v6h6'],
-  mail: ['M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z', 'm22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7'],
+  glasses: ['M14 15a2 2 0 0 0-2-1 2 2 0 0 0-2 1', 'M2.5 13 5 7c.7-1.3 1.4-2 3-2', 'M21.5 13 19 7c-.7-1.3-1.5-2-3-2'],
+  down: ['m6 9 6 6 6-6'], right: ['m9 18 6-6-6-6'],
+  plus: ['M5 12h14', 'M12 5v14'], search: ['m21 21-4.3-4.3'], sliders: ['M10 5H3', 'M12 19H3', 'M14 3v4', 'M16 17v4', 'M21 12h-9', 'M21 19h-5', 'M21 5h-7', 'M8 10v4', 'M8 12H3'],
+  shirt: ['M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z'],
+  layers: ['M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z', 'M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12', 'M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17'],
+  history: ['M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8', 'M3 3v5h5', 'M12 7v5l4 2'],
+  chat: ['M7.9 20A9 9 0 1 0 4 16.1L2 22Z'], menu: ['M4 12h16', 'M4 6h16', 'M4 18h16'],
+  home: ['M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8', 'M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'],
+  scan: ['M3 7V5a2 2 0 0 1 2-2h2', 'M17 3h2a2 2 0 0 1 2 2v2', 'M21 17v2a2 2 0 0 1-2 2h-2', 'M7 21H5a2 2 0 0 1-2-2v-2', 'M18.944 12.33a1 1 0 0 0 0-.66 7.5 7.5 0 0 0-13.888 0 1 1 0 0 0 0 .66 7.5 7.5 0 0 0 13.888 0'],
+  change: ['M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8', 'M21 3v5h-5', 'M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16', 'M8 16H3v5'],
+  friends: ['M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2', 'M22 21v-2a4 4 0 0 0-3-3.87', 'M16 3.13a4 4 0 0 1 0 7.75'],
+  up: ['m5 12 7-7 7 7', 'M12 19V5'], check: ['M20 6 9 17l-5-5'],
 };
-const APPS = (['copy', 'notes', 'mail'] as const).map((icon, k) => [icon, t.apps[k]] as const);
+type Icon = keyof typeof ICON;
+// Circles the paths above leave out, per icon.
+const CIRCLES: Partial<Record<Icon, [number, number, number][]>> = { search: [[11, 11, 8]], zoom: [[11, 11, 8]], glasses: [[6, 15, 4], [18, 15, 4]], friends: [[9, 7, 4]], scan: [[12, 12, 1]], find: [[13, 15, 3]] };
+const MENU_ICONS: Icon[] = ['translate', 'share', 'bookmark', 'bookmarkTo', 'find', 'zoom'];
+const ACTION_ICONS: Icon[] = ['copy', 'bookmark', 'glasses', 'down'];
+const TAB_ICONS: Icon[] = ['shirt', 'layers', 'history'];
+const SHARE_ROW = MENU_ICONS.indexOf('share');
 ---
 <section class="how" id="how">
   <div class="hwrap">
@@ -33,64 +56,95 @@ const APPS = (['copy', 'notes', 'mail'] as const).map((icon, k) => [icon, t.apps
     <div class="visual">
       <div class="hstage" aria-hidden="true">
         <div class="hfit">
-          <!-- Apple's iPhone 18 Pro frame, used as Apple's marketing guidelines ask: nothing overlaps it, no added shadow, and only the screen moves. -->
+          <!-- Apple's iPhone 18 Pro frame in Black, used as Apple's marketing guidelines ask: nothing overlaps it, no added shadow, and only the screen moves. -->
           <div class="hphone">
-              <div class="screen">
-                <div class="status"><span>9:41</span><span class="battery"><span></span></span></div>
+            <div class="screen">
+              <!-- The screen is laid out in iOS points, 402 × 874, then scaled into the frame's opening. -->
+              <div class="ui">
                 <div class="hsrc shop">
                   <div class="spages">{pages.map((page) => (
                     <div class:list={['spage', page.theme]}>
-                      <div class="url"><span>{page.domain}</span></div>
-                      <div class="shot"><Picture class={page.cutout ? 'cutout' : undefined} src={image(page.image)} formats={['avif', 'webp']} widths={[300, 600]} sizes="260px" alt="" loading="lazy" /></div>
-                      <div class="title"><b>{page.name}</b><span>{page.price}</span></div>
-                      <div class="sizes">{['XS', 'S', 'M', 'L'].map((s) => <span>{s}</span>)}</div>
+                      <b class="sbrand">{page.brand}</b>
+                      <div class="shot"><Picture class="cutout" src={image(page.image)} formats={['avif', 'webp']} widths={[300, 600]} sizes="260px" alt="" loading="lazy" /></div>
+                      <b class="sname">{page.name}</b>
+                      <span class="sprice">{page.price}</span>
+                      <div class="sizes">{['XS', 'S', 'M', 'L'].map((size) => <span>{size}</span>)}</div>
                     </div>
                   ))}</div>
-                  <div class="sbar">
-                    <svg viewBox="0 0 24 24">{ICON.back.map((d) => <path d={d} />)}</svg>
-                    <svg viewBox="0 0 24 24">{ICON.forward.map((d) => <path d={d} />)}</svg>
-                    <span class="sb-share"><svg viewBox="0 0 24 24">{ICON.share.map((d) => <path d={d} />)}</svg><span class="hring dark"></span></span>
-                    <svg viewBox="0 0 24 24">{ICON.tabs.map((d) => <path d={d} />)}</svg>
+                  <div class="toolbar">
+                    <span class="glass round"><svg viewBox="0 0 24 24">{ICON.back.map((d) => <path d={d} />)}</svg></span>
+                    <span class="glass address">
+                      <span class="pagebtn"><svg viewBox="0 0 24 24">{ICON.page.map((d) => <path d={d} />)}</svg><span class="hring dark"></span></span>
+                      <span class="domains">{pages.map((page) => <span>{page.domain}</span>)}</span>
+                      <svg viewBox="0 0 24 24">{ICON.reload.map((d) => <path d={d} />)}</svg>
+                    </span>
+                    <span class="glass round"><svg viewBox="0 0 24 24">{ICON.tabs.map((d) => <path d={d} />)}</svg></span>
                   </div>
-                  <div class="sheet">
-                    <div class="sh-head"><b>{shared.name}</b><span>{shared.domain}</span></div>
+                  <div class="pmenu glass">{t.safari.menu.map((label, k) => (
+                    <span class:list={['prow', { rule: k === 1 || k === 4, pshare: k === SHARE_ROW }]}><svg viewBox="0 0 24 24">{ICON[MENU_ICONS[k]].map((d) => <path d={d} />)}{(CIRCLES[MENU_ICONS[k]] ?? []).map(([cx, cy, r]) => <circle cx={cx} cy={cy} r={r} />)}</svg>{label}</span>
+                  ))}</div>
+                  <div class="sheet glass">
+                    <div class="sh-head">
+                      <span class="sh-thumb"><Picture class="cutout" src={image(shared.image)} formats={['avif', 'webp']} widths={[80, 160]} sizes="42px" alt="" loading="lazy" /></span>
+                      <span class="sh-what"><b>{shared.name}</b><span>{shared.domain}</span><span class="sh-options">{t.safari.options}<svg viewBox="0 0 24 24">{ICON.right.map((d) => <path d={d} />)}</svg></span></span>
+                    </div>
                     <div class="sh-apps">
-                      <span class="app" data-tap><Image src={appIcon} width={50} height={50} densities={[1, 2]} alt="" /><span>DressYou</span><span class="hring dark"></span></span>
-                      {APPS.map(([icon, label]) => <span class="app"><span class="ico"><svg viewBox="0 0 24 24">{ICON[icon].map((d) => <path d={d} />)}</svg></span><span>{label}</span></span>)}
+                      <span class="app" data-tap><Image src={appIcon} width={64} height={64} densities={[1, 2]} alt="" /><span>DressYou</span><span class="hring dark"></span></span>
+                      <span class="app"><span class="ico"><i></i><i></i><i></i></span><span>{t.safari.more}</span></span>
                     </div>
+                    <div class="sh-acts">{t.safari.actions.map((label, k) => (
+                      <span class="act"><span class="ico"><svg viewBox="0 0 24 24">{ICON[ACTION_ICONS[k]].map((d) => <path d={d} />)}{(CIRCLES[ACTION_ICONS[k]] ?? []).map(([cx, cy, r]) => <circle cx={cx} cy={cy} r={r} />)}</svg></span><span>{label}</span></span>
+                    ))}</div>
                   </div>
                 </div>
-                <div class="hsrc wardrobe">
-                  <b class="tab-title">{t.wardrobe.title}</b>
-                  <div class="tabs">{t.wardrobe.tabs.map((tab, k) => <span class={k === 0 ? 'on' : undefined}>{tab}</span>)}</div>
+                <div class="hsrc wardrobe app-screen">
+                  <div class="abar"><svg viewBox="0 0 24 24">{ICON.plus.map((d) => <path d={d} />)}</svg><b>{t.wardrobe.title}</b><i></i></div>
+                  <div class="asearch"><span class="pill"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" />{ICON.search.map((d) => <path d={d} />)}</svg><span>{t.wardrobe.search}</span><svg viewBox="0 0 24 24">{ICON.sliders.map((d) => <path d={d} />)}</svg></span><span class="pill sel">{t.wardrobe.select}</span></div>
+                  <div class="segs">{t.wardrobe.tabs.map((tab, k) => <span class={k === 0 ? 'on' : undefined}><svg viewBox="0 0 24 24">{ICON[TAB_ICONS[k]].map((d) => <path d={d} />)}</svg>{tab}</span>)}</div>
                   <div class="grid">{HOW.wardrobe.grid.map((id) => (
-                    <span class:list={['tile', { hpk: HOW.wardrobe.picks.includes(id) }]}><span><Picture class="cutout" src={image(id)} formats={['avif', 'webp']} widths={[160, 260]} sizes="125px" alt="" loading="lazy" /></span></span>
+                    <span class:list={['tile', { hpk: HOW.wardrobe.picks.includes(id) }]}><Picture class="cutout" src={image(id)} formats={['avif', 'webp']} widths={[160, 260]} sizes="80px" alt="" loading="lazy" /><span class="tick"><svg viewBox="0 0 24 24">{ICON.check.map((d) => <path d={d} />)}</svg></span></span>
                   ))}</div>
-                  <span class="htry" data-tap>{t.wardrobe.tryOn} · {HOW.wardrobe.picks.length} {t.wardrobe.pieces}<span class="hring"></span></span>
+                  <div class="tabbar">
+                    <span class="glass tabs"><span><svg viewBox="0 0 24 24">{ICON.home.map((d) => <path d={d} />)}</svg></span><span class="on"><svg viewBox="0 0 24 24">{ICON.shirt.map((d) => <path d={d} />)}</svg></span><span><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" />{ICON.search.map((d) => <path d={d} />)}</svg></span><span class="me"></span></span>
+                    <span class="glass orb"><Image src={dewai} width={44} height={44} densities={[1, 2]} alt="" /></span>
+                  </div>
+                  <span class="htry" data-tap>{t.wardrobe.tryOn}<span class="hring"></span></span>
                 </div>
-                <div class="hsrc feed">
-                  <b class="tab-title">{t.feed.title}</b>
-                  <div class="tabs">{t.feed.tabs.map((tab, k) => <span class={k === 0 ? 'on' : undefined}>{tab}</span>)}</div>
-                  <div class="who"><span class="avatar">{post.handle[0].toUpperCase()}</span><b>{post.handle}</b><span class="age">{post.age}</span></div>
-                  <div class="post"><Picture src={image(post.image)} formats={['avif', 'webp']} widths={[300, 600]} sizes="260px" alt="" loading="lazy" /><span class="htry light" data-tap>{t.feed.tryOn}<span class="hring dark"></span></span></div>
-                  <div class="likes"><span>{t.feed.likes}</span></div>
+                <div class="hsrc feed app-screen">
+                  <div class="abar"><svg viewBox="0 0 24 24">{ICON.plus.map((d) => <path d={d} />)}</svg><b>{t.feed.title}</b><svg viewBox="0 0 24 24">{ICON.chat.map((d) => <path d={d} />)}</svg></div>
+                  <div class="asearch"><span class="pill wide"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" />{ICON.search.map((d) => <path d={d} />)}</svg><span>{t.feed.search}</span></span></div>
+                  <div class="ftabs">{t.feed.tabs.map((tab, k) => <span class={k === 0 ? 'on' : undefined}>{tab}</span>)}</div>
+                  <div class="who"><span class="avatar">{post.handle[0].toUpperCase()}</span><b>{post.handle}</b><span class="age">{post.age}</span><svg viewBox="0 0 24 24">{ICON.menu.map((d) => <path d={d} />)}</svg></div>
+                  <div class="post"><Picture src={image(post.image)} formats={['avif', 'webp']} widths={[400, 800]} sizes="262px" alt="" loading="lazy" /><span class="glass scan" data-tap><svg viewBox="0 0 24 24">{ICON.scan.map((d) => <path d={d} />)}<circle cx="12" cy="12" r="1" /></svg><span class="hring dark"></span></span></div>
+                  <div class="tabbar">
+                    <span class="glass tabs"><span><svg viewBox="0 0 24 24">{ICON.home.map((d) => <path d={d} />)}</svg></span><span><svg viewBox="0 0 24 24">{ICON.shirt.map((d) => <path d={d} />)}</svg></span><span class="on"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" />{ICON.search.map((d) => <path d={d} />)}</svg></span><span class="me"></span></span>
+                    <span class="glass orb"><Image src={dewai} width={44} height={44} densities={[1, 2]} alt="" /></span>
+                  </div>
                 </div>
                 {renders.map((id, i) => (
-                  <div class:list={['hren', { first: i === 0 }]}><Picture class="hrimg cutout" src={image(id)} formats={['avif', 'webp']} widths={[320, 640]} sizes="280px" alt="" loading="lazy" /><span class="badge">{t.twin}</span><span class="hin"><span class="field"><span class="hph">{t.ask}</span><span class="htype"></span></span><span class="hsend">{t.send}</span></span><span class="hsweep"></span></div>
+                  <div class:list={['hren', 'app-screen', { first: i === 0 }]}>
+                    <div class="abar"><svg viewBox="0 0 24 24">{ICON.down.map((d) => <path d={d} />)}</svg><b>{t.tryOn.title}</b><i></i></div>
+                    <div class="rcard"><Picture class="hrimg" src={image(id)} formats={['avif', 'webp']} widths={[400, 800]} sizes="262px" alt="" loading="lazy" /><span class="badge">{t.tryOn.badge}</span><span class="hsweep"></span></div>
+                    <div class="racts"><span class="pill out"><svg viewBox="0 0 24 24">{ICON.change.map((d) => <path d={d} />)}</svg>{t.tryOn.change}</span><span class="pill out round"><svg viewBox="0 0 24 24">{ICON.bookmark.map((d) => <path d={d} />)}</svg></span><span class="pill out round"><svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="4" />{ICON.friends.map((d) => <path d={d} />)}</svg></span></div>
+                    <span class="hin"><span class="field"><span class="hph">{t.tryOn.ask}</span><span class="htype"></span></span><span class="hsend"><svg viewBox="0 0 24 24">{ICON.up.map((d) => <path d={d} />)}</svg></span></span>
+                  </div>
                 ))}
+                <div class="status"><span>9:41</span><span class="sicons"><svg class="cell" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" /><rect x="5" y="5.5" width="3" height="6.5" rx="1" /><rect x="10" y="3" width="3" height="9" rx="1" /><rect x="15" y="0" width="3" height="12" rx="1" /></svg><svg class="wifi" viewBox="0 0 24 24"><path d="M2 8.82a15 15 0 0 1 20 0" /><path d="M5 12.86a10 10 0 0 1 14 0" /><path d="M8.5 16.43a5 5 0 0 1 7 0" /><path d="M12 20h.01" /></svg><span class="battery"><span></span></span></span></div>
+                <span class="home-bar"></span>
               </div>
+            </div>
             <Picture class="frame" src={frame} formats={['avif', 'webp']} widths={[330, 660, 990]} sizes="330px" alt="" loading="lazy" />
           </div>
-            {t.scenes.map(({ sizes, q, a }, i) => (
-              <div class:list={['hpop', { first: i === 0 }]}>
-                <div class="hsz"><span class="label">{t.sizeLabel}</span>{sizes.map(([letter, fit, why], k) => (
-                  <span class:list={['hszr', { chosen: k === 0 }]}><span class="letter">{letter}</span><span class="why"><b>{fit}</b><span>{why}</span></span></span>
-                ))}</div>
-                <div class="hq">{q}</div>
-                <div class="hdots"><i></i><i></i><i></i></div>
-                <div class="ha"><span>{a}</span></div>
-              </div>
-            ))}
+          {t.scenes.map(({ sizes, q, a }, i) => (
+            <div class:list={['hpop', { first: i === 0 }]}>
+              <div class="hsz"><span class="label">{t.sizeLabel}</span>{sizes.map(([letter, fit, why], k) => (
+                <span class:list={['hszr', { chosen: k === 0 }]}><span class="letter">{letter}</span><span class="why"><b>{fit}</b><span>{why}</span></span></span>
+              ))}</div>
+              <div class="hq">{q}</div>
+              <div class="hdots"><i></i><i></i><i></i></div>
+              <div class="ha"><span>{a}</span></div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
@@ -98,9 +152,9 @@ const APPS = (['copy', 'notes', 'mail'] as const).map((icon, k) => [icon, t.apps
 </section>
 
 <style>
-  .how { padding: clamp(72px, 9vw, 128px) clamp(16px, 3vw, 48px) clamp(56px, 6vw, 96px); }
-  .hwrap { position: relative; max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; gap: clamp(32px, 5vw, 80px); }
-  .copy { flex: 1 1 340px; min-width: 0; display: grid; gap: clamp(28px, 4vw, 52px); }
+  .how { padding: var(--section-pad) clamp(16px, 3vw, 48px); }
+  .hwrap { position: relative; max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; gap: clamp(24px, 5vw, 80px); }
+  .copy { flex: 1 1 340px; min-width: 0; display: grid; gap: clamp(24px, 4svh, 52px); }
   h2 { margin: 0; text-align: left; font-size: clamp(2rem, 3.8vw, 3.75rem); font-weight: 700; letter-spacing: -.05em; line-height: 1.04; }
   .nowrap { display: block; white-space: nowrap; }
   .soft { color: #a1a1a1; }
@@ -115,79 +169,135 @@ const APPS = (['copy', 'notes', 'mail'] as const).map((icon, k) => [icon, t.apps
   .num { font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: .1em; min-width: 2.4ch; }
 
   .visual { flex: 1.5 1 440px; min-width: 0; container-type: inline-size; }
-  /* The scene is laid out at its own size, then scaled as one piece to its stage (fitPhone). Wide: the bubbles stand beside the phone. */
-  .hstage { --scene-w: 600px; --scene-h: 660px; position: relative; width: 100%; height: clamp(520px, 140vw, 800px); overflow: visible; }
+  /* The scene is laid out at its own size, then scaled as one piece to its stage (fitPhone), which the screen's height bounds
+     so the section reads in one screen. Wide: the bubbles stand beside the phone. */
+  .hstage { --scene-w: 600px; --scene-h: 660px; position: relative; width: 100%; height: clamp(440px, calc(100svh - 2 * var(--section-pad)), 800px); overflow: visible; }
   /* Centred by half its size, which still holds when the unscaled scene is wider than the stage. */
-  .hfit { position: absolute; left: 50%; top: 50%; width: var(--scene-w); height: var(--scene-h); margin: calc(var(--scene-h) / -2) 0 0 calc(var(--scene-w) / -2); }
-  .hphone { position: absolute; left: 0; top: 30px; height: 600px; aspect-ratio: 1350 / 2760; }
+  .hfit { --phone-h: 600; position: absolute; left: 50%; top: 50%; width: var(--scene-w); height: var(--scene-h); margin: calc(var(--scene-h) / -2) 0 0 calc(var(--scene-w) / -2); }
+  .hphone { position: absolute; left: 0; top: 30px; height: calc(var(--phone-h) * 1px); aspect-ratio: 1350 / 2760; }
   .hphone :global(.frame) { position: absolute; inset: 0; z-index: 6; width: 100%; height: 100%; pointer-events: none; }
   /* The frame's screen opening, measured on Apple's 1350 × 2760 PNG: 72 px in from the sides, 69 px from the top and bottom,
      corners of 207 px; the screen tucks 1 px under the frame so no edge shows through. */
-  .screen { position: absolute; inset: calc(69 / 2760 * 100% - 1px) calc(72 / 1350 * 100% - 1px); border-radius: calc(600px * 207 / 2760); overflow: hidden; background: #fff; color: #0a0a0a; }
-  /* Centred on the frame's own Dynamic Island, which sits 112–219 px down the PNG. */
-  .status { position: absolute; left: 0; right: 0; top: 0; z-index: 5; display: flex; align-items: center; justify-content: space-between; height: calc(600px * 2 * (165 - 69) / 2760); padding: 0 24px; font-size: 12px; font-weight: 700; color: #0a0a0a; }
-  .battery { width: 22px; height: 11px; padding: 1.5px; border-radius: 3px; box-shadow: 0 0 0 1px rgba(10,10,10,.45); }
-  .battery span { display: block; width: 75%; height: 100%; border-radius: 1.5px; background: #0a0a0a; }
-  :global(picture), .screen :global(img) { display: block; }
-  .screen :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .shot :global(img:not(.cutout)), .post :global(img) { object-fit: cover; }
+  .screen { position: absolute; inset: calc(69 / 2760 * 100% - 1px) calc(72 / 1350 * 100% - 1px); border-radius: calc(var(--phone-h) * 207 / 2760 * 1px); overflow: hidden; background: #f4f4f2; }
+  /* Apple's PNG is drawn at 3×: its 1206 × 2622 px opening is the iPhone 18 Pro's 402 × 874 pt screen, 920 pt tall overall. */
+  .ui { position: absolute; left: 1px; top: 1px; width: 402px; height: 874px; transform: scale(calc(var(--phone-h) / 920)); transform-origin: 0 0; color: #0a0a0b; font-size: 17px; }
+  :global(picture), .ui :global(img) { display: block; }
+  .ui svg { flex: none; width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .hsrc, .hren { position: absolute; inset: 0; }
+  /* Without motion the phone shows the first try-on; the sources only appear while it plays. */
+  .hsrc { opacity: 0; visibility: hidden; }
+  .hring { position: absolute; left: 50%; top: 50%; width: 64px; height: 64px; margin: -32px 0 0 -32px; border-radius: 50%; box-shadow: 0 0 0 3px #ffffff; opacity: 0; pointer-events: none; }
+  .hring.dark { box-shadow: 0 0 0 3px #0a0a0a; }
 
-  /* Without motion the phone shows the first try-on and its answer; the sources only appear while it plays. */
-  .hsrc { position: absolute; inset: 0; padding-top: 46px; background: #fff; opacity: 0; visibility: hidden; }
-  .hsrc.shop { padding-top: 44px; }
-  /* Any shop's site: the phone browses a few, then shares the last page to DressYou from the share sheet. */
-  .spages { position: absolute; left: 0; right: 0; top: 44px; bottom: 58px; overflow: hidden; }
-  .spage { position: absolute; inset: 0; background: #fff; }
-  .spage.sand { background: #efe8dd; }
-  .spage.sand .url span { background: rgba(255,255,255,.6); }
-  .sbar { position: absolute; left: 0; right: 0; bottom: 0; height: 58px; display: flex; align-items: center; justify-content: space-around; padding: 0 14px 10px; background: rgba(248,248,246,.96); box-shadow: 0 -1px 0 rgba(10,10,10,.06); color: #0a0a0a; }
-  .shop svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-  .sb-share { position: relative; display: grid; place-items: center; width: 40px; height: 40px; }
-  .sheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 4; padding: 14px 14px 26px; border-radius: 22px 22px 0 0; background: rgba(244,244,242,.98); box-shadow: 0 -12px 30px rgba(0,0,0,.14); }
-  .sh-head { display: grid; gap: 3px; padding: 2px 4px 12px; box-shadow: 0 1px 0 rgba(10,10,10,.08); }
-  .sh-head b { font-size: 14px; letter-spacing: -.02em; }
-  .sh-head span { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: .04em; color: #6b6b6b; }
-  .sh-apps { display: flex; justify-content: space-between; padding: 14px 4px 0; }
-  .app { position: relative; display: grid; justify-items: center; gap: 6px; width: 54px; font-size: 10px; font-weight: 500; color: #3a3a3a; }
-  .app :global(img), .app .ico { position: static; width: 50px; height: 50px; border-radius: 13px; }
-  .app .ico { display: grid; place-items: center; background: #fff; box-shadow: inset 0 0 0 1px rgba(10,10,10,.08); }
-  .app .ico svg { width: 22px; height: 22px; stroke-width: 1.6; }
-  .url { display: flex; align-items: center; gap: 8px; padding: 0 14px 10px; }
-  .url span { flex: 1; height: 30px; border-radius: 15px; background: #f2f2f0; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 10px; color: #6b6b6b; }
-  .shot { position: relative; margin: 0 14px; height: 300px; border-radius: 14px; overflow: hidden; background: #ececea; }
-  .title { display: flex; justify-content: space-between; align-items: baseline; padding: 14px 18px 0; }
-  .title b { font-size: 16px; letter-spacing: -.02em; }
-  .title span { font-size: 15px; font-weight: 600; }
-  .sizes { display: flex; gap: 6px; padding: 12px 18px 0; }
-  .sizes span { width: 38px; height: 32px; border-radius: 9px; box-shadow: inset 0 0 0 1px rgba(10,10,10,.14); display: grid; place-items: center; font-size: 12px; font-weight: 600; }
-  .htry { position: absolute; left: 14px; right: 14px; bottom: 18px; display: flex; align-items: center; justify-content: center; gap: 10px; height: 50px; border-radius: 15px; background: #0a0a0a; color: #fff; font-size: 15px; font-weight: 700; white-space: nowrap; }
-  .htry.light { left: auto; right: 12px; bottom: 12px; gap: 8px; height: 42px; padding: 0 18px; border-radius: 14px; background: rgba(255,255,255,.92); color: #0a0a0a; font-size: 14px; box-shadow: 0 8px 20px rgba(0,0,0,.18); }
-  .hring { position: absolute; left: 50%; top: 50%; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%; box-shadow: 0 0 0 2px #ffffff; opacity: 0; pointer-events: none; }
-  .hring.dark { box-shadow: 0 0 0 2px #0a0a0a; }
-  .tab-title { display: block; padding: 0 18px; font-size: 24px; letter-spacing: -.04em; }
-  .tabs { display: flex; gap: 16px; padding: 8px 18px 12px; font-size: 13px; color: #6b6b6b; }
-  .tabs .on { color: #0a0a0a; font-weight: 700; box-shadow: 0 2px 0 #0a0a0a; }
-  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 0 14px; }
-  .tile { position: relative; display: block; aspect-ratio: 1; border-radius: 14px; background: #f4f4f2; }
-  .tile > span { position: absolute; inset: 0; border-radius: 14px; overflow: hidden; }
-  .who { display: flex; align-items: center; gap: 10px; padding: 0 18px 10px; }
-  .avatar { width: 30px; height: 30px; border-radius: 50%; background: #0a0a0a; color: #fff; display: grid; place-items: center; font-size: 12px; font-weight: 700; }
-  .who b { font-size: 14px; }
-  .age { margin-left: auto; font-family: var(--font-mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: #6b6b6b; }
-  .post { position: relative; margin: 0 14px; height: 356px; border-radius: 16px; overflow: hidden; background: #ececea; }
-  .likes { display: flex; align-items: center; gap: 14px; padding: 12px 18px 0; color: #0a0a0a; font-size: 13px; font-weight: 600; }
+  /* The system's chrome: status bar and home indicator, as iOS 27 draws them on the iPhone 18 Pro. */
+  .status { position: absolute; left: 0; right: 0; top: 18px; z-index: 5; display: flex; align-items: center; justify-content: space-between; height: 28px; padding: 0 34px 0 44px; font-family: -apple-system, BlinkMacSystemFont, var(--font-sans); font-size: 17px; font-weight: 600; pointer-events: none; }
+  .sicons { display: flex; align-items: center; gap: 7px; }
+  .sicons .cell { width: 18px; height: 12px; fill: currentColor; stroke: none; }
+  .sicons .wifi { width: 18px; height: 18px; stroke-width: 2.6; }
+  .battery { width: 27px; height: 13px; padding: 2px; border-radius: 4px; box-shadow: inset 0 0 0 1px rgba(10,10,11,.4); }
+  .battery span { display: block; width: 80%; height: 100%; border-radius: 2px; background: currentColor; }
+  .home-bar { position: absolute; left: 50%; bottom: 8px; z-index: 5; width: 139px; height: 5px; margin-left: -69.5px; border-radius: 3px; background: #0a0a0b; pointer-events: none; }
+  /* Liquid Glass: frosted white, a hairline edge and a soft lift (iOS 27 captures). */
+  .glass { background: rgba(255,255,255,.82); box-shadow: inset 0 0 0 1px rgba(10,10,11,.08), inset 0 1px 0 rgba(255,255,255,.9), 0 6px 20px rgba(10,10,11,.1); backdrop-filter: blur(16px) saturate(1.6); }
 
-  .hren { position: absolute; inset: 0; background: var(--cutout-bg); opacity: 0; visibility: hidden; }
+  /* Safari: a shop's product page, the bottom toolbar, its page menu and the share sheet. */
+  .shop { background: #fff; font-family: -apple-system, BlinkMacSystemFont, var(--font-sans); }
+  .spages { position: absolute; inset: 0; overflow: hidden; }
+  .spage { position: absolute; inset: 0; padding: 84px 16px 0; background: #fff; }
+  .spage.sand { background: #f3eee6; }
+  .sbrand { display: block; margin-bottom: 18px; text-align: center; font-size: 16px; font-weight: 700; letter-spacing: .32em; text-transform: uppercase; }
+  .shot { position: relative; height: 470px; background: #f2f1ee; }
+  .sand .shot { background: #ebe4d9; }
+  .shot :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .sname { display: block; margin-top: 18px; font-size: 21px; letter-spacing: -.01em; }
+  .sprice { display: block; margin-top: 2px; color: #6b6b6b; font-size: 17px; }
+  .sizes { display: flex; gap: 10px; margin-top: 14px; }
+  .sizes span { display: grid; place-items: center; width: 52px; height: 46px; box-shadow: inset 0 0 0 1px rgba(10,10,11,.2); font-size: 16px; }
+  .toolbar { position: absolute; left: 33px; right: 34px; bottom: 34px; z-index: 2; display: flex; align-items: center; gap: 8px; height: 48px; }
+  .toolbar .round { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; }
+  .toolbar .round:first-child svg { color: rgba(10,10,11,.3); }
+  .address { flex: 1; display: flex; align-items: center; justify-content: space-between; height: 48px; padding: 0 14px; border-radius: 24px; }
+  .pagebtn { position: relative; display: grid; place-items: center; }
+  .domains { position: relative; flex: 1; height: 22px; }
+  .domains span { position: absolute; inset: 0; text-align: center; font-size: 17px; font-weight: 500; white-space: nowrap; opacity: 0; }
+  .domains span:first-child { opacity: 1; }
+  .pmenu { position: absolute; left: 80px; right: 70px; bottom: 34px; z-index: 3; display: grid; padding: 8px 0; border-radius: 32px; transform-origin: 20% 100%; }
+  .prow { position: relative; display: flex; align-items: center; gap: 14px; height: 50px; padding: 0 20px; font-size: 17px; }
+  .prow.rule::before { content: ''; position: absolute; left: 20px; right: 20px; top: 0; height: 1px; background: rgba(10,10,11,.1); }
+  .prow svg { width: 22px; height: 22px; stroke-width: 1.6; }
+  .pshare { border-radius: 14px; }
+  .sheet { position: absolute; left: 9px; right: 9px; bottom: 9px; z-index: 4; padding: 22px 22px 30px; border-radius: 56px; background: rgba(250,250,250,.94); }
+  .sh-head { display: flex; gap: 16px; padding: 0 4px 16px; box-shadow: 0 1px 0 rgba(10,10,11,.1); }
+  .sh-thumb { position: relative; flex: none; width: 64px; height: 64px; border-radius: 14px; overflow: hidden; background: #fff; box-shadow: 0 1px 3px rgba(10,10,11,.12); }
+  .sh-thumb :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .sh-what { display: grid; justify-items: start; gap: 2px; min-width: 0; }
+  .sh-what b { font-size: 17px; }
+  .sh-what > span:not(.sh-options) { color: #8a8a8e; font-size: 15px; }
+  .sh-options { display: inline-flex; align-items: center; gap: 2px; height: 34px; margin-top: 6px; padding: 0 12px 0 14px; border-radius: 17px; background: rgba(10,10,11,.05); font-size: 16px; }
+  .sh-options svg { width: 16px; height: 16px; stroke-width: 2.2; color: rgba(10,10,11,.5); }
+  .sh-apps { display: flex; gap: 24px; padding: 18px 4px 16px; box-shadow: 0 1px 0 rgba(10,10,11,.1); }
+  .app, .act { position: relative; display: grid; justify-items: center; align-content: start; gap: 8px; width: 66px; font-size: 13px; line-height: 1.2; text-align: center; }
+  .app :global(img), .app .ico { width: 64px; height: 64px; border-radius: 15px; }
+  .app .ico { display: flex; align-items: center; justify-content: center; gap: 4px; background: #fff; box-shadow: inset 0 0 0 1px rgba(10,10,11,.08); }
+  .app .ico i { width: 6px; height: 6px; border-radius: 50%; background: #3a3a3c; }
+  .sh-acts { display: flex; justify-content: space-between; padding: 18px 4px 0; }
+  .act .ico { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; background: rgba(10,10,11,.06); }
+  .act svg { width: 28px; height: 28px; stroke-width: 1.5; }
+
+  /* DressYou: paper, a spaced uppercase title, soft-filled pills and the floating glass tab bar (app kit, 2026-10-29). */
+  .app-screen { background: #f4f4f2; }
+  .abar { position: absolute; left: 0; right: 0; top: 56px; display: flex; align-items: center; justify-content: space-between; height: 44px; padding: 0 24px; }
+  .abar b { font-size: 15px; letter-spacing: .24em; text-transform: uppercase; }
+  .abar i { width: 24px; }
+  .asearch { position: absolute; left: 20px; right: 20px; top: 112px; display: flex; gap: 8px; }
+  .pill { display: inline-flex; align-items: center; gap: 10px; height: 48px; padding: 0 18px; border-radius: 24px; background: rgba(10,10,11,.05); white-space: nowrap; }
+  .asearch .pill:first-child { flex: 1; color: rgba(10,10,11,.45); }
+  .asearch .pill:first-child span { flex: 1; }
+  .asearch .pill svg { width: 20px; height: 20px; color: rgba(10,10,11,.55); }
+  .pill.sel { font-weight: 600; }
+  .segs { position: absolute; left: 20px; right: 20px; top: 180px; display: flex; gap: 4px; padding: 4px; border-radius: 18px; background: rgba(10,10,11,.05); }
+  .segs span { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; height: 40px; border-radius: 14px; color: rgba(10,10,11,.55); font-size: 15px; }
+  .segs span.on { background: #fbfbfa; color: #0a0a0b; font-weight: 600; box-shadow: 0 1px 3px rgba(10,10,11,.1); }
+  .segs svg { width: 18px; height: 18px; }
+  .grid { position: absolute; left: 20px; right: 20px; top: 244px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
+  .tile { position: relative; display: block; aspect-ratio: 3 / 4; border-radius: 10px; background: #f1f1ef; box-shadow: inset 0 0 0 1px rgba(10,10,11,.08); }
+  .tile :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; --cutout-bg: none; }
+  .tick { position: absolute; top: 8px; right: 8px; display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: #0a0a0b; color: #fff; opacity: 0; transform: scale(.6); }
+  .tick svg { width: 14px; height: 14px; stroke-width: 3; }
+  .tabbar { position: absolute; left: 20px; right: 20px; bottom: 30px; display: flex; gap: 12px; height: 64px; }
+  .tabbar .tabs { flex: 1; display: flex; align-items: center; justify-content: space-around; padding: 0 8px; border-radius: 32px; }
+  .tabbar .tabs > span { display: grid; place-items: center; width: 64px; height: 52px; border-radius: 26px; color: rgba(10,10,11,.45); }
+  .tabbar .tabs > span.on { background: rgba(10,10,11,.07); color: #0a0a0b; }
+  .tabbar .tabs > .me { width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(160deg, #d9c7b8, #8c6f5e); }
+  .orb { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; }
+  .orb :global(img) { width: 44px; height: 44px; }
+  .htry { position: absolute; left: 20px; right: 20px; bottom: 34px; display: flex; align-items: center; justify-content: center; height: 56px; border-radius: 28px; background: #0a0a0b; color: #fff; font-weight: 600; opacity: 0; }
+  .ftabs { position: absolute; left: 0; right: 0; top: 176px; display: flex; gap: 32px; height: 44px; padding: 0 24px; box-shadow: 0 1px 0 rgba(10,10,11,.1); font-size: 18px; color: rgba(10,10,11,.45); }
+  .ftabs .on { color: #0a0a0b; box-shadow: 0 2px 0 #0a0a0b; }
+  .who { position: absolute; left: 0; right: 0; top: 232px; display: flex; align-items: center; gap: 12px; height: 52px; padding: 0 24px; }
+  .avatar { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: #0a0a0b; color: #fff; font-size: 14px; font-weight: 600; }
+  .age { margin-left: auto; color: rgba(10,10,11,.5); font-size: 14px; }
+  .post { position: absolute; left: 0; right: 0; top: 290px; bottom: 0; overflow: hidden; background: #e9e8e5; }
+  .post :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .scan { position: absolute; right: 18px; bottom: 120px; display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; }
+
+  /* The try-on in the app: the render on its light card, its badge, the actions and the stylist's field above the home bar. */
+  .hren { opacity: 0; visibility: hidden; }
   .hren.first { opacity: 1; visibility: visible; }
-  /* The twin stands clear of the status bar and badge above and the ask bar below. */
-  .hren :global(img.hrimg) { padding: 72px 18px 82px; }
-  .badge { position: absolute; left: 14px; top: 44px; padding: 4px 8px; border-radius: 4px; background: rgba(10,10,10,.88); color: #fff; font-family: var(--font-mono); font-size: 9px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; white-space: nowrap; }
-  .hin { position: absolute; left: 12px; right: 12px; bottom: 14px; display: flex; align-items: center; gap: 8px; height: 52px; padding: 0 7px 0 16px; border-radius: 17px; background: #ffffff; box-shadow: 0 10px 28px rgba(0,0,0,.16), 0 0 0 1px rgba(10,10,10,.06); font-size: 14px; }
-  .field { position: relative; flex: 1; min-width: 0; height: 20px; line-height: 20px; }
-  .hph { position: absolute; inset: 0; color: #8a8a8a; white-space: nowrap; }
-  .htype { position: absolute; inset: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #0a0a0a; font-weight: 600; }
-  .hsend { flex: none; display: flex; align-items: center; height: 38px; padding: 0 14px; border-radius: 12px; background: #0a0a0a; color: #fff; font-size: 13px; font-weight: 700; }
-  .hsweep { position: absolute; left: 0; right: 0; top: 100%; height: 90px; margin-top: -45px; background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,.85) 50%, rgba(255,255,255,0)); opacity: 0; }
+  .rcard { position: absolute; left: 16px; right: 16px; top: 108px; height: 548px; border-radius: 28px; overflow: hidden; background: #e9e8e5; }
+  .rcard :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; }
+  .badge { position: absolute; left: 14px; top: 14px; padding: 5px 9px; border-radius: 6px; background: rgba(10,10,11,.7); color: #fff; font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; }
+  .racts { position: absolute; left: 16px; right: 16px; top: 670px; display: flex; gap: 8px; }
+  .racts .out { flex: 1; justify-content: center; height: 50px; background: none; box-shadow: inset 0 0 0 1px rgba(10,10,11,.2); font-size: 16px; }
+  .racts .round { flex: none; width: 50px; padding: 0; }
+  .racts svg { width: 20px; height: 20px; }
+  .hin { position: absolute; left: 16px; right: 16px; bottom: 34px; display: flex; align-items: center; gap: 8px; height: 52px; padding: 0 7px 0 20px; border-radius: 26px; background: rgba(10,10,11,.05); font-size: 16px; }
+  .field { position: relative; flex: 1; min-width: 0; height: 22px; line-height: 22px; }
+  .hph { position: absolute; inset: 0; color: rgba(10,10,11,.45); white-space: nowrap; }
+  .htype { position: absolute; inset: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #0a0a0b; }
+  .hsend { flex: none; display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; color: rgba(10,10,11,.4); }
+  .hsend svg { width: 20px; height: 20px; stroke-width: 2.2; }
+  .hsweep { position: absolute; left: 0; right: 0; top: 100%; height: 140px; margin-top: -70px; background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,.7) 50%, rgba(255,255,255,0)); opacity: 0; }
 
   .hpop { position: absolute; inset: 0; pointer-events: none; }
   .hpop > * { opacity: 0; visibility: hidden; }
@@ -209,7 +319,7 @@ const APPS = (['copy', 'notes', 'mail'] as const).map((icon, k) => [icon, t.apps
   .ha { position: absolute; left: 322px; top: 410px; width: 236px; display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: 20px 20px 20px 6px; background: #fff; color: #0a0a0a; font-size: 15px; line-height: 1.35; box-shadow: 0 24px 50px rgba(0,0,0,.22), 0 0 0 1px rgba(10,10,10,.05); }
   /* Narrow: the bubbles stack under the phone, so their text keeps its size. */
   @container (max-width: 559.98px) {
-    .hstage { --scene-w: 460px; --scene-h: 960px; height: calc(100cqw * 960 / 460); }
+    .hstage { --scene-w: 460px; --scene-h: 960px; height: min(calc(100cqw * 960 / 460), calc(100svh - 96px)); }
     .hphone { top: 0; left: 0; right: 0; margin-inline: auto; }
     .hsz { left: 24px; top: 624px; }
     .hq { right: 24px; top: 790px; }

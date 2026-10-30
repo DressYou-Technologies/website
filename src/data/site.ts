@@ -29,10 +29,14 @@ export const WALL: ImageId[][] = [
   ['wall-w-blonde', 'wall-m-preppy', 'wall-w-track'],
 ];
 
-// A product page on some shop's site: the phone flips through a few, then shares the last one to DressYou.
-// The .example domains are reserved for examples, so no real shop is implied.
+// The footer headline's window cycles through some of the hero's people.
+export const FINALE_REEL: ImageId[] = ['wall-w-knitset', 'wall-m-suit', 'wall-w-red', 'wall-m-preppy', 'wall-w-linen', 'wall-m-camel'];
+
+// A product page on some shop's site: the phone swipes through a few open tabs, then shares the last one to DressYou.
+// The .example domains are reserved for examples, so no real shop is implied; each page shows its piece as a flat lay.
 // Its name and price are copy, per language, in the same order (src/i18n/copy.ts, how.shopPages).
-export interface ShopPage { domain: string; image: ImageId; cutout: boolean; theme: 'white' | 'sand' }
+export interface ShopPage { domain: string; brand: string; image: ImageId; theme: 'white' | 'sand' }
+// The phone's try-ons are studio photos in the hero's recipe (founder, 2026-10-30), not cutouts.
 export const HOW: {
   shop: { pages: ShopPage[]; render: ImageId };
   wardrobe: { grid: ImageId[]; picks: ImageId[]; render: ImageId };
@@ -40,18 +44,18 @@ export const HOW: {
 } = {
   shop: {
     pages: [
-      { domain: 'nordstudio.example', image: 'g-navy-overshirt', cutout: true, theme: 'white' },
-      { domain: 'maisonclair.example', image: 'g-brown-loafers', cutout: true, theme: 'sand' },
-      { domain: 'atelierneuf.example', image: 'shop-trench', cutout: false, theme: 'white' },
+      { domain: 'nord.example', brand: 'Nord Studio', image: 'g-navy-overshirt', theme: 'white' },
+      { domain: 'clair.example', brand: 'Maison Clair', image: 'g-brown-loafers', theme: 'sand' },
+      { domain: 'neuf.example', brand: 'Atelier Neuf', image: 'g-brown-coat', theme: 'white' },
     ],
-    render: 'twin-trench',
+    render: 'render-w-coat',
   },
   wardrobe: {
-    grid: ['g-navy-overshirt', 'g-grey-crewneck', 'g-ecru-trousers', 'g-white-sneakers', 'g-black-tee', 'g-chelsea-boots'],
-    picks: ['g-grey-crewneck', 'g-ecru-trousers', 'g-white-sneakers', 'g-navy-overshirt'],
-    render: 'twin-m-overshirt',
+    grid: ['g-navy-overshirt', 'g-black-knit-polo', 'g-white-oxford-shirt', 'g-ecru-trousers', 'g-black-wide-trousers', 'g-dark-straight-jeans', 'g-brown-loafers', 'g-white-sneakers', 'g-chelsea-boots', 'g-grey-crewneck', 'g-taupe-sweater', 'g-black-cap'],
+    picks: ['g-black-knit-polo', 'g-ecru-trousers', 'g-brown-loafers'],
+    render: 'render-m-polo',
   },
-  feed: { post: { handle: 'naya', age: '2h', image: 'feed-w-trench' }, render: 'twin-cap-trench' },
+  feed: { post: { handle: 'linh', age: '2h', image: 'feed-w-shirt' }, render: 'render-w-shirt' },
 };
 
 // Tops, bottoms, shoes, layers.
@@ -86,20 +90,20 @@ export const FEED_TRACKS: [Post[], Post[]] = [
 // "In this look" over the feed tile: naya's post.
 export const LOOK_PIECES: ImageId[] = ['g-black-cap', 'g-trench', 'g-white-tank', 'g-barrel-jeans', 'g-brown-boots'];
 
-// Friends by initial; each look lists who voted for it. The fan shows the looks in label order.
+// Friends by initial; each look lists who voted for it. The fan shows the looks in `order`.
 export const FRIENDS = ['M', 'S', 'N', 'J'];
-export interface FriendLook { image: ImageId; label: string; order: number; votes: string[] }
+export interface FriendLook { image: ImageId; order: number; votes: string[] }
 // Two rounds of asking: a woman's three looks, then a man's. The friends' pick in each is the look with the most votes.
 export const FRIEND_SETS: FriendLook[][] = [
   [
-    { image: 'twin-office', label: 'look 1', order: 1, votes: ['S'] },
-    { image: 'twin-knitset', label: 'look 3', order: 3, votes: [] },
-    { image: 'twin-knitdress', label: 'look 2', order: 2, votes: ['M', 'N', 'J'] },
+    { image: 'twin-office', order: 1, votes: ['S'] },
+    { image: 'twin-knitset', order: 3, votes: [] },
+    { image: 'twin-knitdress', order: 2, votes: ['M', 'N', 'J'] },
   ],
   [
-    { image: 'twin-m-polo', label: 'look 1', order: 1, votes: ['M'] },
-    { image: 'twin-m-tee', label: 'look 3', order: 3, votes: [] },
-    { image: 'twin-m-crewneck', label: 'look 2', order: 2, votes: ['S', 'N', 'J'] },
+    { image: 'twin-m-polo', order: 1, votes: ['M'] },
+    { image: 'twin-m-tee', order: 3, votes: [] },
+    { image: 'twin-m-crewneck', order: 2, votes: ['S', 'N', 'J'] },
   ],
 ];
 

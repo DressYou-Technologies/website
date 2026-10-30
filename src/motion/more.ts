@@ -131,15 +131,16 @@ function friends(card: HTMLElement) {
   const loop = gsap.timeline({ repeat: -1, paused: true });
   const looksOf = (fan: HTMLElement) => all(fan, '.fopt');
   const reset = (fan: HTMLElement, t: number) => loop.set(all(fan, '.fvote'), { opacity: 0, y: -12, scale: .4 }, t)
-    .set(one(fan, '.fring'), { '--p': 0 }, t)
-    .set(one(fan, '.fburst'), { opacity: 0, scale: .2 }, t);
+    .set(one(fan, '.fpick'), { opacity: 0, scale: 1.03 }, t)
+    .set(one(fan, '.fcheck'), { opacity: 0, scale: .6 }, t)
+    .set(all(fan, '.fimg'), { opacity: 1 }, t);
   gsap.set(fans, { visibility: 'visible' });
   fans.forEach((fan, i) => { reset(fan, 0); loop.set(looksOf(fan), { autoAlpha: i === 0 ? 1 : 0 }, 0); });
 
   let t = 0;
   fans.forEach((fan, i) => {
-    const votes = all(fan, '.fvote'), ring = one(fan, '.fring'), burst = one(fan, '.fburst');
-    const picked = one(fan, '.fwin').parentElement ?? one(fan, '.fwin');
+    const votes = all(fan, '.fvote'), ring = one(fan, '.fpick'), check = one(fan, '.fcheck'), win = one(fan, '.fwin');
+    const others = all(fan, '.fimg').filter((look) => look !== win);
     // Votes land in a fixed, lively order: the second, the first, then the rest.
     const order = [1, 0, ...votes.keys()].filter((k, j, ks) => k < votes.length && ks.indexOf(k) === j).map((k) => votes[k]);
     loop.set(people, { opacity: .3, scale: .8 }, t)
@@ -156,11 +157,12 @@ function friends(card: HTMLElement) {
       loop.to(vote, { opacity: 1, y: 0, scale: 1, duration: .32, ease: 'back.out(2.6)' }, at + .1);
     });
     const end = t + 1.9 + order.length * .55 + .2;
-    loop.to(ring, { '--p': 1, duration: .5, ease: 'power2.inOut' }, end)
-      // Cartoon pop: squash, stretch, settle, with three burst marks off the corner.
-      .to(picked, { keyframes: [{ scaleX: 1.06, scaleY: .94, duration: .1, ease: 'power2.out' }, { scaleX: .97, scaleY: 1.04, duration: .08 }, { scaleX: 1, scaleY: 1, duration: .12, ease: 'power1.out' }] }, end + .45)
-      .to(burst, { opacity: 1, scale: 1, duration: .28, ease: 'back.out(3)' }, end + .48)
-      .to(burst, { opacity: 0, duration: .3 }, end + 1.05);
+    // The pick clicks: a short press, the hairline and the check set in, and the other looks step back.
+    loop.to(win, { scale: .97, duration: .09, ease: 'power2.in' }, end)
+      .to(win, { scale: 1, duration: .45, ease: 'expo.out' }, end + .09)
+      .to(ring, { opacity: 1, scale: 1, duration: .35, ease: 'power3.out' }, end + .09)
+      .to(check, { opacity: 1, scale: 1, duration: .3, ease: 'power3.out' }, end + .14)
+      .to(others, { opacity: .45, duration: .5, ease: 'power2.out' }, end + .14);
     // Hand over: this person's looks slide away, the next person's slide in, and this set clears while it is hidden.
     const swap = end + 2.4, next = fans[(i + 1) % fans.length];
     loop.to(looksOf(fan), { autoAlpha: 0, y: -16, filter: 'blur(6px)', duration: .45, stagger: .06, ease: 'power2.in' }, swap)

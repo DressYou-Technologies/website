@@ -30,7 +30,7 @@ const manifest = JSON.parse(await readFile(new URL('manifest.json', ASSETS), 'ut
 
 // Every string in the data that names an image: anything shaped like an asset id.
 const ids = (value) => typeof value === 'string'
-  ? (/^(twin|wall-|feed-|g-|shop-)/.test(value) ? [value] : [])
+  ? (/^(twin|render-|wall-|feed-|g-)/.test(value) ? [value] : [])
   : Array.isArray(value) || (value && typeof value === 'object') ? Object.values(value).flatMap(ids) : [];
 
 test('every image id in the data exists as a master', () => {
@@ -62,7 +62,7 @@ test('men and women share the feed and the try-ons', () => {
   const men = posts.filter((id) => id.startsWith('feed-m-')).length;
   assert.ok(Math.abs(men - (posts.length - men)) <= BALANCE_SLACK, `${men} of ${posts.length} posts are men`);
   const renders = [site.HOW.shop.render, site.HOW.wardrobe.render, site.HOW.feed.render, ...site.OUTFITS.map((o) => o.render), ...site.FRIEND_SETS.flat().map((l) => l.image)];
-  const male = renders.filter((id) => id.startsWith('twin-m-')).length;
+  const male = renders.filter((id) => /^(twin|render)-m-/.test(id)).length;
   assert.ok(male > 0 && Math.abs(male - (renders.length - male)) <= BALANCE_SLACK, `${male} of ${renders.length} try-ons are the male twin`);
 });
 
@@ -88,9 +88,24 @@ test('each outfit piece comes from its row', () => {
 });
 
 test("the feed story's render wears the post's look", () => {
-  assert.equal(site.HOW.feed.post.image, 'feed-w-trench');
-  assert.equal(site.HOW.feed.render, 'twin-cap-trench');
+  assert.equal(site.HOW.feed.post.image, 'feed-w-shirt');
+  assert.equal(site.HOW.feed.render, 'render-w-shirt');
   assert.deepEqual(site.LOOK_PIECES, ['g-black-cap', 'g-trench', 'g-white-tank', 'g-barrel-jeans', 'g-brown-boots']);
+});
+
+test("the phone's try-ons are studio photos in the hero's recipe, not cutouts", () => {
+  for (const id of [site.HOW.shop.render, site.HOW.wardrobe.render, site.HOW.feed.render]) {
+    assert.match(id, /^render-[wm]-/, id);
+    assert.equal(masters.get(id), 'people', id);
+  }
+});
+
+test('every shop page in the share story shows a flat garment', () => {
+  for (const page of site.HOW.shop.pages) assert.match(page.image, /^g-/, page.domain);
+});
+
+test('a look in the friends card carries no label, only its votes', () => {
+  for (const look of site.FRIEND_SETS.flat()) assert.deepEqual(Object.keys(look).sort(), ['image', 'order', 'votes']);
 });
 
 test('the friends card shows a woman\'s looks first, then a man\'s', () => {

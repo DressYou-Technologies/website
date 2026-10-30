@@ -1,0 +1,49 @@
+---
+import { COPY } from '../i18n/copy';
+import { localize, type Lang } from '../i18n/lang';
+
+// The "be notified" form, in the app dialog and in the footer. chrome.ts posts it; its answers ride as data attributes.
+interface Props { lang: Lang; dark?: boolean }
+const { lang, dark = false } = Astro.props;
+const t = COPY[lang].dialog;
+---
+<div class:list={['wrap', { dark }]}>
+  <form class="notify" novalidate data-lang={lang} data-ok={t.says.ok} data-email={t.says.email} data-closed={t.says.closed} data-failed={t.says.failed}>
+    <label class="field"><span class="sr">{t.notify.email}</span><input type="email" name="email" required autocomplete="email" inputmode="email" maxlength="254" placeholder={t.notify.placeholder} /></label>
+    <input class="trap" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+    <button class="send" type="submit">{t.notify.submit}</button>
+    <p class="status" role="status" aria-live="polite"></p>
+  </form>
+  <p class="fine">{t.notify.fine} <a href={localize(lang, '/privacy')}>{t.notify.privacy}</a></p>
+</div>
+
+<style>
+  .wrap { display: grid; justify-items: center; gap: 16px; width: 100%; }
+  .notify { display: grid; gap: 10px; width: 100%; margin-top: 6px; }
+  .field input { width: 100%; height: 52px; padding: 0 18px; border: 0; border-radius: 16px; background: #fff; box-shadow: inset 0 0 0 1px rgba(10,10,10,.14); color: #0a0a0a; font: inherit; font-size: 1rem; }
+  .field input:focus-visible { outline: none; box-shadow: inset 0 0 0 2px #0a0a0a; }
+  .send { display: inline-flex; align-items: center; justify-content: center; height: 52px; padding: 0 26px; border: 0; border-radius: 18px; background: #0a0a0a; color: #fff; font: inherit; font-size: 1rem; font-weight: 700; white-space: nowrap; cursor: pointer; }
+  .send:disabled { opacity: .6; cursor: progress; }
+  .sr, .trap { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .status { min-height: 1.4em; margin: 0; font-size: .9375rem; color: rgba(10,10,11,.62); }
+  .status.error { color: #b3261e; }
+  .notify.done .field, .notify.done .send { display: none; }
+  .notify.done .status { color: #0a0a0a; font-weight: 600; }
+  .fine { margin: 0; max-width: 34ch; color: rgba(10,10,11,.5); font-size: .8125rem; line-height: 1.45; }
+
+  /* In the footer: one line on the dark card, the field and its button in one pill. */
+  .dark { justify-items: start; gap: 12px; }
+  .dark .notify { grid-template-columns: minmax(0, 1fr) auto; gap: 6px; margin: 0; padding: 6px; border-radius: 999px; background: rgba(255,255,255,.08); box-shadow: inset 0 0 0 1px rgba(255,255,255,.14); }
+  .dark .notify:focus-within { box-shadow: inset 0 0 0 1px rgba(255,255,255,.5); }
+  .dark .field input { height: 46px; padding: 0 16px; border-radius: 999px; background: transparent; box-shadow: none; color: #fff; }
+  .dark .field input::placeholder { color: rgba(255,255,255,.45); }
+  .dark .field input:focus-visible { box-shadow: none; }
+  .dark .send { height: 46px; padding: 0 22px; border-radius: 999px; background: #fff; color: #0a0a0a; font-weight: 600; }
+  .dark .status { grid-column: 1 / -1; min-height: 0; padding: 0 16px; color: #cfcfcf; }
+  .dark .status:empty { display: none; }
+  .dark .status.error { color: #ff8a80; }
+  .dark .notify.done { padding: 14px 16px; }
+  .dark .notify.done .status { padding: 0; color: #fff; }
+  .dark .fine { max-width: 44ch; color: #8a8a8a; }
+  .dark .fine a { color: #cfcfcf; }
+</style>

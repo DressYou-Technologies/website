@@ -1,8 +1,9 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, Picture } from 'astro:assets';
 import GetLink from './GetLink.astro';
-import DownloadIcon from './DownloadIcon.astro';
-import { LINKS } from '../data/site';
+import NotifyForm from './NotifyForm.astro';
+import { FINALE_REEL, LINKS } from '../data/site';
+import { image } from '../lib/image';
 import logo from '../assets/brand/logo-white.png';
 import { COPY } from '../i18n/copy';
 import { LANGS, localize, type Lang } from '../i18n/lang';
@@ -13,46 +14,58 @@ const t = COPY[lang];
 const other = LANGS.find((l) => l !== lang) ?? lang;
 // Links are written for the root ("/#how", "/legal") and land on the same language's page.
 const href = (link: string) => { const [page, hash] = link.split('#'); return localize(lang, page || '/') + (hash ? `#${hash}` : ''); };
+const year = new Date().getFullYear();
+const [first, second] = t.finale.mega;
 ---
 <footer class="finale" id="get">
   <div class="row">
-    <h2 class="mega">{t.finale.mega.map((w) => <span class="w">{w}</span>)}</h2>
-    <div class="finale-cta">
-      <GetLink kind="app" class="cta-app">{t.get.app}</GetLink>
-      <GetLink kind="extension" class="cta-ext"><DownloadIcon size={18} />{t.get.extension}</GetLink>
+    <!-- The headline carries a window onto the hero's people, cycling through them while it is on screen. -->
+    <h2 class="mega"><span class="w">{first} <span class="reel" aria-hidden="true">{FINALE_REEL.map((id, i) => (
+      <Picture src={image(id)} formats={['avif', 'webp']} widths={[120, 240]} sizes="120px" alt="" loading="lazy" pictureAttributes={{ class: i === 0 ? 'on' : '' }} />
+    ))}</span></span><span class="w">{second}</span></h2>
+    <div class="join">
+      <p class="lede">{t.finale.notify}</p>
+      <NotifyForm lang={lang} dark />
+      <GetLink kind="extension" class="xchip"><svg viewBox="0 0 24 24" aria-hidden="true" width="16" height="16"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle><path d="M21.17 8H12"></path><path d="M3.95 6.06 8.54 14"></path><path d="M10.88 21.94 15.46 14"></path></svg>{t.finale.extension}{!LINKS.extensionUrl && <span>{t.finale.soon}</span>}</GetLink>
     </div>
   </div>
+  <nav class="cols" aria-label={t.finale.footer}>
+    {t.finale.columns.map(({ label, links }) => (
+      <div><p>{label}</p>{links.map(([text, link]) => <a href={href(link)}>{text}</a>)}</div>
+    ))}
+    <div><p>{t.lang.heading}</p><a href={localize(other, path)} hreflang={other} lang={other}>{t.lang.switchTo}</a></div>
+  </nav>
   <div class="base">
-    <div class="who">
-      <Image src={logo} height={26} densities={[1, 2]} alt="DressYou" />
-      <a href={`mailto:${LINKS.email}`}>{LINKS.email}</a>
-    </div>
-    <nav aria-label={t.finale.footer}>
-      {t.finale.columns.map(({ label, links }) => (
-        <div><p>{label}</p>{links.map(([text, link]) => <a href={href(link)}>{text}</a>)}</div>
-      ))}
-      <div><p>{t.lang.heading}</p><a href={localize(other, path)} hreflang={other} lang={other}>{t.lang.switchTo}</a></div>
-    </nav>
+    <Image src={logo} height={22} densities={[1, 2]} alt="DressYou" />
+    <p class="facts"><span>© {year} DressYou Technologies</span><span>47 rue Vivienne, 75002 Paris</span><a href={`mailto:${LINKS.email}`}>{LINKS.email}</a><span>{t.finale.made}</span></p>
+    <p class="ai">{t.finale.ai}</p>
   </div>
-  <p class="ai">{t.finale.ai}</p>
 </footer>
 
 <style>
-  .finale { margin: 0 12px; padding: clamp(40px, 5vw, 72px) clamp(16px, 3vw, 48px) clamp(32px, 4vw, 48px); border-radius: 28px; background: radial-gradient(110% 90% at 85% 0%, #2a2a2e 0%, #151517 45%, #0e0e10 100%); color: #fff; display: grid; gap: clamp(40px, 6vw, 80px); }
-  .row { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 28px; }
+  .finale { margin: 0 12px 12px; padding: clamp(40px, 6svh, 72px) clamp(20px, 3vw, 48px) clamp(24px, 3svh, 32px); border-radius: 28px; background: radial-gradient(110% 90% at 85% 0%, #2a2a2e 0%, #151517 45%, #0e0e10 100%); color: #fff; display: grid; gap: clamp(36px, 6svh, 72px); }
+  .row { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 32px 48px; }
   .mega { margin: 0; font-size: clamp(2.875rem, 8vw, 7rem); font-weight: 700; letter-spacing: -.06em; line-height: .95; }
-  .w { display: block; }
-  .finale-cta { display: flex; flex-wrap: wrap; gap: 10px; }
-  .finale-cta :global(.cta-app) { display: inline-flex; align-items: center; height: 52px; padding: 0 26px; border: 0; border-radius: 999px; background: #fff; color: #0a0a0a; font: inherit; font-weight: 600; font-size: 1rem; white-space: nowrap; cursor: pointer; }
-  .finale-cta :global(.cta-ext) { display: inline-flex; align-items: center; gap: 8px; height: 52px; padding: 0 22px; border: 0; border-radius: 999px; background: none; color: #fff; font: inherit; font-weight: 600; font-size: 1rem; text-decoration: none; white-space: nowrap; box-shadow: inset 0 0 0 1px rgba(255,255,255,.22); cursor: pointer; }
-  .base { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 32px 48px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,.1); }
-  .who { display: grid; gap: 14px; align-content: start; justify-items: start; }
-  .who img { width: auto; height: 26px; }
-  .who a, nav a { color: #cfcfcf; font-size: .9375rem; text-decoration: none; transition: color .2s; }
-  .who a:hover, nav a:hover { color: #fff; }
-  nav { display: flex; flex-wrap: wrap; gap: 32px clamp(32px, 6vw, 80px); }
-  nav div { display: grid; gap: 10px; align-content: start; }
-  nav a { display: block; }
-  nav p { margin: 0 0 4px; font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: #8a8a8a; }
-  .ai { margin: calc(-1 * clamp(16px, 3vw, 40px)) 0 0; color: #8a8a8a; font-size: .8125rem; }
+  .w { display: block; white-space: nowrap; }
+  /* An inline window the height of a capital, rounded like the site's cards. */
+  .reel { position: relative; display: inline-block; width: 1.5em; height: .74em; margin-left: .04em; vertical-align: .02em; border-radius: .2em; overflow: hidden; background: #e9e8e5; box-shadow: inset 0 0 0 1px rgba(255,255,255,.12); }
+  .reel :global(picture) { position: absolute; inset: 0; opacity: 0; }
+  .reel :global(picture.on) { opacity: 1; }
+  .reel :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 18%; }
+  .join { flex: 0 1 420px; min-width: min(100%, 300px); display: grid; gap: 14px; }
+  .lede { margin: 0; color: #cfcfcf; font-size: 1.0625rem; line-height: 1.4; text-wrap: balance; }
+  .join :global(.xchip) { justify-self: start; display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 14px 0 12px; border: 0; border-radius: 999px; background: none; color: #cfcfcf; font: inherit; font-size: .875rem; font-weight: 600; text-decoration: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,.16); cursor: pointer; transition: color .2s, box-shadow .2s; }
+  .join :global(.xchip:hover) { color: #fff; box-shadow: inset 0 0 0 1px rgba(255,255,255,.4); }
+  .join :global(.xchip svg) { fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .join :global(.xchip span) { font-family: var(--font-mono); font-size: 9px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: #8a8a8a; }
+  .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 28px 32px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,.1); }
+  .cols div { display: grid; gap: 10px; align-content: start; }
+  .cols p { margin: 0 0 4px; font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: #8a8a8a; }
+  .cols a, .facts a { color: #cfcfcf; font-size: .9375rem; text-decoration: none; transition: color .2s; }
+  .cols a:hover, .facts a:hover { color: #fff; }
+  .base { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,.1); }
+  .base img { width: auto; height: 22px; }
+  .facts { display: flex; flex-wrap: wrap; gap: 6px 20px; margin: 0; color: #8a8a8a; font-size: .8125rem; }
+  .facts a { font-size: .8125rem; }
+  .ai { margin: 0 0 0 auto; color: #8a8a8a; font-size: .8125rem; }
 </style>

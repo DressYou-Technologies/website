@@ -12,12 +12,10 @@ import logo from '../assets/brand/logo-white.png';
 interface Props { lang: Lang; path: string }
 const { lang, path } = Astro.props;
 const t = COPY[lang];
-const other = LANGS.find((l) => l !== lang) ?? lang;
 ---
 <header class="top">
   <a class="brand" href={localize(lang, '/')} aria-label="DressYou"><span class="brand-mark"><Image src={mark} width={26} height={26} densities={[1, 2]} alt="" /></span><Image class="brand-full" src={logo} height={28} densities={[1, 2]} alt="DressYou" loading="eager" /></a>
-  <nav>
-    <a class="hdr-lang" href={localize(other, path)} hreflang={other} lang={other} aria-label={t.lang.label}>{other.toUpperCase()}</a>
+  <div class="bar">
     <GetLink kind="extension" class="hdr-ext"><DownloadIcon size={16} />{t.get.extension}</GetLink>
     <span class="hdr-app">
       <GetLink kind="app">{t.get.app}</GetLink>
@@ -25,7 +23,22 @@ const other = LANGS.find((l) => l !== lang) ?? lang;
         <span class="qr-pop"><span><span class="qr-box" role="img" aria-label={t.get.qr} set:html={qrSvg(LINKS.appUrl)} /></span></span>
       )}
     </span>
-  </nav>
+    <button type="button" class="hdr-burger" popovertarget="menu" aria-label={t.menu.label}><span class="bars" aria-hidden="true"><i></i><i></i></span></button>
+  </div>
+  <!-- A popover: the browser opens and closes it, Escape and a click outside included, with or without the page's script. -->
+  <div id="menu" class="menu-pop" popover>
+    <nav aria-label={t.menu.label}>{t.menu.links.map(([label, link]) => <a class="menu-item" href={localize(lang, link)}>{label}</a>)}</nav>
+    <div class="menu-get">
+      <GetLink kind="app" class="menu-app">{t.get.app}</GetLink>
+      <GetLink kind="extension" class="menu-ext"><DownloadIcon size={16} />{t.get.extension}</GetLink>
+    </div>
+    <div class="menu-item menu-langs">{LANGS.map((l, k) => <>
+      {k > 0 && <span class="slash" aria-hidden="true">/</span>}
+      {l === lang
+        ? <span class="on" aria-current="true">{l.toUpperCase()}</span>
+        : <a href={localize(l, path)} hreflang={l} lang={l} aria-label={t.lang.label}>{l.toUpperCase()}</a>}
+    </>)}</div>
+  </div>
 </header>
 
 <style>
@@ -46,16 +59,14 @@ const other = LANGS.find((l) => l !== lang) ?? lang;
   .brand :global(.brand-full) { width: auto; height: clamp(22px, 2vw + 12px, 28px); max-width: 130px; transition: height .42s cubic-bezier(.32,.94,.3,1), max-width .5s cubic-bezier(.65,0,.35,1), opacity .5s cubic-bezier(.65,0,.35,1); }
   .compact .brand :global(.brand-full) { height: 20px; }
 
-  nav { display: flex; align-items: center; gap: 4px; }
-  .hdr-lang { display: inline-flex; align-items: center; justify-content: center; height: 36px; padding: 0 10px; border-radius: 12px; color: rgba(255,255,255,.78); font-size: .8125rem; font-weight: 700; letter-spacing: .04em; text-decoration: none; }
-  .hdr-lang:hover { color: #fff; background: rgba(255,255,255,.1); }
-  nav :global(.hdr-ext) {
+  .bar { display: flex; align-items: center; gap: 4px; }
+  .bar :global(.hdr-ext) {
     display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 42px;
     max-width: clamp(0px, (100vw - 600px) * 100, 240px); padding: 0 clamp(0px, (100vw - 600px) * 100, 20px); overflow: hidden;
     border: 0; border-radius: 14px; background: rgba(255,255,255,.14); color: #fff; font: inherit; font-weight: 600; font-size: .9375rem; text-decoration: none; white-space: nowrap; cursor: pointer;
     transition: height .42s cubic-bezier(.32,.94,.3,1), font-size .42s cubic-bezier(.32,.94,.3,1), border-radius .42s cubic-bezier(.32,.94,.3,1), background-color .35s;
   }
-  .folded nav :global(.hdr-ext) { background-color: rgba(255,255,255,0); }
+  .folded .bar :global(.hdr-ext) { background-color: rgba(255,255,255,0); }
 
   .hdr-app { position: relative; display: inline-flex; max-width: 0; margin-left: -4px; opacity: 0; visibility: hidden; overflow: hidden; pointer-events: none; transition: max-width .6s cubic-bezier(.65,0,.35,1), margin-left .6s cubic-bezier(.65,0,.35,1), opacity .6s cubic-bezier(.65,0,.35,1), visibility .6s; }
   .hdr-app > :global(button) {
@@ -64,7 +75,37 @@ const other = LANGS.find((l) => l !== lang) ?? lang;
     transform: translateX(14px) scale(.92);
     transition: transform .55s cubic-bezier(.65,0,.35,1), height .42s cubic-bezier(.32,.94,.3,1), font-size .42s cubic-bezier(.32,.94,.3,1), border-radius .42s cubic-bezier(.32,.94,.3,1);
   }
-  .compact nav :global(.hdr-ext), .compact .hdr-app > :global(button) { height: 32px; font-size: .8125rem; border-radius: 12px; }
+  .compact .bar :global(.hdr-ext), .compact .hdr-app > :global(button) { height: 32px; font-size: .8125rem; border-radius: 12px; }
+
+  /* The export's burger: two bars that cross while the menu is open. 44 px keeps the touch target. */
+  .hdr-burger { display: grid; place-items: center; width: 44px; height: 44px; margin-left: 2px; padding: 0; border: 0; border-radius: 14px; background: transparent; color: #fff; cursor: pointer; transition: width .42s cubic-bezier(.32,.94,.3,1), height .42s cubic-bezier(.32,.94,.3,1), border-radius .42s cubic-bezier(.32,.94,.3,1), background-color .2s; }
+  .hdr-burger:hover { background-color: rgba(255,255,255,.1); }
+  .compact .hdr-burger { width: 36px; height: 36px; border-radius: 12px; }
+  .bars { position: relative; display: block; width: 16px; height: 10px; }
+  .bars i { position: absolute; left: 0; right: 0; height: 1.6px; border-radius: 1px; background: currentColor; transition: transform .32s cubic-bezier(.32,.94,.3,1), top .32s cubic-bezier(.32,.94,.3,1); }
+  .bars i:first-child { top: 0; }
+  .bars i:last-child { top: 8px; }
+  .top:has(.menu-pop:popover-open) .bars i { top: 4px; }
+  .top:has(.menu-pop:popover-open) .bars i:first-child { transform: rotate(45deg); }
+  .top:has(.menu-pop:popover-open) .bars i:last-child { transform: rotate(-45deg); }
+
+  /* Opened in the top layer under the header's right edge; the script measures that edge, these values hold without it. */
+  .menu-pop { inset: var(--menu-top, 76px) var(--menu-right, 12px) auto auto; width: min(300px, calc(100vw - 24px)); margin: 0; padding: 24px 24px 16px; border: 0; border-radius: 24px; color: #0a0a0a; background: #fff; box-shadow: 0 30px 80px rgba(0,0,0,.3), 0 0 0 1px rgba(10,10,10,.04); transform-origin: 100% 0; }
+  .menu-pop::backdrop { background: transparent; }
+  .menu-pop nav { display: grid; gap: 4px; }
+  a.menu-item { display: block; padding: 2px 0; color: #0a0a0a; font-size: clamp(1.5rem, 2.4vw, 1.875rem); font-weight: 700; letter-spacing: -.045em; line-height: 1.15; text-decoration: none; transition: color .2s; }
+  a.menu-item:hover { color: #8a8a8a; }
+  .menu-langs { display: flex; align-items: center; gap: 8px; margin-top: 22px; padding-top: 12px; border-top: 1px solid rgba(10,10,10,.08); font-size: .9375rem; font-weight: 700; letter-spacing: -.01em; }
+  .menu-langs a, .menu-langs span { padding: 4px 2px; color: #0a0a0a; text-decoration: none; }
+  .menu-langs a { opacity: .35; transition: opacity .2s; }
+  .menu-langs a:hover { opacity: 1; }
+  .menu-langs .slash { padding: 0; color: #c8c8c8; }
+  /* Below 600 px the header's extension button folds away, so the menu carries both ways to get DressYou. */
+  .menu-get { display: none; }
+  .menu-get :global(.menu-app), .menu-get :global(.menu-ext) { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 48px; border: 0; border-radius: 14px; font: inherit; font-weight: 600; font-size: .9375rem; text-decoration: none; cursor: pointer; }
+  .menu-get :global(.menu-app) { background: #0a0a0a; color: #fff; }
+  .menu-get :global(.menu-ext) { background: #f1f1ef; color: #0a0a0a; }
+  @media (max-width: 599.98px) { .menu-get { display: grid; gap: 8px; margin-top: 20px; } }
 
   /* Past the hero, which has its own, the wordmark folds into the symbol and "Get the app" opens. */
   .app-shown .brand :global(.brand-full) { max-width: 0; opacity: 0; }
@@ -72,7 +113,7 @@ const other = LANGS.find((l) => l !== lang) ?? lang;
   .app-shown .brand-mark img { transform: none; transition-delay: .12s; transition-timing-function: cubic-bezier(.34,1.56,.64,1); }
   .app-shown .hdr-app { max-width: 220px; margin-left: 0; opacity: 1; visibility: visible; overflow: visible; pointer-events: auto; transition-delay: .08s; }
   /* Below 600 px the extension buttons fold away (the export's clamp); out of the tab order too. */
-  @media (max-width: 599.98px) { nav :global(.hdr-ext) { display: none; } }
+  @media (max-width: 599.98px) { .bar :global(.hdr-ext) { display: none; } }
   .app-shown .hdr-app > :global(button) { transform: none; transition-delay: .12s; }
 
   .qr-pop { position: absolute; top: 100%; left: 50%; z-index: 20; padding-top: 12px; transform: translateX(-50%); visibility: hidden; opacity: 0; transition: opacity .2s, visibility 0s .2s; }

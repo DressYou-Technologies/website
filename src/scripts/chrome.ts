@@ -1,18 +1,19 @@
 import { gsap } from 'gsap';
-import { HEADER_COMPACT_AFTER, HEADER_FOLD_AT, HERO_PASSED_OFFSET, MOTION_QUERY, SCROLL_JITTER_PX } from '../lib/constants';
+import { HEADER_COMPACT_AFTER, HEADER_FOLD_AT, HERO_PASSED_OFFSET, MENU_GAP_PX, MOTION_QUERY, SCROLL_JITTER_PX } from '../lib/constants';
 import { one } from '../motion/dom';
 
 const motion = () => window.matchMedia(MOTION_QUERY).matches;
 
 // The header is a pill once scrolled, compact while scrolling down, and shows "Get the app" once the hero is gone.
-function header(top: HTMLElement) {
+function header(top: HTMLElement, menu: HTMLElement) {
   const hero = document.querySelector<HTMLElement>('.hero');
   let lastY = window.scrollY;
   const update = () => {
     const y = window.scrollY;
     top.classList.toggle('folded', y > HEADER_FOLD_AT);
     top.classList.toggle('app-shown', !hero || y > hero.offsetHeight - HERO_PASSED_OFFSET);
-    if (Math.abs(y - lastY) > SCROLL_JITTER_PX) {
+    // An open menu hangs from the header's edge, so the header holds its size until it closes.
+    if (Math.abs(y - lastY) > SCROLL_JITTER_PX && !menu.matches(':popover-open')) {
       top.classList.toggle('compact', y > lastY && y > HEADER_COMPACT_AFTER);
       lastY = y;
     }
@@ -21,11 +22,27 @@ function header(top: HTMLElement) {
   update();
 }
 
+// The menu opens under the header's right edge, wherever the header's current width puts it.
+function menuPop(top: HTMLElement, menu: HTMLElement) {
+  menu.addEventListener('beforetoggle', (e) => {
+    if (!(e instanceof ToggleEvent) || e.newState !== 'open') return;
+    const edge = top.getBoundingClientRect();
+    menu.style.setProperty('--menu-top', `${edge.bottom + MENU_GAP_PX}px`);
+    menu.style.setProperty('--menu-right', `${document.documentElement.clientWidth - edge.right}px`);
+  });
+  menu.addEventListener('toggle', (e) => {
+    if (!(e instanceof ToggleEvent) || e.newState !== 'open' || !motion()) return;
+    gsap.fromTo(menu, { y: -8, scale: .94, opacity: 0 }, { y: 0, scale: 1, opacity: 1, duration: .36, ease: 'back.out(1.5)' });
+    gsap.from(menu.querySelectorAll('.menu-item'), { y: 10, opacity: 0, duration: .3, stagger: .04, delay: .06, ease: 'power3.out' });
+  });
+}
+
 // In-page anchors scroll in JS: CSS smooth scrolling fights ScrollTrigger's snap.
 function anchors() {
   document.addEventListener('click', (e) => {
     const a = e.target instanceof Element ? e.target.closest<HTMLAnchorElement>('a[href*="#"]') : null;
     if (!a || a.pathname !== location.pathname) return;
+    a.closest<HTMLElement>('[popover]')?.hidePopover();
     const target = document.getElementById(a.hash.slice(1));
     if (!target) return;
     e.preventDefault();
@@ -49,7 +66,8 @@ const NOTIFY_URL = '/api/notify';
 type Answer = 'ok' | 'email' | 'closed' | 'failed';
 
 // "Be notified": the page posts the address to its own function, which hands it to the email list.
-function notify(form: HTMLFormElement, openedAt: () => number) {
+// `shownAt` is when the form came into view: its dialog's opening, or the page's start for the footer's.
+function notify(form: HTMLFormElement, shownAt: () => number) {
   const email = one<HTMLInputElement>(form, 'input[name="email"]'), trap = one<HTMLInputElement>(form, 'input[name="website"]');
   const button = one<HTMLButtonElement>(form, 'button[type="submit"]'), status = one(form, '.status');
   // The page's language supplies the words for each answer, as data attributes on the form.
@@ -59,7 +77,7 @@ function notify(form: HTMLFormElement, openedAt: () => number) {
     if (!email.checkValidity()) { say('email'); email.focus(); return; }
     button.disabled = true;
     try {
-      const res = await fetch(NOTIFY_URL, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email: email.value, website: trap.value, elapsed: Math.round(performance.now() - openedAt()), lang: form.dataset.lang }) });
+      const res = await fetch(NOTIFY_URL, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email: email.value, website: trap.value, elapsed: Math.round(performance.now() - shownAt()), lang: form.dataset.lang }) });
       const { error } = (await res.json().catch(() => ({}))) as { error?: string };
       if (res.ok) { say('ok'); form.classList.add('done'); return; }
       say(error === 'email' || error === 'closed' ? error : 'failed');
@@ -92,10 +110,11 @@ function demo(dialog: HTMLDialogElement) {
 
 function dialogs() {
   let openedAt = 0;
-  document.querySelectorAll<HTMLFormElement>('form.notify').forEach((form) => notify(form, () => openedAt));
+  document.querySelectorAll<HTMLFormElement>('form.notify').forEach((form) => notify(form, () => (form.closest('dialog') ? openedAt : 0)));
   document.querySelectorAll<HTMLButtonElement>('[data-get]').forEach((button) => button.addEventListener('click', () => {
     const dialog = document.getElementById(`get-${button.dataset.get}`);
     if (!(dialog instanceof HTMLDialogElement)) return;
+    button.closest<HTMLElement>('[popover]')?.hidePopover();
     dialog.showModal();
     openedAt = performance.now();
     demo(dialog);
@@ -113,8 +132,8 @@ function dialogs() {
 
 export function startChrome() {
   document.documentElement.classList.add('js');
-  const top = document.querySelector<HTMLElement>('.top');
-  if (top) header(top);
+  const top = document.querySelector<HTMLElement>('.top'), menu = document.querySelector<HTMLElement>('#menu');
+  if (top && menu) { header(top, menu); menuPop(top, menu); }
   anchors();
   dialogs();
 }

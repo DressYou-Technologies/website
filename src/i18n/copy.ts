@@ -2,6 +2,10 @@ import type { Lang } from './lang';
 
 // Every string the page shows, per language. French is authored, not translated word for word (voice guide §6).
 // No semicolons and no em dashes anywhere (founder, 2026-10-30). Copy never names a measurement or says how a piece fits.
+// The company pages are in the works: the menu and the footer both link them (founder, 2026-10-30).
+const companyEn: [string, string][] = [['About', '/about'], ['Journal', '/journal'], ['Careers', '/careers'], ['Press', '/press'], ['Help', '/help']];
+const companyFr: [string, string][] = [['À propos', '/about'], ['Journal', '/journal'], ['Carrières', '/careers'], ['Presse', '/press'], ['Aide', '/help']];
+
 const en = {
   meta: {
     title: 'Virtual try-on on your own twin | DressYou',
@@ -12,6 +16,8 @@ const en = {
   },
   get: { app: 'Get the app', extension: 'Get the extension', qr: 'QR code to download the app' },
   lang: { heading: 'Language', switchTo: 'Français', label: 'Lire en français' },
+  menu: { label: 'Menu', links: companyEn },
+  soon: { tag: 'In the works', text: 'This page is on its way. Until then, write to us at', home: 'Back to DressYou' },
   hero: { lines: ['Try it on', "before it's yours."] },
   how: {
     lead: 'Tap try on',
@@ -20,13 +26,16 @@ const en = {
     next: 'Next source',
     steps: ['tap try on', 'see it on you', 'get your size', 'ask anything'],
     stepsLabel: 'How it works',
-    shopPages: [['Navy overshirt', '€89'], ['Suede loafers', '€140'], ['Belted trench', '€149']],
-    apps: ['Copy', 'Notes', 'Mail'],
-    wardrobe: { title: 'Wardrobe', tabs: ['items', 'outfits', 'tried'], tryOn: 'Try on', pieces: 'pieces' },
-    feed: { title: 'Feed', tabs: ['everyone', 'following'], likes: '128 likes', tryOn: 'Try on' },
-    twin: 'your twin',
-    ask: 'ask your stylist…',
-    send: 'send',
+    shopPages: [['Navy overshirt', '€89'], ['Suede loafers', '€140'], ['Wool coat', '€290']],
+    // Safari and its share sheet as iOS 27 labels them (captured on the iPhone 18 Pro simulator, 2026-10-30).
+    safari: {
+      menu: ['Translate Website…', 'Share', 'Add to Bookmarks', 'Add Bookmark to…', 'Find on Page', 'Page Zoom'],
+      options: 'Options', more: 'More', actions: ['Copy', 'Add to Bookmarks', 'Add to Reading List', 'View More'],
+    },
+    // The app's own words, lowercase as the app kit writes them.
+    wardrobe: { title: 'wardrobe', search: 'search', select: 'select', tabs: ['items', 'outfits', 'tried'], tryOn: 'try the outfit' },
+    feed: { title: 'feed', search: 'search a @user', tabs: ['for you', 'following'] },
+    tryOn: { title: 'try-on', badge: 'AI render', change: 'change pieces', ask: 'ask your stylist about this look' },
     sizeLabel: 'recommended size',
     scenes: [
       { sizes: [['M', 'true fit', 'as designed'], ['L', 'oversized', 'the relaxed look you like']], q: 'can you roll up the sleeves?', a: 'done. rolled to the elbow.' },
@@ -55,10 +64,15 @@ const en = {
   },
   finale: {
     mega: ['Wear it', 'first.'],
+    notify: 'Try it before everyone else. One email when the app is out.',
+    extension: 'Chrome extension',
+    soon: 'coming soon',
     columns: [
       { label: 'Product', links: [['How it works', '/#how'], ['Wardrobe', '/#more'], ['Stylist', '/#stylist']] },
+      { label: 'Company', links: companyEn },
       { label: 'Legal', links: [['Legal notice', '/legal'], ['Privacy', '/privacy'], ['Terms', '/terms']] },
     ],
+    made: 'Made in Paris',
     footer: 'Footer',
     ai: 'People shown on this page are AI-generated.',
   },
@@ -85,6 +99,8 @@ const fr: Copy = {
   },
   get: { app: "Télécharger l'app", extension: "Installer l'extension", qr: "QR code pour télécharger l'app" },
   lang: { heading: 'Langue', switchTo: 'English', label: 'Read in English' },
+  menu: { label: 'Menu', links: companyFr },
+  soon: { tag: 'En préparation', text: 'Cette page arrive bientôt. En attendant, écrivez-nous à', home: 'Retour à DressYou' },
   hero: { lines: ['Essayez-le', "avant qu'il soit à vous."] },
   how: {
     lead: 'Essayez',
@@ -93,13 +109,14 @@ const fr: Copy = {
     next: 'Source suivante',
     steps: ['touchez essayer', 'voyez-le porté', 'obtenez votre taille', 'posez vos questions'],
     stepsLabel: 'Comment ça marche',
-    shopPages: [['Surchemise marine', '89 €'], ['Mocassins en daim', '140 €'], ['Trench ceinturé', '149 €']],
-    apps: ['Copier', 'Notes', 'Mail'],
-    wardrobe: { title: 'Garde-robe', tabs: ['pièces', 'tenues', 'essayés'], tryOn: 'Essayer', pieces: 'pièces' },
-    feed: { title: 'Fil', tabs: ['tout le monde', 'abonnements'], likes: '128 j’aime', tryOn: 'Essayer' },
-    twin: 'votre jumeau',
-    ask: 'demandez à votre styliste…',
-    send: 'envoyer',
+    shopPages: [['Surchemise marine', '89 €'], ['Mocassins en daim', '140 €'], ['Manteau en laine', '290 €']],
+    safari: {
+      menu: ['Traduire le site web…', 'Partager', 'Ajouter aux signets', 'Ajouter un signet à…', 'Rechercher dans la page', 'Zoom de la page'],
+      options: 'Options', more: 'Plus', actions: ['Copier', 'Ajouter aux signets', 'Ajouter à la liste de lecture', 'Afficher plus'],
+    },
+    wardrobe: { title: 'garde-robe', search: 'rechercher', select: 'choisir', tabs: ['pièces', 'tenues', 'essayés'], tryOn: 'essayer la tenue' },
+    feed: { title: 'fil', search: 'rechercher un @compte', tabs: ['pour vous', 'abonnements'] },
+    tryOn: { title: 'essayage', badge: 'rendu IA', change: 'changer de pièces', ask: 'demandez à votre styliste' },
     sizeLabel: 'taille recommandée',
     scenes: [
       { sizes: [['M', 'taille juste', 'comme prévu'], ['L', 'oversize', 'le look ample que vous aimez']], q: 'vous pouvez retrousser les manches ?', a: 'c’est fait. retroussées au coude.' },
@@ -128,10 +145,15 @@ const fr: Copy = {
   },
   finale: {
     mega: ['Portez-le', 'en premier.'],
+    notify: 'Essayez-le avant tout le monde. Un seul e-mail à la sortie de l’app.',
+    extension: 'Extension Chrome',
+    soon: 'bientôt',
     columns: [
       { label: 'Produit', links: [['Comment ça marche', '/#how'], ['Garde-robe', '/#more'], ['Styliste', '/#stylist']] },
+      { label: 'Entreprise', links: companyFr },
       { label: 'Légal', links: [['Mentions légales', '/legal'], ['Confidentialité', '/privacy'], ['Conditions', '/terms']] },
     ],
+    made: 'Conçu à Paris',
     footer: 'Pied de page',
     ai: 'Les personnes montrées sur cette page sont générées par IA.',
   },

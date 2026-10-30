@@ -144,17 +144,39 @@ test('without a store link the extension dialog shows its demo and no link out',
   }
 });
 
-test('the footer lists only working links, the other language and the AI line', () => {
+test('the footer lists only working links, the other language, the company details and the AI line', () => {
   for (const lang of LANGS) {
     const footer = home[lang].match(/<footer[\s\S]*?<\/footer>/)[0], t = COPY[lang], other = LANGS.find((l) => l !== lang);
     const links = [...footer.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)].map(([, href, label]) => [decode(text(label)), href]);
     const local = (link) => { const [page, hash] = link.split('#'); return localize(lang, page || '/') + (hash ? `#${hash}` : ''); };
     assert.deepEqual(links, [
-      ['hello@dressyouapp.com', 'mailto:hello@dressyouapp.com'],
+      [t.dialog.notify.privacy, localize(lang, '/privacy')],
       ...t.finale.columns.flatMap((column) => column.links.map(([label, link]) => [label, local(link)])),
       [t.lang.switchTo, localize(other, '/')],
+      ['hello@dressyouapp.com', 'mailto:hello@dressyouapp.com'],
     ]);
-    assert.ok(decode(text(footer)).includes(t.finale.ai));
+    const words = decode(text(footer));
+    for (const fact of [t.finale.ai, `© ${new Date().getFullYear()} DressYou Technologies`, '47 rue Vivienne, 75002 Paris']) assert.ok(words.includes(fact), `${lang}: ${fact}`);
+    assert.match(footer, /<form class="notify[^"]*"[^>]*data-lang="/, `${lang}: the footer asks for an email itself`);
+  }
+});
+
+test('the header menu opens the company pages and the other language, and each company page is in the works and out of search', async () => {
+  const sitemap = await read('sitemap.xml');
+  for (const lang of LANGS) {
+    const header = home[lang].match(/<header[\s\S]*?<\/header>/)[0], t = COPY[lang], other = LANGS.find((l) => l !== lang);
+    assert.match(header, /<button[^>]*popovertarget="menu"/, `${lang}: no menu button`);
+    const menu = header.slice(header.indexOf('id="menu"'));
+    assert.match(header, /id="menu"[^>]*popover/, `${lang}: the menu is not a popover`);
+    const links = [...menu.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)].map(([, href, label]) => [decode(text(label)), href]);
+    assert.deepEqual(links, [...t.menu.links.map(([label, path]) => [label, localize(lang, path)]), [other.toUpperCase(), localize(other, '/')]]);
+    for (const [label, path] of t.menu.links) {
+      const body = await read(fileOf(lang, path));
+      assert.match(body, /<meta name="robots" content="noindex"/, `${lang} ${path}`);
+      assert.doesNotMatch(body, /rel="canonical"/, `${lang} ${path}`);
+      assert.ok(decode(text(body)).includes(label) && decode(text(body)).includes(t.soon.tag), `${lang} ${path} is not the page in the works`);
+      assert.ok(!sitemap.includes(`${SITE.url}${localize(lang, path)}<`), `${lang} ${path} is in the sitemap`);
+    }
   }
 });
 

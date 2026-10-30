@@ -85,10 +85,8 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
               <div class="fopt" style={`order:${look.order}`}>
                 <div class:list={['fimg', { fwin: look === winners[s] }]}>
                   <Picture class="cutout" src={image(look.image)} formats={['avif', 'webp']} widths={[200, 320]} sizes="140px" alt="" loading="lazy" />
-                  <span class="flabel">{look.label}</span>
                 </div>
-                {look === winners[s] && <span class="fring"></span>}
-                {look === winners[s] && <span class="fburst"><i></i><i></i><i></i></span>}
+                {look === winners[s] && <><span class="fpick"></span><span class="fcheck"><svg viewBox="0 0 24 24" width="12" height="12"><path d="M20 6 9 17l-5-5"></path></svg></span></>}
                 <span class="votes">{look.votes.map((v) => <span class="fvote">{v}</span>)}</span>
               </div>
             ))}
@@ -111,9 +109,9 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
 </section>
 
 <style>
-  .more { padding: clamp(72px, 9vw, 128px) clamp(16px, 3vw, 48px); background: #0a0a0b; color: #f4f4f2; }
-  .head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px 48px; max-width: 1440px; margin: 0 auto 36px; }
-  h2 { margin: 0; font-size: clamp(2.125rem, 4.6vw, 3.625rem); font-weight: 700; letter-spacing: -.05em; line-height: 1; }
+  .more { --title: clamp(2.125rem, 4.6vw, 3.625rem); --title-gap: clamp(20px, 3svh, 32px); padding: var(--section-pad) clamp(16px, 3vw, 48px); background: #0a0a0b; color: #f4f4f2; }
+  .head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px 48px; max-width: 1440px; margin: 0 auto var(--title-gap); }
+  h2 { margin: 0; font-size: var(--title); font-weight: 700; letter-spacing: -.05em; line-height: 1; }
   .bento { display: flex; flex-wrap: wrap; gap: 16px; max-width: 1440px; margin: 0 auto; }
   svg { flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
   :global(picture) { display: block; }
@@ -124,12 +122,12 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
   .ambient { position: absolute; inset: -12%; background-size: cover; background-position: center; filter: blur(28px) saturate(1.2); opacity: .55; pointer-events: none; }
   .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,11,.25), rgba(10,10,11,.7) 62%, rgba(10,10,11,.9)); pointer-events: none; }
   .wbuild, .caption, .fvis, .caption-friend { position: relative; }
-  .wardrobe { position: relative; flex: 1.35 1 420px; min-width: 0; display: flex; flex-direction: column; min-height: clamp(0px, (100vw - 900px) * 100, 610px); overflow: hidden; border-radius: 28px; }
+  .wardrobe { position: relative; flex: 1.35 1 420px; min-width: 0; display: flex; flex-direction: column; overflow: hidden; border-radius: 28px; }
   .wbuild { position: relative; flex: 1; min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); align-content: center; gap: 6px; padding: clamp(24px, 4vw, 40px) 0 8px; }
   .wrows { display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,.35), #000 18%, #000 70%, rgba(0,0,0,.2)); mask-image: linear-gradient(180deg, rgba(0,0,0,.35), #000 18%, #000 70%, rgba(0,0,0,.2)); }
   .wrow { position: relative; overflow: hidden; padding: 8px 0; -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,0), #000 16%, #000 84%, rgba(0,0,0,0)); mask-image: linear-gradient(90deg, rgba(0,0,0,0), #000 16%, #000 84%, rgba(0,0,0,0)); }
   .wtrack { display: flex; gap: 10px; width: max-content; will-change: transform; }
-  .wg { position: relative; flex: none; width: clamp(64px, 5.8vw, 90px); aspect-ratio: 1; border-radius: 16px; background: linear-gradient(180deg, rgba(255,255,255,.94), rgba(250,249,246,.78)); box-shadow: inset 0 1px 0 #fff, inset 0 0 0 1px rgba(255,255,255,.45), 0 10px 24px rgba(0,0,0,.35); }
+  .wg { position: relative; flex: none; width: clamp(56px, min(5.8vw, 9svh), 90px); aspect-ratio: 1; border-radius: 16px; background: linear-gradient(180deg, rgba(255,255,255,.94), rgba(250,249,246,.78)); box-shadow: inset 0 1px 0 #fff, inset 0 0 0 1px rgba(255,255,255,.45), 0 10px 24px rgba(0,0,0,.35); }
   .wg :global(img.cutout), .fimg :global(img.cutout) { background: none; }
   .wimg { position: absolute; inset: 0; border-radius: 16px; overflow: hidden; }
   .wimg :global(img), .photo :global(img), .tl-g :global(img), .fimg :global(img), .wout :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; }
@@ -178,10 +176,12 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
   .tl-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; }
   .tl-g { position: relative; display: block; aspect-ratio: 3 / 4; border-radius: 8px; overflow: hidden; background: #efeeeb; }
   .tl-cta { display: flex; align-items: center; justify-content: center; height: 38px; margin-top: 12px; border-radius: 19px; background: #0a0a0a; color: #fafaf8; font-size: .8125rem; font-weight: 700; }
-  .scanchip, .flabel, .fvote, .fsend, .ffr { background: rgba(250,250,248,.72); border: 1px solid rgba(255,255,255,.75); box-shadow: inset 0 1px 0 rgba(255,255,255,.95), 0 6px 18px rgba(10,10,11,.14); }
+  .scanchip, .fsend { background: rgba(250,250,248,.72); border: 1px solid rgba(255,255,255,.75); box-shadow: inset 0 1px 0 rgba(255,255,255,.95), 0 6px 18px rgba(10,10,11,.14); }
   /* Only the feed's chip floats over moving photos, so only it pays for a backdrop blur. */
   .scanchip { backdrop-filter: blur(18px) saturate(1.8); }
-  .fvote, .ffr, .fsend { background: rgba(250,250,248,.9); }
+  .fsend { background: rgba(250,250,248,.9); }
+  /* Friends' faces are solid, with a ring of the card's dark so overlapping ones stay apart. */
+  .fvote, .ffr { background: #f4f4f2; box-shadow: 0 0 0 2px #151517; }
   .scanchip { position: absolute; top: 16px; right: 16px; z-index: 2; display: flex; align-items: center; gap: 7px; height: 36px; padding: 0 12px 0 10px; border-radius: 999px; white-space: nowrap; color: #0a0a0a; font-size: .8125rem; font-weight: 600; }
   .scanchip svg { stroke-width: 1.7; }
   .feedtile h3 { position: relative; max-width: 16ch; font-size: clamp(1.75rem, 2.8vw, 2.5rem); }
@@ -195,14 +195,10 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
   .ffan:not(.first) { visibility: hidden; }
   .fopt { position: relative; }
   .fimg { position: relative; aspect-ratio: 3 / 4; border-radius: 18px; overflow: hidden; background: linear-gradient(180deg, rgba(255,255,255,.94), rgba(250,249,246,.8)); box-shadow: inset 0 1px 0 #fff, inset 0 0 0 1px rgba(255,255,255,.45), 0 24px 50px rgba(0,0,0,.5); }
-  /* The friends' pick: a ring that draws itself round the look (GSAP runs --p from 0 to 1), then a cartoon pop. */
-  .fring { --p: 1; position: absolute; inset: -6px; z-index: 2; padding: 3px; border-radius: 24px; pointer-events: none; background: conic-gradient(#f4f4f2 calc(var(--p) * 1turn), rgba(244,244,242,0) 0); mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); }
-  .fburst { position: absolute; right: -18px; top: -18px; z-index: 3; width: 30px; height: 30px; opacity: 0; pointer-events: none; transform-origin: 0 100%; }
-  .fburst i { position: absolute; left: 0; bottom: 0; width: 3px; height: 12px; border-radius: 2px; background: #f4f4f2; transform-origin: 50% 100%; }
-  .fburst i:nth-child(1) { transform: translate(6px, -8px) rotate(10deg); }
-  .fburst i:nth-child(2) { transform: translate(14px, -4px) rotate(45deg); }
-  .fburst i:nth-child(3) { transform: translate(18px, 6px) rotate(80deg); }
-  .flabel { position: absolute; left: 8px; top: 8px; padding: 3px 8px; border-radius: 999px; color: #0a0a0a; font-size: 11px; font-weight: 600; white-space: nowrap; }
+  /* The friends' pick: a hairline round the look and a small check, set with one press, like selecting a photo. */
+  .fpick { position: absolute; inset: -5px; z-index: 2; border-radius: 23px; box-shadow: 0 0 0 1.5px #f4f4f2; pointer-events: none; }
+  .fcheck { position: absolute; right: -9px; top: -9px; z-index: 3; display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: #f4f4f2; color: #0a0a0a; box-shadow: 0 0 0 2px #151517; pointer-events: none; }
+  .fcheck svg { stroke-width: 3; }
   .votes { position: absolute; left: 50%; bottom: -13px; z-index: 3; transform: translateX(-50%); display: flex; padding-left: 7px; }
   .fvote { width: 26px; height: 26px; flex: none; margin-left: -7px; border-radius: 50%; color: #0a0a0a; display: grid; place-items: center; font-size: 10px; font-weight: 700; }
   .share { position: relative; display: flex; align-items: center; gap: 14px; }
@@ -214,4 +210,12 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
   .caption-friend { margin-top: auto; padding-top: 22px; }
   .caption-friend h3 { max-width: 16ch; font-size: clamp(1.5rem, 2.2vw, 2rem); }
   .caption-friend p { max-width: 38ch; color: #a1a1a1; }
+  /* Wide screens: the whole bento reads in one screen under its title; the cards share that height. */
+  @media (min-width: 900px) {
+    .bento { height: clamp(560px, calc(100svh - 2 * var(--section-pad) - var(--title) - var(--title-gap)), 860px); }
+    .feedtile { flex: 1 1 0; min-height: 0; }
+    .friend { flex: none; padding: 24px 28px; }
+    .fimg { aspect-ratio: auto; height: clamp(130px, 21svh, 230px); }
+    .caption-friend { padding-top: 18px; }
+  }
 </style>

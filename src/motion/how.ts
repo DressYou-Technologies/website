@@ -3,12 +3,17 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { all, one } from './dom';
 import type { Section } from './index';
 
-const SCENE_SECONDS = 7.6;            // one source: tap, render, size, question, answer
-const TAP_SECONDS = 1.4;              // the tap that renders lands this long after a source shows
-const SHARE_SECONDS = 2.6;            // a shop needs longer: flip through shops, share the page, pick DressYou
+// Every beat after the tap is timed from the tap press; each source decides how long it plays before it.
+const AFTER_TAP_SECONDS = 6.5;        // render, size, question, answer, then the scene fades
+const WARDROBE_TAP_SECONDS = 3.0;     // three pieces picked, the select bar rises, then the tap
+const FEED_TAP_SECONDS = 1.8;         // the post shows a moment before the tap
+const TAB_SECONDS = 1.4;              // each open shop tab stays this long before the next swipes in
+const MENU_SECONDS = .9;              // Safari's page menu shows this long before Share is tapped
+const SHEET_SECONDS = 1.2;            // the share sheet shows this long before DressYou is tapped
 const FIT_MAX = 1.2, FIT_PAD_X = 8, FIT_PAD_Y = 16;
 const RESIZE_SETTLE_MS = 120;
 const DIM = '#bdbdbd', INK = '#0a0a0a';
+const TILE_EDGE = 'inset 0 0 0 1px rgba(10,10,11,.08)', TILE_PICKED = 'inset 0 0 0 2px #0a0a0b';
 
 // Layout, not motion: the whole phone scene scales as one piece to its stage, with or without animation.
 // The scene's own size comes from CSS, which switches it between the wide and the stacked layout.
@@ -25,20 +30,31 @@ export function fitPhone() {
   observer.observe(scene);
 }
 
-// Any shop: flip through a few shops' pages, tap share on the last one, and the share sheet rises with DressYou in it.
-const PAGE_SECONDS = .45;
-function share(tl: gsap.core.Timeline, src: HTMLElement, t: number) {
-  const pages = all(src, '.spage'), sheet = one(src, '.sheet'), shareBtn = one(src, '.sb-share'), shareRing = one(shareBtn, '.hring');
-  tl.set(pages, { xPercent: (k: number) => (k === 0 ? 0 : 100) }, t).set(sheet, { yPercent: 105 }, t);
+// Any shop, the way iOS 27 shares a page: swipe through the open tabs, open the address bar's page menu, tap Share,
+// and the share sheet rises with DressYou in it. Returns when DressYou is pressed.
+function press(tl: gsap.core.Timeline, el: Element, ring: Element, at: number) {
+  tl.to(el, { scale: .9, duration: .09, ease: 'power2.in' }, at)
+    .to(el, { scale: 1, duration: .3, ease: 'back.out(3)' }, at + .09)
+    .fromTo(ring, { scale: .4, opacity: .9 }, { scale: 1.8, opacity: 0, duration: .55, ease: 'power2.out', immediateRender: false }, at);
+}
+function share(tl: gsap.core.Timeline, src: HTMLElement, t: number): number {
+  const pages = all(src, '.spage'), domains = all(src, '.domains span'), menu = one(src, '.pmenu'), row = one(src, '.pshare'), sheet = one(src, '.sheet');
+  const pageBtn = one(src, '.pagebtn');
+  tl.set(pages, { xPercent: (k: number) => (k === 0 ? 0 : 100) }, t).set(domains, { opacity: (k: number) => (k === 0 ? 1 : 0) }, t)
+    .set(menu, { autoAlpha: 0, scale: .9 }, t).set(row, { backgroundColor: 'rgba(10,10,11,0)' }, t).set(sheet, { yPercent: 115 }, t);
   pages.slice(1).forEach((page, k) => {
-    const flip = t + PAGE_SECONDS * (k + 1);
-    tl.to(pages[k], { xPercent: -30, duration: .4, ease: 'power3.inOut' }, flip).to(page, { xPercent: 0, duration: .4, ease: 'power3.inOut' }, flip);
+    const swipe = t + TAB_SECONDS * (k + 1);
+    tl.to(pages[k], { xPercent: -100, duration: .7, ease: 'power3.inOut' }, swipe).to(page, { xPercent: 0, duration: .7, ease: 'power3.inOut' }, swipe)
+      .to(domains[k], { opacity: 0, duration: .3 }, swipe).to(domains[k + 1], { opacity: 1, duration: .3 }, swipe + .35);
   });
-  const shared = t + PAGE_SECONDS * pages.length;
-  tl.to(shareBtn, { scale: .85, duration: .08, ease: 'power2.in' }, shared)
-    .to(shareBtn, { scale: 1, duration: .25, ease: 'back.out(3)' }, shared + .08)
-    .fromTo(shareRing, { scale: .4, opacity: .9 }, { scale: 2.2, opacity: 0, duration: .5, ease: 'power2.out', immediateRender: false }, shared)
-    .to(sheet, { yPercent: 0, duration: .45, ease: 'power3.out' }, shared + .15);
+  const opened = t + TAB_SECONDS * pages.length;
+  press(tl, pageBtn, one(pageBtn, '.hring'), opened);
+  tl.to(menu, { autoAlpha: 1, scale: 1, duration: .35, ease: 'power3.out' }, opened + .1);
+  const shared = opened + .1 + MENU_SECONDS;
+  tl.to(row, { backgroundColor: 'rgba(10,10,11,.07)', duration: .12 }, shared)
+    .to(menu, { autoAlpha: 0, scale: .96, duration: .25, ease: 'power2.in' }, shared + .2)
+    .to(sheet, { yPercent: 0, duration: .6, ease: 'power3.out' }, shared + .25);
+  return shared + .25 + .6 + SHEET_SECONDS;
 }
 
 // One phone, three sources: tap try on, the twin wears it, the stylist gives the size, then you ask it something.
@@ -54,68 +70,73 @@ export const how: Section = (root) => {
     .set(bubbles, { autoAlpha: 0, scale: .6, y: 18 }, 0)
     .set(all(wrap, '.hszr'), { autoAlpha: 0, x: -10 }, 0)
     .set(bar, { scaleX: 0 }, 0)
-    .set(words, { autoAlpha: 0, yPercent: 70, filter: 'blur(10px)' }, 0)
-    .set(all(wrap, '.hpk'), { scale: 1, boxShadow: `0 0 0 0px ${INK}` }, 0);
+    .set(words, { autoAlpha: 0, yPercent: 70, filter: 'blur(10px)' }, 0);
   const light = (i: number, t: number) => tl.to(steps, { color: (k: number) => (k === i ? INK : DIM), duration: .3, ease: 'power2.out' }, t);
   const pop = (el: Element, t: number) => tl.to(el, { autoAlpha: 1, scale: 1, y: 0, duration: .6, ease: 'back.out(2.4)' }, t);
   const sweep = (ren: Element, t: number) => tl.fromTo(one(ren, '.hsweep'), { top: '100%', opacity: 1 }, { top: '0%', opacity: 0, duration: .9, ease: 'power3.inOut', immediateRender: false }, t);
+  // The wardrobe: pick three pieces, the tab bar gives way to the select bar, and its button is the tap.
+  const pick = (src: HTMLElement, t: number): number => {
+    const tiles = all(src, '.hpk'), ticks = tiles.map((tile) => one(tile, '.tick')), tabbar = one(src, '.tabbar'), select = one(src, '.htry');
+    tl.set(tiles, { boxShadow: TILE_EDGE }, t).set(ticks, { autoAlpha: 0, scale: .6 }, t).set(tabbar, { autoAlpha: 1, y: 0 }, t).set(select, { autoAlpha: 0, y: 24 }, t);
+    tiles.forEach((tile, k) => {
+      const at = t + .6 + k * .45;
+      tl.to(tile, { boxShadow: TILE_PICKED, duration: .2, ease: 'power2.out' }, at).to(ticks[k], { autoAlpha: 1, scale: 1, duration: .3, ease: 'back.out(2.4)' }, at);
+    });
+    tl.to(tabbar, { autoAlpha: 0, y: 24, duration: .3, ease: 'power2.in' }, t + 2.1).to(select, { autoAlpha: 1, y: 0, duration: .4, ease: 'power3.out' }, t + 2.2);
+    return t + WARDROBE_TAP_SECONDS;
+  };
 
   const starts: number[] = [];
   let t = 0;
   srcs.forEach((src, i) => {
     const ren = rens[i], p = pops[i];
-    const lead = src.classList.contains('shop') ? SHARE_SECONDS : TAP_SECONDS;
-    const D = SCENE_SECONDS + lead - TAP_SECONDS;
-    // Everything from the tap on is timed from the tap, so a longer lead only delays it.
-    const at = (x: number) => t + lead - TAP_SECONDS + x;
+    const P = src.classList.contains('shop') ? share(tl, src, t) : src.classList.contains('wardrobe') ? pick(src, t) : t + FEED_TAP_SECONDS;
+    const end = P + AFTER_TAP_SECONDS, D = end - t;
     starts.push(t);
-    if (lead === SHARE_SECONDS) share(tl, src, t);
     const btn = one(src, '[data-tap]'), ring = one(btn, '.hring');
     tl.addLabel(`h${i}`, t);
     // The source word rolls in, the headline makes room for it, and its underline counts down the scene.
     tl.to(words[i], { autoAlpha: 1, yPercent: 0, filter: 'blur(0px)', duration: .7, ease: 'power3.out' }, t)
       .to(roll, { width: () => words[i].offsetWidth, duration: .6, ease: 'power3.inOut' }, t)
-      .to(words[i], { autoAlpha: 0, yPercent: -70, filter: 'blur(10px)', duration: .45, ease: 'power2.in' }, t + D - .45)
-      .to(bar, { scaleX: 0, duration: .3, ease: 'power2.in' }, t + D - .45);
+      .to(words[i], { autoAlpha: 0, yPercent: -70, filter: 'blur(10px)', duration: .45, ease: 'power2.in' }, end - .45)
+      .to(bar, { scaleX: 0, duration: .3, ease: 'power2.in' }, end - .45);
     light(0, t);
     tl.fromTo(bar, { scaleX: 0 }, { scaleX: 1, duration: D - .5, ease: 'none', immediateRender: false }, t)
       .to(src, { autoAlpha: 1, duration: .4, ease: 'power2.out' }, t);
-    const picks = all(src, '.hpk');
-    if (picks.length) tl.to(picks, { scale: .94, boxShadow: `0 0 0 3px ${INK}`, duration: .25, stagger: .22, ease: 'back.out(2)' }, t + .35);
-    tl.to(btn, { scale: .93, duration: .1, ease: 'power2.in' }, at(1.1))
-      .to(btn, { scale: 1, duration: .35, ease: 'back.out(3)' }, at(1.2))
-      .fromTo(ring, { scale: .4, opacity: .9 }, { scale: 2.4, opacity: 0, duration: .6, ease: 'power2.out', immediateRender: false }, at(1.1));
-    light(1, at(1.4));
-    tl.set(ren, { autoAlpha: 1 }, at(1.4)).to(ren, { clipPath: 'inset(0% 0% 0% 0%)', duration: .9, ease: 'power3.inOut' }, at(1.4));
-    sweep(ren, at(1.4));
-    tl.set(src, { autoAlpha: 0 }, at(2.35));
-    light(2, at(2.5));
-    pop(one(p, '.hsz'), at(2.5));
-    tl.fromTo(all(p, '.hszr'), { autoAlpha: 0, x: -10 }, { autoAlpha: 1, x: 0, duration: .35, stagger: .25, ease: 'power3.out', immediateRender: false }, at(2.7));
-    light(3, at(3.3));
+    press(tl, btn, ring, P);
+    light(1, P + .3);
+    tl.set(ren, { autoAlpha: 1 }, P + .3).to(ren, { clipPath: 'inset(0% 0% 0% 0%)', duration: .9, ease: 'power3.inOut' }, P + .3);
+    sweep(ren, P + .3);
+    tl.set(src, { autoAlpha: 0 }, P + 1.25);
+    light(2, P + 1.4);
+    pop(one(p, '.hsz'), P + 1.4);
+    tl.fromTo(all(p, '.hszr'), { autoAlpha: 0, x: -10 }, { autoAlpha: 1, x: 0, duration: .35, stagger: .25, ease: 'power3.out', immediateRender: false }, P + 1.6);
+    light(3, P + 2.2);
     const qEl = one(p, '.hq'), typeEl = one(ren, '.htype'), phEl = one(ren, '.hph'), sendEl = one(ren, '.hsend'), field = one(ren, '.hin');
     const qText = qEl.textContent?.trim() ?? '', typed = { n: 0 };
     const clear = () => { typeEl.textContent = ''; phEl.style.opacity = '1'; };
-    tl.set(typed, { n: 0 }, t).call(clear, undefined, t)
-      .to(field, { scale: 1.04, duration: .25, ease: 'back.out(2)' }, at(3.3))
-      .to(phEl, { opacity: 0, duration: .1 }, at(3.35))
-      .to(typed, { n: qText.length, duration: .85, ease: 'none', onUpdate: () => { typeEl.textContent = qText.slice(0, Math.round(typed.n)); } }, at(3.4))
-      .to(sendEl, { scale: .88, duration: .08, ease: 'power2.in' }, at(4.3))
-      .to(sendEl, { scale: 1, duration: .3, ease: 'back.out(3)' }, at(4.38))
-      .to(field, { scale: 1, duration: .25 }, at(4.38))
-      .call(clear, undefined, at(4.4))
-      .fromTo(qEl, { autoAlpha: 0, scale: .5, y: 70 }, { autoAlpha: 1, scale: 1, y: 0, duration: .6, ease: 'back.out(2.2)', immediateRender: false }, at(4.38));
+    tl.set(typed, { n: 0 }, t).call(clear, undefined, t).set(sendEl, { backgroundColor: 'rgba(10,10,11,0)', color: 'rgba(10,10,11,.4)' }, t)
+      .to(field, { scale: 1.02, duration: .25, ease: 'back.out(2)' }, P + 2.2)
+      .to(phEl, { opacity: 0, duration: .1 }, P + 2.25)
+      .to(sendEl, { backgroundColor: INK, color: '#ffffff', duration: .2 }, P + 2.3)
+      .to(typed, { n: qText.length, duration: .85, ease: 'none', onUpdate: () => { typeEl.textContent = qText.slice(0, Math.round(typed.n)); } }, P + 2.3)
+      .to(sendEl, { scale: .88, duration: .08, ease: 'power2.in' }, P + 3.2)
+      .to(sendEl, { scale: 1, duration: .3, ease: 'back.out(3)' }, P + 3.28)
+      .to(field, { scale: 1, duration: .25 }, P + 3.28)
+      .to(sendEl, { backgroundColor: 'rgba(10,10,11,0)', color: 'rgba(10,10,11,.4)', duration: .2 }, P + 3.3)
+      .call(clear, undefined, P + 3.3)
+      .fromTo(qEl, { autoAlpha: 0, scale: .5, y: 70 }, { autoAlpha: 1, scale: 1, y: 0, duration: .6, ease: 'back.out(2.2)', immediateRender: false }, P + 3.28);
     const dots = one(p, '.hdots');
-    pop(dots, at(4.8));
-    tl.to(dots, { autoAlpha: 0, scale: .7, duration: .2 }, at(5.3));
-    pop(one(p, '.ha'), at(5.35));
+    pop(dots, P + 3.7);
+    tl.to(dots, { autoAlpha: 0, scale: .7, duration: .2 }, P + 4.2);
+    pop(one(p, '.ha'), P + 4.25);
     // Asking for a change re-renders the look on the twin.
     if (i === 0) {
-      sweep(ren, at(5.35));
-      tl.fromTo(one(ren, 'img.hrimg'), { filter: 'brightness(1)' }, { filter: 'brightness(1.12)', duration: .3, yoyo: true, repeat: 1, immediateRender: false }, at(5.45));
+      sweep(ren, P + 4.25);
+      tl.fromTo(one(ren, 'img.hrimg'), { filter: 'brightness(1)' }, { filter: 'brightness(1.1)', duration: .3, yoyo: true, repeat: 1, immediateRender: false }, P + 4.35);
     }
-    tl.to([ren, ...Array.from(p.children)], { autoAlpha: 0, duration: .4, ease: 'power2.in' }, t + D - .45);
-    t += D;
+    tl.to([ren, ...Array.from(p.children)], { autoAlpha: 0, duration: .4, ease: 'power2.in' }, end - .45);
+    t = end;
   });
 
   ScrollTrigger.create({ trigger: wrap, start: 'top 80%', end: 'bottom 15%', onToggle: (self) => (self.isActive ? tl.play() : tl.pause()) });
