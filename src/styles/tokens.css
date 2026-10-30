@@ -6,7 +6,7 @@
   --night: #0a0a0b;
   --paper: #f4f4f2;
   --white: #fff;
-  --cutout-bg: #ecebe8;   /* the studio grey the garments were shot on */
+  --cutout-bg: linear-gradient(180deg, #f7f6f3, #e6e4df);   /* the studio grey, lit from above */
   --cutout-pad: 10%;
 }
 

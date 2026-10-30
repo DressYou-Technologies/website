@@ -9,8 +9,10 @@ const MODEL = 'gpt-image-2.5-sunburst';
 const WALL_COLUMNS = 9;
 const WALL_ROWS = 3;
 const WALL_MIN_REPEAT_GAP = 3;
-// Founder, 2026-10-30: the hero shows street photos of 20 people, as many women as men.
+// Founder, 2026-10-30: the hero shows studio renders of 20 people, as many women as men, and men and women share
+// the rest of the site.
 const WALL_PEOPLE = 20;
+const BALANCE_SLACK = 1;
 const WEBP_ALPHA_FLAG = 0x10; // VP8X header flag: the image carries an alpha channel
 
 const masters = new Map();
@@ -58,8 +60,22 @@ test('the wall is 9 columns of 3 with no repeat close by', () => {
   for (const id of wallPeople) assert.ok(seen.has(id), `${id} is not on the wall`);
 });
 
-test('the wall is street photos only, as many women as men', () => {
-  for (const id of site.WALL.flat()) assert.match(id, /^wall-[wm]-/, `${id} is not a street photo`);
+test('every master is used somewhere on the site', () => {
+  const used = new Set(ids(site));
+  for (const id of masters.keys()) assert.ok(used.has(id), `${id} is not used`);
+});
+
+test('men and women share the feed and the try-ons', () => {
+  const posts = site.FEED_TRACKS.flat().map((post) => post.image);
+  const men = posts.filter((id) => id.startsWith('feed-m-')).length;
+  assert.ok(Math.abs(men - (posts.length - men)) <= BALANCE_SLACK, `${men} of ${posts.length} posts are men`);
+  const renders = [site.HOW.shop.render, site.HOW.wardrobe.render, site.HOW.feed.render, ...site.OUTFITS.map((o) => o.render), ...site.FRIEND_LOOKS.map((l) => l.image)];
+  const male = renders.filter((id) => id.startsWith('twin-m-')).length;
+  assert.ok(male > 0 && Math.abs(male - (renders.length - male)) <= BALANCE_SLACK, `${male} of ${renders.length} try-ons are the male twin`);
+});
+
+test('the wall is studio renders of its 20 people, as many women as men', () => {
+  for (const id of site.WALL.flat()) assert.match(id, /^wall-[wm]-/, `${id} is not a wall render`);
   const women = [...masters.keys()].filter((id) => id.startsWith('wall-w-')).length;
   assert.equal(women, WALL_PEOPLE / 2);
 });

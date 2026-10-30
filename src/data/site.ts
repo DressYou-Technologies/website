@@ -40,38 +40,38 @@ export const HOW: {
 } = {
   shop: { image: 'shop-trench', render: 'twin-trench' },
   wardrobe: {
-    grid: ['g-cream-top', 'g-black-knit-dress', 'g-barrel-jeans', 'g-slingbacks', 'g-taupe-sweater', 'g-chelsea-boots'],
-    picks: ['g-black-knit-dress', 'g-slingbacks'],
-    render: 'twin-knitdress',
+    grid: ['g-navy-overshirt', 'g-grey-crewneck', 'g-ecru-trousers', 'g-white-sneakers', 'g-black-tee', 'g-chelsea-boots'],
+    picks: ['g-grey-crewneck', 'g-ecru-trousers', 'g-white-sneakers', 'g-navy-overshirt'],
+    render: 'twin-m-overshirt',
   },
   feed: { post: { handle: 'naya', age: '2h', image: 'feed-w-trench' }, render: 'twin-cap-trench' },
 };
 
 // Tops, bottoms, shoes, layers.
 export const WARDROBE_ROWS: ImageId[][] = [
-  ['g-cream-top', 'g-black-tee', 'g-taupe-sweater', 'g-white-tank'],
-  ['g-barrel-jeans', 'g-grey-trousers', 'g-pinstripe-trousers', 'g-black-wide-trousers'],
-  ['g-chelsea-boots', 'g-ballet-flats', 'g-slingbacks', 'g-brown-boots'],
-  ['g-trench', 'g-black-cap', 'g-black-knit-dress'],
+  ['g-white-tank', 'g-black-tee', 'g-grey-crewneck', 'g-taupe-sweater'],
+  ['g-barrel-jeans', 'g-ecru-trousers', 'g-pinstripe-trousers', 'g-black-wide-trousers'],
+  ['g-brown-boots', 'g-white-sneakers', 'g-chelsea-boots', 'g-brown-loafers'],
+  ['g-trench', 'g-navy-overshirt', 'g-black-cap'],
 ];
 
 // The wardrobe spin lands on these in order, so the result always matches its pieces.
 export const OUTFITS: Outfit[] = [
   { pieces: ['g-white-tank', 'g-barrel-jeans', 'g-brown-boots', 'g-trench'], render: 'twin-trench' },
-  { pieces: ['g-taupe-sweater', 'g-grey-trousers', 'g-ballet-flats', 'g-black-cap'], render: 'twin-knit-cap' },
+  { pieces: ['g-grey-crewneck', 'g-ecru-trousers', 'g-white-sneakers', 'g-navy-overshirt'], render: 'twin-m-overshirt' },
   { pieces: ['g-black-tee', 'g-pinstripe-trousers', 'g-chelsea-boots', 'g-trench'], render: 'twin-tee-trench' },
 ];
 
 export const FEED_TRACKS: [Post[], Post[]] = [
   [
     { handle: 'naya', age: '2h', image: 'feed-w-trench', liked: true },
-    { handle: 'sasha', age: '1d', image: 'feed-w-mirror' },
+    { handle: 'sami', age: '1d', image: 'feed-m-mirror' },
     { handle: 'theo', age: '3d', image: 'feed-m-coffee' },
   ],
   [
     { handle: 'mei', age: '5h', image: 'feed-w-selfie' },
     { handle: 'lea', age: '4h', image: 'feed-w-bakery', liked: true },
-    { handle: 'ines', age: '2d', image: 'feed-w-canal' },
+    { handle: 'jun', age: '2d', image: 'feed-m-canal' },
     { handle: 'kofi', age: '1d', image: 'feed-m-lounge' },
   ],
 ];
@@ -81,14 +81,15 @@ export const LOOK_PIECES: ImageId[] = ['g-black-cap', 'g-trench', 'g-white-tank'
 
 // Friends by initial; each look lists who voted for it. The fan shows the looks in label order.
 export const FRIENDS = ['M', 'S', 'N', 'J'];
-export const FRIEND_LOOKS: { image: ImageId; label: string; order: number; pick: boolean; votes: string[] }[] = [
-  { image: 'twin-office', label: 'look 1', order: 1, pick: false, votes: ['M'] },
-  { image: 'twin-knitset', label: 'look 3', order: 3, pick: false, votes: [] },
-  { image: 'twin-trench', label: 'look 2', order: 2, pick: true, votes: ['S', 'N', 'J'] },
+// The friends' pick is the look with the most votes.
+export const FRIEND_LOOKS: { image: ImageId; label: string; order: number; votes: string[] }[] = [
+  { image: 'twin-m-polo', label: 'look 1', order: 1, votes: ['M'] },
+  { image: 'twin-m-tee', label: 'look 3', order: 3, votes: [] },
+  { image: 'twin-m-crewneck', label: 'look 2', order: 2, votes: ['S', 'N', 'J'] },
 ];
 
 export const STYLIST: { dinner: ImageId[]; trip: ImageId[]; find: ImageId } = {
-  dinner: ['g-cream-top', 'g-black-wide-trousers', 'g-ballet-flats', 'g-trench'],
-  trip: ['g-cream-top', 'g-barrel-jeans', 'g-black-tee', 'g-taupe-sweater', 'g-chelsea-boots', 'g-slingbacks'],
-  find: 'g-black-knit-dress',
+  dinner: ['g-white-oxford-shirt', 'g-black-wide-trousers', 'g-brown-loafers', 'g-navy-overshirt'],
+  trip: ['g-grey-crewneck', 'g-dark-straight-jeans', 'g-black-tee', 'g-ecru-trousers', 'g-white-sneakers', 'g-chelsea-boots'],
+  find: 'g-black-knit-polo',
 };

@@ -122,17 +122,18 @@ function feed(tile: HTMLElement) {
     .to(chip, { opacity: 1, duration: .25 }, 3.65);
 }
 
-// Send the options, friends light up, votes land live, their pick is ringed.
+// Send the options, friends light up, votes land live, and a ring draws itself round the look they picked.
 function friends(card: HTMLElement) {
   const win = one(card, '.fwin'), plane = one(card, '.fplane'), sent = one(card, '.fsent'), sendBtn = one(card, '.fsend');
+  const ring = one(card, '.fring'), burst = one(card, '.fburst'), picked = win.parentElement ?? win;
   const people = all(card, '.ffr'), votes = all(card, '.fvote');
   const byInitial = new Map(people.map((p) => [p.textContent?.trim() ?? '', p]));
   // Votes land in a fixed, lively order: the second, the first, then the rest.
   const order = [1, 0, ...votes.keys()].filter((k, i, ks) => k < votes.length && ks.indexOf(k) === i).map((k) => votes[k]);
   const loop = gsap.timeline({ repeat: -1, repeatDelay: 1.2, paused: true });
   loop.set(votes, { opacity: 0, y: -12, scale: .4 }, 0)
-    .set(all(card, '.fring'), { opacity: 0 }, 0)
-    .set(all(card, '.ftag'), { opacity: 0, y: -6 }, 0)
+    .set(ring, { '--p': 0 }, 0)
+    .set(burst, { opacity: 0, scale: .2 }, 0)
     .set(people, { opacity: .3, scale: .8 }, 0)
     .set(sent, { opacity: 0 }, 0)
     .to(sendBtn, { scale: .92, duration: .1, ease: 'power2.in' }, .7)
@@ -147,10 +148,12 @@ function friends(card: HTMLElement) {
     loop.to(vote, { opacity: 1, y: 0, scale: 1, duration: .32, ease: 'back.out(2.6)' }, t + .1);
   });
   const end = 1.9 + order.length * .55 + .2;
-  loop.to(all(card, '.fring'), { opacity: 1, duration: .3 }, end)
-    .fromTo(win, { scale: 1 }, { scale: 1.04, duration: .16, yoyo: true, repeat: 1, ease: 'power2.out', immediateRender: false }, end)
-    .to(all(card, '.ftag'), { opacity: 1, y: 0, duration: .3, ease: 'back.out(2)' }, end)
-    .to({}, { duration: 1.6 });
+  loop.to(ring, { '--p': 1, duration: .5, ease: 'power2.inOut' }, end)
+    // Cartoon pop: squash, stretch, settle, with three burst marks off the corner.
+    .to(picked, { keyframes: [{ scaleX: 1.06, scaleY: .94, duration: .1, ease: 'power2.out' }, { scaleX: .97, scaleY: 1.04, duration: .08 }, { scaleX: 1, scaleY: 1, duration: .12, ease: 'power1.out' }] }, end + .45)
+    .to(burst, { opacity: 1, scale: 1, duration: .28, ease: 'back.out(3)' }, end + .48)
+    .to(burst, { opacity: 0, duration: .3 }, end + 1.05)
+    .to({}, { duration: 1.2 });
   ScrollTrigger.create({ trigger: card, start: 'top 85%', end: 'bottom 10%', onToggle: (self) => (self.isActive ? loop.play() : loop.pause()) });
 }
 
