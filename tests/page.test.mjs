@@ -52,7 +52,10 @@ test('the JSON-LD, llms.txt and sitemap agree with the pages', async () => {
 });
 
 // Founder, 2026-10-30: no semicolons or em dashes in what people read. Plus the search plan's copy rules.
-const BANNED = [[';', 'a semicolon'], ['\u2014', 'an em dash'], ['avatar', 'avatar (it is your twin)'], ['see how it fits', 'a fit claim'], ['ça vous va', 'a fit claim'], ['ça me va', 'a fit claim']];
+const BANNED = [[';', 'a semicolon'], ['\u2014', 'an em dash'], ['avatar', 'avatar (it is your twin)'], ['see how it fits', 'a fit claim'], ['ça vous va', 'a fit claim'], ['ça me va', 'a fit claim'],
+  // A size comes from clothes the person kept, never from habit (§4.5), and the stylist never checks out (§2, §4.9).
+  ['usual size', 'a size from habit'], ['taille habituelle', 'a size from habit'], ['true fit', 'not product vocabulary'], ['taille juste', 'not product vocabulary'],
+  ['checks out for you', 'a checkout claim'], ['passe commande pour vous', 'a checkout claim'], ['size down', 'fit advice'], ['taille en dessous', 'fit advice']];
 const readable = (page) => [
   page.replace(/<script(?![^>]*ld\+json)[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/g, ' ').replace(/<[^>]+>/g, ' '),
   ...[...page.matchAll(/<(?:meta|img)\b[^>]*(?:content|alt)="([^"]*)"/g)].map((m) => m[1]),
@@ -209,6 +212,21 @@ test('the legal pages exist in both languages and name the publisher', async () 
       assert.match(body, /<footer class="finale/, `${lang} ${path} has no footer`);
       assert.ok(text(body).length > 600, `${lang} ${path} is still a stub`);
     }
+  }
+});
+
+test('each stylist answer first shows what it checked, in each language', () => {
+  for (const lang of LANGS) {
+    const t = COPY[lang].stylist, groups = home[lang].split('<div class="sg"').slice(1);
+    const tabs = [t.opinion, t.day, t.trip, t.find, t.buy];
+    assert.equal(groups.length, tabs.length, lang);
+    groups.forEach((group, k) => {
+      const card = group.match(/<div class="sck[\s\S]*?<\/div>/)?.[0] ?? '';
+      assert.ok(group.indexOf('class="sck') < group.indexOf('class="sin'), `${lang} tab ${k}: the answer comes before the checks`);
+      const rows = [...card.matchAll(/class="ck-label"[^>]*>([^<]*)<\/span><span class="ck-value"[^>]*>([^<]*)</g)].map(([, label, value]) => [decode(label), decode(value)]);
+      assert.ok(rows.length >= 3, `${lang} tab ${k} checks ${rows.length} things`);
+      assert.deepEqual(rows, tabs[k].checks, `${lang} tab ${k}`);
+    });
   }
 });
 

@@ -1,0 +1,24 @@
+---
+// What the stylist checked before it answers: each row ticks in turn (motion/stylist.ts), all ticked without motion.
+interface Props { title: string; checks: [label: string, value: string][] }
+const { title, checks } = Astro.props;
+---
+<div class="sck">
+  <span class="ck-title">{title}</span>
+  {checks.map(([label, value]) => (
+    <span class="ck"><span class="ck-tick"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span><span class="ck-label">{label}</span><span class="ck-value">{value}</span></span>
+  ))}
+</div>
+
+<style>
+  .sck { display: grid; gap: 7px; min-width: min(100%, 320px); max-width: 100%; padding: 12px 16px 14px; border-radius: 20px; background: #fff; box-shadow: 0 0 0 1px rgba(10,10,10,.06), 0 10px 26px rgba(0,0,0,.06); }
+  .ck-title { margin-bottom: 2px; font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: #6b6b6b; }
+  .ck { position: relative; display: grid; grid-template-columns: 18px minmax(0, 10.5em) minmax(0, 1fr); align-items: center; gap: 10px; min-height: 22px; }
+  /* The empty circle a check fills. */
+  .ck::before { content: ''; grid-area: 1 / 1; width: 18px; height: 18px; border-radius: 50%; box-shadow: inset 0 0 0 1.5px rgba(10,10,10,.18); }
+  .ck-tick { grid-area: 1 / 1; display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: #0a0a0a; color: #fff; }
+  .ck-tick svg { width: 11px; height: 11px; fill: none; stroke: currentColor; stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
+  .ck-label { font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: #6b6b6b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ck-value { font-size: .9375rem; font-weight: 600; letter-spacing: -.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  @media (max-width: 480px) { .sck { padding: 10px 12px 12px; } .ck { grid-template-columns: 18px minmax(0, 7.2em) minmax(0, 1fr); gap: 8px; } .ck-label { font-size: 9px; letter-spacing: .08em; } .ck-value { font-size: .875rem; white-space: normal; line-height: 1.25; } }
+</style>

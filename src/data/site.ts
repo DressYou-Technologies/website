@@ -107,8 +107,10 @@ export const FRIEND_SETS: FriendLook[][] = [
   ],
 ];
 
-export const STYLIST: { dinner: ImageId[]; trip: ImageId[]; find: ImageId } = {
-  dinner: ['g-white-oxford-shirt', 'g-black-wide-trousers', 'g-brown-loafers', 'g-navy-overshirt'],
+// The stylist's answers show these pieces; its words are copy (src/i18n/copy.ts, stylist).
+export const STYLIST: { dinner: ImageId[]; trip: ImageId[]; find: ImageId; buy: ImageId } = {
+  dinner: ['g-white-oxford-shirt', 'g-black-wide-trousers', 'g-navy-overshirt', 'g-chelsea-boots'],
   trip: ['g-grey-crewneck', 'g-dark-straight-jeans', 'g-black-tee', 'g-ecru-trousers', 'g-white-sneakers', 'g-chelsea-boots'],
   find: 'g-black-knit-polo',
+  buy: 'g-taupe-sweater',
 };

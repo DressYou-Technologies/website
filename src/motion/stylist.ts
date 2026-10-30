@@ -5,13 +5,14 @@ import { storySnap } from '../lib/snap';
 import { all, one } from './dom';
 import type { Section } from './index';
 
-const STEP = 1.3;                         // timeline time per question
+const STEP = 1.8;                         // timeline time per question: typed, sent, checked, answered
 const STAGE_TOP = 104, STAGE_BOTTOM = 56; // the pinned stage's padding, around the header and the input
-const CHAT_MIN = 300, CHAT_MAX = 620;
+const CHAT_MIN = 300, CHAT_MAX = 760;
 const STACK_GAP = 16;
 const LABELS = ['opinion', 'day', 'trip', 'find', 'shop'];
-const POP = .18;                          // one squash-stretch-settle pop
-const ANSWER_AT = .98, LABEL_AT = STEP - .08;  // within a step: the answer starts, then the step's snap point
+const POP = .18;                          // one part of the answer arriving
+const CHECKS_AT = .66, CHECK_EACH = .11;  // within a step: the checks card opens, then each check ticks in turn
+const ANSWER_AT = 1.38, LABEL_AT = STEP - .08;  // the answer starts once every check is ticked, then the step's snap point
 const ANSWER_STAGGER = .09;
 const INK = '#0a0a0a', PAPER = '#f4f4f2';
 const FADE_PX = 64;                       // the chat view's top fade (its mask in Stylist.astro)
@@ -34,9 +35,16 @@ export const stylist: Section = (root, wide) => {
   gsap.set(tabs.slice(1).map((t) => one(t, '.sico')), { backgroundColor: PAPER, color: INK });
   gsap.set(all(sec, '.sg .sq'), { opacity: 0, scale: .2, transformOrigin: '100% 100%' });
   gsap.set(all(sec, '.sg .sin'), { opacity: 0, scale: .3, y: 10, transformOrigin: '0% 100%' });
-  gsap.set(all(sec, '.sthink'), { scale: .4, transformOrigin: '0% 100%' });
+  gsap.set(all(sec, '.sck'), { opacity: 0, y: 8 });
+  gsap.set(all(sec, '.ck'), { opacity: .35 });
+  gsap.set(all(sec, '.ck-tick'), { scale: .5, opacity: 0 });
   // Show the group's end, unless that would push its question under the fade: then show the question.
   const scrollTo = (i: number) => Math.max(0, Math.min(groups[i].offsetTop - FADE_PX, groups[i].offsetTop + groups[i].offsetHeight - view.offsetHeight));
+  // Once the answer arrives, show the group's end, unless that hides the checks: then start from the checks.
+  const settle = (i: number) => {
+    const g = groups[i], answer = one(g, '.sa'), checks = one(answer, '.sck');
+    return Math.max(0, Math.min(answer.offsetTop + checks.offsetTop - FADE_PX, g.offsetTop + g.offsetHeight - view.offsetHeight));
+  };
   const spans = groups.map((g, i) => ({ q: g.dataset.q ?? '', a: i * STEP + .08, b: i * STEP + .48, s: i * STEP + .54 }));
 
   // The input types each question as you scroll, then sends it into the thread.
@@ -69,12 +77,15 @@ export const stylist: Section = (root, wide) => {
     }
     tl.to(send, { scale: .88, duration: .04 }, p.s - .04).to(send, { scale: 1, duration: .08 }, p.s)
       .to(track, { y: () => -scrollTo(i), duration: .35, ease: 'power3.inOut' }, p.s - .02)
-      // Cartoon pop: squash, stretch, settle.
-      .to(one(g, '.sq'), { keyframes: [{ opacity: 1, scaleX: 1.14, scaleY: .86, duration: .07, ease: 'power2.out' }, { scaleX: .95, scaleY: 1.07, duration: .05 }, { scaleX: 1, scaleY: 1, duration: .06, ease: 'power1.out' }] }, p.s)
-      .to(one(g, '.sthink'), { opacity: 1, scale: 1, duration: .08, ease: 'back.out(3)' }, p.s + .14)
-      .to(all(g, '.sthink i'), { y: -6, duration: .035, yoyo: true, repeat: 5, stagger: .025, ease: 'sine.inOut' }, p.s + .18)
-      .to(one(g, '.sthink'), { opacity: 0, scale: .6, duration: .05 }, p.s + .4)
-      .to(parts, { keyframes: [{ opacity: 1, y: 0, scaleX: 1.1, scaleY: .9, duration: .07, ease: 'power2.out' }, { scaleX: .96, scaleY: 1.05, duration: .05 }, { scaleX: 1, scaleY: 1, duration: .06 }], stagger }, t0 + ANSWER_AT)
+      .to(one(g, '.sq'), { opacity: 1, scale: 1, duration: .14, ease: 'power3.out' }, p.s)
+      // Before it answers, the stylist checks what it knows about you, one thing after another.
+      .to(one(g, '.sck'), { opacity: 1, y: 0, duration: .12, ease: 'power3.out' }, t0 + CHECKS_AT);
+    all(g, '.ck').forEach((row, k) => {
+      const at = t0 + CHECKS_AT + .08 + k * CHECK_EACH;
+      tl.to(row, { opacity: 1, duration: .06 }, at).to(one(row, '.ck-tick'), { opacity: 1, scale: 1, duration: .07, ease: 'power3.out' }, at + .04);
+    });
+    tl.to(track, { y: () => -settle(i), duration: .3, ease: 'power3.inOut' }, t0 + ANSWER_AT - .08)
+      .to(parts, { opacity: 1, y: 0, scale: 1, duration: POP, ease: 'power3.out', stagger }, t0 + ANSWER_AT)
       .addLabel(LABELS[i], t0 + LABEL_AT);
   });
   tl.to({}, { duration: .3 });

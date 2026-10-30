@@ -130,11 +130,6 @@ export const how: Section = (root) => {
     pop(dots, P + 3.7);
     tl.to(dots, { autoAlpha: 0, scale: .7, duration: .2 }, P + 4.2);
     pop(one(p, '.ha'), P + 4.25);
-    // Asking for a change re-renders the look on the twin.
-    if (i === 0) {
-      sweep(ren, P + 4.25);
-      tl.fromTo(one(ren, 'img.hrimg'), { filter: 'brightness(1)' }, { filter: 'brightness(1.1)', duration: .3, yoyo: true, repeat: 1, immediateRender: false }, P + 4.35);
-    }
     tl.to([ren, ...Array.from(p.children)], { autoAlpha: 0, duration: .4, ease: 'power2.in' }, end - .45);
     t = end;
   });

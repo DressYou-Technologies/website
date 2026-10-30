@@ -124,7 +124,7 @@ const SHARE_ROW = MENU_ICONS.indexOf('share');
                 {renders.map((id, i) => (
                   <div class:list={['hren', 'app-screen', { first: i === 0 }]}>
                     <div class="abar"><svg viewBox="0 0 24 24">{ICON.down.map((d) => <path d={d} />)}</svg><b>{t.tryOn.title}</b><i></i></div>
-                    <div class="rcard"><Picture class="hrimg" src={image(id)} formats={['avif', 'webp']} widths={[400, 800]} sizes="262px" alt="" loading="lazy" /><span class="badge">{t.tryOn.badge}</span><span class="hsweep"></span></div>
+                    <div class="rcard"><Picture class="hrimg" src={image(id)} formats={['avif', 'webp']} widths={[400, 800]} sizes="262px" alt="" loading="lazy" /><span class="hsweep"></span></div>
                     <div class="racts"><span class="pill out"><svg viewBox="0 0 24 24">{ICON.change.map((d) => <path d={d} />)}</svg>{t.tryOn.change}</span><span class="pill out round"><svg viewBox="0 0 24 24">{ICON.bookmark.map((d) => <path d={d} />)}</svg></span><span class="pill out round"><svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="4" />{ICON.friends.map((d) => <path d={d} />)}</svg></span></div>
                     <span class="hin"><span class="field"><span class="hph">{t.tryOn.ask}</span><span class="htype"></span></span><span class="hsend"><svg viewBox="0 0 24 24">{ICON.up.map((d) => <path d={d} />)}</svg></span></span>
                   </div>
@@ -135,9 +135,9 @@ const SHARE_ROW = MENU_ICONS.indexOf('share');
             </div>
             <Picture class="frame" src={frame} formats={['avif', 'webp']} widths={[330, 660, 990]} sizes="330px" alt="" loading="lazy" />
           </div>
-          {t.scenes.map(({ sizes, q, a }, i) => (
+          {t.scenes.map(({ label, rows, q, a }, i) => (
             <div class:list={['hpop', { first: i === 0 }]}>
-              <div class="hsz"><span class="label">{t.sizeLabel}</span>{sizes.map(([letter, fit, why], k) => (
+              <div class="hsz"><span class="label">{label}</span>{rows.map(([letter, fit, why], k) => (
                 <span class:list={['hszr', { chosen: k === 0 }]}><span class="letter">{letter}</span><span class="why"><b>{fit}</b><span>{why}</span></span></span>
               ))}</div>
               <div class="hq">{q}</div>
@@ -281,12 +281,11 @@ const SHARE_ROW = MENU_ICONS.indexOf('share');
   .post :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .scan { position: absolute; right: 18px; bottom: 120px; display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; }
 
-  /* The try-on in the app: the render on its light card, its badge, the actions and the stylist's field above the home bar. */
+  /* The try-on in the app: the render on its light card, the actions and the stylist's field above the home bar. */
   .hren { opacity: 0; visibility: hidden; }
   .hren.first { opacity: 1; visibility: visible; }
   .rcard { position: absolute; left: 16px; right: 16px; top: 108px; height: 548px; border-radius: 28px; overflow: hidden; background: #e9e8e5; }
   .rcard :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; }
-  .badge { position: absolute; left: 14px; top: 14px; padding: 5px 9px; border-radius: 6px; background: rgba(10,10,11,.7); color: #fff; font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; }
   .racts { position: absolute; left: 16px; right: 16px; top: 670px; display: flex; gap: 8px; }
   .racts .out { flex: 1; justify-content: center; height: 50px; background: none; box-shadow: inset 0 0 0 1px rgba(10,10,11,.2); font-size: 16px; }
   .racts .round { flex: none; width: 50px; padding: 0; }
@@ -306,7 +305,7 @@ const SHARE_ROW = MENU_ICONS.indexOf('share');
   .label { padding: 2px 4px; font-family: var(--font-mono); font-size: 9px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: #6b6b6b; }
   .hszr { display: flex; align-items: center; gap: 10px; padding: 7px 12px 7px 7px; border-radius: 14px; box-shadow: inset 0 0 0 1px rgba(10,10,10,.12); }
   .hszr.chosen { box-shadow: inset 0 0 0 1.5px #0a0a0a; }
-  .letter { flex: none; width: 34px; height: 34px; border-radius: 11px; background: #f1f1ef; color: #0a0a0a; display: grid; place-items: center; font-size: 16px; font-weight: 700; }
+  .letter { flex: none; min-width: 34px; height: 34px; padding: 0 6px; border-radius: 11px; background: #f1f1ef; color: #0a0a0a; display: grid; place-items: center; font-size: 16px; font-weight: 700; }
   .chosen .letter { background: #0a0a0a; color: #fff; }
   .why { display: grid; gap: 2px; min-width: 0; }
   .why b { font-size: 14px; letter-spacing: -.02em; white-space: nowrap; }

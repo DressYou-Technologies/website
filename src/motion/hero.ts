@@ -12,6 +12,7 @@ export const hero: Section = (root) => {
   gsap.from(one(root, '.top'), { y: -24, opacity: 0, duration: .8, ease: 'power3.out' });
   gsap.from(q('.stack'), { scale: 1.12, opacity: 0, duration: 1.6, ease: 'power3.out' });
   gsap.from(q('.hero-cta .line > span'), { yPercent: 60, opacity: 0, filter: 'blur(10px)', duration: 1.2, ease: 'power3.out', stagger: .12, delay: .3, clearProps: 'filter' });
+  gsap.from(q('.sub'), { y: 12, opacity: 0, duration: .9, ease: 'power3.out', delay: .6 });
   gsap.from(q('.dock'), { y: 24, scale: .94, opacity: 0, duration: .9, ease: 'back.out(1.4)', delay: .7 });
   gsap.from(q('.dock > *'), { opacity: 0, duration: .5, stagger: .08, delay: .9 });
   // Three layers so the effects never share a transform: the column's place on the cylinder (CSS),

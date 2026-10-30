@@ -29,6 +29,7 @@ const columns = cylinder(WALL.length);
     <div class="shade" aria-hidden="true"></div>
     <div class="hero-cta">
       <h1>{t.hero.lines.map((line) => <span class="line"><span>{line}</span></span>)}</h1>
+      <p class="sub">{t.hero.sub}</p>
       <div class="dock">
         <GetLink kind="app" class="dock-app"><Image src={appIcon} width={40} height={40} densities={[1, 2]} alt="" />{t.get.app}</GetLink>
         <GetLink kind="extension" class="dock-ext"><DownloadIcon size={18} />{t.get.extension}</GetLink>
@@ -50,6 +51,7 @@ const columns = cylinder(WALL.length);
   .hero-cta { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: clamp(24px, 4vh, 40px); padding: 96px 20px 40px; text-align: center; color: #fff; pointer-events: none; }
   h1 { margin: 0; font-size: clamp(2.75rem, 7.4vw, 7rem); font-weight: 700; letter-spacing: -.055em; line-height: .98; text-wrap: balance; text-shadow: 0 2px 24px rgba(0,0,0,.45); }
   .line { display: block; padding-bottom: .06em; }
+  .sub { max-width: 34ch; margin: calc(-1 * clamp(8px, 2vh, 20px)) 0 0; color: rgba(255,255,255,.82); font-size: clamp(1rem, 1.4vw, 1.25rem); font-weight: 500; line-height: 1.4; text-wrap: balance; text-shadow: 0 1px 14px rgba(0,0,0,.5); }
   .line > span { display: inline-block; }
   .dock { pointer-events: auto; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; }
   .dock :global(.dock-app) { display: inline-flex; align-items: center; gap: 14px; height: 64px; padding: 0 30px 0 12px; border: 0; border-radius: 22px; background: #fff; color: #0a0a0a; font: inherit; font-weight: 700; font-size: 1rem; white-space: nowrap; cursor: pointer; transition: transform .25s ease; }
