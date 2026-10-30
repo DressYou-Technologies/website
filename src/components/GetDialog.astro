@@ -9,17 +9,20 @@ const dialogs = [
 ---
 {dialogs.map(({ kind, title, url }) => (
   <dialog id={`get-${kind}`} class="get" aria-labelledby={`get-${kind}-title`}>
-    <form method="dialog"><button class="close" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true" width="18" height="18"><path d="M18 6 6 18M6 6l12 12"></path></svg></button></form>
-    <h2 class="title" id={`get-${kind}-title`}>{title}</h2>
-    {url && kind === 'app'
-      ? <div class="qr" role="img" aria-label="QR code to download the app" set:html={qrSvg(url)} />
-      : <p class="soon">coming soon.</p>}
+    <div class="card">
+      <form method="dialog"><button class="close" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true" width="18" height="18"><path d="M18 6 6 18M6 6l12 12"></path></svg></button></form>
+      <h2 class="title" id={`get-${kind}-title`}>{title}</h2>
+      {url && kind === 'app'
+        ? <div class="qr" role="img" aria-label="QR code to download the app" set:html={qrSvg(url)} />
+        : <p class="soon">coming soon.</p>}
+    </div>
   </dialog>
 ))}
 
 <style>
-  .get { width: min(400px, calc(100% - 40px)); padding: 40px 32px 32px; border: 0; border-radius: 28px; background: linear-gradient(180deg, #fff, #efefef); color: #0a0a0a; box-shadow: 0 40px 100px rgba(0,0,0,.35); text-align: center; }
-  .get[open] { display: grid; justify-items: center; gap: 16px; }
+  .get { width: min(400px, calc(100% - 40px)); padding: 0; border: 0; border-radius: 28px; background: linear-gradient(180deg, #fff, #efefef); color: #0a0a0a; box-shadow: 0 40px 100px rgba(0,0,0,.35); text-align: center; }
+  /* The card fills the dialog box, so a click on the dialog element itself is a click on the backdrop. */
+  .card { display: grid; justify-items: center; gap: 16px; padding: 40px 32px 32px; }
   .get::backdrop { background: rgba(0,0,0,.55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
   .close { position: absolute; top: 14px; right: 14px; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 50%; background: rgba(10,10,10,.06); color: #0a0a0a; display: grid; place-items: center; cursor: pointer; }
   .close:hover { background: rgba(10,10,10,.12); }

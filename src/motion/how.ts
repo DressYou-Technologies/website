@@ -96,11 +96,17 @@ export const how: Section = (root) => {
   const onKey = (e: KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); next(); } };
   let settle: ReturnType<typeof setTimeout> | undefined;
   const onResize = () => { clearTimeout(settle); settle = setTimeout(() => { gsap.set(roll, { width: 'auto' }); tl.invalidate(); }, RESIZE_SETTLE_MS); };
+  roll.setAttribute('role', 'button');
+  roll.setAttribute('tabindex', '0');
+  roll.title = 'Next source';
   roll.addEventListener('click', next);
   roll.addEventListener('keydown', onKey);
   window.addEventListener('resize', onResize);
   return () => {
     clearTimeout(settle);
+    roll.removeAttribute('role');
+    roll.removeAttribute('tabindex');
+    roll.removeAttribute('title');
     roll.removeEventListener('click', next);
     roll.removeEventListener('keydown', onKey);
     window.removeEventListener('resize', onResize);

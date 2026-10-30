@@ -15,21 +15,21 @@ const SPIN_GAP_SECONDS = .35;
 const rnd = (lo: number, hi: number) => lo + Math.random() * (hi - lo);
 const shuffle = <T,>(items: T[]) => items.map((v) => [Math.random(), v] as const).sort((a, b) => a[0] - b[0]).map(([, v]) => v);
 
-export const more: Section = (root) => {
+export const more: Section = (root, _wide, ctx) => {
   const section = one(root, '.more');
   gsap.set(section, { backgroundColor: 'rgba(10,10,11,0)' });
   gsap.fromTo(document.body, { backgroundColor: WHITE }, { backgroundColor: NIGHT, ease: 'none', scrollTrigger: { trigger: section, start: 'top 85%', end: 'top 30%', scrub: true } });
   gsap.fromTo(document.body, { backgroundColor: NIGHT }, { backgroundColor: WHITE, ease: 'none', immediateRender: false, scrollTrigger: { trigger: section, start: 'bottom 70%', end: 'bottom 15%', scrub: true } });
   gsap.from(all(section, '.head > *'), { y: 30, opacity: 0, duration: .8, stagger: .1, ease: 'power3.out', scrollTrigger: { trigger: section, start: 'top 80%' } });
   gsap.from(all(section, '.bento .card'), { y: 60, opacity: 0, duration: .9, stagger: .12, ease: 'power3.out', scrollTrigger: { trigger: one(section, '.bento'), start: 'top 85%' } });
-  const stopSpin = wardrobe(one(section, '.wardrobe'));
+  const stopSpin = wardrobe(one(section, '.wardrobe'), ctx);
   feed(one(section, '.feedtile'));
   friends(one(section, '.friend'));
   return stopSpin;
 };
 
 // Four rows flick past at their own pace and settle on the next outfit's pieces; the pieces gather and the twin wears them.
-function wardrobe(card: HTMLElement): () => void {
+function wardrobe(card: HTMLElement, ctx: gsap.Context): () => void {
   const build = one(card, '.wbuild');
   const outfits: number[][] = JSON.parse(build.dataset.outfits ?? '[]');
   const rows = all(build, '.wrow'), tracks = rows.map((r) => one(r, '.wtrack'));
@@ -37,7 +37,7 @@ function wardrobe(card: HTMLElement): () => void {
   const renders = all(out, 'picture');
   const state = rows.map((r, k) => ({ n: Number(r.dataset.n), i: 0, f: LAND_SLOTS[(k * 2 + 1) % LAND_SLOTS.length] }));
   const xFor = (k: number, i: number, f: number) => {
-    const w = (tracks[k].children[0] as HTMLElement).offsetWidth;
+    const w = one(tracks[k], '.wg').offsetWidth;
     return rows[k].clientWidth * f - (i * (w + TILE_GAP) + w / 2);
   };
   const rel = (el: Element) => { const r = el.getBoundingClientRect(), o = build.getBoundingClientRect(); return { x: r.left - o.left, y: r.top - o.top, w: r.width, h: r.height }; };
@@ -66,7 +66,7 @@ function wardrobe(card: HTMLElement): () => void {
     let landAt = 0;
     state.forEach((st, k) => {
       const dir = k % 2 ? 1 : -1;
-      const kids = Array.from(tracks[k].children), tw = (kids[0] as HTMLElement).offsetWidth + TILE_GAP, rw = rows[k].clientWidth, f = slots[k];
+      const kids = Array.from(tracks[k].children), tw = one(tracks[k], '.wg').offsetWidth + TILE_GAP, rw = rows[k].clientWidth, f = slots[k];
       const min = Math.ceil((rw * f) / tw) + 1, max = kids.length - 1 - Math.ceil((rw * (1 - f)) / tw) - 1;
       const laps = st.n * Math.round(rnd(1, 3)) + Math.floor(rnd(1, st.n));
       const target = landing({ base: st.i, dir, laps, n: st.n, garment: outfits[outfit][k], min, max });
@@ -98,15 +98,18 @@ function wardrobe(card: HTMLElement): () => void {
       .set(tiles, { opacity: 0 });
     return tl;
   };
-  const loop = visibleLoop(spin, SPIN_GAP_SECONDS, (seconds, fn) => gsap.delayedCall(seconds, fn));
+  // Each pass starts from a callback, which GSAP would record in the section's context for good; keeping passes
+  // out of it stops that list growing while the card is on screen. The loop kills the pass in flight itself.
+  const loop = visibleLoop((done) => untracked(ctx, () => spin(done)), SPIN_GAP_SECONDS, (seconds, fn) => untracked(ctx, () => gsap.delayedCall(seconds, fn)));
   ScrollTrigger.create({ trigger: card, start: 'top 80%', end: 'bottom 10%', onToggle: (self) => (self.isActive ? loop.start() : loop.stop()) });
   return loop.stop;
 }
 
 // The tile scrolls like a feed; "Try on" opens the look's garments, then folds back, while the tile is on screen.
 function feed(tile: HTMLElement) {
-  gsap.to(one(tile, '.ftk-a'), { yPercent: -50, ease: 'none', duration: FEED_A_SECONDS, repeat: -1 });
-  gsap.fromTo(one(tile, '.ftk-b'), { yPercent: -50 }, { yPercent: 0, ease: 'none', duration: FEED_B_SECONDS, repeat: -1 });
+  const onScreen = { trigger: tile, start: 'top bottom', end: 'bottom top', toggleActions: 'play pause resume pause' };
+  gsap.to(one(tile, '.ftk-a'), { yPercent: -50, ease: 'none', duration: FEED_A_SECONDS, repeat: -1, scrollTrigger: onScreen });
+  gsap.fromTo(one(tile, '.ftk-b'), { yPercent: -50 }, { yPercent: 0, ease: 'none', duration: FEED_B_SECONDS, repeat: -1, scrollTrigger: onScreen });
   const chip = one(tile, '.scanchip'), look = one(tile, '.tlook'), cta = one(look, '.tl-cta');
   gsap.timeline({ repeat: -1, repeatDelay: 1.4, delay: .6, scrollTrigger: { trigger: tile, start: 'top 85%', end: 'bottom 10%', toggleActions: 'play pause resume pause' } })
     .to(chip, { scale: .92, duration: .12, ease: 'power2.in' }, .4)
@@ -149,4 +152,10 @@ function friends(card: HTMLElement) {
     .to(all(card, '.ftag'), { opacity: 1, y: 0, duration: .3, ease: 'back.out(2)' }, end)
     .to({}, { duration: 1.6 });
   ScrollTrigger.create({ trigger: card, start: 'top 85%', end: 'bottom 10%', onToggle: (self) => (self.isActive ? loop.play() : loop.pause()) });
+}
+
+function untracked(ctx: gsap.Context, make: () => { kill(): unknown }): { kill(): void } {
+  let made: { kill(): unknown } | null = null;
+  ctx.ignore(() => { made = make(); });
+  return { kill: () => { made?.kill(); } };
 }

@@ -52,4 +52,6 @@ const columns = cylinder(WALL.length);
   .dock :global(.dock-app:active) { transform: scale(.98); }
   .dock :global(.dock-app img) { width: 40px; height: 40px; flex: none; border-radius: 13px; box-shadow: 0 2px 6px rgba(0,0,0,.18); }
   .dock :global(.dock-ext) { display: inline-flex; align-items: center; gap: 10px; height: 64px; max-width: clamp(0px, (100vw - 600px) * 100, 280px); overflow: hidden; padding: 0 clamp(0px, (100vw - 600px) * 100, 28px); border: 0; border-radius: 22px; background: radial-gradient(closest-side, rgba(0,0,0,.6) 0%, rgba(0,0,0,.32) 55%, rgba(0,0,0,0) 100%); color: #fff; font: inherit; font-weight: 700; font-size: 1rem; text-decoration: none; white-space: nowrap; cursor: pointer; }
+  /* Below 600 px the extension button folds away (the export's clamp); out of the tab order too. After the rule above. */
+  @media (max-width: 599.98px) { .dock :global(.dock-ext) { display: none; } }
 </style>

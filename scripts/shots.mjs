@@ -52,7 +52,7 @@ try {
     const shot = await send('Page.captureScreenshot', { format: 'jpeg', quality: 70 });
     writeFileSync(join(outDir, `${device}${mode ? `-${mode}` : ''}-${String(n).padStart(2, '0')}.jpg`), Buffer.from(shot.result.data, 'base64'));
     if (y >= max) {
-      const overflow = mode === 'noscript' ? 'unknown (scripts off)' : (await evaluate('document.documentElement.scrollWidth > innerWidth')) ? 'yes' : 'no';
+      const overflow = mode === 'noscript' ? 'unknown (scripts off)' : (await evaluate(`document.documentElement.scrollWidth > ${VIEWPORTS[device].width}`)) ? 'yes' : 'no';
       console.log('steps', n + 1, 'height', max + height, 'overflow:', overflow);
       break;
     }

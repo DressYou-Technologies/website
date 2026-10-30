@@ -21,10 +21,11 @@ import GetDialog from '../components/GetDialog.astro';
 </Base>
 
 <script>
-  import { startChrome } from '../scripts/chrome';
+  import { landOnHash, startChrome } from '../scripts/chrome';
   import { startMotion } from '../motion/index';
   import { fitPhone } from '../motion/how';
   startChrome();
   fitPhone();
   startMotion();
+  landOnHash();
 </script>

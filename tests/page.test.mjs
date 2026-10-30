@@ -90,7 +90,7 @@ test('the footer lists only working links and the AI line', () => {
   const links = [...footer.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)].map(([, href, label]) => [text(label), href]);
   assert.deepEqual(links, [
     ['hello@dressyouapp.com', 'mailto:hello@dressyouapp.com'],
-    ['How it works', '#how'], ['Wardrobe', '#more'], ['Stylist', '#stylist'],
+    ['How it works', '/#how'], ['Wardrobe', '/#more'], ['Stylist', '/#stylist'],
     ['Legal notice', '/legal'], ['Privacy', '/privacy'], ['Terms', '/terms'],
   ]);
   assert.ok(text(footer).includes('People shown on this page are AI-generated.'));
@@ -99,8 +99,19 @@ test('the footer lists only working links and the AI line', () => {
 test("the outfit result shows the outfit's render", async () => {
   const { OUTFITS } = await import('../src/data/site.ts');
   const out = html.match(/<div class="wout[^"]*"[\s\S]*?<\/div>\s*<\/div>/)?.[0] ?? '';
-  const pictures = [...out.matchAll(/<picture[^>]*data-outfit="(\d+)"/g)].map((m) => Number(m[1]));
-  assert.deepEqual(pictures, OUTFITS.map((_, i) => i));
+  const pictures = [...out.matchAll(/<picture([^>]*)>[\s\S]*?<img[^>]*src="([^"]+)"/g)].map(([, attrs, src]) => ({ attrs, src }));
+  assert.deepEqual(pictures.map(({ attrs }) => Number(attrs.match(/data-outfit="(\d+)"/)?.[1])), OUTFITS.map((_, i) => i));
+  pictures.forEach(({ src }, i) => assert.ok(src.includes(`/${OUTFITS[i].render}.`), `outfit ${i} shows ${src}`));
+  assert.match(pictures[0].attrs, /class="[^"]*\bshown\b/, 'the first outfit is the one shown without motion');
+  assert.doesNotMatch(pictures.slice(1).map(({ attrs }) => attrs).join(' '), /\bshown\b/);
+});
+
+test('every in-page link has its target on the same page', async () => {
+  for (const page of pages) {
+    const body = await read(page);
+    const ids = new Set([...body.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]));
+    for (const [, id] of body.matchAll(/href="#([^"]+)"/g)) assert.ok(ids.has(id), `${page}: #${id} has no target`);
+  }
 });
 
 test('the legal pages exist and name the publisher', async () => {

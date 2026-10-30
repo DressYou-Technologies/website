@@ -9,7 +9,7 @@ import { finale } from './finale';
 
 // A section starts its animations inside the matchMedia context, which reverts them when motion turns off;
 // it returns a cleanup only for what GSAP does not own (listeners, timers).
-export type Section = (root: HTMLElement, wide: boolean) => void | (() => void);
+export type Section = (root: HTMLElement, wide: boolean, ctx: gsap.Context) => void | (() => void);
 
 const SECTIONS: Section[] = [hero, how, more, stylist, finale];
 
@@ -19,7 +19,7 @@ export function startMotion() {
     if (!ctx.conditions?.motion) return;
     // Without this class every section shows its end state, still.
     document.documentElement.classList.add('motion');
-    const cleanups = SECTIONS.map((start) => start(document.body, ctx.conditions?.wide === true));
+    const cleanups = SECTIONS.map((start) => start(document.body, ctx.conditions?.wide === true, ctx));
     return () => {
       document.documentElement.classList.remove('motion');
       cleanups.forEach((cleanup) => cleanup?.());

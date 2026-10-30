@@ -23,14 +23,25 @@ function header(top: HTMLElement) {
 // In-page anchors scroll in JS: CSS smooth scrolling fights ScrollTrigger's snap.
 function anchors() {
   document.addEventListener('click', (e) => {
-    const a = e.target instanceof Element ? e.target.closest<HTMLAnchorElement>('a[href^="#"]') : null;
-    if (!a) return;
+    const a = e.target instanceof Element ? e.target.closest<HTMLAnchorElement>('a[href*="#"]') : null;
+    if (!a || a.pathname !== location.pathname) return;
     const target = document.getElementById(a.hash.slice(1));
     if (!target) return;
     e.preventDefault();
-    const offset = Number(target.dataset.anchorOffset ?? 0);
-    window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY + offset, behavior: motion() ? 'smooth' : 'auto' });
+    scrollToSection(target, motion() ? 'smooth' : 'auto');
   });
+}
+
+// A section can publish where a visitor should land inside it (the stylist's first question).
+function scrollToSection(target: HTMLElement, behavior: ScrollBehavior) {
+  const offset = Number(target.dataset.anchorOffset ?? 0);
+  window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY + offset, behavior });
+}
+
+// Arriving from another page on /#section: land again once the sections have published their offsets.
+export function landOnHash() {
+  const target = location.hash ? document.getElementById(location.hash.slice(1)) : null;
+  if (target) scrollToSection(target, 'auto');
 }
 
 function dialogs() {
@@ -51,6 +62,7 @@ function dialogs() {
 }
 
 export function startChrome() {
+  document.documentElement.classList.add('js');
   const top = document.querySelector<HTMLElement>('.top');
   if (top) header(top);
   anchors();

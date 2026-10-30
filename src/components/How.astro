@@ -22,7 +22,7 @@ const post = HOW.feed.post;
 <section class="how" id="how">
   <div class="hwrap">
     <div class="copy">
-      <h2><span class="nowrap">Tap try on <span class="soft">from</span></span><span class="nowrap"><span class="hroll" role="button" tabindex="0" aria-label="Next source">{WORDS.map((w) => <span class="hw">{w}</span>)}<span class="track" aria-hidden="true"><i class="hbar"></i></span></span></span></h2>
+      <h2><span class="nowrap">Tap try on <span class="soft">from</span></span><span class="nowrap"><span class="hroll">{WORDS.map((w) => <span class="hw">{w}</span>)}<span class="track" aria-hidden="true"><i class="hbar"></i></span></span></span></h2>
       <ol aria-label="How it works">{STEPS.map((s, i) => <li class="hstep"><span class="num">{String(i + 1).padStart(2, '0')}</span>{s}</li>)}</ol>
     </div>
     <div class="visual">

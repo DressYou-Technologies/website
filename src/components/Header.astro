@@ -29,7 +29,7 @@ import logo from '../assets/brand/logo-white.png';
     transition: width .45s cubic-bezier(.2,.7,.2,1), background-color .35s, box-shadow .35s,
       padding .42s cubic-bezier(.32,.94,.3,1), top .42s cubic-bezier(.32,.94,.3,1), border-radius .42s cubic-bezier(.32,.94,.3,1);
   }
-  .top.folded { width: min(520px, calc(100% - 24px)); background-color: rgba(14,14,14,.78); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 12px 32px rgba(0,0,0,.18); }
+  .top.folded, :global(html:not(.js)) .top { width: min(520px, calc(100% - 24px)); background-color: rgba(14,14,14,.78); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 12px 32px rgba(0,0,0,.18); }
   .top.compact { top: 12px; padding: 7px 7px 7px 14px; border-radius: 18px; }
 
   .brand { display: flex; align-items: center; text-decoration: none; }
@@ -47,7 +47,7 @@ import logo from '../assets/brand/logo-white.png';
   }
   .folded nav :global(.hdr-ext) { background-color: rgba(255,255,255,0); }
 
-  .hdr-app { position: relative; display: inline-flex; max-width: 0; margin-left: -4px; opacity: 0; overflow: hidden; pointer-events: none; transition: max-width .6s cubic-bezier(.65,0,.35,1), margin-left .6s cubic-bezier(.65,0,.35,1), opacity .6s cubic-bezier(.65,0,.35,1); }
+  .hdr-app { position: relative; display: inline-flex; max-width: 0; margin-left: -4px; opacity: 0; visibility: hidden; overflow: hidden; pointer-events: none; transition: max-width .6s cubic-bezier(.65,0,.35,1), margin-left .6s cubic-bezier(.65,0,.35,1), opacity .6s cubic-bezier(.65,0,.35,1), visibility .6s; }
   .hdr-app > :global(button) {
     display: inline-flex; align-items: center; justify-content: center; height: 42px; padding: 0 20px; border: 0; border-radius: 14px;
     background: #fff; color: #0a0a0a; font: inherit; font-weight: 600; font-size: .9375rem; white-space: nowrap; cursor: pointer;
@@ -60,7 +60,9 @@ import logo from '../assets/brand/logo-white.png';
   .app-shown .brand :global(.brand-full) { max-width: 0; opacity: 0; }
   .app-shown .brand-mark { width: 26px; opacity: 1; transition-delay: .12s; }
   .app-shown .brand-mark img { transform: none; transition-delay: .12s; transition-timing-function: cubic-bezier(.34,1.56,.64,1); }
-  .app-shown .hdr-app { max-width: 220px; margin-left: 0; opacity: 1; overflow: visible; pointer-events: auto; transition-delay: .08s; }
+  .app-shown .hdr-app { max-width: 220px; margin-left: 0; opacity: 1; visibility: visible; overflow: visible; pointer-events: auto; transition-delay: .08s; }
+  /* Below 600 px the extension buttons fold away (the export's clamp); out of the tab order too. */
+  @media (max-width: 599.98px) { nav :global(.hdr-ext) { display: none; } }
   .app-shown .hdr-app > :global(button) { transform: none; transition-delay: .12s; }
 
   .qr-pop { position: absolute; top: 100%; left: 50%; z-index: 20; padding-top: 12px; transform: translateX(-50%); visibility: hidden; opacity: 0; transition: opacity .2s, visibility 0s .2s; }

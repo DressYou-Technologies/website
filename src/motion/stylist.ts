@@ -1,6 +1,7 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { STORY_LENGTH_PX } from '../lib/constants';
+import { storySnap } from '../lib/snap';
 import { all, one } from './dom';
 import type { Section } from './index';
 
@@ -13,6 +14,7 @@ const POP = .18;                          // one squash-stretch-settle pop
 const ANSWER_AT = .98, LABEL_AT = STEP - .08;  // within a step: the answer starts, then the step's snap point
 const ANSWER_STAGGER = .09;
 const INK = '#0a0a0a', PAPER = '#f4f4f2';
+const FADE_PX = 64;                       // the chat view's top fade (its mask in Stylist.astro)
 
 // The stage sticks while the story scrolls: each capability arrives, its question types itself and sends,
 // and the answer pops in. Snapping to each label means a fast scroll always lands on one whole question.
@@ -33,7 +35,8 @@ export const stylist: Section = (root, wide) => {
   gsap.set(all(sec, '.sg .sq'), { opacity: 0, scale: .2, transformOrigin: '100% 100%' });
   gsap.set(all(sec, '.sg .sin'), { opacity: 0, scale: .3, y: 10, transformOrigin: '0% 100%' });
   gsap.set(all(sec, '.sthink'), { scale: .4, transformOrigin: '0% 100%' });
-  const scrollTo = (i: number) => Math.max(0, groups[i].offsetTop + groups[i].offsetHeight - view.offsetHeight);
+  // Show the group's end, unless that would push its question under the fade: then show the question.
+  const scrollTo = (i: number) => Math.max(0, Math.min(groups[i].offsetTop - FADE_PX, groups[i].offsetTop + groups[i].offsetHeight - view.offsetHeight));
   const spans = groups.map((g, i) => ({ q: g.dataset.q ?? '', a: i * STEP + .08, b: i * STEP + .48, s: i * STEP + .54 }));
 
   // The input types each question as you scroll, then sends it into the thread.
@@ -49,8 +52,9 @@ export const stylist: Section = (root, wide) => {
     onUpdate: render,
     scrollTrigger: {
       trigger: sec, start: 'top top', end: 'bottom bottom', scrub: .6, invalidateOnRefresh: true,
-      // Inertia would project a fast scroll past the next question; labelsDirectional with it off lands on one.
-      snap: { snapTo: 'labelsDirectional', inertia: false, duration: { min: .2, max: .6 }, delay: .05, ease: 'power1.inOut' },
+      // Inertia would project a fast scroll past the next question; with it off a scroll lands on one, and above the
+      // first or past the last question the visitor can leave.
+      snap: { snapTo: (value, self) => storySnap(LABELS.map((l) => tl.labels[l] / tl.duration()), value, self?.direction ?? 1), inertia: false, duration: { min: .2, max: .6 }, delay: .05, ease: 'power1.inOut' },
     },
   });
   spans.forEach((p, i) => {
