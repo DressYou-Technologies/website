@@ -37,7 +37,7 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
         <div class="wlayer">
           {first.pieces.map((id) => <Image class="wfly cutout" src={image(id)} width={80} height={80} alt="" loading="lazy" />)}
           <div class="wout">
-            {OUTFITS.map((outfit, i) => <Picture class="cutout" src={image(outfit.render)} formats={['avif', 'webp']} widths={[240, 480]} sizes="240px" alt="" loading="lazy" pictureAttributes={{ 'data-outfit': String(i), class: i === 0 ? 'shown' : '' }} />)}
+            {OUTFITS.map((outfit, i) => <Picture src={image(outfit.render)} formats={['avif', 'webp']} widths={[240, 480]} sizes="240px" alt="" loading="lazy" pictureAttributes={{ 'data-outfit': String(i), class: i === 0 ? 'shown' : '' }} />)}
             <span class="wshine"></span>
           </div>
         </div>
@@ -83,7 +83,7 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
             {set.map((look) => (
               <div class="fopt" style={`order:${look.order}`}>
                 <div class:list={['fimg', { fwin: look === winners[s] }]}>
-                  <Picture class="cutout" src={image(look.image)} formats={['avif', 'webp']} widths={[200, 320]} sizes="140px" alt="" loading="lazy" />
+                  <Picture src={image(look.image)} formats={['avif', 'webp']} widths={[200, 320]} sizes="140px" alt="" loading="lazy" />
                 </div>
                 {look === winners[s] && <><span class="fpick"></span><span class="fcheck"><svg viewBox="0 0 24 24" width="12" height="12"><path d="M20 6 9 17l-5-5"></path></svg></span></>}
                 <span class="votes">{look.votes.map((v) => <span class="fvote">{v}</span>)}</span>
@@ -128,10 +128,10 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
   .wtrack { display: flex; gap: 10px; width: max-content; will-change: transform; }
   .wg { position: relative; flex: none; width: clamp(56px, min(5.8vw, 9svh), 90px); aspect-ratio: 1; border-radius: 16px; background: linear-gradient(180deg, rgba(255,255,255,.94), rgba(250,249,246,.78)); box-shadow: inset 0 1px 0 #fff, inset 0 0 0 1px rgba(255,255,255,.45), 0 10px 24px rgba(0,0,0,.35); }
   .wg :global(img.cutout), .fimg :global(img.cutout) { background: none; }
-  .fimg :global(img.cutout) { --cutout-pad: 5%; }
   .wimg { position: absolute; inset: 0; border-radius: 16px; overflow: hidden; }
   .wimg :global(img), .photo :global(img), .tl-g :global(img), .fimg :global(img), .wout :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .photo :global(img) { object-fit: cover; }
+  /* The try-ons are studio photos: they fill their frames. */
+  .photo :global(img), .fimg :global(img), .wout :global(img) { object-fit: cover; object-position: 50% 40%; }
   .wcheck { position: absolute; top: -6px; right: -6px; width: 22px; height: 22px; border-radius: 50%; background: #f4f4f2; display: grid; place-items: center; box-shadow: 0 4px 10px rgba(0,0,0,.4); opacity: 0; }
   .wcheck svg { stroke: #0a0a0a; stroke-width: 2.2; }
   .wlayer { position: absolute; inset: 0; pointer-events: none; z-index: 3; }

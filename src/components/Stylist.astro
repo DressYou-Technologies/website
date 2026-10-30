@@ -93,6 +93,7 @@ const TABS = (['opinion', 'day', 'trip', 'find', 'shop'] as const).map((icon, k)
   .sstage { max-width: 1400px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: clamp(24px, 4.5vw, 64px); padding: var(--section-pad) clamp(16px, 3vw, 48px); }
   .shead { flex: 0 1 380px; min-width: 0; display: grid; gap: clamp(18px, 4svh, 36px); align-content: center; }
   h2 { margin: 0; font-size: clamp(1.875rem, min(4vw, 7.5svh), 3.375rem); font-weight: 700; letter-spacing: -.05em; line-height: 1; }
+  @media (max-width: 599.98px) { h2 { font-size: 1.75rem; } }
   .stabs { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(10px, 2.2svh, 18px); }
   .stab { display: flex; align-items: center; gap: 14px; }
   .sico { width: clamp(38px, 5.5svh, 48px); height: clamp(38px, 5.5svh, 48px); flex: none; border-radius: 32%; display: grid; place-items: center; background: #f4f4f2; color: #0a0a0a; }

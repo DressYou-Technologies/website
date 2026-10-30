@@ -1,22 +1,16 @@
 import { gsap } from 'gsap';
-import { HEADER_COMPACT_AFTER, HEADER_FOLD_AT, HERO_PASSED_OFFSET, MENU_GAP_PX, MOTION_QUERY, SCROLL_JITTER_PX } from '../lib/constants';
+import { FULL_MENU_QUERY, HEADER_FOLD_AT, HERO_PASSED_OFFSET, MENU_GAP_PX, MOTION_QUERY } from '../lib/constants';
 import { one } from '../motion/dom';
 
 const motion = () => window.matchMedia(MOTION_QUERY).matches;
 
-// The header is a pill once scrolled, compact while scrolling down, and shows "Get the app" once the hero is gone.
-function header(top: HTMLElement, menu: HTMLElement) {
+// The header is a pill once scrolled, at one size either way, and shows its symbol and buttons once the hero is gone.
+function header(top: HTMLElement) {
   const hero = document.querySelector<HTMLElement>('.hero');
-  let lastY = window.scrollY;
   const update = () => {
     const y = window.scrollY;
     top.classList.toggle('folded', y > HEADER_FOLD_AT);
     top.classList.toggle('app-shown', !hero || y > hero.offsetHeight - HERO_PASSED_OFFSET);
-    // An open menu hangs from the header's edge, so the header holds its size until it closes.
-    if (Math.abs(y - lastY) > SCROLL_JITTER_PX && !menu.matches(':popover-open')) {
-      top.classList.toggle('compact', y > lastY && y > HEADER_COMPACT_AFTER);
-      lastY = y;
-    }
   };
   window.addEventListener('scroll', update, { passive: true });
   update();
@@ -32,7 +26,9 @@ function menuPop(top: HTMLElement, menu: HTMLElement) {
   });
   menu.addEventListener('toggle', (e) => {
     if (!(e instanceof ToggleEvent) || e.newState !== 'open' || !motion()) return;
-    gsap.fromTo(menu, { y: -8, scale: .94, opacity: 0 }, { y: 0, scale: 1, opacity: 1, duration: .36, ease: 'back.out(1.5)' });
+    // On phones the menu is the whole screen: it fades in rather than growing from the header.
+    if (window.matchMedia(FULL_MENU_QUERY).matches) gsap.fromTo(menu, { opacity: 0 }, { opacity: 1, duration: .25, ease: 'power2.out' });
+    else gsap.fromTo(menu, { y: -8, scale: .94, opacity: 0 }, { y: 0, scale: 1, opacity: 1, duration: .36, ease: 'back.out(1.5)' });
     gsap.from(menu.querySelectorAll('.menu-item'), { y: 10, opacity: 0, duration: .3, stagger: .04, delay: .06, ease: 'power3.out' });
   });
 }
@@ -133,7 +129,7 @@ function dialogs() {
 export function startChrome() {
   document.documentElement.classList.add('js');
   const top = document.querySelector<HTMLElement>('.top'), menu = document.querySelector<HTMLElement>('#menu');
-  if (top && menu) { header(top, menu); menuPop(top, menu); }
+  if (top && menu) { header(top); menuPop(top, menu); }
   anchors();
   dialogs();
 }

@@ -38,7 +38,7 @@ export interface ShopPage { domain: string; brand: string; image: ImageId; look:
 export const HOW: {
   shop: { pages: ShopPage[]; render: ImageId };
   wardrobe: { grid: ImageId[]; picks: ImageId[]; render: ImageId };
-  feed: { scrolled: Post[]; post: Post; render: ImageId };
+  feed: { scrolled: Post[]; post: Post; next: Post; render: ImageId };
 } = {
   shop: {
     pages: [
@@ -53,27 +53,28 @@ export const HOW: {
     picks: ['g-black-knit-polo', 'g-ecru-trousers', 'g-brown-loafers'],
     render: 'render-m-polo',
   },
-  // The feed scrolls past a couple of posts and stops on the one tried.
+  // The feed scrolls past a couple of posts and stops on the one tried, with the next one showing below it.
   feed: {
     scrolled: [{ handle: 'jun', age: '1h', image: 'feed-m-canal' }, { handle: 'lea', age: '3h', image: 'feed-w-bakery' }],
     post: { handle: 'linh', age: '4h', image: 'feed-w-shirt' },
+    next: { handle: 'kofi', age: '5h', image: 'feed-m-lounge' },
     render: 'render-w-shirt',
   },
 };
 
 // Tops, bottoms, shoes, layers.
 export const WARDROBE_ROWS: ImageId[][] = [
-  ['g-white-tank', 'g-black-tee', 'g-grey-crewneck', 'g-taupe-sweater'],
+  ['g-white-tank', 'g-black-knit-polo', 'g-grey-crewneck', 'g-taupe-sweater'],
   ['g-barrel-jeans', 'g-ecru-trousers', 'g-pinstripe-trousers', 'g-black-wide-trousers'],
   ['g-brown-boots', 'g-white-sneakers', 'g-chelsea-boots', 'g-brown-loafers'],
-  ['g-trench', 'g-navy-overshirt', 'g-black-cap'],
+  ['g-trench', 'g-navy-overshirt', 'g-brown-coat'],
 ];
 
 // The wardrobe spin lands on these in order, so the result always matches its pieces.
 export const OUTFITS: Outfit[] = [
-  { pieces: ['g-white-tank', 'g-barrel-jeans', 'g-brown-boots', 'g-trench'], render: 'twin-trench' },
-  { pieces: ['g-grey-crewneck', 'g-ecru-trousers', 'g-white-sneakers', 'g-navy-overshirt'], render: 'twin-m-overshirt' },
-  { pieces: ['g-black-tee', 'g-black-wide-trousers', 'g-chelsea-boots', 'g-black-cap'], render: 'twin-m-tee-cap' },
+  { pieces: ['g-white-tank', 'g-ecru-trousers', 'g-brown-loafers', 'g-trench'], render: 'render-w-trench' },
+  { pieces: ['g-grey-crewneck', 'g-black-wide-trousers', 'g-chelsea-boots', 'g-navy-overshirt'], render: 'render-m-overshirt' },
+  { pieces: ['g-black-knit-polo', 'g-ecru-trousers', 'g-white-sneakers', 'g-brown-coat'], render: 'render-m-coat' },
 ];
 
 export const FEED_TRACKS: [Post[], Post[]] = [
@@ -99,14 +100,14 @@ export interface FriendLook { image: ImageId; order: number; votes: string[] }
 // Two rounds of asking: a woman's three looks, then a man's. The friends' pick in each is the look with the most votes.
 export const FRIEND_SETS: FriendLook[][] = [
   [
-    { image: 'twin-office', order: 1, votes: ['S'] },
-    { image: 'twin-knitset', order: 3, votes: [] },
-    { image: 'twin-knitdress', order: 2, votes: ['M', 'N', 'J'] },
+    { image: 'render-w-turtleneck', order: 1, votes: ['S'] },
+    { image: 'render-w-knit', order: 3, votes: [] },
+    { image: 'render-w-slipdress', order: 2, votes: ['M', 'N', 'J'] },
   ],
   [
-    { image: 'twin-m-polo', order: 1, votes: ['M'] },
-    { image: 'twin-m-tee', order: 3, votes: [] },
-    { image: 'twin-m-crewneck', order: 2, votes: ['S', 'N', 'J'] },
+    { image: 'render-m-polo', order: 1, votes: ['M'] },
+    { image: 'render-m-crewneck', order: 3, votes: [] },
+    { image: 'render-m-oxford', order: 2, votes: ['S', 'N', 'J'] },
   ],
 ];
 

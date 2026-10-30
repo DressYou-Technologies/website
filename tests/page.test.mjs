@@ -56,6 +56,8 @@ const BANNED = [[';', 'a semicolon'], ['\u2014', 'an em dash'], ['avatar', 'avat
   // A size comes from clothes the person kept, never from habit (§4.5), and the stylist never checks out (§2, §4.9).
   ['usual size', 'a size from habit'], ['taille habituelle', 'a size from habit'], ['true fit', 'not product vocabulary'], ['taille juste', 'not product vocabulary'],
   // The site shows what the stylist knows that answers a question, never how it tracks behaviour (founder, 2026-10-30).
+  // No mention that the site's images are generated (founder, 2026-10-30): legal pages call them illustrations.
+  ['AI-generated', 'an AI mention'], ['générées par IA', 'an AI mention'], ['générés par IA', 'an AI mention'],
   ['×', 'a wear count'], ['times this', 'a wear count'], ['fois cet', 'a wear count'],
   ['checks out for you', 'a checkout claim'], ['passe commande pour vous', 'a checkout claim'], ['size down', 'fit advice'], ['taille en dessous', 'fit advice']];
 const readable = (page) => [
@@ -149,7 +151,7 @@ test('without a store link the extension dialog shows its demo and no link out',
   }
 });
 
-test('the footer lists only working links, the other language, the company details and the AI line', () => {
+test('the footer lists only working links, the other language and the company details', () => {
   for (const lang of LANGS) {
     const footer = home[lang].match(/<footer[\s\S]*?<\/footer>/)[0], t = COPY[lang], other = LANGS.find((l) => l !== lang);
     const links = [...footer.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)].map(([, href, label]) => [decode(text(label)), href]);
@@ -161,7 +163,7 @@ test('the footer lists only working links, the other language, the company detai
       ['hello@dressyouapp.com', 'mailto:hello@dressyouapp.com'],
     ]);
     const words = decode(text(footer));
-    for (const fact of [t.finale.ai, `© ${new Date().getFullYear()} DressYou Technologies`, '47 rue Vivienne, 75002 Paris']) assert.ok(words.includes(fact), `${lang}: ${fact}`);
+    for (const fact of [`© ${new Date().getFullYear()} DressYou Technologies`, '47 rue Vivienne, 75002 Paris']) assert.ok(words.includes(fact), `${lang}: ${fact}`);
     assert.match(footer, /<form class="notify[^"]*"[^>]*data-lang="/, `${lang}: the footer asks for an email itself`);
     assert.doesNotMatch(footer, /<picture|<img(?![^>]*alt="DressYou")/, `${lang}: the footer shows no picture besides the logo`);
   }

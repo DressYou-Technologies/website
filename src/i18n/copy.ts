@@ -104,9 +104,7 @@ const en = {
       { label: 'Company', links: companyEn },
       { label: 'Legal', links: [['Legal notice', '/legal'], ['Privacy', '/privacy'], ['Terms', '/terms']] },
     ],
-    made: 'Made in Paris',
     footer: 'Footer',
-    ai: 'People shown on this page are AI-generated.',
   },
   dialog: {
     close: 'Close',
@@ -207,9 +205,7 @@ const fr: Copy = {
       { label: 'Entreprise', links: companyFr },
       { label: 'Légal', links: [['Mentions légales', '/legal'], ['Confidentialité', '/privacy'], ['Conditions', '/terms']] },
     ],
-    made: 'Conçu à Paris',
     footer: 'Pied de page',
-    ai: 'Les personnes montrées sur cette page sont générées par IA.',
   },
   dialog: {
     close: 'Fermer',

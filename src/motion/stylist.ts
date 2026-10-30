@@ -7,6 +7,7 @@ import type { Section } from './index';
 
 const STEP = 1.8;                         // timeline time per question: typed, sent, checked, answered
 const STAGE_TOP = 104, STAGE_BOTTOM = 56; // the pinned stage's padding, around the header and the input
+const PHONE_TOP = 72, PHONE_BOTTOM = 20;  // on phones the header is a single button, so the stage starts higher
 const CHAT_MIN = 300, CHAT_MAX = 760;
 const STACK_GAP = 16;
 const LABELS = ['opinion', 'day', 'trip', 'find', 'shop'];
@@ -24,13 +25,14 @@ export const stylist: Section = (root, wide) => {
   const view = one(sec, '.sview'), track = one(sec, '.strack'), type = one(sec, '.stype'), ph = one(sec, '.sph'), send = one(sec, '.ssend');
   const tabs = all(sec, '.stab'), groups = all(sec, '.sg');
   gsap.set(sec, { height: `calc(100svh + ${STORY_LENGTH_PX}px)` });
-  gsap.set(stage, { position: 'sticky', top: 0, height: '100svh', paddingTop: STAGE_TOP, paddingBottom: STAGE_BOTTOM, flexWrap: 'nowrap', flexDirection: wide ? 'row' : 'column', alignItems: wide ? 'center' : 'stretch', gap: wide ? undefined : STACK_GAP });
+  const top = wide ? STAGE_TOP : PHONE_TOP, bottom = wide ? STAGE_BOTTOM : PHONE_BOTTOM;
+  gsap.set(stage, { position: 'sticky', top: 0, height: '100svh', paddingTop: top, paddingBottom: bottom, flexWrap: 'nowrap', flexDirection: wide ? 'row' : 'column', alignItems: wide ? 'center' : 'stretch', gap: wide ? undefined : STACK_GAP });
   if (!wide) {
-    gsap.set(one(head, 'h2'), { display: 'none' });
     gsap.set(one(head, '.stabs'), { gridTemplateAreas: '"tab"' });
     gsap.set(tabs, { gridArea: 'tab' });
   }
-  gsap.set(chat, { height: () => Math.min(CHAT_MAX, Math.max(CHAT_MIN, window.innerHeight - STAGE_TOP - STAGE_BOTTOM - (wide ? 0 : head.offsetHeight + STACK_GAP))) });
+  // The stage is 100svh, the screen with the browser's bars shown, so the input never sits under them.
+  gsap.set(chat, { height: () => Math.min(CHAT_MAX, Math.max(CHAT_MIN, stage.clientHeight - top - bottom - (wide ? 0 : head.offsetHeight + STACK_GAP))) });
   gsap.set(tabs.slice(1), { opacity: 0, x: -24 });
   gsap.set(tabs.slice(1).map((t) => one(t, '.sico')), { backgroundColor: PAPER, color: INK });
   gsap.set(all(sec, '.sg .sq'), { opacity: 0, scale: .2, transformOrigin: '100% 100%' });

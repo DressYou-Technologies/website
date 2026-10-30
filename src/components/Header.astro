@@ -7,14 +7,13 @@ import { qrSvg } from '../lib/qr';
 import { COPY } from '../i18n/copy';
 import { LANGS, localize, type Lang } from '../i18n/lang';
 import mark from '../assets/brand/mark-white.png';
-import logo from '../assets/brand/logo-white.png';
 
 interface Props { lang: Lang; path: string }
 const { lang, path } = Astro.props;
 const t = COPY[lang];
 ---
 <header class="top">
-  <a class="brand" href={localize(lang, '/')} aria-label="DressYou"><span class="brand-mark"><Image src={mark} width={26} height={26} densities={[1, 2]} alt="" /></span><Image class="brand-full" src={logo} height={28} densities={[1, 2]} alt="DressYou" loading="eager" /></a>
+  <a class="brand" href={localize(lang, '/')} aria-label="DressYou"><Image src={mark} width={26} height={26} densities={[1, 2]} alt="" /></a>
   <div class="bar">
     <GetLink kind="extension" class="hdr-ext"><DownloadIcon size={16} />{t.get.extension}</GetLink>
     <span class="hdr-app">
@@ -27,6 +26,7 @@ const t = COPY[lang];
   </div>
   <!-- A popover: the browser opens and closes it, Escape and a click outside included, with or without the page's script. -->
   <div id="menu" class="menu-pop" popover>
+    <button type="button" class="menu-close" popovertarget="menu" popovertargetaction="hide" aria-label={t.dialog.close}><svg viewBox="0 0 24 24" aria-hidden="true" width="20" height="20"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
     <nav aria-label={t.menu.label}>{t.menu.links.map(([label, link]) => <a class="menu-item" href={localize(lang, link)}>{label}</a>)}</nav>
     <div class="menu-get">
       <GetLink kind="app" class="menu-app">{t.get.app}</GetLink>
@@ -51,13 +51,11 @@ const t = COPY[lang];
       padding .42s cubic-bezier(.32,.94,.3,1), top .42s cubic-bezier(.32,.94,.3,1), border-radius .42s cubic-bezier(.32,.94,.3,1);
   }
   .top.folded, :global(html:not(.js)) .top { width: min(520px, calc(100% - 24px)); background-color: rgba(14,14,14,.78); backdrop-filter: blur(14px); box-shadow: 0 12px 32px rgba(0,0,0,.18); }
-  .top.compact { top: 12px; padding: 7px 7px 7px 14px; border-radius: 18px; }
 
-  .brand { display: flex; align-items: center; text-decoration: none; }
-  .brand-mark { display: block; width: 0; opacity: 0; overflow: hidden; transition: width .6s cubic-bezier(.65,0,.35,1), opacity .6s cubic-bezier(.65,0,.35,1); }
-  .brand-mark img { width: 26px; height: 26px; transform: rotate(-90deg) scale(.5); transition: transform .6s cubic-bezier(.65,0,.35,1); }
-  .brand :global(.brand-full) { width: auto; height: clamp(22px, 2vw + 12px, 28px); max-width: 130px; transition: height .42s cubic-bezier(.32,.94,.3,1), max-width .5s cubic-bezier(.65,0,.35,1), opacity .5s cubic-bezier(.65,0,.35,1); }
-  .compact .brand :global(.brand-full) { height: 20px; }
+  /* On the hero, which has its own buttons, the header keeps only its menu; the symbol and the buttons come in after it. */
+  .brand { display: flex; align-items: center; text-decoration: none; transition: opacity .5s cubic-bezier(.65,0,.35,1), visibility .5s; }
+  .brand :global(img) { width: 26px; height: 26px; }
+  :global(html.js) .top:not(.app-shown) .brand, :global(html.js) .top:not(.app-shown) .bar :global(.hdr-ext) { opacity: 0; visibility: hidden; }
 
   .bar { display: flex; align-items: center; gap: 4px; }
   .bar :global(.hdr-ext) {
@@ -75,12 +73,10 @@ const t = COPY[lang];
     transform: translateX(14px) scale(.92);
     transition: transform .55s cubic-bezier(.65,0,.35,1), height .42s cubic-bezier(.32,.94,.3,1), font-size .42s cubic-bezier(.32,.94,.3,1), border-radius .42s cubic-bezier(.32,.94,.3,1);
   }
-  .compact .bar :global(.hdr-ext), .compact .hdr-app > :global(button) { height: 32px; font-size: .8125rem; border-radius: 12px; }
 
   /* The export's burger: two bars that cross while the menu is open. 44 px keeps the touch target. */
-  .hdr-burger { display: grid; place-items: center; width: 44px; height: 44px; margin-left: 2px; padding: 0; border: 0; border-radius: 14px; background: transparent; color: #fff; cursor: pointer; transition: width .42s cubic-bezier(.32,.94,.3,1), height .42s cubic-bezier(.32,.94,.3,1), border-radius .42s cubic-bezier(.32,.94,.3,1), background-color .2s; }
+  .hdr-burger { display: grid; place-items: center; width: 44px; height: 44px; margin-left: 2px; padding: 0; border: 0; border-radius: 14px; background: transparent; color: #fff; cursor: pointer; transition: background-color .2s; }
   .hdr-burger:hover { background-color: rgba(255,255,255,.1); }
-  .compact .hdr-burger { width: 36px; height: 36px; border-radius: 12px; }
   .bars { position: relative; display: block; width: 16px; height: 10px; }
   .bars i { position: absolute; left: 0; right: 0; height: 1.6px; border-radius: 1px; background: currentColor; transition: transform .32s cubic-bezier(.32,.94,.3,1), top .32s cubic-bezier(.32,.94,.3,1); }
   .bars i:first-child { top: 0; }
@@ -105,12 +101,29 @@ const t = COPY[lang];
   .menu-get :global(.menu-app), .menu-get :global(.menu-ext) { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 48px; border: 0; border-radius: 14px; font: inherit; font-weight: 600; font-size: .9375rem; text-decoration: none; cursor: pointer; }
   .menu-get :global(.menu-app) { background: #0a0a0a; color: #fff; }
   .menu-get :global(.menu-ext) { background: #f1f1ef; color: #0a0a0a; }
-  @media (max-width: 599.98px) { .menu-get { display: grid; gap: 8px; margin-top: 20px; } }
+  .menu-close { display: none; }
+  /* Phones: the header is the menu button alone, and the menu takes the whole screen, dark like the site's cards,
+     with its own close button where the menu button was and the page held still behind it. */
+  @media (max-width: 599.98px) {
+    .top, .top.folded, :global(html:not(.js)) .top { top: 12px; left: auto; right: 12px; width: auto; padding: 0; border-radius: 16px; background-color: rgba(14,14,14,.6); backdrop-filter: blur(14px); box-shadow: 0 8px 24px rgba(0,0,0,.18); }
+    .brand, .hdr-app { display: none; }
+    .menu-pop { inset: 0; width: 100%; height: 100dvh; max-width: none; max-height: none; padding: calc(env(safe-area-inset-top) + 96px) 28px calc(env(safe-area-inset-bottom) + 28px); border-radius: 0; color: #fff; background: #0a0a0b; box-shadow: none; }
+    .menu-pop:popover-open { display: flex; flex-direction: column; }
+    .menu-close { position: absolute; top: calc(env(safe-area-inset-top) + 12px); right: 12px; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 16px; background: rgba(255,255,255,.1); color: #fff; cursor: pointer; }
+    .menu-close svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+    .menu-pop nav { gap: 6px; }
+    a.menu-item { padding: 6px 0; color: #fff; font-size: 2.25rem; }
+    a.menu-item:hover { color: #a1a1a1; }
+    .menu-get { display: grid; gap: 10px; margin-top: auto; padding-top: 28px; }
+    .menu-get :global(.menu-app) { height: 54px; background: #fff; color: #0a0a0a; }
+    .menu-get :global(.menu-ext) { height: 54px; background: rgba(255,255,255,.1); color: #fff; }
+    .menu-langs { border-top-color: rgba(255,255,255,.12); }
+    .menu-langs a, .menu-langs span { color: #fff; }
+    .menu-langs .slash { color: rgba(255,255,255,.3); }
+    :global(html:has(.menu-pop:popover-open)) { overflow: hidden; }
+  }
 
-  /* Past the hero, which has its own, the wordmark folds into the symbol and "Get the app" opens. */
-  .app-shown .brand :global(.brand-full) { max-width: 0; opacity: 0; }
-  .app-shown .brand-mark { width: 26px; opacity: 1; transition-delay: .12s; }
-  .app-shown .brand-mark img { transform: none; transition-delay: .12s; transition-timing-function: cubic-bezier(.34,1.56,.64,1); }
+  /* Past the hero, "Get the app" opens beside the menu. */
   .app-shown .hdr-app { max-width: 220px; margin-left: 0; opacity: 1; visibility: visible; overflow: visible; pointer-events: auto; transition-delay: .08s; }
   /* Below 600 px the extension buttons fold away (the export's clamp); out of the tab order too. */
   @media (max-width: 599.98px) { .bar :global(.hdr-ext) { display: none; } }

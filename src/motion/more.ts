@@ -165,8 +165,9 @@ function friends(card: HTMLElement) {
       .to(others, { opacity: .45, duration: .5, ease: 'power2.out' }, end + .14);
     // Hand over: this person's looks slide away, the next person's slide in, and this set clears while it is hidden.
     const swap = end + 2.4, next = fans[(i + 1) % fans.length];
-    loop.to(looksOf(fan), { autoAlpha: 0, y: -16, filter: 'blur(6px)', duration: .45, stagger: .06, ease: 'power2.in' }, swap)
-      .fromTo(looksOf(next), { autoAlpha: 0, y: 18, filter: 'blur(6px)' }, { autoAlpha: 1, y: 0, filter: 'blur(0px)', duration: .6, stagger: .08, ease: 'power3.out', immediateRender: false, clearProps: 'filter' }, swap + .35);
+    // Opacity and a short slide only: a blur over photographs costs whole frames on a slow phone.
+    loop.to(looksOf(fan), { autoAlpha: 0, y: -16, duration: .45, stagger: .06, ease: 'power2.in' }, swap)
+      .fromTo(looksOf(next), { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: .6, stagger: .08, ease: 'power3.out', immediateRender: false }, swap + .35);
     reset(fan, swap + .7);
     t = swap + 1.2;
   });

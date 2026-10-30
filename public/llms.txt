@@ -4,7 +4,6 @@
 
 DressYou is a fashion app from Paris. Your own photos make your twin, and you try on clothes from any online shop, your wardrobe or the feed before you buy. The app also builds outfits from the clothes you own, lets friends vote between looks, and includes a stylist that answers from your wardrobe. The app is not released yet. iOS, Android and a Chrome extension are announced, and the site takes an email to say when it is out.
 
-The people shown on the site are AI-generated.
 
 ## Facts
 

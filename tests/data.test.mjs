@@ -73,9 +73,9 @@ test('the wall is studio renders, as many women as men within one', () => {
   assert.ok(Math.abs(women - (WALL_PEOPLE - women)) <= BALANCE_SLACK, `${women} of ${WALL_PEOPLE} are women`);
 });
 
-test('the twin, its try-ons and every garment are transparent cutouts', async () => {
-  const ids = [...masters.keys()].filter((id) => /^(twin|g-)/.test(id));
-  assert.ok(ids.length > 20);
+test('every garment is a transparent cutout', async () => {
+  const ids = [...masters.keys()].filter((id) => /^g-/.test(id));
+  assert.ok(ids.length > 15);
   for (const id of ids) assert.ok(await cutout(id), `${id} is not a transparent WebP`);
 });
 
@@ -93,8 +93,8 @@ test("the feed story's render wears the post's look", () => {
   assert.deepEqual(site.LOOK_PIECES, ['g-black-cap', 'g-trench', 'g-white-tank', 'g-barrel-jeans', 'g-brown-boots']);
 });
 
-test("the phone's try-ons are studio photos in the hero's recipe, not cutouts", () => {
-  for (const id of [site.HOW.shop.render, site.HOW.wardrobe.render, site.HOW.feed.render]) {
+test("every try-on is a studio photo in the hero's recipe, not a cutout", () => {
+  for (const id of [site.HOW.shop.render, site.HOW.wardrobe.render, site.HOW.feed.render, ...site.OUTFITS.map((o) => o.render), ...site.FRIEND_SETS.flat().map((l) => l.image)]) {
     assert.match(id, /^render-[wm]-/, id);
     assert.equal(masters.get(id), 'people', id);
   }
@@ -111,6 +111,6 @@ test('a look in the friends card carries no label, only its votes', () => {
 test('the friends card shows a woman\'s looks first, then a man\'s', () => {
   const [first, second] = site.FRIEND_SETS;
   assert.equal(site.FRIEND_SETS.length, 2);
-  for (const look of first) assert.match(look.image, /^twin-(?!m-)/, look.image);
-  for (const look of second) assert.match(look.image, /^twin-m-/, look.image);
+  for (const look of first) assert.match(look.image, /^render-w-/, look.image);
+  for (const look of second) assert.match(look.image, /^render-m-/, look.image);
 });

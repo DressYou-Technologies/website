@@ -32,8 +32,7 @@ const year = new Date().getFullYear();
   </nav>
   <div class="base">
     <Image src={logo} height={22} densities={[1, 2]} alt="DressYou" />
-    <p class="facts"><span>© {year} DressYou Technologies</span><span>47 rue Vivienne, 75002 Paris</span><a href={`mailto:${LINKS.email}`}>{LINKS.email}</a><span>{t.finale.made}</span></p>
-    <p class="ai">{t.finale.ai}</p>
+    <p class="facts"><span>© {year} DressYou Technologies</span><span>47 rue Vivienne, 75002 Paris</span><a href={`mailto:${LINKS.email}`}>{LINKS.email}</a></p>
   </div>
 </footer>
 
@@ -57,5 +56,4 @@ const year = new Date().getFullYear();
   .base img { width: auto; height: 22px; }
   .facts { display: flex; flex-wrap: wrap; gap: 6px 20px; margin: 0; color: #8a8a8a; font-size: .8125rem; }
   .facts a { font-size: .8125rem; }
-  .ai { margin: 0 0 0 auto; color: #8a8a8a; font-size: .8125rem; }
 </style>

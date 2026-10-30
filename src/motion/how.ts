@@ -8,6 +8,7 @@ const AFTER_TAP_SECONDS = 6.5;        // render, size, question, answer, then th
 const WARDROBE_TAP_SECONDS = 3.0;     // three pieces picked, the select bar rises, then the tap
 const FEED_POST_SECONDS = 1.3;        // the feed flicks to each next post this often, then the last one is tapped
 const FEED_SETTLE_SECONDS = 1.1;      // the tried post shows this long before its try-on button is pressed
+const FEED_HEAD_PT = 222, STATUS_PT = 54; // the feed's header ends here, in iOS points (How.astro .fhead), and the status bar here
 const TAB_SECONDS = 1.8;              // each open shop tab stays this long before the next swipes in
 const MENU_SECONDS = .9;              // Safari's page menu shows this long before Share is tapped
 const SHEET_SECONDS = 1.2;            // the share sheet shows this long before DressYou is tapped
@@ -89,8 +90,12 @@ export const how: Section = (root) => {
 
   // The feed: flick past the posts above, settle on the one tried, then press its try-on button.
   const scroll = (src: HTMLElement, t: number): number => {
-    const track = one(src, '.fscroll'), posts = all(src, '.fpost');
-    tl.set(track, { y: 0 }, t);
+    const track = one(src, '.fscroll'), head = one(src, '.fhead'), view = one(src, '.fview');
+    // Every post up to the one with the try-on button; the one after it only fills the screen below.
+    const posts = all(src, '.fpost').filter((post, k, list) => k <= list.findIndex((p) => p.querySelector('[data-tap]')));
+    tl.set(track, { y: 0 }, t).set(head, { y: 0, autoAlpha: 1 }, t).set(view, { top: FEED_HEAD_PT }, t)
+      .to(head, { y: -(FEED_HEAD_PT - STATUS_PT), autoAlpha: 0, duration: .6, ease: 'power3.out' }, t + FEED_POST_SECONDS - .6)
+      .to(view, { top: STATUS_PT, duration: .6, ease: 'power3.out' }, t + FEED_POST_SECONDS - .6);
     posts.slice(1).forEach((post, k) => tl.to(track, { y: () => -post.offsetTop, duration: .8, ease: 'power3.out' }, t + FEED_POST_SECONDS * (k + 1) - .6));
     return t + FEED_POST_SECONDS * (posts.length - 1) + FEED_SETTLE_SECONDS;
   };
