@@ -1,5 +1,6 @@
 import { gsap } from 'gsap';
 import { HEADER_COMPACT_AFTER, HEADER_FOLD_AT, HERO_PASSED_OFFSET, MOTION_QUERY, SCROLL_JITTER_PX } from '../lib/constants';
+import { one } from '../motion/dom';
 
 const motion = () => window.matchMedia(MOTION_QUERY).matches;
 
@@ -44,11 +45,65 @@ export function landOnHash() {
   if (target) scrollToSection(target, 'auto');
 }
 
+const NOTIFY_URL = '/api/notify';
+// What the form says for each answer the function gives.
+const NOTIFY_SAYS: Record<string, string> = {
+  ok: 'Check your inbox to confirm your email.',
+  email: 'That email doesn\'t look right.',
+  closed: 'Sign-ups open very soon.',
+  failed: 'Something went wrong. Try again in a minute.',
+};
+
+// "Be notified": the page posts the address to its own function, which hands it to the email list.
+function notify(form: HTMLFormElement, openedAt: () => number) {
+  const email = one<HTMLInputElement>(form, 'input[name="email"]'), trap = one<HTMLInputElement>(form, 'input[name="website"]');
+  const button = one<HTMLButtonElement>(form, 'button[type="submit"]'), status = one(form, '.status');
+  const say = (key: string) => { status.textContent = NOTIFY_SAYS[key]; status.classList.toggle('error', key !== 'ok'); };
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!email.checkValidity()) { say('email'); email.focus(); return; }
+    button.disabled = true;
+    try {
+      const res = await fetch(NOTIFY_URL, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email: email.value, website: trap.value, elapsed: Math.round(performance.now() - openedAt()) }) });
+      const { error } = (await res.json().catch(() => ({}))) as { error?: string };
+      if (res.ok) { say('ok'); form.classList.add('done'); return; }
+      say(error === 'email' || error === 'closed' ? error : 'failed');
+    } catch {
+      say('failed');
+    } finally {
+      button.disabled = false;
+    }
+  });
+}
+
+// The extension demo: tap DressYou in the toolbar, the panel slides in, the twin wears the piece, the size follows.
+function demo(dialog: HTMLDialogElement) {
+  const box = dialog.querySelector<HTMLElement>('.xdemo');
+  if (!box || !motion()) return;
+  const ctx = gsap.context(() => {
+    const ext = one(box, '.xext'), ring = one(box, '.xring'), panel = one(box, '.xpanel'), twin = one(box, '.xtwin'), size = one(box, '.xsize');
+    gsap.timeline({ repeat: -1, repeatDelay: .4 })
+      .set(panel, { xPercent: 115 }).set(twin, { clipPath: 'inset(0% 0% 100% 0%)' }).set(size, { autoAlpha: 0, scale: .6 })
+      .to(ext, { scale: .82, duration: .1, ease: 'power2.in' }, .7)
+      .to(ext, { scale: 1, duration: .3, ease: 'back.out(3)' }, .8)
+      .fromTo(ring, { scale: .5, opacity: .9 }, { scale: 1.8, opacity: 0, duration: .5, ease: 'power2.out' }, .7)
+      .to(panel, { xPercent: 0, duration: .55, ease: 'power3.out' }, .95)
+      .to(twin, { clipPath: 'inset(0% 0% 0% 0%)', duration: .9, ease: 'power3.inOut' }, 1.35)
+      .to(size, { autoAlpha: 1, scale: 1, duration: .45, ease: 'back.out(2.4)' }, 2.25)
+      .to(panel, { xPercent: 115, duration: .45, ease: 'power2.in' }, 4.6);
+  }, box);
+  dialog.addEventListener('close', () => ctx.revert(), { once: true });
+}
+
 function dialogs() {
+  let openedAt = 0;
+  document.querySelectorAll<HTMLFormElement>('form.notify').forEach((form) => notify(form, () => openedAt));
   document.querySelectorAll<HTMLButtonElement>('[data-get]').forEach((button) => button.addEventListener('click', () => {
     const dialog = document.getElementById(`get-${button.dataset.get}`);
     if (!(dialog instanceof HTMLDialogElement)) return;
     dialog.showModal();
+    openedAt = performance.now();
+    demo(dialog);
     dialog.addEventListener('close', () => button.focus({ preventScroll: true }), { once: true });
     if (!motion()) return;
     gsap.from(dialog, { scale: .6, opacity: 0, transformOrigin: '50% 50%', duration: .5, ease: 'back.out(1.6)' });

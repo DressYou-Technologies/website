@@ -4,13 +4,13 @@ import Header from '../components/Header.astro';
 import Finale from '../components/Finale.astro';
 import GetDialog from '../components/GetDialog.astro';
 
-interface Props { title: string; path: string; updated: string }
-const { title, path, updated } = Astro.props;
+interface Props { title: string; path: string; updated?: string; noindex?: boolean }
+const { title, path, updated, noindex = false } = Astro.props;
 ---
-<Base path={path} title={`${title} · DressYou`}>
+<Base path={path} title={`${title} · DressYou`} noindex={noindex}>
   <Header />
   <main>
-    <section class="band"><h1>{title}</h1><p>Last updated {updated}</p></section>
+    <section class="band"><h1>{title}</h1>{updated && <p>Last updated {updated}</p>}</section>
     <article class="doc"><slot /></article>
   </main>
   <Finale />

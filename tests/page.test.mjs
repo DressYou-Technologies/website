@@ -79,10 +79,26 @@ test('a null store link opens a dialog instead of linking', async () => {
       assert.equal(tag, 'button', `${label} is a link`);
       assert.match(attrs, new RegExp(`data-get="${kind}"`));
     }
-    const dialog = html.match(new RegExp(`<dialog[^>]*id="get-${kind}"[^>]*>([\\s\\S]*?)</dialog>`));
-    assert.ok(dialog, `no dialog for ${kind}`);
-    assert.ok(text(dialog[1]).includes('coming soon.'));
+    assert.ok(html.match(new RegExp(`<dialog[^>]*id="get-${kind}"`)), `no dialog for ${kind}`);
   }
+});
+
+const dialogOf = (kind) => html.match(new RegExp(`<dialog[^>]*id="get-${kind}"[^>]*>([\\s\\S]*?)</dialog>`))[1];
+
+test('without a store link the app dialog asks for an email to notify', () => {
+  const dialog = dialogOf('app');
+  assert.match(dialog, /<input[^>]*type="email"[^>]*name="email"[^>]*required/);
+  // The bot trap: out of reach for people and assistive tech, filled by bots.
+  assert.match(dialog, /<input[^>]*name="website"[^>]*tabindex="-1"[^>]*aria-hidden="true"/);
+  assert.match(dialog, /<button[^>]*type="submit"[^>]*>Notify me<\/button>/);
+  assert.match(dialog, /href="\/privacy"/);
+});
+
+test('without a store link the extension dialog shows its demo and no link out', () => {
+  const dialog = dialogOf('extension');
+  assert.match(dialog, /class="xdemo"/);
+  assert.ok(text(dialog).includes('Coming soon to Chrome'));
+  assert.doesNotMatch(dialog, /chromewebstore/);
 });
 
 test('the footer lists only working links and the AI line', () => {

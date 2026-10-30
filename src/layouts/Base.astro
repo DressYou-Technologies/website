@@ -3,8 +3,8 @@ import '../styles/tokens.css';
 import '../styles/base.css';
 import { SITE } from '../data/site';
 
-interface Props { title?: string; description?: string; path: string }
-const { title = `DressYou · ${SITE.tagline}`, description = SITE.description, path } = Astro.props;
+interface Props { title?: string; description?: string; path: string; noindex?: boolean }
+const { title = `DressYou · ${SITE.tagline}`, description = SITE.description, path, noindex = false } = Astro.props;
 const canonical = `${SITE.url}${path}`;
 const ogImage = `${SITE.url}/og-image.jpg`;
 const graph = {
@@ -42,6 +42,7 @@ const graph = {
     <meta name="theme-color" content="#000000">
     <title>{title}</title>
     <meta name="description" content={description}>
+    {noindex && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={canonical}>
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <!-- The mark is white, so every icon carries a black plate to stay visible in light-theme tabs. -->
