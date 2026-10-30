@@ -1,6 +1,6 @@
 ---
 import { Image, Picture } from 'astro:assets';
-import { FEED_TRACKS, FRIENDS, FRIEND_LOOKS, LOOK_PIECES, OUTFITS, WARDROBE_ROWS } from '../data/site';
+import { FEED_TRACKS, FRIENDS, FRIEND_SETS, LOOK_PIECES, OUTFITS, WARDROBE_ROWS } from '../data/site';
 import { image } from '../lib/image';
 
 // Each row repeats its garments so the spin always has pieces on both sides of where it lands.
@@ -9,7 +9,7 @@ const rows = WARDROBE_ROWS.map((row) => Array.from({ length: row.length * ROW_RE
 // Per outfit, the garment index it picks in each row; the spin lands on these in order.
 const picks = OUTFITS.map((o) => o.pieces.map((piece, row) => WARDROBE_ROWS[row].indexOf(piece)));
 const first = OUTFITS[0];
-const winner = FRIEND_LOOKS.reduce((best, look) => (look.votes.length > best.votes.length ? look : best));
+const winners = FRIEND_SETS.map((set) => set.reduce((best, look) => (look.votes.length > best.votes.length ? look : best)));
 const heart = 'M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z';
 const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z';
 ---
@@ -67,19 +67,21 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
       </article>
       <article class="card friend">
         <div class="fvis" aria-hidden="true">
-          <div class="ffan">
-            {FRIEND_LOOKS.map((look) => (
+          <div class="fsets">{FRIEND_SETS.map((set, s) => (
+          <div class:list={['ffan', { first: s === 0 }]}>
+            {set.map((look) => (
               <div class="fopt" style={`order:${look.order}`}>
-                <div class:list={['fimg', { fwin: look === winner }]}>
+                <div class:list={['fimg', { fwin: look === winners[s] }]}>
                   <Picture class="cutout" src={image(look.image)} formats={['avif', 'webp']} widths={[200, 320]} sizes="140px" alt="" loading="lazy" />
                   <span class="flabel">{look.label}</span>
                 </div>
-                {look === winner && <span class="fring"></span>}
-                {look === winner && <span class="fburst"><i></i><i></i><i></i></span>}
+                {look === winners[s] && <span class="fring"></span>}
+                {look === winners[s] && <span class="fburst"><i></i><i></i><i></i></span>}
                 <span class="votes">{look.votes.map((v) => <span class="fvote">{v}</span>)}</span>
               </div>
             ))}
           </div>
+          ))}</div>
           <div class="share">
             <span class="fsend"><svg viewBox="0 0 24 24" width="16" height="16"><path d={send}></path><path d="m21.854 2.147-10.94 10.939"></path></svg>Ask friends</span>
             <span class="fplane"><svg viewBox="0 0 24 24" width="16" height="16"><path d={send}></path><path d="m21.854 2.147-10.94 10.939"></path></svg></span>
@@ -169,7 +171,10 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
 
   .friend { flex: 1 1 auto; display: flex; flex-direction: column; padding: 28px; border-radius: 28px; }
   .fvis { display: grid; gap: 16px; }
-  .ffan { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; width: 100%; margin: 4px 0 18px; }
+  /* The two sets share one place; without motion the first shows, while it plays GSAP hands over between them. */
+  .fsets { display: grid; grid-template-columns: minmax(0, 1fr); margin: 4px 0 18px; }
+  .ffan { grid-area: 1 / 1; position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; width: 100%; }
+  .ffan:not(.first) { visibility: hidden; }
   .fopt { position: relative; }
   .fimg { position: relative; aspect-ratio: 3 / 4; border-radius: 18px; overflow: hidden; background: var(--cutout-bg); box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 24px 50px rgba(0,0,0,.5); }
   /* The friends' pick: a ring that draws itself round the look (GSAP runs --p from 0 to 1), then a cartoon pop. */

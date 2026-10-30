@@ -25,12 +25,12 @@ export const WALL: ImageId[][] = [
   ['wall-w-tank', 'wall-m-locs', 'wall-w-silver'],
   ['wall-m-suit', 'wall-w-braids', 'wall-m-knit'],
   ['wall-w-curls', 'wall-m-skate', 'wall-w-hijab'],
-  ['wall-m-polo', 'wall-w-blonde', 'wall-m-camel'],
+  ['wall-m-polo', 'wall-w-afro', 'wall-m-camel'],
   ['wall-w-street', 'wall-m-athletic', 'wall-w-wrap'],
   ['wall-m-denim', 'wall-w-linen', 'wall-m-leather'],
-  ['wall-w-red', 'wall-m-overshirt', 'wall-w-tank'],
-  ['wall-m-skate', 'wall-w-braids', 'wall-m-suit'],
-  ['wall-w-hijab', 'wall-m-polo', 'wall-w-curls'],
+  ['wall-w-red', 'wall-m-overshirt', 'wall-w-pleats'],
+  ['wall-m-workwear', 'wall-w-knitset', 'wall-m-varsity'],
+  ['wall-w-blonde', 'wall-m-preppy', 'wall-w-track'],
 ];
 
 export const HOW: {
@@ -59,7 +59,7 @@ export const WARDROBE_ROWS: ImageId[][] = [
 export const OUTFITS: Outfit[] = [
   { pieces: ['g-white-tank', 'g-barrel-jeans', 'g-brown-boots', 'g-trench'], render: 'twin-trench' },
   { pieces: ['g-grey-crewneck', 'g-ecru-trousers', 'g-white-sneakers', 'g-navy-overshirt'], render: 'twin-m-overshirt' },
-  { pieces: ['g-black-tee', 'g-pinstripe-trousers', 'g-chelsea-boots', 'g-trench'], render: 'twin-tee-trench' },
+  { pieces: ['g-black-tee', 'g-black-wide-trousers', 'g-chelsea-boots', 'g-black-cap'], render: 'twin-m-tee-cap' },
 ];
 
 export const FEED_TRACKS: [Post[], Post[]] = [
@@ -81,11 +81,19 @@ export const LOOK_PIECES: ImageId[] = ['g-black-cap', 'g-trench', 'g-white-tank'
 
 // Friends by initial; each look lists who voted for it. The fan shows the looks in label order.
 export const FRIENDS = ['M', 'S', 'N', 'J'];
-// The friends' pick is the look with the most votes.
-export const FRIEND_LOOKS: { image: ImageId; label: string; order: number; votes: string[] }[] = [
-  { image: 'twin-m-polo', label: 'look 1', order: 1, votes: ['M'] },
-  { image: 'twin-m-tee', label: 'look 3', order: 3, votes: [] },
-  { image: 'twin-m-crewneck', label: 'look 2', order: 2, votes: ['S', 'N', 'J'] },
+export interface FriendLook { image: ImageId; label: string; order: number; votes: string[] }
+// Two rounds of asking: a woman's three looks, then a man's. The friends' pick in each is the look with the most votes.
+export const FRIEND_SETS: FriendLook[][] = [
+  [
+    { image: 'twin-office', label: 'look 1', order: 1, votes: ['S'] },
+    { image: 'twin-knitset', label: 'look 3', order: 3, votes: [] },
+    { image: 'twin-knitdress', label: 'look 2', order: 2, votes: ['M', 'N', 'J'] },
+  ],
+  [
+    { image: 'twin-m-polo', label: 'look 1', order: 1, votes: ['M'] },
+    { image: 'twin-m-tee', label: 'look 3', order: 3, votes: [] },
+    { image: 'twin-m-crewneck', label: 'look 2', order: 2, votes: ['S', 'N', 'J'] },
+  ],
 ];
 
 export const STYLIST: { dinner: ImageId[]; trip: ImageId[]; find: ImageId } = {

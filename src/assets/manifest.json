@@ -587,6 +587,57 @@
    "src-g-brown-boots"
   ]
  },
+ "twin-knitdress": {
+  "id": "twin-knitdress",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 4137,
+   "input_tokens_details": {
+    "image_tokens": 3858,
+    "text_tokens": 279
+   },
+   "output_tokens": 1006,
+   "output_tokens_details": {
+    "image_tokens": 1006,
+    "text_tokens": 0
+   },
+   "total_tokens": 5143
+  },
+  "prompt": "Keep the person from the first image exactly: same face, hair, skin tone, body and proportions, same soft natural light and photo texture. Dress them in the garments shown in the other images, keeping each garment's colour, fabric, cut and details exactly. Posed like a calm e-commerce catalogue model, relaxed and natural, never dramatic: shoulders relaxed and level, head level, a calm neutral expression with lips gently closed, arms hanging loosely with a small gap from the body, soft loose hands with fingers gently curved, hands kept clear of the garment's details, feet about hip-width apart, the camera straight on at waist height. Standing at a very slight angle, both hands loosely together in front of the hips, feet close together, looking into the camera. Soft natural daylight, like a photo a friend takes near a window. True-to-life colours, unretouched natural skin with real texture and no airbrushing, normal phone-camera sharpness with a little noise, not HDR, not hyper-detailed. Whole body visible from head to toe. Cut out on a fully transparent background, with no floor, shadow or backdrop. No text, no logos, no brand labels, no watermark.",
+  "size": "864x1728",
+  "quality": "high",
+  "refs": [
+   "twin",
+   "src-g-black-knit-dress",
+   "src-g-slingbacks"
+  ]
+ },
+ "twin-knitset": {
+  "id": "twin-knitset",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 5358,
+   "input_tokens_details": {
+    "image_tokens": 5058,
+    "text_tokens": 300
+   },
+   "output_tokens": 1006,
+   "output_tokens_details": {
+    "image_tokens": 1006,
+    "text_tokens": 0
+   },
+   "total_tokens": 6364
+  },
+  "prompt": "Keep the person from the first image exactly: same face, hair, skin tone, body and proportions, same soft natural light and photo texture. Dress them in the garments shown in the other images, keeping each garment's colour, fabric, cut and details exactly. The sweater is worn loose over the trousers. Posed like a calm e-commerce catalogue model, relaxed and natural, never dramatic: shoulders relaxed and level, head level, a calm neutral expression with lips gently closed, arms hanging loosely with a small gap from the body, soft loose hands with fingers gently curved, hands kept clear of the garment's details, feet about hip-width apart, the camera straight on at waist height. Standing front-on with the weight settled on one leg and the other knee softly bent, arms relaxed at the sides, looking into the camera. Soft natural daylight, like a photo a friend takes near a window. True-to-life colours, unretouched natural skin with real texture and no airbrushing, normal phone-camera sharpness with a little noise, not HDR, not hyper-detailed. Whole body visible from head to toe. Cut out on a fully transparent background, with no floor, shadow or backdrop. No text, no logos, no brand labels, no watermark.",
+  "size": "864x1728",
+  "quality": "high",
+  "refs": [
+   "twin",
+   "src-g-taupe-sweater",
+   "src-g-grey-trousers",
+   "src-g-ballet-flats"
+  ]
+ },
  "twin-m-crewneck": {
   "id": "twin-m-crewneck",
   "model": "gpt-image-2.5-sunburst",
@@ -692,31 +743,57 @@
    "g-white-sneakers"
   ]
  },
- "twin-tee-trench": {
-  "id": "twin-tee-trench",
+ "twin-m-tee-cap": {
+  "id": "twin-m-tee-cap",
   "model": "gpt-image-2.5-sunburst",
   "usage": {
-   "input_tokens": 6571,
+   "input_tokens": 6570,
    "input_tokens_details": {
     "image_tokens": 6258,
-    "text_tokens": 313
+    "text_tokens": 312
    },
    "output_tokens": 1006,
    "output_tokens_details": {
     "image_tokens": 1006,
     "text_tokens": 0
    },
-   "total_tokens": 7577
+   "total_tokens": 7576
   },
-  "prompt": "Keep the person from the first image exactly: same face, hair, skin tone, body and proportions, same soft natural light and photo texture. Dress them in the garments shown in the other images, keeping each garment's colour, fabric, cut and details exactly. The trench coat is worn open. Posed like a calm e-commerce catalogue model, relaxed and natural, never dramatic: shoulders relaxed and level, head level, a calm neutral expression with lips gently closed, arms hanging loosely with a small gap from the body, soft loose hands with fingers gently curved, hands kept clear of the garment's details, feet about hip-width apart, the camera straight on at waist height. Standing front-on, one hand resting loosely in a pocket and the other arm relaxed at the side, weight settled on one leg, looking softly just past the camera. Soft natural daylight, like a photo a friend takes near a window. True-to-life colours, unretouched natural skin with real texture and no airbrushing, normal phone-camera sharpness with a little noise, not HDR, not hyper-detailed. Whole body visible from head to toe. Cut out on a fully transparent background, with no floor, shadow or backdrop. No text, no logos, no brand labels, no watermark.",
+  "prompt": "Keep the person from the first image exactly: same face, hair, skin tone, body and proportions, same soft natural light and photo texture. Dress them in the garments shown in the other images, keeping each garment's colour, fabric, cut and details exactly. The tee is tucked in; the cap faces forward. Posed like a calm e-commerce catalogue model, relaxed and natural, never dramatic: shoulders relaxed and level, head level, a calm neutral expression with lips gently closed, arms hanging loosely with a small gap from the body, soft loose hands with fingers gently curved, hands kept clear of the garment's details, feet about hip-width apart, the camera straight on at waist height. Standing front-on with the weight settled on one leg and the other knee softly bent, arms relaxed at the sides, looking into the camera. Soft natural daylight, like a photo a friend takes near a window. True-to-life colours, unretouched natural skin with real texture and no airbrushing, normal phone-camera sharpness with a little noise, not HDR, not hyper-detailed. Whole body visible from head to toe. Cut out on a fully transparent background, with no floor, shadow or backdrop. No text, no logos, no brand labels, no watermark.",
+  "size": "864x1728",
+  "quality": "high",
+  "refs": [
+   "twin-m",
+   "src-g-black-tee",
+   "src-g-black-wide-trousers",
+   "src-g-chelsea-boots",
+   "src-g-black-cap"
+  ]
+ },
+ "twin-office": {
+  "id": "twin-office",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 5357,
+   "input_tokens_details": {
+    "image_tokens": 5058,
+    "text_tokens": 299
+   },
+   "output_tokens": 1006,
+   "output_tokens_details": {
+    "image_tokens": 1006,
+    "text_tokens": 0
+   },
+   "total_tokens": 6363
+  },
+  "prompt": "Keep the person from the first image exactly: same face, hair, skin tone, body and proportions, same soft natural light and photo texture. Dress them in the garments shown in the other images, keeping each garment's colour, fabric, cut and details exactly. The top is tucked into the trousers. Posed like a calm e-commerce catalogue model, relaxed and natural, never dramatic: shoulders relaxed and level, head level, a calm neutral expression with lips gently closed, arms hanging loosely with a small gap from the body, soft loose hands with fingers gently curved, hands kept clear of the garment's details, feet about hip-width apart, the camera straight on at waist height. Standing front-on with the weight settled on one leg and the other knee softly bent, arms relaxed at the sides, looking into the camera. Soft natural daylight, like a photo a friend takes near a window. True-to-life colours, unretouched natural skin with real texture and no airbrushing, normal phone-camera sharpness with a little noise, not HDR, not hyper-detailed. Whole body visible from head to toe. Cut out on a fully transparent background, with no floor, shadow or backdrop. No text, no logos, no brand labels, no watermark.",
   "size": "864x1728",
   "quality": "high",
   "refs": [
    "twin",
-   "src-g-black-tee",
+   "src-g-cream-top",
    "src-g-pinstripe-trousers",
-   "src-g-chelsea-boots",
-   "src-g-trench"
+   "src-g-ballet-flats"
   ]
  },
  "twin-trench": {
@@ -906,6 +983,26 @@
   "size": "864x1728",
   "quality": "medium"
  },
+ "wall-m-preppy": {
+  "id": "wall-m-preppy",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 292,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 292
+   },
+   "output_tokens": 252,
+   "output_tokens_details": {
+    "image_tokens": 252,
+    "text_tokens": 0
+   },
+   "total_tokens": 544
+  },
+  "prompt": "Photo of an original, fictional adult (not resembling any real person or celebrity): a man in his early twenties, Nigerian, a low fade haircut, tall and slim with a long-legged fashion-model build. Preppy: a cream cable-knit sweater over a light-blue shirt collar, navy chinos, brown suede loafers. Posed like a calm e-commerce catalogue model, relaxed and natural, never dramatic: shoulders relaxed and level, head level, a calm neutral expression with lips gently closed, arms hanging loosely with a small gap from the body, soft loose hands with fingers gently curved, hands kept clear of the garment's details, feet about hip-width apart, the camera straight on at waist height. Standing front-on with the weight evenly on both feet, arms relaxed at the sides, looking into the camera. Full-length studio fashion photo in the style of a clean digital try-on render. Seamless powder blush (#ece0dc) studio backdrop with a soft gradient and a gentle floor shadow, soft diffused light. True-to-life colours, unretouched natural skin with real texture and no airbrushing, normal phone-camera sharpness with a little noise, not HDR, not hyper-detailed. The whole body shows from head to shoes, with generous space above the head and below the feet: the person takes about three quarters of the frame's height. No text, no logos, no brand labels, no watermark.",
+  "size": "864x1728",
+  "quality": "medium"
+ },
  "wall-m-skate": {
   "id": "wall-m-skate",
   "model": "gpt-image-2.5-sunburst",
@@ -943,6 +1040,66 @@
    "total_tokens": 551
   },
   "prompt": "Photo of an original, fictional adult (not resembling any real person or celebrity): a man in his mid-twenties, East African with dark skin, close-cropped hair, tall and slim with a long-legged fashion-model build. Classy: a relaxed charcoal double-breasted suit over a white t-shirt, black leather loafers. Posed like a calm e-commerce catalogue model, relaxed and natural, never dramatic: shoulders relaxed and level, head level, a calm neutral expression with lips gently closed, arms hanging loosely with a small gap from the body, soft loose hands with fingers gently curved, hands kept clear of the garment's details, feet about hip-width apart, the camera straight on at waist height. Standing front-on with the weight evenly on both feet, arms relaxed at the sides, looking into the camera. Full-length studio fashion photo in the style of a clean digital try-on render. Seamless warm stone (#dcd8d0) studio backdrop with a soft gradient and a gentle floor shadow, soft diffused light. True-to-life colours, unretouched natural skin with real texture and no airbrushing, normal phone-camera sharpness with a little noise, not HDR, not hyper-detailed. The whole body shows from head to shoes, with generous space above the head and below the feet: the person takes about three quarters of the frame's height. No text, no logos, no brand labels, no watermark.",
+  "size": "864x1728",
+  "quality": "medium"
+ },
+ "wall-m-varsity": {
+  "id": "wall-m-varsity",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 308,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 308
+   },
+   "output_tokens": 252,
+   "output_tokens_details": {
+    "image_tokens": 252,
+    "text_tokens": 0
+   },
+   "total_tokens": 560
+  },
+  "prompt": "Photo of an original, fictional adult (not resembling any real person or celebrity): a man in his early twenties, Chinese, short bleached-blond hair, tall and slim with a long-legged fashion-model build. Y2K streetwear: a green and cream varsity jacket with no lettering over a grey hoodie, baggy dark jeans, chunky white sneakers. Posed like a calm e-commerce catalogue model, relaxed and natural, never dramatic: shoulders relaxed and level, head level, a calm neutral expression with lips gently closed, arms hanging loosely with a small gap from the body, soft loose hands with fingers gently curved, hands kept clear of the garment's details, feet about hip-width apart, the camera straight on at waist height. Standing front-on with the weight settled on one leg and the other knee softly bent, arms relaxed at the sides, looking into the camera. Full-length studio fashion photo in the style of a clean digital try-on render. Seamless pale muted sage (#dfe3da) studio backdrop with a soft gradient and a gentle floor shadow, soft diffused light. True-to-life colours, unretouched natural skin with real texture and no airbrushing, normal phone-camera sharpness with a little noise, not HDR, not hyper-detailed. The whole body shows from head to shoes, with generous space above the head and below the feet: the person takes about three quarters of the frame's height. No text, no logos, no brand labels, no watermark.",
+  "size": "864x1728",
+  "quality": "medium"
+ },
+ "wall-m-workwear": {
+  "id": "wall-m-workwear",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 312,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 312
+   },
+   "output_tokens": 252,
+   "output_tokens_details": {
+    "image_tokens": 252,
+    "text_tokens": 0
+   },
+   "total_tokens": 564
+  },
+  "prompt": "Photo of an original, fictional adult (not resembling any real person or celebrity): a man in his early twenties, Indian, long dark hair tied back in a low bun, tall and slim with a long-legged fashion-model build. Workwear: a faded brown canvas chore jacket over a white tee, ecru carpenter trousers, brown leather work boots. Posed like a calm e-commerce catalogue model, relaxed and natural, never dramatic: shoulders relaxed and level, head level, a calm neutral expression with lips gently closed, arms hanging loosely with a small gap from the body, soft loose hands with fingers gently curved, hands kept clear of the garment's details, feet about hip-width apart, the camera straight on at waist height. Standing front-on, one hand resting loosely in a pocket and the other arm relaxed at the side, weight settled on one leg, looking softly just past the camera. Full-length studio fashion photo in the style of a clean digital try-on render. Seamless pale clay (#e5d6cc) studio backdrop with a soft gradient and a gentle floor shadow, soft diffused light. True-to-life colours, unretouched natural skin with real texture and no airbrushing, normal phone-camera sharpness with a little noise, not HDR, not hyper-detailed. The whole body shows from head to shoes, with generous space above the head and below the feet: the person takes about three quarters of the frame's height. No text, no logos, no brand labels, no watermark.",
+  "size": "864x1728",
+  "quality": "medium"
+ },
+ "wall-w-afro": {
+  "id": "wall-w-afro",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 310,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 310
+   },
+   "output_tokens": 252,
+   "output_tokens_details": {
+    "image_tokens": 252,
+    "text_tokens": 0
+   },
+   "total_tokens": 562
+  },
+  "prompt": "Photo of an original, fictional adult (not resembling any real person or celebrity): a woman in her early twenties, Ethiopian, a full natural afro, small gold studs, tall and slim with a long-legged fashion-model build. Streetwear: an oversized brown leather bomber jacket over a white tank, baggy light-wash jeans, chunky white sneakers. Posed like a calm e-commerce catalogue model, relaxed and natural, never dramatic: shoulders relaxed and level, head level, a calm neutral expression with lips gently closed, arms hanging loosely with a small gap from the body, soft loose hands with fingers gently curved, hands kept clear of the garment's details, feet about hip-width apart, the camera straight on at waist height. Standing front-on, one hand resting loosely in a pocket and the other arm relaxed at the side, weight settled on one leg, looking softly just past the camera. Full-length studio fashion photo in the style of a clean digital try-on render. Seamless light sand (#e6dccb) studio backdrop with a soft gradient and a gentle floor shadow, soft diffused light. True-to-life colours, unretouched natural skin with real texture and no airbrushing, normal phone-camera sharpness with a little noise, not HDR, not hyper-detailed. The whole body shows from head to shoes, with generous space above the head and below the feet: the person takes about three quarters of the frame's height. No text, no logos, no brand labels, no watermark.",
   "size": "864x1728",
   "quality": "medium"
  },
@@ -1026,6 +1183,26 @@
   "size": "864x1728",
   "quality": "medium"
  },
+ "wall-w-knitset": {
+  "id": "wall-w-knitset",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 305,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 305
+   },
+   "output_tokens": 252,
+   "output_tokens_details": {
+    "image_tokens": 252,
+    "text_tokens": 0
+   },
+   "total_tokens": 557
+  },
+  "prompt": "Photo of an original, fictional adult (not resembling any real person or celebrity): a woman in her mid-twenties, Filipina, shoulder-length black hair tucked behind her ears, tall and slim with a long-legged fashion-model build. Quiet luxury: a matching oat-beige fine-knit cardigan and wide knit trousers, tan leather mules. Posed like a calm e-commerce catalogue model, relaxed and natural, never dramatic: shoulders relaxed and level, head level, a calm neutral expression with lips gently closed, arms hanging loosely with a small gap from the body, soft loose hands with fingers gently curved, hands kept clear of the garment's details, feet about hip-width apart, the camera straight on at waist height. Standing at a very slight angle, both hands loosely together in front of the hips, feet close together, looking into the camera. Full-length studio fashion photo in the style of a clean digital try-on render. Seamless soft oat beige (#e8e1d6) studio backdrop with a soft gradient and a gentle floor shadow, soft diffused light. True-to-life colours, unretouched natural skin with real texture and no airbrushing, normal phone-camera sharpness with a little noise, not HDR, not hyper-detailed. The whole body shows from head to shoes, with generous space above the head and below the feet: the person takes about three quarters of the frame's height. No text, no logos, no brand labels, no watermark.",
+  "size": "864x1728",
+  "quality": "medium"
+ },
  "wall-w-linen": {
   "id": "wall-w-linen",
   "model": "gpt-image-2.5-sunburst",
@@ -1043,6 +1220,26 @@
    "total_tokens": 546
   },
   "prompt": "Photo of an original, fictional adult (not resembling any real person or celebrity): a woman in her mid-twenties, South Asian, long black hair in a low bun, tall and slim with a long-legged fashion-model build. Summer minimal: a black ribbed tank, wide ivory linen trousers, tan leather sandals. Posed like a calm e-commerce catalogue model, relaxed and natural, never dramatic: shoulders relaxed and level, head level, a calm neutral expression with lips gently closed, arms hanging loosely with a small gap from the body, soft loose hands with fingers gently curved, hands kept clear of the garment's details, feet about hip-width apart, the camera straight on at waist height. Standing front-on with the weight evenly on both feet, arms relaxed at the sides, looking into the camera. Full-length studio fashion photo in the style of a clean digital try-on render. Seamless light sand (#e6dccb) studio backdrop with a soft gradient and a gentle floor shadow, soft diffused light. True-to-life colours, unretouched natural skin with real texture and no airbrushing, normal phone-camera sharpness with a little noise, not HDR, not hyper-detailed. The whole body shows from head to shoes, with generous space above the head and below the feet: the person takes about three quarters of the frame's height. No text, no logos, no brand labels, no watermark.",
+  "size": "864x1728",
+  "quality": "medium"
+ },
+ "wall-w-pleats": {
+  "id": "wall-w-pleats",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 303,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 303
+   },
+   "output_tokens": 252,
+   "output_tokens_details": {
+    "image_tokens": 252,
+    "text_tokens": 0
+   },
+   "total_tokens": 555
+  },
+  "prompt": "Photo of an original, fictional adult (not resembling any real person or celebrity): a woman in her early twenties, Korean, long straight black hair with a fringe, tall and slim with a long-legged fashion-model build. Preppy: a white knit polo tucked into a pleated grey mini skirt, white socks, white leather sneakers. Posed like a calm e-commerce catalogue model, relaxed and natural, never dramatic: shoulders relaxed and level, head level, a calm neutral expression with lips gently closed, arms hanging loosely with a small gap from the body, soft loose hands with fingers gently curved, hands kept clear of the garment's details, feet about hip-width apart, the camera straight on at waist height. Standing front-on with the weight settled on one leg and the other knee softly bent, arms relaxed at the sides, looking into the camera. Full-length studio fashion photo in the style of a clean digital try-on render. Seamless dusty blue-grey (#dde2e6) studio backdrop with a soft gradient and a gentle floor shadow, soft diffused light. True-to-life colours, unretouched natural skin with real texture and no airbrushing, normal phone-camera sharpness with a little noise, not HDR, not hyper-detailed. The whole body shows from head to shoes, with generous space above the head and below the feet: the person takes about three quarters of the frame's height. No text, no logos, no brand labels, no watermark.",
   "size": "864x1728",
   "quality": "medium"
  },
@@ -1123,6 +1320,26 @@
    "total_tokens": 550
   },
   "prompt": "Photo of an original, fictional adult (not resembling any real person or celebrity): a woman in her early twenties, East Asian, sleek black bob, tall and slim with a long-legged fashion-model build. Minimal: a white boxy cotton tee, light-wash barrel jeans, black ballet flats. Posed like a calm e-commerce catalogue model, relaxed and natural, never dramatic: shoulders relaxed and level, head level, a calm neutral expression with lips gently closed, arms hanging loosely with a small gap from the body, soft loose hands with fingers gently curved, hands kept clear of the garment's details, feet about hip-width apart, the camera straight on at waist height. Standing front-on with the weight settled on one leg and the other knee softly bent, arms relaxed at the sides, looking into the camera. Full-length studio fashion photo in the style of a clean digital try-on render. Seamless warm light grey (#e9e8e5) studio backdrop with a soft gradient and a gentle floor shadow, soft diffused light. True-to-life colours, unretouched natural skin with real texture and no airbrushing, normal phone-camera sharpness with a little noise, not HDR, not hyper-detailed. The whole body shows from head to shoes, with generous space above the head and below the feet: the person takes about three quarters of the frame's height. No text, no logos, no brand labels, no watermark.",
+  "size": "864x1728",
+  "quality": "medium"
+ },
+ "wall-w-track": {
+  "id": "wall-w-track",
+  "model": "gpt-image-2.5-sunburst",
+  "usage": {
+   "input_tokens": 301,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 301
+   },
+   "output_tokens": 252,
+   "output_tokens_details": {
+    "image_tokens": 252,
+    "text_tokens": 0
+   },
+   "total_tokens": 553
+  },
+  "prompt": "Photo of an original, fictional adult (not resembling any real person or celebrity): a woman in her early twenties, Brazilian of mixed heritage, a long braided ponytail, tall and slim with a long-legged fashion-model build. Sporty: a fitted cream zip track top, wide black track trousers with a white side stripe, retro grey trainers. Posed like a calm e-commerce catalogue model, relaxed and natural, never dramatic: shoulders relaxed and level, head level, a calm neutral expression with lips gently closed, arms hanging loosely with a small gap from the body, soft loose hands with fingers gently curved, hands kept clear of the garment's details, feet about hip-width apart, the camera straight on at waist height. Standing front-on with the weight evenly on both feet, arms relaxed at the sides, looking into the camera. Full-length studio fashion photo in the style of a clean digital try-on render. Seamless cool pale concrete (#d8d9d9) studio backdrop with a soft gradient and a gentle floor shadow, soft diffused light. True-to-life colours, unretouched natural skin with real texture and no airbrushing, normal phone-camera sharpness with a little noise, not HDR, not hyper-detailed. The whole body shows from head to shoes, with generous space above the head and below the feet: the person takes about three quarters of the frame's height. No text, no logos, no brand labels, no watermark.",
   "size": "864x1728",
   "quality": "medium"
  },

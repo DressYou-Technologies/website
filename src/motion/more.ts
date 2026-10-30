@@ -122,38 +122,52 @@ function feed(tile: HTMLElement) {
     .to(chip, { opacity: 1, duration: .25 }, 3.65);
 }
 
-// Send the options, friends light up, votes land live, and a ring draws itself round the look they picked.
+// Each round: send the options, friends light up, votes land live, and a ring draws itself round the look they picked.
+// Then that person's looks slide away and the next person's slide in: a woman's round, then a man's, on a loop.
 function friends(card: HTMLElement) {
-  const win = one(card, '.fwin'), plane = one(card, '.fplane'), sent = one(card, '.fsent'), sendBtn = one(card, '.fsend');
-  const ring = one(card, '.fring'), burst = one(card, '.fburst'), picked = win.parentElement ?? win;
-  const people = all(card, '.ffr'), votes = all(card, '.fvote');
+  const plane = one(card, '.fplane'), sent = one(card, '.fsent'), sendBtn = one(card, '.fsend');
+  const people = all(card, '.ffr'), fans = all(card, '.ffan');
   const byInitial = new Map(people.map((p) => [p.textContent?.trim() ?? '', p]));
-  // Votes land in a fixed, lively order: the second, the first, then the rest.
-  const order = [1, 0, ...votes.keys()].filter((k, i, ks) => k < votes.length && ks.indexOf(k) === i).map((k) => votes[k]);
-  const loop = gsap.timeline({ repeat: -1, repeatDelay: 1.2, paused: true });
-  loop.set(votes, { opacity: 0, y: -12, scale: .4 }, 0)
-    .set(ring, { '--p': 0 }, 0)
-    .set(burst, { opacity: 0, scale: .2 }, 0)
-    .set(people, { opacity: .3, scale: .8 }, 0)
-    .set(sent, { opacity: 0 }, 0)
-    .to(sendBtn, { scale: .92, duration: .1, ease: 'power2.in' }, .7)
-    .to(sendBtn, { scale: 1, duration: .25, ease: 'back.out(3)' }, .8)
-    .fromTo(plane, { x: 0, y: 0, opacity: 1, rotation: 0 }, { x: () => people[0].offsetLeft - 10, y: -18, rotation: 18, opacity: 0, duration: .55, ease: 'power2.in' }, .8)
-    .to(people, { opacity: 1, scale: 1, duration: .3, stagger: .08, ease: 'back.out(2.5)' }, 1.2)
-    .to(sent, { opacity: 1, duration: .2 }, 1.5);
-  order.forEach((vote, i) => {
-    const t = 1.9 + i * .55;
-    const person = byInitial.get(vote.textContent?.trim() ?? '');
-    if (person) loop.to(person, { scale: 1.25, duration: .12, yoyo: true, repeat: 1 }, t);
-    loop.to(vote, { opacity: 1, y: 0, scale: 1, duration: .32, ease: 'back.out(2.6)' }, t + .1);
+  const loop = gsap.timeline({ repeat: -1, paused: true });
+  const looksOf = (fan: HTMLElement) => all(fan, '.fopt');
+  const reset = (fan: HTMLElement, t: number) => loop.set(all(fan, '.fvote'), { opacity: 0, y: -12, scale: .4 }, t)
+    .set(one(fan, '.fring'), { '--p': 0 }, t)
+    .set(one(fan, '.fburst'), { opacity: 0, scale: .2 }, t);
+  gsap.set(fans, { visibility: 'visible' });
+  fans.forEach((fan, i) => { reset(fan, 0); loop.set(looksOf(fan), { autoAlpha: i === 0 ? 1 : 0 }, 0); });
+
+  let t = 0;
+  fans.forEach((fan, i) => {
+    const votes = all(fan, '.fvote'), ring = one(fan, '.fring'), burst = one(fan, '.fburst');
+    const picked = one(fan, '.fwin').parentElement ?? one(fan, '.fwin');
+    // Votes land in a fixed, lively order: the second, the first, then the rest.
+    const order = [1, 0, ...votes.keys()].filter((k, j, ks) => k < votes.length && ks.indexOf(k) === j).map((k) => votes[k]);
+    loop.set(people, { opacity: .3, scale: .8 }, t)
+      .set(sent, { opacity: 0 }, t)
+      .to(sendBtn, { scale: .92, duration: .1, ease: 'power2.in' }, t + .7)
+      .to(sendBtn, { scale: 1, duration: .25, ease: 'back.out(3)' }, t + .8)
+      .fromTo(plane, { x: 0, y: 0, opacity: 1, rotation: 0 }, { x: () => people[0].offsetLeft - 10, y: -18, rotation: 18, opacity: 0, duration: .55, ease: 'power2.in', immediateRender: false }, t + .8)
+      .to(people, { opacity: 1, scale: 1, duration: .3, stagger: .08, ease: 'back.out(2.5)' }, t + 1.2)
+      .to(sent, { opacity: 1, duration: .2 }, t + 1.5);
+    order.forEach((vote, k) => {
+      const at = t + 1.9 + k * .55;
+      const person = byInitial.get(vote.textContent?.trim() ?? '');
+      if (person) loop.to(person, { scale: 1.25, duration: .12, yoyo: true, repeat: 1 }, at);
+      loop.to(vote, { opacity: 1, y: 0, scale: 1, duration: .32, ease: 'back.out(2.6)' }, at + .1);
+    });
+    const end = t + 1.9 + order.length * .55 + .2;
+    loop.to(ring, { '--p': 1, duration: .5, ease: 'power2.inOut' }, end)
+      // Cartoon pop: squash, stretch, settle, with three burst marks off the corner.
+      .to(picked, { keyframes: [{ scaleX: 1.06, scaleY: .94, duration: .1, ease: 'power2.out' }, { scaleX: .97, scaleY: 1.04, duration: .08 }, { scaleX: 1, scaleY: 1, duration: .12, ease: 'power1.out' }] }, end + .45)
+      .to(burst, { opacity: 1, scale: 1, duration: .28, ease: 'back.out(3)' }, end + .48)
+      .to(burst, { opacity: 0, duration: .3 }, end + 1.05);
+    // Hand over: this person's looks slide away, the next person's slide in, and this set clears while it is hidden.
+    const swap = end + 2.4, next = fans[(i + 1) % fans.length];
+    loop.to(looksOf(fan), { autoAlpha: 0, y: -16, filter: 'blur(6px)', duration: .45, stagger: .06, ease: 'power2.in' }, swap)
+      .fromTo(looksOf(next), { autoAlpha: 0, y: 18, filter: 'blur(6px)' }, { autoAlpha: 1, y: 0, filter: 'blur(0px)', duration: .6, stagger: .08, ease: 'power3.out', immediateRender: false, clearProps: 'filter' }, swap + .35);
+    reset(fan, swap + .7);
+    t = swap + 1.2;
   });
-  const end = 1.9 + order.length * .55 + .2;
-  loop.to(ring, { '--p': 1, duration: .5, ease: 'power2.inOut' }, end)
-    // Cartoon pop: squash, stretch, settle, with three burst marks off the corner.
-    .to(picked, { keyframes: [{ scaleX: 1.06, scaleY: .94, duration: .1, ease: 'power2.out' }, { scaleX: .97, scaleY: 1.04, duration: .08 }, { scaleX: 1, scaleY: 1, duration: .12, ease: 'power1.out' }] }, end + .45)
-    .to(burst, { opacity: 1, scale: 1, duration: .28, ease: 'back.out(3)' }, end + .48)
-    .to(burst, { opacity: 0, duration: .3 }, end + 1.05)
-    .to({}, { duration: 1.2 });
   ScrollTrigger.create({ trigger: card, start: 'top 85%', end: 'bottom 10%', onToggle: (self) => (self.isActive ? loop.play() : loop.pause()) });
 }
 

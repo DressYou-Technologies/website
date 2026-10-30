@@ -8,10 +8,9 @@ const GROUPS = ['people', 'feed', 'garments'];
 const MODEL = 'gpt-image-2.5-sunburst';
 const WALL_COLUMNS = 9;
 const WALL_ROWS = 3;
-const WALL_MIN_REPEAT_GAP = 3;
-// Founder, 2026-10-30: the hero shows studio renders of 20 people, as many women as men, and men and women share
-// the rest of the site.
-const WALL_PEOPLE = 20;
+// Founder, 2026-10-30: the hero shows studio renders of 27 different people, women and men within one of each other,
+// and men and women share the rest of the site.
+const WALL_PEOPLE = 27;
 const BALANCE_SLACK = 1;
 const WEBP_ALPHA_FLAG = 0x10; // VP8X header flag: the image carries an alpha channel
 
@@ -44,17 +43,10 @@ test('every master has a manifest entry with its model', () => {
   for (const id of masters.keys()) assert.equal(manifest[id]?.model, MODEL, id);
 });
 
-test('the wall is 9 columns of 3 with no repeat close by', () => {
+test('the wall is 9 columns of 3 different people, none repeated', () => {
   assert.equal(site.WALL.length, WALL_COLUMNS);
-  const seen = new Map();
-  site.WALL.forEach((column, c) => {
-    assert.equal(column.length, WALL_ROWS);
-    assert.equal(new Set(column).size, WALL_ROWS, `column ${c} repeats an image`);
-    for (const id of column) {
-      if (seen.has(id)) assert.ok(c - seen.get(id) >= WALL_MIN_REPEAT_GAP, `${id} repeats ${c - seen.get(id)} columns apart`);
-      seen.set(id, c);
-    }
-  });
+  const seen = new Set(site.WALL.flat());
+  for (const column of site.WALL) assert.equal(column.length, WALL_ROWS);
   const wallPeople = [...masters.keys()].filter((id) => id.startsWith('wall-'));
   assert.equal(wallPeople.length, WALL_PEOPLE);
   for (const id of wallPeople) assert.ok(seen.has(id), `${id} is not on the wall`);
@@ -69,15 +61,16 @@ test('men and women share the feed and the try-ons', () => {
   const posts = site.FEED_TRACKS.flat().map((post) => post.image);
   const men = posts.filter((id) => id.startsWith('feed-m-')).length;
   assert.ok(Math.abs(men - (posts.length - men)) <= BALANCE_SLACK, `${men} of ${posts.length} posts are men`);
-  const renders = [site.HOW.shop.render, site.HOW.wardrobe.render, site.HOW.feed.render, ...site.OUTFITS.map((o) => o.render), ...site.FRIEND_LOOKS.map((l) => l.image)];
+  const renders = [site.HOW.shop.render, site.HOW.wardrobe.render, site.HOW.feed.render, ...site.OUTFITS.map((o) => o.render), ...site.FRIEND_SETS.flat().map((l) => l.image)];
   const male = renders.filter((id) => id.startsWith('twin-m-')).length;
   assert.ok(male > 0 && Math.abs(male - (renders.length - male)) <= BALANCE_SLACK, `${male} of ${renders.length} try-ons are the male twin`);
 });
 
-test('the wall is studio renders of its 20 people, as many women as men', () => {
+test('the wall is studio renders, as many women as men within one', () => {
   for (const id of site.WALL.flat()) assert.match(id, /^wall-[wm]-/, `${id} is not a wall render`);
+  assert.equal(new Set(site.WALL.flat()).size, WALL_PEOPLE, 'a person appears twice');
   const women = [...masters.keys()].filter((id) => id.startsWith('wall-w-')).length;
-  assert.equal(women, WALL_PEOPLE / 2);
+  assert.ok(Math.abs(women - (WALL_PEOPLE - women)) <= BALANCE_SLACK, `${women} of ${WALL_PEOPLE} are women`);
 });
 
 test('the twin, its try-ons and every garment are transparent cutouts', async () => {
@@ -98,4 +91,11 @@ test("the feed story's render wears the post's look", () => {
   assert.equal(site.HOW.feed.post.image, 'feed-w-trench');
   assert.equal(site.HOW.feed.render, 'twin-cap-trench');
   assert.deepEqual(site.LOOK_PIECES, ['g-black-cap', 'g-trench', 'g-white-tank', 'g-barrel-jeans', 'g-brown-boots']);
+});
+
+test('the friends card shows a woman\'s looks first, then a man\'s', () => {
+  const [first, second] = site.FRIEND_SETS;
+  assert.equal(site.FRIEND_SETS.length, 2);
+  for (const look of first) assert.match(look.image, /^twin-(?!m-)/, look.image);
+  for (const look of second) assert.match(look.image, /^twin-m-/, look.image);
 });
