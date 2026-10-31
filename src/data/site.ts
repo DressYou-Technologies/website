@@ -100,13 +100,16 @@ export const FRIENDS: Friend[] = [
   { name: 'Maya', photo: 'friend-cat' },
   { name: 'Noé', photo: 'friend-plush' },
   { name: 'Sami', photo: 'friend-dog' },
+  { name: 'Lou', photo: 'friend-monkey' },
+  { name: 'Jun', photo: 'friend-pilot' },
+  { name: 'Inès', photo: 'friend-corgi' },
 ];
-// One round of asking: from several looks the person picks two and sends them, and each friend votes for one of the
-// two (votes[k] is friend k's choice: 0 or 1). A woman's round, then a man's.
-export interface FriendRound { looks: ImageId[]; picked: [number, number]; votes: (0 | 1)[] }
+// One round of asking: from several looks the person picks two, chooses three friends to ask (indexes into FRIENDS),
+// and each of them votes for one of the two (votes[k] is asked[k]'s choice: 0 or 1). A woman's round, then a man's.
+export interface FriendRound { looks: ImageId[]; picked: [number, number]; asked: number[]; votes: (0 | 1)[] }
 export const FRIEND_ROUNDS: FriendRound[] = [
-  { looks: ['render-w-turtleneck', 'render-w-slipdress', 'render-w-knit', 'render-w-shirt'], picked: [0, 1], votes: [1, 1, 0] },
-  { looks: ['render-m-polo', 'render-m-oxford', 'render-m-crewneck', 'render-m-coat'], picked: [1, 2], votes: [0, 1, 0] },
+  { looks: ['render-w-turtleneck', 'render-w-slipdress', 'render-w-knit', 'render-w-shirt'], picked: [0, 1], asked: [0, 3, 4], votes: [1, 1, 0] },
+  { looks: ['render-m-polo', 'render-m-oxford', 'render-m-crewneck', 'render-m-coat'], picked: [1, 2], asked: [1, 2, 5], votes: [0, 1, 0] },
 ];
 
 // The stylist's answers show these pieces; its words are copy (src/i18n/copy.ts, stylist).

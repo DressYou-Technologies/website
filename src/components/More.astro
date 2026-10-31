@@ -79,10 +79,17 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
       <article class="card friend">
         <div class="ambient" style={ambientFriend} aria-hidden="true"></div><div class="shade" aria-hidden="true"></div>
         <div class="ftitle"><h3>{t.friend.title}</h3><p>{t.friend.text}</p></div>
-        <ul class="fwho" aria-hidden="true">{FRIENDS.map((friend, k) => (
-          <li class="fw" data-friend={k}><Image class="fface" src={image(friend.photo)} width={28} height={28} densities={[1, 2]} alt="" loading="lazy" /><span class="fname">{friend.name}</span><span class="fwait">{t.friend.voting}</span><span class="fdone"><svg viewBox="0 0 24 24" width="12" height="12"><path d="M20 6 9 17l-5-5"></path></svg></span></li>
-        ))}</ul>
-        <span class="fsend" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16"><path d={send}></path><path d="m21.854 2.147-10.94 10.939"></path></svg>{t.friend.ask}<span class="ftap dark"></span></span>
+        <div class="fslot" aria-hidden="true">
+          <ul class="fpicker">{FRIENDS.map((friend, k) => (
+            <li class="fp" data-friend={k}><span class="fpface"><Image src={image(friend.photo)} width={40} height={40} densities={[1, 2]} alt="" loading="lazy" /><span class="fpcheck"><svg viewBox="0 0 24 24" width="12" height="12"><path d="M20 6 9 17l-5-5"></path></svg></span><span class="ftap"></span></span><span class="fpname">{friend.name}</span></li>
+          ))}</ul>
+          {FRIEND_ROUNDS.map((round, r) => (
+            <ul class:list={['fwho', { first: r === 0 }]} data-round={r}>{round.asked.map((f) => (
+              <li class="fw" data-friend={f}><Image class="fface" src={image(FRIENDS[f].photo)} width={28} height={28} densities={[1, 2]} alt="" loading="lazy" /><span class="fname">{FRIENDS[f].name}</span><span class="fwait">{t.friend.voting}</span><span class="fdone"><svg viewBox="0 0 24 24" width="12" height="12"><path d="M20 6 9 17l-5-5"></path></svg></span></li>
+            ))}</ul>
+          ))}
+          <span class="fsend"><svg viewBox="0 0 24 24" width="16" height="16"><path d={send}></path><path d="m21.854 2.147-10.94 10.939"></path></svg>{t.friend.ask}<span class="ftap dark"></span></span>
+        </div>
         <!-- Each round: pick two of the looks, send them, the friends vote, their pick clicks into place. -->
         <div class="fstage" aria-hidden="true">{FRIEND_ROUNDS.map((round, r) => (
           <div class:list={['fround', { first: r === 0 }]}>
@@ -93,7 +100,7 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
               <div class="fopt">
                 <div class:list={['fimg', { fwin: side === winners[r] }]}><Picture src={image(round.looks[k])} formats={['avif', 'webp']} widths={[320, 480]} sizes="190px" alt="" loading="lazy" /></div>
                 {side === winners[r] && <><span class="fpick"></span><span class="fcheck"><svg viewBox="0 0 24 24" width="12" height="12"><path d="M20 6 9 17l-5-5"></path></svg></span></>}
-                <span class="votes">{FRIENDS.map((friend, f) => round.votes[f] === side && <Image class="fvote" data-friend={f} src={image(friend.photo)} width={26} height={26} densities={[1, 2]} alt="" loading="lazy" />)}</span>
+                <span class="votes">{round.asked.map((f, k) => round.votes[k] === side && <Image class="fvote" data-friend={f} src={image(FRIENDS[f].photo)} width={26} height={26} densities={[1, 2]} alt="" loading="lazy" />)}</span>
               </div>
             ))}</div>
           </div>
@@ -120,7 +127,7 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
   .card::after { content: ''; position: absolute; inset: 0; z-index: 5; border-radius: inherit; pointer-events: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,.13), inset 0 1px 0 rgba(255,255,255,.12); }
   .ambient { position: absolute; inset: -12%; background-size: cover; background-position: center; filter: blur(28px) saturate(1.2); opacity: .55; pointer-events: none; }
   .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,11,.25), rgba(10,10,11,.7) 62%, rgba(10,10,11,.9)); pointer-events: none; }
-  .wbuild, .caption, .ftitle, .fwho, .fsend, .fstage { position: relative; }
+  .wbuild, .caption, .ftitle, .fslot, .fsend, .fstage { position: relative; }
   .wardrobe { position: relative; flex: 1.35 1 420px; min-width: 0; display: flex; flex-direction: column; overflow: hidden; border-radius: 28px; }
   .wbuild { position: relative; flex: 1; min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); align-content: center; gap: 6px; padding: clamp(24px, 4vw, 40px) 0 8px; }
   .wrows { display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,.35), #000 18%, #000 70%, rgba(0,0,0,.2)); mask-image: linear-gradient(180deg, rgba(0,0,0,.35), #000 18%, #000 70%, rgba(0,0,0,.2)); }
@@ -187,11 +194,20 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
   .feedtile p { position: relative; max-width: 34ch; color: #e6e6e6; }
 
   /* Ask a friend: the title, the friends and the send button on the left; the round plays on the right. */
-  .friend { position: relative; overflow: hidden; display: grid; grid-template-columns: minmax(0, 190px) minmax(0, 1fr); grid-template-rows: auto 1fr auto; grid-template-areas: "title stage" "who stage" "send stage"; gap: 14px 24px; padding: 24px; border-radius: 28px; }
+  .friend { position: relative; overflow: hidden; display: grid; grid-template-columns: minmax(0, 190px) minmax(0, 1fr); grid-template-rows: auto 1fr; grid-template-areas: "title stage" "slot stage"; gap: 14px 24px; padding: 24px; border-radius: 28px; }
   .ftitle { grid-area: title; }
   .ftitle h3 { max-width: 12ch; font-size: clamp(1.5rem, 2.2vw, 2rem); }
   .ftitle p { color: #a1a1a1; font-size: .9375rem; }
-  .fwho { grid-area: who; align-self: center; display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+  /* The slot under the title: the ask button, then the friends to pick from, then the friends asked as they vote. */
+  .fslot { grid-area: slot; display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 12px; min-height: 150px; }
+  .fwho { grid-area: 1 / 1; align-self: center; display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+  .fwho:not(.first) { visibility: hidden; }
+  .fpicker { grid-area: 1 / 1 / -1 / -1; align-self: center; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px 8px; margin: 0; padding: 0; list-style: none; visibility: hidden; }
+  .fp { display: grid; justify-items: center; gap: 5px; color: #cfcfcf; font-size: .75rem; }
+  .fpface { position: relative; width: 40px; height: 40px; }
+  .fpface :global(img) { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 2px #151517, 0 0 0 3px rgba(255,255,255,.16); }
+  .fpcheck { position: absolute; right: -4px; bottom: -3px; display: grid; place-items: center; width: 17px; height: 17px; border-radius: 50%; background: #f4f4f2; color: #0a0a0a; box-shadow: 0 0 0 2px #151517; opacity: 0; }
+  .fpcheck svg { width: 10px; height: 10px; stroke-width: 3; }
   .fw { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; align-items: center; gap: 10px; color: #e6e6e6; font-size: .875rem; }
   .fw :global(img.fface) { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 2px #151517, 0 0 0 3px rgba(255,255,255,.16); }
   /* Without motion every friend has voted; while it plays, "voting…" shows until their vote lands. */
@@ -199,7 +215,7 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
   .fwait { color: #8a8a8a; font-size: .75rem; opacity: 0; }
   .fdone { display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: rgba(255,255,255,.14); color: #f4f4f2; }
   .fdone svg { width: 11px; height: 11px; stroke-width: 3; }
-  .fsend { grid-area: send; justify-self: start; display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px 0 14px; border-radius: 999px; color: #0a0a0a; font-size: .875rem; font-weight: 700; white-space: nowrap; }
+  .fsend { grid-area: 2 / 1; justify-self: start; display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px 0 14px; border-radius: 999px; color: #0a0a0a; font-size: .875rem; font-weight: 700; white-space: nowrap; }
   /* The stage measures itself, so the looks size from its height or its width, whichever is shorter. */
   .fstage { grid-area: stage; min-height: 220px; container-type: size; }
   /* Room under the looks for the voters' photos. */
@@ -223,7 +239,8 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
   .votes { position: absolute; left: 50%; bottom: -13px; z-index: 3; display: flex; padding-left: 7px; transform: translateX(-50%); }
   .votes :global(img.fvote) { width: 26px; height: 26px; margin-left: -7px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 2px #151517; }
   @media (max-width: 599.98px) {
-    .friend { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto 300px auto auto; grid-template-areas: "title" "stage" "who" "send"; }
+    .friend { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto 300px auto; grid-template-areas: "title" "stage" "slot"; }
+    .fslot { min-height: 170px; }
   }
   /* The friends' pick: a hairline round the look and a small check, set with one press, like selecting a photo. */
   .fpick { position: absolute; inset: -5px; z-index: 2; border-radius: 23px; box-shadow: 0 0 0 1.5px #f4f4f2; pointer-events: none; }

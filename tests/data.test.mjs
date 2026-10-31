@@ -105,14 +105,14 @@ test('every shop page in the share story shows a flat garment', () => {
 });
 
 test('each friend has a name and a photo', async () => {
-  assert.equal(site.FRIENDS.length, 3);
+  assert.equal(site.FRIENDS.length, 6);
   for (const friend of site.FRIENDS) {
     assert.ok(friend.name.length > 1, friend.name);
     await readFile(new URL(`friends/${friend.photo}.jpg`, ASSETS)).catch(() => assert.fail(`${friend.photo} has no photo`));
   }
 });
 
-test('each round offers several looks, the person picks two, and every friend votes for one: a woman\'s round, then a man\'s', () => {
+test('each round offers several looks, the person picks two and asks three friends, who each vote for one: a woman\'s round, then a man\'s', () => {
   const [first, second] = site.FRIEND_ROUNDS;
   assert.equal(site.FRIEND_ROUNDS.length, 2);
   for (const id of first.looks) assert.match(id, /^render-w-/, id);
@@ -122,7 +122,10 @@ test('each round offers several looks, the person picks two, and every friend vo
     assert.equal(new Set(round.looks).size, round.looks.length);
     const [a, b] = round.picked;
     assert.ok(a !== b && round.looks[a] && round.looks[b], 'two different looks are picked');
-    assert.equal(round.votes.length, site.FRIENDS.length, 'every friend votes');
+    assert.equal(round.asked.length, 3, 'three friends are asked');
+    assert.equal(new Set(round.asked).size, 3, 'three different friends');
+    for (const f of round.asked) assert.ok(site.FRIENDS[f], `friend ${f} exists`);
+    assert.equal(round.votes.length, round.asked.length, 'every friend asked votes');
     for (const vote of round.votes) assert.ok(vote === 0 || vote === 1, 'a vote is for one of the two');
     const forFirst = round.votes.filter((v) => v === 0).length;
     assert.notEqual(forFirst * 2, round.votes.length, 'the friends reach a majority');

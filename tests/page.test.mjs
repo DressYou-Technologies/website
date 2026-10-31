@@ -142,21 +142,25 @@ test('without a store link the app dialog asks for an email to notify', () => {
   }
 });
 
-test('the friends card names each friend with a photo, and each round shows its looks, the two picked and the friends\' pick', async () => {
+test('the friends card asks with its button, offers every friend, and each round shows its looks, the friends asked and their pick', async () => {
   const { FRIENDS, FRIEND_ROUNDS } = await import('../src/data/site.ts');
+  const names = (html, row) => [...html.matchAll(new RegExp(`<li class="${row}"[\\s\\S]*?<\\/li>`, 'g'))].map((m) => m[0]);
   for (const lang of LANGS) {
     const card = home[lang].match(/<article class="card friend[\s\S]*?<\/article>/)[0];
-    const rows = [...card.matchAll(/<li class="fw"[\s\S]*?<\/li>/g)].map((m) => m[0]);
-    assert.deepEqual(rows.map((row) => decode(text(row.replace(/<span class="fwait[\s\S]*?<\/span>/, '')))), FRIENDS.map((f) => f.name), `${lang}: one row per friend`);
-    for (const row of rows) assert.match(row, /<img[^>]*src="[^"]*friend-/, `${lang}: each friend has a photo`);
+    assert.ok(decode(text(card.match(/<span class="fsend[\s\S]*?<\/span>/)?.[0] ?? '')).includes(COPY[lang].more.friend.ask), `${lang}: the ask button`);
+    const offered = names(card.match(/<ul class="fpicker[\s\S]*?<\/ul>/)?.[0] ?? '', 'fp');
+    assert.deepEqual(offered.map((row) => decode(text(row))), FRIENDS.map((f) => f.name), `${lang}: every friend can be picked`);
+    for (const row of offered) assert.match(row, /<img[^>]*src="[^"]*friend-/, `${lang}: each friend has a photo`);
     const rounds = card.split('class="fround').slice(1);
     assert.equal(rounds.length, FRIEND_ROUNDS.length, lang);
-    rounds.forEach((round, r) => {
-      const { looks, picked, votes } = FRIEND_ROUNDS[r];
+    FRIEND_ROUNDS.forEach(({ looks, picked, asked, votes }, r) => {
+      const who = card.match(new RegExp(`<ul class="fwho[^"]*"[^>]*data-round="${r}"[\\s\\S]*?<\\/ul>`))?.[0] ?? '';
+      assert.deepEqual(names(who, 'fw').map((row) => decode(text(row.replace(/<span class="fwait[\s\S]*?<\/span>/, '')))), asked.map((f) => FRIENDS[f].name), `${lang} round ${r}: the friends asked`);
+      const round = rounds[r];
       assert.equal((round.match(/class="fthumb/g) ?? []).length, looks.length, `${lang} round ${r}: every look to pick from`);
-      assert.equal((round.match(/class="fopt/g) ?? []).length, 2, `${lang} round ${r}: the two picked`);
-      const winner = votes.filter((v) => v === 1).length * 2 > votes.length ? 1 : 0;
       const opts = round.split('class="fopt').slice(1);
+      assert.equal(opts.length, 2, `${lang} round ${r}: the two picked`);
+      const winner = votes.filter((v) => v === 1).length * 2 > votes.length ? 1 : 0;
       assert.match(opts[winner], /class="fimg fwin/, `${lang} round ${r}: the friends' pick`);
       assert.doesNotMatch(opts[1 - winner], /fwin/, `${lang} round ${r}: only one pick`);
       assert.ok(opts[winner].includes(`/${looks[picked[winner]]}.`), `${lang} round ${r}: the pick shows its look`);

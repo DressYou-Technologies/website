@@ -42,10 +42,11 @@ export const stylist: Section = (root, wide) => {
   gsap.set(all(sec, '.ck-tick'), { scale: .5, opacity: 0 });
   // Show the group's end, unless that would push its question under the fade: then show the question.
   const scrollTo = (i: number) => Math.max(0, Math.min(groups[i].offsetTop - FADE_PX, groups[i].offsetTop + groups[i].offsetHeight - view.offsetHeight));
-  // Once the answer arrives, show the group's end, unless that hides the checks: then start from the checks.
+  // Once the answer arrives (the checks have been read by then), show the group's end; on a short screen where it
+  // cannot all fit, start from the answer so the answer and what it proposes are whole.
   const settle = (i: number) => {
-    const g = groups[i], answer = one(g, '.sa'), checks = one(answer, '.sck');
-    return Math.max(0, Math.min(answer.offsetTop + checks.offsetTop - FADE_PX, g.offsetTop + g.offsetHeight - view.offsetHeight));
+    const g = groups[i], answer = one(g, '.sa'), first = one(answer, ':scope > .sin');
+    return Math.max(0, Math.min(answer.offsetTop + first.offsetTop - FADE_PX, g.offsetTop + g.offsetHeight - view.offsetHeight));
   };
   const spans = groups.map((g, i) => ({ q: g.dataset.q ?? '', a: i * STEP + .08, b: i * STEP + .48, s: i * STEP + .54 }));
 
