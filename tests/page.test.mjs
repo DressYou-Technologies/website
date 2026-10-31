@@ -110,8 +110,12 @@ test('every image states its size and alt', async () => {
   }
 });
 
-// Tags out, then any stray angle bracket a malformed tag could leave.
-const text = (s) => s.replace(/<[^>]+>/g, '').replace(/[<>]/g, '').replace(/\s+/g, ' ').trim();
+// Tags out, repeated until none is left, so a tag hidden inside another cannot survive.
+const text = (s) => {
+  let out = s, previous;
+  do { previous = out; out = out.replace(/<[^>]*>/g, ''); } while (out !== previous);
+  return out.replace(/\s+/g, ' ').trim();
+};
 
 test('a null store link opens a dialog instead of linking, in each language', async () => {
   const { LINKS } = await import('../src/data/site.ts');
