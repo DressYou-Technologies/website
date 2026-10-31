@@ -20,7 +20,7 @@ const columns = cylinder(WALL.length);
         {WALL.map((tiles, i) => (
           <div class="col" style={`--x:${columns[i].x}; --z:${columns[i].z}; --ry:${columns[i].rotateY}deg; --o:${columns[i].opacity.toFixed(2)}`}>
             <div class="lift"><div class="track">
-              {tiles.map((id) => <Picture src={image(id)} formats={['avif', 'webp']} widths={[220, 320]} sizes="clamp(110px, 10vw, 160px)" alt="" loading="eager" decoding="async" />)}
+              {tiles.map((id) => <Picture src={image(id)} formats={['avif', 'webp']} widths={[220, 320, 440]} sizes="clamp(132px, 12vw, 196px)" alt="" loading="eager" decoding="async" />)}
             </div></div>
           </div>
         ))}

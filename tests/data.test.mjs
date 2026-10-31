@@ -61,7 +61,7 @@ test('men and women share the feed and the try-ons', () => {
   const posts = site.FEED_TRACKS.flat().map((post) => post.image);
   const men = posts.filter((id) => id.startsWith('feed-m-')).length;
   assert.ok(Math.abs(men - (posts.length - men)) <= BALANCE_SLACK, `${men} of ${posts.length} posts are men`);
-  const renders = [site.HOW.shop.render, site.HOW.wardrobe.render, site.HOW.feed.render, ...site.OUTFITS.map((o) => o.render), ...site.FRIEND_SETS.flat().map((l) => l.image)];
+  const renders = [site.HOW.shop.render, site.HOW.wardrobe.render, site.HOW.feed.render, ...site.OUTFITS.map((o) => o.render), ...site.FRIEND_ROUNDS.flatMap((round) => round.looks)];
   const male = renders.filter((id) => /^(twin|render)-m-/.test(id)).length;
   assert.ok(male > 0 && Math.abs(male - (renders.length - male)) <= BALANCE_SLACK, `${male} of ${renders.length} try-ons are the male twin`);
 });
@@ -94,7 +94,7 @@ test("the feed story's render wears the post's look", () => {
 });
 
 test("every try-on is a studio photo in the hero's recipe, not a cutout", () => {
-  for (const id of [site.HOW.shop.render, site.HOW.wardrobe.render, site.HOW.feed.render, ...site.OUTFITS.map((o) => o.render), ...site.FRIEND_SETS.flat().map((l) => l.image)]) {
+  for (const id of [site.HOW.shop.render, site.HOW.wardrobe.render, site.HOW.feed.render, ...site.OUTFITS.map((o) => o.render), ...site.FRIEND_ROUNDS.flatMap((round) => round.looks)]) {
     assert.match(id, /^render-[wm]-/, id);
     assert.equal(masters.get(id), 'people', id);
   }
@@ -104,13 +104,27 @@ test('every shop page in the share story shows a flat garment', () => {
   for (const page of site.HOW.shop.pages) assert.match(page.image, /^g-/, page.domain);
 });
 
-test('a look in the friends card carries no label, only its votes', () => {
-  for (const look of site.FRIEND_SETS.flat()) assert.deepEqual(Object.keys(look).sort(), ['image', 'order', 'votes']);
+test('each friend has a name and a photo', async () => {
+  assert.equal(site.FRIENDS.length, 3);
+  for (const friend of site.FRIENDS) {
+    assert.ok(friend.name.length > 1, friend.name);
+    await readFile(new URL(`friends/${friend.photo}.jpg`, ASSETS)).catch(() => assert.fail(`${friend.photo} has no photo`));
+  }
 });
 
-test('the friends card shows a woman\'s looks first, then a man\'s', () => {
-  const [first, second] = site.FRIEND_SETS;
-  assert.equal(site.FRIEND_SETS.length, 2);
-  for (const look of first) assert.match(look.image, /^render-w-/, look.image);
-  for (const look of second) assert.match(look.image, /^render-m-/, look.image);
+test('each round offers several looks, the person picks two, and every friend votes for one: a woman\'s round, then a man\'s', () => {
+  const [first, second] = site.FRIEND_ROUNDS;
+  assert.equal(site.FRIEND_ROUNDS.length, 2);
+  for (const id of first.looks) assert.match(id, /^render-w-/, id);
+  for (const id of second.looks) assert.match(id, /^render-m-/, id);
+  for (const round of site.FRIEND_ROUNDS) {
+    assert.ok(round.looks.length >= 3, 'more looks than the two picked');
+    assert.equal(new Set(round.looks).size, round.looks.length);
+    const [a, b] = round.picked;
+    assert.ok(a !== b && round.looks[a] && round.looks[b], 'two different looks are picked');
+    assert.equal(round.votes.length, site.FRIENDS.length, 'every friend votes');
+    for (const vote of round.votes) assert.ok(vote === 0 || vote === 1, 'a vote is for one of the two');
+    const forFirst = round.votes.filter((v) => v === 0).length;
+    assert.notEqual(forFirst * 2, round.votes.length, 'the friends reach a majority');
+  }
 });

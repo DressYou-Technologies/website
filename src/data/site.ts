@@ -94,21 +94,19 @@ export const FEED_TRACKS: [Post[], Post[]] = [
 // "In this look" over the feed tile: naya's post.
 export const LOOK_PIECES: ImageId[] = ['g-black-cap', 'g-trench', 'g-white-tank', 'g-barrel-jeans', 'g-brown-boots'];
 
-// Friends by initial; each look lists who voted for it. The fan shows the looks in `order`.
-export const FRIENDS = ['M', 'S', 'N', 'J'];
-export interface FriendLook { image: ImageId; order: number; votes: string[] }
-// Two rounds of asking: a woman's three looks, then a man's. The friends' pick in each is the look with the most votes.
-export const FRIEND_SETS: FriendLook[][] = [
-  [
-    { image: 'render-w-turtleneck', order: 1, votes: ['S'] },
-    { image: 'render-w-knit', order: 3, votes: [] },
-    { image: 'render-w-slipdress', order: 2, votes: ['M', 'N', 'J'] },
-  ],
-  [
-    { image: 'render-m-polo', order: 1, votes: ['M'] },
-    { image: 'render-m-crewneck', order: 3, votes: [] },
-    { image: 'render-m-oxford', order: 2, votes: ['S', 'N', 'J'] },
-  ],
+// The friends asked in the "Ask a friend" card: a name and a profile photo (src/assets/friends, founder's pictures, 2026-10-31).
+export interface Friend { name: string; photo: ImageId }
+export const FRIENDS: Friend[] = [
+  { name: 'Maya', photo: 'friend-cat' },
+  { name: 'Noé', photo: 'friend-plush' },
+  { name: 'Sami', photo: 'friend-dog' },
+];
+// One round of asking: from several looks the person picks two and sends them, and each friend votes for one of the
+// two (votes[k] is friend k's choice: 0 or 1). A woman's round, then a man's.
+export interface FriendRound { looks: ImageId[]; picked: [number, number]; votes: (0 | 1)[] }
+export const FRIEND_ROUNDS: FriendRound[] = [
+  { looks: ['render-w-turtleneck', 'render-w-slipdress', 'render-w-knit', 'render-w-shirt'], picked: [0, 1], votes: [1, 1, 0] },
+  { looks: ['render-m-polo', 'render-m-oxford', 'render-m-crewneck', 'render-m-coat'], picked: [1, 2], votes: [0, 1, 0] },
 ];
 
 // The stylist's answers show these pieces; its words are copy (src/i18n/copy.ts, stylist).

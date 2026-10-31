@@ -58,7 +58,7 @@ const en = {
     title: 'More than a try-on.',
     wardrobe: { lines: ['Fill your wardrobe.', 'Build outfits.'], text: 'Add your clothes once. See every outfit on your twin.' },
     feed: { title: 'A feed of real people.', text: 'Real photos. Try any look on your twin.', tryOutfit: 'Try the outfit', tryOn: 'Try on' },
-    friend: { ask: 'Ask friends', shared: 'sent', title: 'Ask a friend.', text: "Can't choose? Your friends vote." },
+    friend: { ask: 'Ask friends', voting: 'voting…', title: 'Ask a friend.', text: "Can't choose? Your friends vote." },
   },
   stylist: {
     title: 'A stylist who knows you.',
@@ -160,7 +160,7 @@ const fr: Copy = {
     title: 'Plus qu’un essayage.',
     wardrobe: { lines: ['Remplissez votre garde-robe.', 'Créez des tenues.'], text: 'Ajoutez vos vêtements une fois. Voyez chaque tenue sur votre jumeau.' },
     feed: { title: 'Un fil de vraies personnes.', text: 'De vraies photos. Essayez chaque look sur votre jumeau.', tryOutfit: 'Essayer la tenue', tryOn: 'Essayer' },
-    friend: { ask: 'Demander', shared: 'envoyé', title: 'Demandez à vos amis.', text: 'Vous hésitez ? Vos amis votent.' },
+    friend: { ask: 'Demander', voting: 'vote en cours…', title: 'Demandez à vos amis.', text: 'Vous hésitez ? Vos amis votent.' },
   },
   stylist: {
     title: 'Un styliste qui vous connaît.',

@@ -122,54 +122,71 @@ function feed(tile: HTMLElement) {
     .to(chip, { opacity: 1, duration: .25 }, 3.65);
 }
 
-// Each round: send the options, friends light up, votes land live, and a ring draws itself round the look they picked.
-// Then that person's looks slide away and the next person's slide in: a woman's round, then a man's, on a loop.
+// Each round: the person picks two of the looks and sends them, each friend votes and their photo lands under the
+// look they chose, then the friends' pick clicks into place. A woman's round, then a man's, on a loop.
+const THUMB_EDGE = '0 0 0 0px #f4f4f2, 0 14px 30px rgba(0,0,0,.4)', THUMB_PICKED = '0 0 0 2px #f4f4f2, 0 14px 30px rgba(0,0,0,.4)';
+const PICK_SECONDS = .6, VOTE_SECONDS = .6, HOLD_SECONDS = 2.4;
+function press(loop: gsap.core.Timeline, el: Element, tap: Element, at: number) {
+  loop.to(el, { scale: .93, duration: .09, ease: 'power2.in' }, at)
+    .to(el, { scale: 1, duration: .32, ease: 'power3.out' }, at + .09)
+    .fromTo(tap, { scale: .4, opacity: .9 }, { scale: 1.8, opacity: 0, duration: .5, ease: 'power2.out', immediateRender: false }, at);
+}
 function friends(card: HTMLElement) {
-  const plane = one(card, '.fplane'), sent = one(card, '.fsent'), sendBtn = one(card, '.fsend');
-  const people = all(card, '.ffr'), fans = all(card, '.ffan');
-  const byInitial = new Map(people.map((p) => [p.textContent?.trim() ?? '', p]));
+  const rows = all(card, '.fw'), send = one(card, '.fsend'), rounds = all(card, '.fround');
+  const waits = all(card, '.fwait'), dones = all(card, '.fdone');
   const loop = gsap.timeline({ repeat: -1, paused: true });
-  const looksOf = (fan: HTMLElement) => all(fan, '.fopt');
-  const reset = (fan: HTMLElement, t: number) => loop.set(all(fan, '.fvote'), { opacity: 0, y: -12, scale: .4 }, t)
-    .set(one(fan, '.fpick'), { opacity: 0, scale: 1.03 }, t)
-    .set(one(fan, '.fcheck'), { opacity: 0, scale: .6 }, t)
-    .set(all(fan, '.fimg'), { opacity: 1 }, t);
-  gsap.set(fans, { visibility: 'visible' });
-  fans.forEach((fan, i) => { reset(fan, 0); loop.set(looksOf(fan), { autoAlpha: i === 0 ? 1 : 0 }, 0); });
+  const reset = (round: HTMLElement, t: number) => loop
+    .set(one(round, '.fpick4'), { autoAlpha: 1 }, t)
+    .set(all(round, '.fthumb'), { autoAlpha: 1, scale: 1, boxShadow: THUMB_EDGE }, t)
+    .set(all(round, '.ftick'), { autoAlpha: 0, scale: .5 }, t)
+    .set(one(round, '.fduo'), { autoAlpha: 0 }, t)
+    .set(all(round, '.fopt'), { autoAlpha: 0, y: 16 }, t)
+    .set(all(round, '.fvote'), { autoAlpha: 0, y: -10, scale: .5 }, t)
+    .set(one(round, '.fpick'), { opacity: 0, scale: 1.03 }, t)
+    .set(one(round, '.fcheck'), { opacity: 0, scale: .6 }, t)
+    .set(all(round, '.fimg'), { opacity: 1, scale: 1 }, t);
+  rounds.forEach((round, r) => { reset(round, 0); loop.set(round, { autoAlpha: r === 0 ? 1 : 0, y: 0 }, 0); });
 
   let t = 0;
-  fans.forEach((fan, i) => {
-    const votes = all(fan, '.fvote'), ring = one(fan, '.fpick'), check = one(fan, '.fcheck'), win = one(fan, '.fwin');
-    const others = all(fan, '.fimg').filter((look) => look !== win);
-    // Votes land in a fixed, lively order: the second, the first, then the rest.
-    const order = [1, 0, ...votes.keys()].filter((k, j, ks) => k < votes.length && ks.indexOf(k) === j).map((k) => votes[k]);
-    loop.set(people, { opacity: .3, scale: .8 }, t)
-      .set(sent, { opacity: 0 }, t)
-      .to(sendBtn, { scale: .92, duration: .1, ease: 'power2.in' }, t + .7)
-      .to(sendBtn, { scale: 1, duration: .25, ease: 'back.out(3)' }, t + .8)
-      .fromTo(plane, { x: 0, y: 0, opacity: 1, rotation: 0 }, { x: () => people[0].offsetLeft - 10, y: -18, rotation: 18, opacity: 0, duration: .55, ease: 'power2.in', immediateRender: false }, t + .8)
-      .to(people, { opacity: 1, scale: 1, duration: .3, stagger: .08, ease: 'back.out(2.5)' }, t + 1.2)
-      .to(sent, { opacity: 1, duration: .2 }, t + 1.5);
-    order.forEach((vote, k) => {
-      const at = t + 1.9 + k * .55;
-      const person = byInitial.get(vote.textContent?.trim() ?? '');
-      if (person) loop.to(person, { scale: 1.25, duration: .12, yoyo: true, repeat: 1 }, at);
-      loop.to(vote, { opacity: 1, y: 0, scale: 1, duration: .32, ease: 'back.out(2.6)' }, at + .1);
+  rounds.forEach((round, r) => {
+    loop.set(rows, { opacity: .35 }, t).set(waits, { autoAlpha: 0 }, t).set(dones, { autoAlpha: 0, scale: .5 }, t);
+    const thumbs = all(round, '.fthumb'), chosen = thumbs.filter((thumb) => thumb.classList.contains('chosen'));
+    // The person taps the two looks they hesitate between.
+    chosen.forEach((thumb, k) => {
+      const at = t + .8 + k * PICK_SECONDS;
+      press(loop, thumb, one(thumb, '.ftap'), at);
+      loop.to(thumb, { boxShadow: THUMB_PICKED, duration: .2 }, at + .05)
+        .to(one(thumb, '.ftick'), { autoAlpha: 1, scale: 1, duration: .25, ease: 'power3.out' }, at + .08);
     });
-    const end = t + 1.9 + order.length * .55 + .2;
-    // The pick clicks: a short press, the hairline and the check set in, and the other looks step back.
+    // Asks friends: the other looks leave, the two picked take the stage, the friends light up.
+    const sent = t + .8 + chosen.length * PICK_SECONDS + .5;
+    press(loop, send, one(send, '.ftap'), sent);
+    loop.to(thumbs.filter((thumb) => !chosen.includes(thumb)), { autoAlpha: 0, scale: .92, duration: .3, ease: 'power2.in' }, sent + .15)
+      .to(one(round, '.fpick4'), { autoAlpha: 0, duration: .3 }, sent + .45)
+      .set(one(round, '.fduo'), { autoAlpha: 1 }, sent + .45)
+      .to(all(round, '.fopt'), { autoAlpha: 1, y: 0, duration: .5, stagger: .08, ease: 'power3.out' }, sent + .5)
+      .to(rows, { opacity: 1, duration: .3, stagger: .1 }, sent + .55)
+      .to(waits, { autoAlpha: 1, duration: .2, stagger: .1 }, sent + .6);
+    // Each friend votes: "voting…" turns into a tick and their photo lands under the look they chose.
+    rows.forEach((row, f) => {
+      const at = sent + 1.5 + f * VOTE_SECONDS;
+      loop.to(one(row, '.fwait'), { autoAlpha: 0, duration: .15 }, at)
+        .to(one(row, '.fdone'), { autoAlpha: 1, scale: 1, duration: .25, ease: 'power3.out' }, at + .05)
+        .to(one(round, `.fvote[data-friend="${f}"]`), { autoAlpha: 1, y: 0, scale: 1, duration: .35, ease: 'power3.out' }, at + .05);
+    });
+    // The pick clicks: a short press, the hairline and the check set in, the other look steps back.
+    const end = sent + 1.5 + rows.length * VOTE_SECONDS + .2, win = one(round, '.fwin');
     loop.to(win, { scale: .97, duration: .09, ease: 'power2.in' }, end)
       .to(win, { scale: 1, duration: .45, ease: 'expo.out' }, end + .09)
-      .to(ring, { opacity: 1, scale: 1, duration: .35, ease: 'power3.out' }, end + .09)
-      .to(check, { opacity: 1, scale: 1, duration: .3, ease: 'power3.out' }, end + .14)
-      .to(others, { opacity: .45, duration: .5, ease: 'power2.out' }, end + .14);
-    // Hand over: this person's looks slide away, the next person's slide in, and this set clears while it is hidden.
-    const swap = end + 2.4, next = fans[(i + 1) % fans.length];
-    // Opacity and a short slide only: a blur over photographs costs whole frames on a slow phone.
-    loop.to(looksOf(fan), { autoAlpha: 0, y: -16, duration: .45, stagger: .06, ease: 'power2.in' }, swap)
-      .fromTo(looksOf(next), { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: .6, stagger: .08, ease: 'power3.out', immediateRender: false }, swap + .35);
-    reset(fan, swap + .7);
-    t = swap + 1.2;
+      .to(one(round, '.fpick'), { opacity: 1, scale: 1, duration: .35, ease: 'power3.out' }, end + .09)
+      .to(one(round, '.fcheck'), { opacity: 1, scale: 1, duration: .3, ease: 'power3.out' }, end + .14)
+      .to(all(round, '.fimg').filter((look) => look !== win), { opacity: .45, duration: .5, ease: 'power2.out' }, end + .14);
+    // Hand over: this round leaves, the next one comes in and starts again from its looks.
+    const swap = end + HOLD_SECONDS, next = rounds[(r + 1) % rounds.length];
+    loop.to(round, { autoAlpha: 0, y: -12, duration: .4, ease: 'power2.in' }, swap);
+    reset(round, swap + .45);
+    loop.fromTo(next, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: .5, ease: 'power3.out', immediateRender: false }, swap + .35);
+    t = swap + .9;
   });
   ScrollTrigger.create({ trigger: card, start: 'top 85%', end: 'bottom 10%', onToggle: (self) => (self.isActive ? loop.play() : loop.pause()) });
 }
