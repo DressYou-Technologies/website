@@ -14,7 +14,8 @@ const fileOf = (lang, path) => { const url = localize(lang, path); return url ==
 const home = Object.fromEntries(await Promise.all(LANGS.map(async (lang) => [lang, await read(fileOf(lang, '/'))])));
 const html = home.fr;
 const metaIn = (page, attr, key) => page.match(new RegExp(`<meta[^>]*${attr}="${key}"[^>]*content="([^"]*)"`))?.[1];
-const decode = (s) => s.replaceAll('&#39;', "'").replaceAll('&amp;', '&').replaceAll('&quot;', '"');
+// &amp; last, so an escaped entity such as &amp;quot; is decoded once, not twice.
+const decode = (s) => s.replaceAll('&#39;', "'").replaceAll('&quot;', '"').replaceAll('&amp;', '&');
 const INDEXED = ['/', '/legal', '/privacy', '/terms'];
 
 test('each home page carries its language, title, description, canonical and alternates', () => {
@@ -109,7 +110,8 @@ test('every image states its size and alt', async () => {
   }
 });
 
-const text = (s) => s.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+// Tags out, then any stray angle bracket a malformed tag could leave.
+const text = (s) => s.replace(/<[^>]+>/g, '').replace(/[<>]/g, '').replace(/\s+/g, ' ').trim();
 
 test('a null store link opens a dialog instead of linking, in each language', async () => {
   const { LINKS } = await import('../src/data/site.ts');
