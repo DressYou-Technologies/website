@@ -80,7 +80,7 @@ The founder picked Astro + GSAP; the rest of this list is my call.
 - Links with no destination are hidden until they have one: the menu's About, Journal, Careers, Press and
   Help, the three social icons, and the footer's About, Careers and Press. In-page anchors stay.
 - Legal notice, privacy and terms become real pages (`/legal`, `/privacy`, `/terms`) built from what is
-  known (DressYou Technologies, 47 rue Vivienne, 75002 Paris, hello@dressyouapp.com, host Vercel); the
+  known (DressYou Technologies, 47 rue Vivienne, 75002 Paris, contact@dressyouapp.com, host Vercel); the
   missing legal fields are the founder's, and the production merge waits for them.
 - The metadata set moves to the new hero line, "Try it on before it's yours.", with a description from the
   hero paragraph, and `og-image.jpg` is regenerated from the wall images.

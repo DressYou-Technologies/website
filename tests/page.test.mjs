@@ -9,7 +9,7 @@ import { LANGS, localize } from '../src/i18n/lang.ts';
 const DIST = new URL('../dist/', import.meta.url);
 const read = (path) => readFile(new URL(path, DIST), 'utf8');
 const pages = (await readdir(DIST, { recursive: true })).filter((f) => f.endsWith('.html'));
-// A page's built file, from its language and language-neutral path: "/" in English is en.html, "/legal" is en/legal.html.
+// A page's built file, from its language and language-neutral path: "/" in French is fr.html, "/legal" is fr/legal.html.
 const fileOf = (lang, path) => { const url = localize(lang, path); return url === '/' ? 'index.html' : `${url.slice(1)}.html`; };
 const home = Object.fromEntries(await Promise.all(LANGS.map(async (lang) => [lang, await read(fileOf(lang, '/'))])));
 const html = home.fr;
@@ -28,7 +28,31 @@ test('each home page carries its language, title, description, canonical and alt
     assert.equal(metaIn(page, 'property', 'og:image'), `${SITE.url}/og-image.jpg`);
     assert.ok(page.includes(`<link rel="canonical" href="${SITE.url}${localize(lang, '/')}"`), `${lang} canonical`);
     for (const alt of LANGS) assert.ok(page.includes(`<link rel="alternate" hreflang="${alt}" href="${SITE.url}${localize(alt, '/')}"`), `${lang} → ${alt}`);
-    assert.ok(page.includes(`<link rel="alternate" hreflang="x-default" href="${SITE.url}/en"`), `${lang} x-default`);
+    assert.ok(page.includes(`<link rel="alternate" hreflang="x-default" href="${SITE.url}/"`), `${lang} x-default`);
+  }
+});
+
+// English is the default (founder, 2026-10-31): English at the root, French under /fr, and the old /en links land at the root.
+test('the root is English and French lives under /fr', async () => {
+  for (const [file, lang] of [['index.html', 'en'], ['legal.html', 'en'], ['fr.html', 'fr'], ['fr/legal.html', 'fr']]) {
+    assert.match(await read(file), new RegExp(`<html lang="${lang}"`), file);
+  }
+  const { redirects = [] } = JSON.parse(await readFile(new URL('../vercel.json', import.meta.url), 'utf8'));
+  assert.deepEqual(redirects, [{ source: '/en', destination: '/', permanent: true }, { source: '/en/:path*', destination: '/:path*', permanent: true }]);
+});
+
+test('every page and llms.txt give contact@dressyouapp.com, never the old address', async () => {
+  for (const name of [...pages, 'llms.txt']) assert.doesNotMatch(await read(name), /hello@/, name);
+  assert.ok((await read('index.html')).includes('mailto:contact@dressyouapp.com'));
+});
+
+// The stylist speaks cleanly: every line it says or ticks off opens with a capital (founder, 2026-10-31).
+test("the stylist's lines open with a capital letter, in each language", () => {
+  for (const lang of LANGS) {
+    const { stylist: s, how } = COPY[lang], tabs = [s.opinion, s.day, s.trip, s.find, s.buy];
+    const lines = [s.opinion.a, s.day.a, s.trip.head, s.trip.a, s.find.fit, s.buy.a, ...how.scenes.map((scene) => scene.a),
+      ...tabs.flatMap((tab) => tab.checks.flatMap(([, label, value]) => [label, value]))];
+    for (const line of lines) assert.match(line, /^[\p{Lu}\d€]/u, `${lang}: "${line}"`);
   }
 });
 
@@ -222,7 +246,7 @@ test('the footer lists only working links, the other language and the company de
       [t.dialog.notify.privacy, localize(lang, '/privacy')],
       ...t.finale.columns.flatMap((column) => column.links.map(([label, link]) => [label, local(link)])),
       [t.lang.switchTo, localize(other, '/')],
-      ['hello@dressyouapp.com', 'mailto:hello@dressyouapp.com'],
+      ['contact@dressyouapp.com', 'mailto:contact@dressyouapp.com'],
     ]);
     const words = decode(text(footer));
     for (const fact of [`© ${new Date().getFullYear()} DressYou Technologies`, '47 rue Vivienne, 75002 Paris']) assert.ok(words.includes(fact), `${lang}: ${fact}`);
@@ -231,21 +255,20 @@ test('the footer lists only working links, the other language and the company de
   }
 });
 
-test('the header menu opens the company pages and the other language, and each company page is in the works and out of search', async () => {
-  const sitemap = await read('sitemap.xml');
+// Only finished pages are linked (founder, 2026-10-31): the company pages wait, so the menu keeps the other language.
+test('the header logo goes home, and the menu offers the other language with no page in the works', async () => {
   for (const lang of LANGS) {
-    const header = home[lang].match(/<header[\s\S]*?<\/header>/)[0], t = COPY[lang], other = LANGS.find((l) => l !== lang);
+    const header = home[lang].match(/<header[\s\S]*?<\/header>/)[0], other = LANGS.find((l) => l !== lang);
+    const brand = header.match(/<a class="brand"[\s\S]*?<\/a>/)?.[0] ?? '';
+    assert.match(brand, new RegExp(`^<a class="brand"[^>]*href="${localize(lang, '/')}"[^>]*aria-label="DressYou"`), `${lang}: the logo is not a link home`);
+    // The white logo and the black one, crossfaded as the menu button changes colour.
+    assert.deepEqual([...brand.matchAll(/<img[^>]*src="[^"]*\/(logo-(?:white|black))[^"]*"/g)].map((m) => m[1]), ['logo-white', 'logo-black'], lang);
     assert.match(header, /<button[^>]*popovertarget="menu"/, `${lang}: no menu button`);
     const menu = header.slice(header.indexOf('id="menu"'));
-    assert.match(header, /id="menu"[^>]*popover/, `${lang}: the menu is not a popover`);
     const links = [...menu.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)].map(([, href, label]) => [decode(text(label)), href]);
-    assert.deepEqual(links, [...t.menu.links.map(([label, path]) => [label, localize(lang, path)]), [other.toUpperCase(), localize(other, '/')]]);
-    for (const [label, path] of t.menu.links) {
-      const body = await read(fileOf(lang, path));
-      assert.match(body, /<meta name="robots" content="noindex"/, `${lang} ${path}`);
-      assert.doesNotMatch(body, /rel="canonical"/, `${lang} ${path}`);
-      assert.ok(decode(text(body)).includes(label) && decode(text(body)).includes(t.soon.tag), `${lang} ${path} is not the page in the works`);
-      assert.ok(!sitemap.includes(`${SITE.url}${localize(lang, path)}<`), `${lang} ${path} is in the sitemap`);
+    assert.deepEqual(links, [[other.toUpperCase(), localize(other, '/')]], lang);
+    for (const path of ['/about', '/journal', '/careers', '/press', '/help']) {
+      await assert.rejects(access(new URL(fileOf(lang, path), DIST)), `${lang} ${path} is still built`);
     }
   }
 });
@@ -271,7 +294,7 @@ test('every in-page link has its target on the same page', async () => {
 test('the legal pages exist in both languages and name the publisher', async () => {
   for (const lang of LANGS) {
     const legal = text(await read(fileOf(lang, '/legal')));
-    for (const fact of ['DressYou Technologies', '47 rue Vivienne, 75002 Paris', 'hello@dressyouapp.com', 'Vercel']) assert.ok(legal.includes(fact), `${lang}: ${fact}`);
+    for (const fact of ['DressYou Technologies', '47 rue Vivienne, 75002 Paris', 'contact@dressyouapp.com', 'Vercel']) assert.ok(legal.includes(fact), `${lang}: ${fact}`);
     for (const path of ['/privacy', '/terms']) {
       const body = await read(fileOf(lang, path));
       assert.match(body, new RegExp(`<html lang="${lang}"`));
@@ -307,7 +330,7 @@ test('every dark section says so, for the menu button to take a colour that read
 });
 
 test('the confirmation and 404 pages stay out of search', async () => {
-  for (const file of ['notified.html', 'en/notified.html', '404.html']) {
+  for (const file of ['notified.html', 'fr/notified.html', '404.html']) {
     const body = await read(file);
     assert.match(body, /<meta name="robots" content="noindex"/, file);
     assert.doesNotMatch(body, /rel="canonical"/, file);

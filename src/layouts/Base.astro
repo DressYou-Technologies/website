@@ -5,7 +5,7 @@ import { LINKS, SITE } from '../data/site';
 import { COPY } from '../i18n/copy';
 import { LANGS, localize, type Lang } from '../i18n/lang';
 
-// `path` is language-neutral ("/", "/legal"): the page exists at that path in French and under /en in English.
+// `path` is language-neutral ("/", "/legal"): the page exists at that path in English and under /fr in French.
 interface Props { lang: Lang; path: string; title?: string; description?: string; noindex?: boolean }
 const { lang, path, noindex = false } = Astro.props;
 const meta = COPY[lang].meta;

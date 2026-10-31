@@ -13,7 +13,7 @@ export const SITE = { url: 'https://dressyouapp.com' };
 export const LINKS: { appUrl: string | null; extensionUrl: string | null; email: string } = {
   appUrl: null,
   extensionUrl: null,
-  email: 'hello@dressyouapp.com',
+  email: 'contact@dressyouapp.com',
 };
 
 // Column-major: 9 columns on the hero cylinder, 3 tiles each.

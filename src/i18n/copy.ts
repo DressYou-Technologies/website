@@ -3,10 +3,8 @@ import type { Lang } from './lang';
 // Every string the page shows, per language. French is authored, not translated word for word (voice guide §6).
 // No semicolons and no em dashes anywhere (founder, 2026-10-30). Copy never names a measurement or says how a piece fits.
 // Short, polite and plain: no decorative words (founder, 2026-10-30). It shows what the stylist knows that answers the
-// question asked, never how it tracks behaviour (founder, 2026-10-30).
-// The company pages are in the works: the menu and the footer both link them (founder, 2026-10-30).
-const companyEn: [string, string][] = [['About', '/about'], ['Journal', '/journal'], ['Careers', '/careers'], ['Press', '/press'], ['Help', '/help']];
-const companyFr: [string, string][] = [['À propos', '/about'], ['Journal', '/journal'], ['Carrières', '/careers'], ['Presse', '/press'], ['Aide', '/help']];
+// question asked, never how it tracks behaviour (founder, 2026-10-30). The stylist speaks politely and warmly, every line
+// opening with a capital (founder, 2026-10-31).
 
 // What the stylist checked before an answer: the kind of thing (its icon and colour), a label and the value it found.
 export type CheckKind = 'weather' | 'calendar' | 'wardrobe' | 'style' | 'budget' | 'size' | 'delivery' | 'outfits';
@@ -23,8 +21,7 @@ const en = {
   },
   get: { app: 'Get the app', extension: 'Get the extension', qr: 'QR code to download the app' },
   lang: { heading: 'Language', switchTo: 'Français', label: 'Lire en français' },
-  menu: { label: 'Menu', links: companyEn },
-  soon: { tag: 'In the works', text: 'This page is coming soon. Write to', home: 'Back to DressYou' },
+  menu: { label: 'Menu' },
   hero: { lines: ['Try it on', "before it's yours."], sub: 'Your twin, your size, your stylist.' },
   how: {
     lead: 'Tap try on',
@@ -49,9 +46,9 @@ const en = {
     // shows it: the one that fits (ruler) and the one to the person's taste (heart). Clothes already owned need no size.
     sizeCard: { label: 'recommended size', fit: 'fits you', style: 'as you like it' },
     scenes: [
-      { kind: 'size' as const, sizes: ['XS', 'S', 'M', 'L', 'XL'], fit: 'M', style: 'L', q: 'what goes with it?', a: 'your black trousers and turtleneck. 3 outfits.' },
-      { kind: 'facts' as const, label: 'your friday', rows: [['18°', 'weather', 'clear at 8 pm'], ['8 pm', 'calendar', 'dinner']], q: 'good for friday’s dinner?', a: 'yes. 18° and dry, no jacket needed.' },
-      { kind: 'size' as const, sizes: ['XS', 'S', 'M', 'L'], fit: 'S', style: 'M', q: 'do i own something similar?', a: 'your white oxford, yes. only the skirt is new.' },
+      { kind: 'size' as const, sizes: ['XS', 'S', 'M', 'L', 'XL'], fit: 'M', style: 'L', q: 'what goes with it?', a: 'Great pick! It goes with your black trousers and turtleneck. Here are 3 outfits.' },
+      { kind: 'facts' as const, label: 'your friday', rows: [['18°', 'weather', 'clear at 8 pm'], ['8 pm', 'calendar', 'dinner']], q: 'good for friday’s dinner?', a: 'Yes, perfect for dinner. It will be 18° and dry, so no jacket needed.' },
+      { kind: 'size' as const, sizes: ['XS', 'S', 'M', 'L'], fit: 'S', style: 'M', q: 'do i own something similar?', a: 'Yes, your white oxford is very close. Only the skirt would be new.' },
     ],
   },
   more: {
@@ -68,30 +65,30 @@ const en = {
     checked: 'Checked for you',
     opinion: {
       q: 'should i buy this coat?', item: 'Wool coat · €290',
-      checks: checks(['size', 'size', 'M, like the coat you kept'], ['wardrobe', 'you own', 'a similar camel coat'], ['outfits', 'goes with', '2 of your outfits']),
-      a: 'i’d skip it. your camel coat does the same job.',
+      checks: checks(['size', 'Size', 'M, like the coat you kept'], ['wardrobe', 'You own', 'A similar camel coat'], ['outfits', 'Goes with', '2 of your outfits']),
+      a: 'Good eye! Your camel coat already does the same job, so I’d skip this one.',
     },
     day: {
       q: 'what should i wear today?',
-      checks: checks(['weather', 'weather', '14°, rain at 6 pm'], ['calendar', 'calendar', 'dinner at 8 pm'], ['wardrobe', 'wardrobe', '52 pieces']),
-      a: 'white oxford, black trousers, overshirt and chelsea boots. no suede today, rain is coming.',
+      checks: checks(['weather', 'Weather', '14°, rain at 6 pm'], ['calendar', 'Calendar', 'Dinner at 8 pm'], ['wardrobe', 'Wardrobe', '52 pieces']),
+      a: 'Your white oxford, black trousers, overshirt and Chelsea boots would be lovely. Rain is coming, so I’d save the suede for another day.',
       cta: 'Try it on',
     },
     trip: {
       q: 'pack for lisbon, 4 days in may.',
-      checks: checks(['calendar', 'dates', '14 to 17 may'], ['weather', 'weather', '23° on average'], ['calendar', 'plans', '1 dinner'], ['wardrobe', 'wardrobe', '52 pieces']),
-      head: 'lisbon · 4 days', count: '6 pieces · 5 outfits',
-      a: 'all from your wardrobe. nothing to buy.',
+      checks: checks(['calendar', 'Dates', '14 to 17 May'], ['weather', 'Weather', '23° on average'], ['calendar', 'Plans', '1 dinner'], ['wardrobe', 'Wardrobe', '52 pieces']),
+      head: 'Lisbon · 4 days', count: '6 pieces · 5 outfits',
+      a: 'Everything comes from your wardrobe, so there’s nothing to buy. Have a lovely trip!',
     },
     find: {
       q: 'a black knit polo under €150, for friday.',
-      checks: checks(['budget', 'budget', '€150 max'], ['size', 'size', 'M in stock'], ['style', 'your style', 'black knits'], ['outfits', 'goes with', '3 of your outfits'], ['delivery', 'delivery', 'not guaranteed by friday']),
-      name: 'Knit polo', price: '€120 · nord studio', fit: 'goes with your ecru trousers', cta: 'Try it on',
+      checks: checks(['budget', 'Budget', '€150 max'], ['size', 'Size', 'M in stock'], ['style', 'Your style', 'Black knits'], ['outfits', 'Goes with', '3 of your outfits'], ['delivery', 'Delivery', 'Not guaranteed by Friday']),
+      name: 'Knit polo', price: '€120 · nord studio', fit: 'Goes with your ecru trousers', cta: 'Try it on',
     },
     buy: {
       q: 'an outfit for saturday, under €100.',
-      checks: checks(['calendar', 'event', 'birthday dinner'], ['wardrobe', 'you own', 'black trousers, boots'], ['budget', 'budget', '€100 max'], ['size', 'size', 'M in stock'], ['delivery', 'delivery', 'not guaranteed by saturday']),
-      a: 'this knit with your black trousers and boots. if it arrives late, wear your white oxford.',
+      checks: checks(['calendar', 'Event', 'Birthday dinner'], ['wardrobe', 'You own', 'Black trousers, boots'], ['budget', 'Budget', '€100 max'], ['size', 'Size', 'M in stock'], ['delivery', 'Delivery', 'Not guaranteed by Saturday']),
+      a: 'This knit looks lovely with your black trousers and boots. If it arrives late, your white oxford works beautifully too.',
       name: 'Mock-neck knit', price: '€85 · nord studio', cta: 'Buy on nord studio',
     },
     ask: 'ask your stylist',
@@ -102,7 +99,6 @@ const en = {
     extension: 'Chrome extension',
     soon: 'coming soon',
     columns: [
-      { label: 'Company', links: companyEn },
       { label: 'Legal', links: [['Legal notice', '/legal'], ['Privacy', '/privacy'], ['Terms', '/terms']] },
     ],
     footer: 'Footer',
@@ -130,8 +126,7 @@ const fr: Copy = {
   },
   get: { app: "Télécharger l'app", extension: "Installer l'extension", qr: "QR code pour télécharger l'app" },
   lang: { heading: 'Langue', switchTo: 'English', label: 'Read in English' },
-  menu: { label: 'Menu', links: companyFr },
-  soon: { tag: 'En préparation', text: 'Cette page arrive bientôt. Écrivez à', home: 'Retour à DressYou' },
+  menu: { label: 'Menu' },
   hero: { lines: ['Essayez-le', "avant qu'il soit à vous."], sub: 'Votre jumeau, votre taille, votre styliste.' },
   how: {
     lead: 'Essayez',
@@ -151,9 +146,9 @@ const fr: Copy = {
     tryOn: { title: 'essayage', change: 'changer de pièces', ask: 'demandez à votre styliste' },
     sizeCard: { label: 'taille recommandée', fit: 'votre taille', style: 'comme vous l’aimez' },
     scenes: [
-      { kind: 'size', sizes: ['XS', 'S', 'M', 'L', 'XL'], fit: 'M', style: 'L', q: 'ça va avec quoi ?', a: 'votre pantalon noir et votre col roulé. 3 tenues.' },
-      { kind: 'facts', label: 'votre vendredi', rows: [['18°', 'météo', 'dégagé à 20 h'], ['20 h', 'agenda', 'dîner']], q: 'pour le dîner de vendredi ?', a: 'oui. 18° et sec, pas besoin de veste.' },
-      { kind: 'size', sizes: ['XS', 'S', 'M', 'L'], fit: 'S', style: 'M', q: 'j’ai quelque chose de proche ?', a: 'votre chemise oxford blanche, oui. seule la jupe est nouvelle.' },
+      { kind: 'size', sizes: ['XS', 'S', 'M', 'L', 'XL'], fit: 'M', style: 'L', q: 'ça va avec quoi ?', a: 'Beau choix ! Votre pantalon noir et votre col roulé vont très bien avec. Voici 3 tenues.' },
+      { kind: 'facts', label: 'votre vendredi', rows: [['18°', 'météo', 'dégagé à 20 h'], ['20 h', 'agenda', 'dîner']], q: 'pour le dîner de vendredi ?', a: 'Oui, parfait pour ce dîner. Il fera 18° et sec, pas besoin de veste.' },
+      { kind: 'size', sizes: ['XS', 'S', 'M', 'L'], fit: 'S', style: 'M', q: 'j’ai quelque chose de proche ?', a: 'Oui, votre chemise oxford blanche est très proche. Seule la jupe serait nouvelle.' },
     ],
   },
   more: {
@@ -169,30 +164,30 @@ const fr: Copy = {
     checked: 'Vérifié pour vous',
     opinion: {
       q: 'j’achète ce manteau ?', item: 'Manteau en laine · 290 €',
-      checks: checks(['size', 'taille', 'M, comme le manteau gardé'], ['wardrobe', 'vous avez', 'un manteau camel proche'], ['outfits', 'va avec', '2 de vos tenues']),
-      a: 'je passerais mon tour. votre manteau camel fait le même travail.',
+      checks: checks(['size', 'Taille', 'M, comme le manteau gardé'], ['wardrobe', 'Vous avez', 'Un manteau camel proche'], ['outfits', 'Va avec', '2 de vos tenues']),
+      a: 'Joli choix ! Votre manteau camel remplit déjà ce rôle, je vous conseille de passer votre tour.',
     },
     day: {
       q: 'je porte quoi aujourd’hui ?',
-      checks: checks(['weather', 'météo', '14°, pluie à 18 h'], ['calendar', 'agenda', 'dîner à 20 h'], ['wardrobe', 'garde-robe', '52 pièces']),
-      a: 'oxford blanche, pantalon noir, surchemise et bottines chelsea. pas de daim aujourd’hui, la pluie arrive.',
+      checks: checks(['weather', 'Météo', '14°, pluie à 18 h'], ['calendar', 'Agenda', 'Dîner à 20 h'], ['wardrobe', 'Garde-robe', '52 pièces']),
+      a: 'Votre chemise oxford blanche, le pantalon noir, la surchemise et les bottines chelsea iront très bien. La pluie arrive, gardez le daim pour un autre jour.',
       cta: 'L’essayer',
     },
     trip: {
       q: 'valise pour lisbonne, 4 jours en mai.',
-      checks: checks(['calendar', 'dates', 'du 14 au 17 mai'], ['weather', 'météo', '23° en moyenne'], ['calendar', 'au programme', '1 dîner'], ['wardrobe', 'garde-robe', '52 pièces']),
-      head: 'lisbonne · 4 jours', count: '6 pièces · 5 tenues',
-      a: 'tout vient de votre garde-robe. rien à acheter.',
+      checks: checks(['calendar', 'Dates', 'Du 14 au 17 mai'], ['weather', 'Météo', '23° en moyenne'], ['calendar', 'Au programme', '1 dîner'], ['wardrobe', 'Garde-robe', '52 pièces']),
+      head: 'Lisbonne · 4 jours', count: '6 pièces · 5 tenues',
+      a: 'Tout vient de votre garde-robe, rien à acheter. Bon voyage !',
     },
     find: {
       q: 'un polo en maille noir, moins de 150 €, pour vendredi.',
-      checks: checks(['budget', 'budget', '150 € max'], ['size', 'taille', 'M en stock'], ['style', 'votre style', 'mailles noires'], ['outfits', 'va avec', '3 de vos tenues'], ['delivery', 'livraison', 'non garantie avant vendredi']),
-      name: 'Polo en maille', price: '120 € · nord studio', fit: 'va avec votre pantalon écru', cta: 'L’essayer',
+      checks: checks(['budget', 'Budget', '150 € max'], ['size', 'Taille', 'M en stock'], ['style', 'Votre style', 'Mailles noires'], ['outfits', 'Va avec', '3 de vos tenues'], ['delivery', 'Livraison', 'Non garantie avant vendredi']),
+      name: 'Polo en maille', price: '120 € · nord studio', fit: 'Va avec votre pantalon écru', cta: 'L’essayer',
     },
     buy: {
       q: 'une tenue pour samedi, moins de 100 €.',
-      checks: checks(['calendar', 'événement', 'dîner d’anniversaire'], ['wardrobe', 'vous avez', 'pantalon noir, bottines'], ['budget', 'budget', '100 € max'], ['size', 'taille', 'M en stock'], ['delivery', 'livraison', 'non garantie avant samedi']),
-      a: 'cette maille avec votre pantalon noir et vos bottines. si elle arrive tard, votre oxford blanche.',
+      checks: checks(['calendar', 'Événement', 'Dîner d’anniversaire'], ['wardrobe', 'Vous avez', 'Pantalon noir, bottines'], ['budget', 'Budget', '100 € max'], ['size', 'Taille', 'M en stock'], ['delivery', 'Livraison', 'Non garantie avant samedi']),
+      a: 'Cette maille sera très jolie avec votre pantalon noir et vos bottines. Si elle arrive tard, votre chemise oxford blanche sera parfaite aussi.',
       name: 'Maille col montant', price: '85 € · nord studio', cta: 'Acheter sur nord studio',
     },
     ask: 'demandez à votre styliste',
@@ -203,7 +198,6 @@ const fr: Copy = {
     extension: 'Extension Chrome',
     soon: 'bientôt',
     columns: [
-      { label: 'Entreprise', links: companyFr },
       { label: 'Légal', links: [['Mentions légales', '/legal'], ['Confidentialité', '/privacy'], ['Conditions', '/terms']] },
     ],
     footer: 'Pied de page',

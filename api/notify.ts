@@ -6,11 +6,11 @@ const MAX_BODY_BYTES = 2048;
 const MAX_EMAIL_LENGTH = 254;           // RFC 5321 path limit
 const MIN_HUMAN_MS = 1500;              // a person takes longer than this to type an address
 const BREVO_TIMEOUT_MS = 8000;
-// French sits at the root and English under /en, as on the site. The confirmation email and the page after it are in
-// the language the person signed up in; anything else gets French.
+// English sits at the root and French under /fr, as on the site. The confirmation email and the page after it are in
+// the language the person signed up in; anything else gets English.
 type Lang = 'fr' | 'en';
-const CONFIRMED_PATHS: Record<Lang, string> = { fr: '/notified', en: '/en/notified' };
-const languageOf = (lang: unknown): Lang => (lang === 'en' ? 'en' : 'fr');
+const CONFIRMED_PATHS: Record<Lang, string> = { en: '/notified', fr: '/fr/notified' };
+const languageOf = (lang: unknown): Lang => (lang === 'fr' ? 'fr' : 'en');
 // Deliberately loose: one @, something before it, and a dotted domain. Brevo's own check is the strict one.
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

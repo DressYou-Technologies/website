@@ -1,0 +1,8 @@
+---
+import Doc from '../../layouts/Doc.astro';
+import { localize } from '../../i18n/lang';
+---
+<Doc lang="fr" title="C'est confirmé." path="/notified" noindex>
+  <p>Votre adresse est confirmée. Nous vous écrirons une seule fois, à la sortie de l'application DressYou.</p>
+  <p><a href={localize('fr', '/')}>Retour à DressYou</a></p>
+</Doc>

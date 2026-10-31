@@ -4,7 +4,9 @@ import { all, one } from './dom';
 import type { Section } from './index';
 
 // Every beat after the tap is timed from the tap press; each source decides how long it plays before it.
-const AFTER_TAP_SECONDS = 6.5;        // render, size, question, answer, then the scene fades
+const ASK_AFTER_TAP_SECONDS = 2.2;    // render and size come in, then the person starts asking
+const CHOOSE_SECONDS = 1.2;           // a size card first waits for the size to taste to be tapped
+const AFTER_ASK_SECONDS = 4.3;        // question, answer, then the scene fades
 const WARDROBE_TAP_SECONDS = 3.0;     // three pieces picked, the select bar rises, then the tap
 const FEED_POST_SECONDS = 1.3;        // the feed flicks to each next post this often, then the last one is tapped
 const FEED_SETTLE_SECONDS = 1.1;      // the tried post shows this long before its try-on button is pressed
@@ -16,6 +18,8 @@ const FIT_MAX = 1.2, FIT_PAD_X = 8, FIT_PAD_Y = 16;
 const RESIZE_SETTLE_MS = 120;
 const DIM = '#bdbdbd', INK = '#0a0a0a';
 const TILE_EDGE = 'inset 0 0 0 1px rgba(10,10,11,.08)', TILE_PICKED = 'inset 0 0 0 2px #0a0a0b';
+// A size chip chosen and not, as How.astro draws .szc.fit and .szc.
+const CHIP_ON = { backgroundColor: '#0a0a0b', color: '#f4f4f2', fontWeight: 700 }, CHIP_OFF = { backgroundColor: '#efeeeb', color: '#0a0a0a', fontWeight: 500 };
 
 // Layout, not motion: the whole phone scene scales as one piece to its stage, with or without animation.
 // The scene's own size comes from CSS, which switches it between the wide and the stacked layout.
@@ -105,7 +109,8 @@ export const how: Section = (root) => {
   srcs.forEach((src, i) => {
     const ren = rens[i], p = pops[i];
     const P = src.classList.contains('shop') ? share(tl, src, t) : src.classList.contains('wardrobe') ? pick(src, t) : scroll(src, t);
-    const end = P + AFTER_TAP_SECONDS, D = end - t;
+    const sized = p.querySelector('.hsz.size');
+    const ask = P + ASK_AFTER_TAP_SECONDS + (sized ? CHOOSE_SECONDS : 0), end = ask + AFTER_ASK_SECONDS, D = end - t;
     starts.push(t);
     const btn = one(src, '[data-tap]'), ring = one(btn, '.hring');
     tl.addLabel(`h${i}`, t);
@@ -125,25 +130,32 @@ export const how: Section = (root) => {
     light(2, P + 1.4);
     pop(one(p, '.hsz'), P + 1.4);
     tl.fromTo(all(p, '.hszr, .sztag'), { autoAlpha: 0, x: -10 }, { autoAlpha: 1, x: 0, duration: .35, stagger: .25, ease: 'power3.out', immediateRender: false }, P + 1.6);
-    light(3, P + 2.2);
+    // The card opens on the size that fits, then the person taps the one to their taste.
+    if (sized) {
+      const fit = one(sized, '.szc.fit'), style = one(sized, '.szc.style'), chosen = P + ASK_AFTER_TAP_SECONDS + .2;
+      tl.set(fit, CHIP_ON, t).set(style, CHIP_OFF, t);
+      press(tl, style, one(style, '.hring'), chosen);
+      tl.to(fit, { ...CHIP_OFF, duration: .25, ease: 'power2.out' }, chosen + .05).to(style, { ...CHIP_ON, duration: .25, ease: 'power2.out' }, chosen + .05);
+    }
+    light(3, ask);
     const qEl = one(p, '.hq'), typeEl = one(ren, '.htype'), phEl = one(ren, '.hph'), sendEl = one(ren, '.hsend'), field = one(ren, '.hin');
     const qText = qEl.textContent?.trim() ?? '', typed = { n: 0 };
     const clear = () => { typeEl.textContent = ''; phEl.style.opacity = '1'; };
     tl.set(typed, { n: 0 }, t).call(clear, undefined, t).set(sendEl, { backgroundColor: 'rgba(10,10,11,0)', color: 'rgba(10,10,11,.4)' }, t)
-      .to(field, { scale: 1.02, duration: .25, ease: 'back.out(2)' }, P + 2.2)
-      .to(phEl, { opacity: 0, duration: .1 }, P + 2.25)
-      .to(sendEl, { backgroundColor: INK, color: '#ffffff', duration: .2 }, P + 2.3)
-      .to(typed, { n: qText.length, duration: .85, ease: 'none', onUpdate: () => { typeEl.textContent = qText.slice(0, Math.round(typed.n)); } }, P + 2.3)
-      .to(sendEl, { scale: .88, duration: .08, ease: 'power2.in' }, P + 3.2)
-      .to(sendEl, { scale: 1, duration: .3, ease: 'back.out(3)' }, P + 3.28)
-      .to(field, { scale: 1, duration: .25 }, P + 3.28)
-      .to(sendEl, { backgroundColor: 'rgba(10,10,11,0)', color: 'rgba(10,10,11,.4)', duration: .2 }, P + 3.3)
-      .call(clear, undefined, P + 3.3)
-      .fromTo(qEl, { autoAlpha: 0, scale: .5, y: 70 }, { autoAlpha: 1, scale: 1, y: 0, duration: .6, ease: 'back.out(2.2)', immediateRender: false }, P + 3.28);
+      .to(field, { scale: 1.02, duration: .25, ease: 'back.out(2)' }, ask)
+      .to(phEl, { opacity: 0, duration: .1 }, ask + .05)
+      .to(sendEl, { backgroundColor: INK, color: '#ffffff', duration: .2 }, ask + .1)
+      .to(typed, { n: qText.length, duration: .85, ease: 'none', onUpdate: () => { typeEl.textContent = qText.slice(0, Math.round(typed.n)); } }, ask + .1)
+      .to(sendEl, { scale: .88, duration: .08, ease: 'power2.in' }, ask + 1)
+      .to(sendEl, { scale: 1, duration: .3, ease: 'back.out(3)' }, ask + 1.08)
+      .to(field, { scale: 1, duration: .25 }, ask + 1.08)
+      .to(sendEl, { backgroundColor: 'rgba(10,10,11,0)', color: 'rgba(10,10,11,.4)', duration: .2 }, ask + 1.1)
+      .call(clear, undefined, ask + 1.1)
+      .fromTo(qEl, { autoAlpha: 0, scale: .5, y: 70 }, { autoAlpha: 1, scale: 1, y: 0, duration: .6, ease: 'back.out(2.2)', immediateRender: false }, ask + 1.08);
     const dots = one(p, '.hdots');
-    pop(dots, P + 3.7);
-    tl.to(dots, { autoAlpha: 0, scale: .7, duration: .2 }, P + 4.2);
-    pop(one(p, '.ha'), P + 4.25);
+    pop(dots, ask + 1.5);
+    tl.to(dots, { autoAlpha: 0, scale: .7, duration: .2 }, ask + 2);
+    pop(one(p, '.ha'), ask + 2.05);
     tl.to([ren, ...Array.from(p.children)], { autoAlpha: 0, duration: .4, ease: 'power2.in' }, end - .45);
     t = end;
   });

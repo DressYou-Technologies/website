@@ -19,7 +19,7 @@ const ICON: Record<CheckKind, { paths: string[]; circles?: [number, number, numb
 <div class="sck">
   <span class="ck-title">{title}</span>
   {checks.map(([kind, label, value]) => (
-    <span class:list={['ck', kind]}>
+    <span class="ck">
       <span class="ck-ico"><svg viewBox="0 0 24 24" aria-hidden="true">{ICON[kind].rect && <rect width="18" height="18" x="3" y="4" rx="2" />}{ICON[kind].paths.map((d) => <path d={d} />)}{(ICON[kind].circles ?? []).map(([cx, cy, r]) => <circle cx={cx} cy={cy} r={r} />)}</svg></span>
       <span class="ck-label">{label}</span>
       <span class="ck-value">{value}</span>
@@ -32,16 +32,8 @@ const ICON: Record<CheckKind, { paths: string[]; circles?: [number, number, numb
   .sck { display: grid; gap: 4px; min-width: min(100%, 340px); max-width: 100%; padding: 14px 14px 12px; border-radius: 20px; background: #fff; box-shadow: 0 0 0 1px rgba(10,10,10,.06), 0 10px 26px rgba(0,0,0,.05); }
   .ck-title { margin: 0 2px 6px; font-size: .8125rem; font-weight: 600; color: #6b6b6b; }
   .ck { display: grid; grid-template-columns: 30px minmax(0, 7.5em) minmax(0, 1fr) 16px; align-items: center; gap: 10px; min-height: 34px; padding: 2px; }
-  /* A soft tint per kind of check, never strong: the colour tells kinds apart, the words carry the meaning. */
-  .ck-ico { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 9px; background: var(--tint); color: var(--hue); }
-  .weather { --tint: #e6eef7; --hue: #44698f; }
-  .calendar { --tint: #ece9f5; --hue: #66579a; }
-  .wardrobe { --tint: #f2ece3; --hue: #8a6a43; }
-  .style { --tint: #f6e8ec; --hue: #9b5068; }
-  .budget { --tint: #e5f0e8; --hue: #3f7552; }
-  .size { --tint: #eceae6; --hue: #55524c; }
-  .delivery { --tint: #f7ece1; --hue: #9a6234; }
-  .outfits { --tint: #e8eef0; --hue: #4b6b72; }
+  /* White icons on black, as the stylist's chosen tab (founder, 2026-10-31): the words carry the meaning. */
+  .ck-ico { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 9px; background: #0a0a0a; color: #fff; }
   svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
   .ck-label { font-size: .875rem; color: #6b6b6b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .ck-value { font-size: .9375rem; font-weight: 600; letter-spacing: -.01em; color: #0a0a0a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
