@@ -94,7 +94,8 @@ export const FEED_TRACKS: [Post[], Post[]] = [
 // "In this look" over the feed tile: naya's post.
 export const LOOK_PIECES: ImageId[] = ['g-black-cap', 'g-trench', 'g-white-tank', 'g-barrel-jeans', 'g-brown-boots'];
 
-// The friends asked in the "Ask a friend" card: a name and a profile photo (src/assets/friends, founder's pictures, 2026-10-31).
+// The friends asked in the "Ask a friend" card: a name and a profile photo (src/assets/friends, original generated
+// avatars, tools/imagery/jobs_v9_friends.py).
 export interface Friend { name: string; photo: ImageId }
 export const FRIENDS: Friend[] = [
   { name: 'Maya', photo: 'friend-cat' },
