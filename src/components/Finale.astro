@@ -16,44 +16,57 @@ const href = (link: string) => { const [page, hash] = link.split('#'); return lo
 const year = new Date().getFullYear();
 ---
 <footer class="finale" id="get" data-tone="dark">
-  <div class="row">
+  <div class="cta">
     <h2 class="mega">{t.finale.mega.map((w) => <span class="w">{w}</span>)}</h2>
-    <div class="join">
-      <p class="lede">{t.finale.notify}</p>
-      <NotifyForm lang={lang} dark />
-      <GetLink kind="extension" class="xchip"><svg viewBox="0 0 24 24" aria-hidden="true" width="16" height="16"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle><path d="M21.17 8H12"></path><path d="M3.95 6.06 8.54 14"></path><path d="M10.88 21.94 15.46 14"></path></svg>{t.finale.extension}{!LINKS.extensionUrl && <span>{t.finale.soon}</span>}</GetLink>
-    </div>
+    <p class="lede">{t.finale.notify}</p>
+    <NotifyForm lang={lang} dark />
+    <GetLink kind="extension" class="xchip"><svg viewBox="0 0 24 24" aria-hidden="true" width="16" height="16"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle><path d="M21.17 8H12"></path><path d="M3.95 6.06 8.54 14"></path><path d="M10.88 21.94 15.46 14"></path></svg>{t.finale.extension}{!LINKS.extensionUrl && <span>{t.finale.soon}</span>}</GetLink>
   </div>
-  <nav class="cols" aria-label={t.finale.footer}>
-    {t.finale.columns.map(({ label, links }) => (
-      <div><p>{label}</p>{links.map(([text, link]) => <a href={href(link)}>{text}</a>)}</div>
-    ))}
-    <div><p>{t.lang.heading}</p><a href={localize(other, path)} hreflang={other} lang={other}>{t.lang.switchTo}</a></div>
-  </nav>
-  <div class="base">
-    <Image src={logo} height={22} densities={[1, 2]} alt="DressYou" />
-    <p class="facts"><span>© {year} DressYou Technologies</span><span>47 rue Vivienne, 75002 Paris</span><a href={`mailto:${LINKS.email}`}>{LINKS.email}</a></p>
+  <div class="links">
+    <Image class="logo" src={logo} height={24} densities={[1, 2]} alt="DressYou" />
+    <nav class="cols" aria-label={t.finale.footer}>
+      {t.finale.columns.map(({ label, links }) => (
+        <div><p>{label}</p>{links.map(([text, link]) => <a href={href(link)}>{text}</a>)}</div>
+      ))}
+      <div><p>{t.lang.heading}</p><a href={localize(other, path)} hreflang={other} lang={other}>{t.lang.switchTo}</a></div>
+    </nav>
   </div>
+  <p class="base"><span>© {year} DressYou Technologies</span><span>47 rue Vivienne, 75002 Paris</span><a href={`mailto:${LINKS.email}`}>{LINKS.email}</a></p>
 </footer>
 
 <style>
-  .finale { margin: 0 12px 12px; padding: clamp(40px, 6svh, 72px) clamp(20px, 3vw, 48px) clamp(24px, 3svh, 32px); border-radius: 28px; background: radial-gradient(110% 90% at 85% 0%, #2a2a2e 0%, #151517 45%, #0e0e10 100%); color: #fff; display: grid; gap: clamp(36px, 6svh, 72px); }
-  .row { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 32px 48px; }
-  .mega { margin: 0; font-size: clamp(2.875rem, 8vw, 7rem); font-weight: 700; letter-spacing: -.06em; line-height: .95; }
-  .w { display: block; white-space: nowrap; }
-  .join { flex: 0 1 420px; min-width: min(100%, 300px); display: grid; gap: 14px; }
-  .lede { margin: 0; color: #cfcfcf; font-size: 1.0625rem; line-height: 1.4; text-wrap: balance; }
-  .join :global(.xchip) { justify-self: start; display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 14px 0 12px; border: 0; border-radius: 999px; background: none; color: #cfcfcf; font: inherit; font-size: .875rem; font-weight: 600; text-decoration: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,.16); cursor: pointer; transition: color .2s, box-shadow .2s; }
-  .join :global(.xchip:hover) { color: #fff; box-shadow: inset 0 0 0 1px rgba(255,255,255,.4); }
-  .join :global(.xchip svg) { fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
-  .join :global(.xchip span) { font-family: var(--font-mono); font-size: 9px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: #8a8a8a; }
-  .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 28px 32px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,.1); }
+  /* Top room clears the fixed header when the footer reaches the top of the screen. */
+  .finale { margin: 0 12px 12px; padding: clamp(104px, 13svh, 136px) clamp(20px, 4vw, 56px) clamp(22px, 3svh, 30px); border-radius: 28px; background: radial-gradient(120% 80% at 50% 0%, #2a2a2e 0%, #151517 48%, #0e0e10 100%); color: #fff; display: grid; gap: clamp(48px, 8svh, 88px); box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
+
+  /* The call to sign up, centred: headline, one line, the field, the fine print, then the extension. */
+  .cta { display: grid; justify-items: center; gap: 18px; width: min(100%, 560px); margin: 0 auto; text-align: center; }
+  .mega { margin: 0 0 6px; font-size: clamp(2.75rem, 8vw, 6.5rem); font-weight: 700; letter-spacing: -.06em; line-height: .95; }
+  .w { display: block; }
+  .lede { margin: 0; color: #cfcfcf; font-size: 1.0625rem; line-height: 1.4; }
+  .cta :global(.xchip) { display: inline-flex; align-items: center; gap: 8px; height: 36px; margin-top: 4px; padding: 0 14px 0 12px; border: 0; border-radius: 999px; background: none; color: #cfcfcf; font: inherit; font-size: .875rem; font-weight: 600; text-decoration: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,.16); cursor: pointer; transition: color .2s, box-shadow .2s; }
+  .cta :global(.xchip:hover) { color: #fff; box-shadow: inset 0 0 0 1px rgba(255,255,255,.4); }
+  .cta :global(.xchip svg) { fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .cta :global(.xchip span) { font-family: var(--font-mono); font-size: 9px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: #8a8a8a; }
+
+  /* The logo, then the four link columns, on one grid line. */
+  .links { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 3fr); gap: 32px; align-items: start; padding-top: 36px; border-top: 1px solid rgba(255,255,255,.1); }
+  .links :global(.logo) { width: auto; height: 24px; }
+  .cols { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px 24px; }
   .cols div { display: grid; gap: 10px; align-content: start; }
   .cols p { margin: 0 0 4px; font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: #8a8a8a; }
-  .cols a, .facts a { color: #cfcfcf; font-size: .9375rem; text-decoration: none; transition: color .2s; }
-  .cols a:hover, .facts a:hover { color: #fff; }
-  .base { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,.1); }
-  .base img { width: auto; height: 22px; }
-  .facts { display: flex; flex-wrap: wrap; gap: 6px 20px; margin: 0; color: #8a8a8a; font-size: .8125rem; }
-  .facts a { font-size: .8125rem; }
+  .cols a, .base a { color: #cfcfcf; font-size: .9375rem; text-decoration: none; transition: color .2s; }
+  .cols a:hover, .base a:hover { color: #fff; }
+  .base { display: flex; flex-wrap: wrap; gap: 6px 22px; margin: 0; padding-top: 22px; border-top: 1px solid rgba(255,255,255,.08); color: #8a8a8a; font-size: .8125rem; }
+  .base a { font-size: .8125rem; }
+
+  /* Tablets: the logo above the columns. Phones: everything centred, the columns two by two. */
+  @media (max-width: 899.98px) {
+    .links { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 599.98px) {
+    .finale { padding-inline: 20px; }
+    .links { justify-items: center; text-align: center; }
+    .cols { grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; gap: 28px 16px; }
+    .base { flex-direction: column; align-items: center; gap: 6px; text-align: center; }
+  }
 </style>

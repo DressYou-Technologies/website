@@ -142,6 +142,18 @@ test('without a store link the app dialog asks for an email to notify', () => {
   }
 });
 
+test('the sign-up answer shows below the email field and its button, never inside them', () => {
+  for (const lang of LANGS) {
+    for (const form of home[lang].match(/<form class="notify[\s\S]*?<\/form>/g)) {
+      const row = form.match(/<div class="row"[^>]*>[\s\S]*?<\/div>/)?.[0] ?? '';
+      assert.match(row, /type="email"/, `${lang}: the field is in the row`);
+      assert.match(row, /type="submit"/, `${lang}: the button is in the row`);
+      assert.doesNotMatch(row, /class="status/, `${lang}: the answer is inside the row`);
+      assert.ok(form.indexOf('class="status') > form.indexOf(row), `${lang}: the answer comes after the row`);
+    }
+  }
+});
+
 test('without a store link the extension dialog shows its demo and no link out', () => {
   for (const lang of LANGS) {
     const dialog = dialogOf(lang, 'extension');
