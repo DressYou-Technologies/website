@@ -1,0 +1,18 @@
+---
+import Doc from '../layouts/Doc.astro';
+import { LINKS } from '../data/site';
+---
+<Doc lang="fr" title="Confidentialité" path="/privacy" updated="30 octobre 2026">
+  <p>Cette notice couvre uniquement ce site. L'application DressYou aura sa propre politique de confidentialité.</p>
+  <h2>Ce que ce site collecte</h2>
+  <p>Le site ne dépose aucun cookie, n'utilise ni mesure d'audience ni publicité, et votre navigateur ne charge rien depuis les serveurs d'autres entreprises.</p>
+  <h2>Recevoir l'annonce de sortie de l'app</h2>
+  <p>Si vous demandez cette annonce, nous conservons votre adresse e-mail pour vous envoyer un seul message à la sortie de l'application DressYou, et pour rien d'autre. Brevo (Sendinblue SAS, 9-17 rue Salneuve, 75017 Paris, France) conserve l'adresse pour notre compte et vous envoie d'abord un e-mail pour la confirmer, afin que personne ne puisse vous inscrire à votre insu. Nous supprimons l'adresse une fois l'e-mail de lancement envoyé, ou dès que vous vous désinscrivez.</p>
+  <p>Ce traitement repose sur votre consentement. Vous pouvez le retirer à tout moment grâce au lien présent dans chaque e-mail, ou en écrivant à <a href={`mailto:${LINKS.email}`}>{LINKS.email}</a>.</p>
+  <h2>Hébergement</h2>
+  <p>Notre hébergeur, Vercel Inc., traite les données techniques que transporte toute requête vers un site web, comme votre adresse IP et le type de navigateur, pour afficher les pages et sécuriser le service. Vercel agit pour notre compte et conserve ces journaux pendant une durée limitée.</p>
+  <h2>Nous écrire</h2>
+  <p>Si vous écrivez à <a href={`mailto:${LINKS.email}`}>{LINKS.email}</a>, nous utilisons votre adresse et votre message uniquement pour vous répondre, et les supprimons dès qu'ils ne sont plus nécessaires à cette fin.</p>
+  <h2>Vos droits</h2>
+  <p>Vous pouvez demander l'accès à vos données, leur rectification ou leur effacement, ou vous opposer à leur utilisation, en écrivant à <a href={`mailto:${LINKS.email}`}>{LINKS.email}</a>. Vous pouvez aussi adresser une réclamation à la CNIL sur cnil.fr.</p>
+</Doc>

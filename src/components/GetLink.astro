@@ -1,0 +1,11 @@
+---
+import { LINKS } from '../data/site';
+
+// "Get the app" always opens its dialog (QR code, or "coming soon."); the extension links out once it has a store page.
+interface Props { kind: 'app' | 'extension'; class?: string; [attr: string]: unknown }
+const { kind, class: className, ...rest } = Astro.props;
+const href = kind === 'extension' ? LINKS.extensionUrl : null;
+---
+{href
+  ? <a class={className} href={href} target="_blank" rel="noopener" {...rest}><slot /></a>
+  : <button type="button" class={className} data-get={kind} aria-haspopup="dialog" {...rest}><slot /></button>}

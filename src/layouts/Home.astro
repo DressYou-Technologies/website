@@ -1,0 +1,35 @@
+---
+import Base from './Base.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import How from '../components/How.astro';
+import More from '../components/More.astro';
+import Stylist from '../components/Stylist.astro';
+import Finale from '../components/Finale.astro';
+import GetDialog from '../components/GetDialog.astro';
+import type { Lang } from '../i18n/lang';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+---
+<Base lang={lang} path="/">
+  <Header lang={lang} path="/" />
+  <main>
+    <Hero lang={lang} />
+    <How lang={lang} />
+    <More lang={lang} />
+    <Stylist lang={lang} />
+  </main>
+  <Finale lang={lang} path="/" />
+  <GetDialog lang={lang} />
+</Base>
+
+<script>
+  import { landOnHash, startChrome } from '../scripts/chrome';
+  import { startMotion } from '../motion/index';
+  import { fitPhone } from '../motion/how';
+  startChrome();
+  fitPhone();
+  startMotion();
+  landOnHash();
+</script>

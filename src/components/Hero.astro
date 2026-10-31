@@ -1,0 +1,63 @@
+---
+import { Image, Picture } from 'astro:assets';
+import GetLink from './GetLink.astro';
+import DownloadIcon from './DownloadIcon.astro';
+import { WALL } from '../data/site';
+import { image } from '../lib/image';
+import { cylinder } from '../lib/cylinder';
+import appIcon from '../assets/brand/app-icon.png';
+import { COPY } from '../i18n/copy';
+import type { Lang } from '../i18n/lang';
+
+interface Props { lang: Lang }
+const t = COPY[Astro.props.lang];
+const columns = cylinder(WALL.length);
+---
+<section class="hero">
+  <div class="band" data-tone="dark">
+    <div class="stack" aria-hidden="true">
+      <div class="wall">
+        {WALL.map((tiles, i) => (
+          <div class="col" style={`--x:${columns[i].x}; --z:${columns[i].z}; --ry:${columns[i].rotateY}deg; --o:${columns[i].opacity.toFixed(2)}`}>
+            <div class="lift"><div class="track">
+              {tiles.map((id) => <Picture src={image(id)} formats={['avif', 'webp']} widths={[220, 320, 440]} sizes="clamp(132px, 12vw, 196px)" alt="" loading="eager" decoding="async" />)}
+            </div></div>
+          </div>
+        ))}
+      </div>
+    </div>
+    <div class="shade" aria-hidden="true"></div>
+    <div class="hero-cta">
+      <h1>{t.hero.lines.map((line) => <span class="line"><span>{line}</span></span>)}</h1>
+      <p class="sub">{t.hero.sub}</p>
+      <div class="dock">
+        <GetLink kind="app" class="dock-app"><Image src={appIcon} width={40} height={40} densities={[1, 2]} alt="" />{t.get.app}</GetLink>
+        <GetLink kind="extension" class="dock-ext"><DownloadIcon size={18} />{t.get.extension}</GetLink>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero { min-height: 100svh; display: flex; flex-direction: column; --w: clamp(110px, 10vw, 160px); --gap: clamp(8px, 1vw, 16px); }
+  .band { position: relative; flex: 1; min-height: clamp(360px, 40vw, 420px); margin: 12px; border-radius: 28px; background: radial-gradient(120% 90% at 50% 0%, #2a2a2a 0%, #0b0b0b 55%, #000 100%); overflow: hidden; }
+  .stack { position: absolute; inset: 0; perspective: 1600px; perspective-origin: 50% 50%; }
+  .wall { position: absolute; left: 50%; top: 50%; width: 0; height: 0; transform-style: preserve-3d; }
+  .col { position: absolute; left: calc(var(--w) / -2); top: calc(var(--w) * -3 - var(--gap)); opacity: var(--o); transform: translate3d(calc(var(--x) * var(--w)), 0, calc(var(--z) * var(--w))) rotateY(var(--ry)); }
+  .track { display: flex; flex-direction: column; gap: var(--gap); will-change: transform; backface-visibility: hidden; }
+  .track :global(picture) { display: block; }
+  .track :global(img) { display: block; width: var(--w); height: auto; aspect-ratio: 1 / 2; object-fit: cover; border-radius: 18px; background: #ececea; }
+  .shade { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(62% 52% at 50% 55%, rgba(0,0,0,.8), rgba(0,0,0,.4) 60%, rgba(0,0,0,0) 88%), linear-gradient(180deg, rgba(11,11,11,.75), rgba(11,11,11,0) 26%, rgba(11,11,11,0) 70%, rgba(11,11,11,.6)); }
+  .hero-cta { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: clamp(24px, 4vh, 40px); padding: 96px 20px 40px; text-align: center; color: #fff; pointer-events: none; }
+  h1 { margin: 0; font-size: clamp(2.75rem, 7.4vw, 7rem); font-weight: 700; letter-spacing: -.055em; line-height: .98; text-wrap: balance; text-shadow: 0 2px 24px rgba(0,0,0,.45); }
+  .line { display: block; padding-bottom: .06em; }
+  .sub { max-width: 34ch; margin: calc(-1 * clamp(8px, 2vh, 20px)) 0 0; color: rgba(255,255,255,.82); font-size: clamp(1rem, 1.4vw, 1.25rem); font-weight: 500; line-height: 1.4; text-wrap: balance; text-shadow: 0 1px 14px rgba(0,0,0,.5); }
+  .line > span { display: inline-block; }
+  .dock { pointer-events: auto; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; }
+  .dock :global(.dock-app) { display: inline-flex; align-items: center; gap: 14px; height: 64px; padding: 0 30px 0 12px; border: 0; border-radius: 22px; background: #fff; color: #0a0a0a; font: inherit; font-weight: 700; font-size: 1rem; white-space: nowrap; cursor: pointer; transition: transform .25s ease; }
+  .dock :global(.dock-app:active) { transform: scale(.98); }
+  .dock :global(.dock-app img) { width: 40px; height: 40px; flex: none; border-radius: 13px; box-shadow: 0 2px 6px rgba(0,0,0,.18); }
+  .dock :global(.dock-ext) { display: inline-flex; align-items: center; gap: 10px; height: 64px; max-width: clamp(0px, (100vw - 600px) * 100, 280px); overflow: hidden; padding: 0 clamp(0px, (100vw - 600px) * 100, 28px); border: 0; border-radius: 22px; background: radial-gradient(closest-side, rgba(0,0,0,.6) 0%, rgba(0,0,0,.32) 55%, rgba(0,0,0,0) 100%); color: #fff; font: inherit; font-weight: 700; font-size: 1rem; text-decoration: none; white-space: nowrap; cursor: pointer; }
+  /* Below 600 px the extension button folds away (the export's clamp); out of the tab order too. After the rule above. */
+  @media (max-width: 599.98px) { .dock :global(.dock-ext) { display: none; } }
+</style>

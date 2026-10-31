@@ -1,0 +1,143 @@
+---
+import { Image } from 'astro:assets';
+import GetLink from './GetLink.astro';
+import DownloadIcon from './DownloadIcon.astro';
+import { LINKS } from '../data/site';
+import { qrSvg } from '../lib/qr';
+import { COPY } from '../i18n/copy';
+import { LANGS, localize, type Lang } from '../i18n/lang';
+import mark from '../assets/brand/mark-white.png';
+
+interface Props { lang: Lang; path: string }
+const { lang, path } = Astro.props;
+const t = COPY[lang];
+---
+<header class="top">
+  <a class="brand" href={localize(lang, '/')} aria-label="DressYou"><Image src={mark} width={26} height={26} densities={[1, 2]} alt="" /></a>
+  <div class="bar">
+    <GetLink kind="extension" class="hdr-ext"><DownloadIcon size={16} />{t.get.extension}</GetLink>
+    <span class="hdr-app">
+      <GetLink kind="app">{t.get.app}</GetLink>
+      {LINKS.appUrl && (
+        <span class="qr-pop"><span><span class="qr-box" role="img" aria-label={t.get.qr} set:html={qrSvg(LINKS.appUrl)} /></span></span>
+      )}
+    </span>
+    <button type="button" class="hdr-burger" popovertarget="menu" aria-label={t.menu.label}><span class="bars" aria-hidden="true"><i></i><i></i></span></button>
+  </div>
+  <!-- A popover: the browser opens and closes it, Escape and a click outside included, with or without the page's script. -->
+  <div id="menu" class="menu-pop" popover>
+    <button type="button" class="menu-close" popovertarget="menu" popovertargetaction="hide" aria-label={t.dialog.close}><svg viewBox="0 0 24 24" aria-hidden="true" width="20" height="20"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
+    <nav aria-label={t.menu.label}>{t.menu.links.map(([label, link]) => <a class="menu-item" href={localize(lang, link)}>{label}</a>)}</nav>
+    <div class="menu-get">
+      <GetLink kind="app" class="menu-app">{t.get.app}</GetLink>
+      <GetLink kind="extension" class="menu-ext"><DownloadIcon size={16} />{t.get.extension}</GetLink>
+    </div>
+    <div class="menu-item menu-langs">{LANGS.map((l, k) => <>
+      {k > 0 && <span class="slash" aria-hidden="true">/</span>}
+      {l === lang
+        ? <span class="on" aria-current="true">{l.toUpperCase()}</span>
+        : <a href={localize(l, path)} hreflang={l} lang={l} aria-label={t.lang.label}>{l.toUpperCase()}</a>}
+    </>)}</div>
+  </div>
+</header>
+
+<style>
+  .top {
+    position: fixed; z-index: 10; top: 24px; left: 0; right: 0; margin: 0 auto;
+    width: calc(100% - 2 * (12px + clamp(16px, 3vw, 32px)) + 16px);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 10px 10px 20px; border-radius: 22px; color: #fff; background-color: rgba(14,14,14,0);
+    transition: width .45s cubic-bezier(.2,.7,.2,1), background-color .35s, box-shadow .35s,
+      padding .42s cubic-bezier(.32,.94,.3,1), top .42s cubic-bezier(.32,.94,.3,1), border-radius .42s cubic-bezier(.32,.94,.3,1);
+  }
+  .top.folded, :global(html:not(.js)) .top { width: min(520px, calc(100% - 24px)); background-color: rgba(14,14,14,.78); backdrop-filter: blur(14px); box-shadow: 0 12px 32px rgba(0,0,0,.18); }
+
+  /* On the hero, which has its own buttons, the header keeps only its menu; the symbol and the buttons come in after it. */
+  .brand { display: flex; align-items: center; text-decoration: none; transition: opacity .5s cubic-bezier(.65,0,.35,1), visibility .5s; }
+  .brand :global(img) { width: 26px; height: 26px; }
+  :global(html.js) .top:not(.app-shown) .brand, :global(html.js) .top:not(.app-shown) .bar :global(.hdr-ext) { opacity: 0; visibility: hidden; }
+
+  .bar { display: flex; align-items: center; gap: 4px; }
+  .bar :global(.hdr-ext) {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 42px;
+    max-width: clamp(0px, (100vw - 600px) * 100, 240px); padding: 0 clamp(0px, (100vw - 600px) * 100, 20px); overflow: hidden;
+    border: 0; border-radius: 14px; background: rgba(255,255,255,.14); color: #fff; font: inherit; font-weight: 600; font-size: .9375rem; text-decoration: none; white-space: nowrap; cursor: pointer;
+    transition: height .42s cubic-bezier(.32,.94,.3,1), font-size .42s cubic-bezier(.32,.94,.3,1), border-radius .42s cubic-bezier(.32,.94,.3,1), background-color .35s;
+  }
+  .folded .bar :global(.hdr-ext) { background-color: rgba(255,255,255,0); }
+
+  .hdr-app { position: relative; display: inline-flex; max-width: 0; margin-left: -4px; opacity: 0; visibility: hidden; overflow: hidden; pointer-events: none; transition: max-width .6s cubic-bezier(.65,0,.35,1), margin-left .6s cubic-bezier(.65,0,.35,1), opacity .6s cubic-bezier(.65,0,.35,1), visibility .6s; }
+  .hdr-app > :global(button) {
+    display: inline-flex; align-items: center; justify-content: center; height: 42px; padding: 0 20px; border: 0; border-radius: 14px;
+    background: #fff; color: #0a0a0a; font: inherit; font-weight: 600; font-size: .9375rem; white-space: nowrap; cursor: pointer;
+    transform: translateX(14px) scale(.92);
+    transition: transform .55s cubic-bezier(.65,0,.35,1), height .42s cubic-bezier(.32,.94,.3,1), font-size .42s cubic-bezier(.32,.94,.3,1), border-radius .42s cubic-bezier(.32,.94,.3,1);
+  }
+
+  /* The export's burger: two bars that cross while the menu is open. 44 px keeps the touch target. */
+  .hdr-burger { display: grid; place-items: center; width: 44px; height: 44px; margin-left: 2px; padding: 0; border: 0; border-radius: 14px; background: transparent; color: #fff; cursor: pointer; transition: background-color .2s, color .45s ease; }
+  .hdr-burger:hover { background-color: rgba(255,255,255,.1); }
+  .bars { position: relative; display: block; width: 16px; height: 10px; }
+  .bars i { position: absolute; left: 0; right: 0; height: 1.6px; border-radius: 1px; background: currentColor; transition: transform .32s cubic-bezier(.32,.94,.3,1), top .32s cubic-bezier(.32,.94,.3,1); }
+  .bars i:first-child { top: 0; }
+  .bars i:last-child { top: 8px; }
+  .top:has(.menu-pop:popover-open) .bars i { top: 4px; }
+  .top:has(.menu-pop:popover-open) .bars i:first-child { transform: rotate(45deg); }
+  .top:has(.menu-pop:popover-open) .bars i:last-child { transform: rotate(-45deg); }
+
+  /* Opened in the top layer under the header's right edge; the script measures that edge, these values hold without it. */
+  .menu-pop { inset: var(--menu-top, 76px) var(--menu-right, 12px) auto auto; width: min(300px, calc(100vw - 24px)); margin: 0; padding: 24px 24px 16px; border: 0; border-radius: 24px; color: #0a0a0a; background: #fff; box-shadow: 0 30px 80px rgba(0,0,0,.3), 0 0 0 1px rgba(10,10,10,.04); transform-origin: 100% 0; }
+  .menu-pop::backdrop { background: transparent; }
+  .menu-pop nav { display: grid; gap: 4px; }
+  a.menu-item { display: block; padding: 2px 0; color: #0a0a0a; font-size: clamp(1.5rem, 2.4vw, 1.875rem); font-weight: 700; letter-spacing: -.045em; line-height: 1.15; text-decoration: none; transition: color .2s; }
+  a.menu-item:hover { color: #8a8a8a; }
+  .menu-langs { display: flex; align-items: center; gap: 8px; margin-top: 22px; padding-top: 12px; border-top: 1px solid rgba(10,10,10,.08); font-size: .9375rem; font-weight: 700; letter-spacing: -.01em; }
+  .menu-langs a, .menu-langs span { padding: 4px 2px; color: #0a0a0a; text-decoration: none; }
+  .menu-langs a { opacity: .35; transition: opacity .2s; }
+  .menu-langs a:hover { opacity: 1; }
+  .menu-langs .slash { padding: 0; color: #c8c8c8; }
+  /* Below 600 px the header's extension button folds away, so the menu carries both ways to get DressYou. */
+  .menu-get { display: none; }
+  .menu-get :global(.menu-app), .menu-get :global(.menu-ext) { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 48px; border: 0; border-radius: 14px; font: inherit; font-weight: 600; font-size: .9375rem; text-decoration: none; cursor: pointer; }
+  .menu-get :global(.menu-app) { background: #0a0a0a; color: #fff; }
+  .menu-get :global(.menu-ext) { background: #f1f1ef; color: #0a0a0a; }
+  .menu-close { display: none; }
+  /* Phones: the header is the menu button alone, and the menu takes the whole screen, dark like the site's cards,
+     with its own close button where the menu button was and the page held still behind it. */
+  @media (max-width: 599.98px) {
+    /* The menu button floats alone, with no plate: it turns ink over light sections and white over dark ones (chrome.ts). */
+    .top, .top.folded { top: 12px; left: auto; right: 12px; width: auto; padding: 0; border-radius: 16px; background-color: transparent; backdrop-filter: none; box-shadow: none; }
+    :global(html:not(.js)) .top { background-color: rgba(14,14,14,.6); }
+    .hdr-burger:hover { background-color: transparent; }
+    .top.on-light .hdr-burger { color: #0a0a0a; }
+    .brand, .hdr-app { display: none; }
+    .menu-pop { inset: 0; width: 100%; height: 100dvh; max-width: none; max-height: none; padding: calc(env(safe-area-inset-top) + 96px) 28px calc(env(safe-area-inset-bottom) + 28px); border-radius: 0; color: #fff; background: #0a0a0b; box-shadow: none; }
+    .menu-pop:popover-open { display: flex; flex-direction: column; }
+    .menu-close { position: absolute; top: calc(env(safe-area-inset-top) + 12px); right: 12px; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 16px; background: rgba(255,255,255,.1); color: #fff; cursor: pointer; }
+    .menu-close svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+    .menu-pop nav { gap: 6px; }
+    a.menu-item { padding: 6px 0; color: #fff; font-size: 2.25rem; }
+    a.menu-item:hover { color: #a1a1a1; }
+    .menu-get { display: grid; gap: 10px; margin-top: auto; padding-top: 28px; }
+    .menu-get :global(.menu-app) { height: 54px; background: #fff; color: #0a0a0a; }
+    .menu-get :global(.menu-ext) { height: 54px; background: rgba(255,255,255,.1); color: #fff; }
+    .menu-langs { border-top-color: rgba(255,255,255,.12); }
+    .menu-langs a, .menu-langs span { color: #fff; }
+    .menu-langs .slash { color: rgba(255,255,255,.3); }
+    :global(html:has(.menu-pop:popover-open)) { overflow: hidden; }
+  }
+
+  /* Past the hero, "Get the app" opens beside the menu. */
+  .app-shown .hdr-app { max-width: 220px; margin-left: 0; opacity: 1; visibility: visible; overflow: visible; pointer-events: auto; transition-delay: .08s; }
+  /* Below 600 px the extension buttons fold away (the export's clamp); out of the tab order too. */
+  @media (max-width: 599.98px) { .bar :global(.hdr-ext) { display: none; } }
+  .app-shown .hdr-app > :global(button) { transform: none; transition-delay: .12s; }
+
+  .qr-pop { position: absolute; top: 100%; left: 50%; z-index: 20; padding-top: 12px; transform: translateX(-50%); visibility: hidden; opacity: 0; transition: opacity .2s, visibility 0s .2s; }
+  .qr-pop > span { display: block; padding: 14px; border-radius: 20px; background: #fff; color: #0a0a0a; box-shadow: 0 20px 50px rgba(0,0,0,.22), 0 0 0 1px rgba(10,10,10,.06); }
+  .qr-box { display: block; width: 148px; height: 148px; }
+  .qr-box :global(svg) { width: 100%; height: 100%; display: block; }
+  @media (hover: hover) {
+    .app-shown .hdr-app:hover .qr-pop { visibility: visible; opacity: 1; transition: opacity .2s; }
+  }
+</style>
