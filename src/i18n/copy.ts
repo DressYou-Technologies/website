@@ -100,7 +100,6 @@ const en = {
     extension: 'Chrome extension',
     soon: 'coming soon',
     columns: [
-      { label: 'Product', links: [['How it works', '/#how'], ['Wardrobe', '/#more'], ['Stylist', '/#stylist']] },
       { label: 'Company', links: companyEn },
       { label: 'Legal', links: [['Legal notice', '/legal'], ['Privacy', '/privacy'], ['Terms', '/terms']] },
     ],
@@ -201,7 +200,6 @@ const fr: Copy = {
     extension: 'Extension Chrome',
     soon: 'bientôt',
     columns: [
-      { label: 'Produit', links: [['Comment ça marche', '/#how'], ['Garde-robe', '/#more'], ['Styliste', '/#stylist']] },
       { label: 'Entreprise', links: companyFr },
       { label: 'Légal', links: [['Mentions légales', '/legal'], ['Confidentialité', '/privacy'], ['Conditions', '/terms']] },
     ],
