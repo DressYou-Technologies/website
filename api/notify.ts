@@ -6,12 +6,15 @@ const MAX_BODY_BYTES = 2048;
 const MAX_EMAIL_LENGTH = 254;           // RFC 5321 path limit
 const MIN_HUMAN_MS = 1500;              // a person takes longer than this to type an address
 const BREVO_TIMEOUT_MS = 8000;
-// French sits at the root and English under /en, as on the site; anything else gets the French page.
-const CONFIRMED_PATHS: Record<string, string> = { fr: '/notified', en: '/en/notified' };
+// French sits at the root and English under /en, as on the site. The confirmation email and the page after it are in
+// the language the person signed up in; anything else gets French.
+type Lang = 'fr' | 'en';
+const CONFIRMED_PATHS: Record<Lang, string> = { fr: '/notified', en: '/en/notified' };
+const languageOf = (lang: unknown): Lang => (lang === 'en' ? 'en' : 'fr');
 // Deliberately loose: one @, something before it, and a dotted domain. Brevo's own check is the strict one.
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-type Env = Partial<Record<'BREVO_API_KEY' | 'BREVO_LIST_ID' | 'BREVO_DOI_TEMPLATE_ID', string>>;
+type Env = Partial<Record<'BREVO_API_KEY' | 'BREVO_LIST_ID' | 'BREVO_DOI_TEMPLATE_ID_FR' | 'BREVO_DOI_TEMPLATE_ID_EN', string>>;
 type Fetcher = (url: string, init: { method: string; headers: Record<string, string>; body: string; signal: AbortSignal }) => Promise<Response>;
 
 const answer = (status: number, body: Record<string, unknown> = {}) =>
@@ -31,14 +34,15 @@ export async function handle(request: Request, env: Env, fetcher: Fetcher): Prom
   if (website !== '' || typeof elapsed !== 'number' || elapsed < MIN_HUMAN_MS) return answer(200, { ok: true });
   if (typeof email !== 'string' || email.length > MAX_EMAIL_LENGTH || !EMAIL.test(email.trim())) return answer(400, { error: 'email' });
 
-  const { BREVO_API_KEY: key, BREVO_LIST_ID: list, BREVO_DOI_TEMPLATE_ID: template } = env;
-  if (!key || !list || !template) return answer(503, { error: 'closed' });
+  const { BREVO_API_KEY: key, BREVO_LIST_ID: list, BREVO_DOI_TEMPLATE_ID_FR: fr, BREVO_DOI_TEMPLATE_ID_EN: en } = env;
+  if (!key || !list || !fr || !en) return answer(503, { error: 'closed' });
+  const language = languageOf(lang), template = language === 'en' ? en : fr;
 
   try {
     const res = await fetcher(BREVO_DOI_URL, {
       method: 'POST',
       headers: { 'api-key': key, 'content-type': 'application/json', accept: 'application/json' },
-      body: JSON.stringify({ email: email.trim(), includeListIds: [Number(list)], templateId: Number(template), redirectionUrl: `${origin}${CONFIRMED_PATHS[typeof lang === 'string' && Object.hasOwn(CONFIRMED_PATHS, lang) ? lang : 'fr']}` }),
+      body: JSON.stringify({ email: email.trim(), includeListIds: [Number(list)], templateId: Number(template), redirectionUrl: `${origin}${CONFIRMED_PATHS[language]}` }),
       signal: AbortSignal.timeout(BREVO_TIMEOUT_MS),
     });
     if (res.ok) return answer(200, { ok: true });
