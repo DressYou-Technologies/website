@@ -38,6 +38,8 @@ const ICON = {
   change: ['M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8', 'M21 3v5h-5', 'M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16', 'M8 16H3v5'],
   friends: ['M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2', 'M22 21v-2a4 4 0 0 0-3-3.87', 'M16 3.13a4 4 0 0 1 0 7.75'],
   up: ['m5 12 7-7 7 7', 'M12 19V5'], check: ['M20 6 9 17l-5-5'],
+  ruler: ['M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z', 'm14.5 12.5 2-2', 'm11.5 9.5 2-2', 'm8.5 6.5 2-2', 'm17.5 15.5 2-2'],
+  heart: ['M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z'],
 };
 type Icon = keyof typeof ICON;
 // Circles the paths above leave out, per icon.
@@ -145,14 +147,21 @@ const SHARE_ROW = MENU_ICONS.indexOf('share');
             </div>
             <Picture class="frame" src={frame} formats={['avif', 'webp']} widths={[330, 660, 990]} sizes="330px" alt="" loading="lazy" />
           </div>
-          {t.scenes.map(({ label, rows, q, a }, i) => (
+          {t.scenes.map((scene, i) => (
             <div class:list={['hpop', { first: i === 0 }]}>
-              <div class="hsz"><span class="label">{label}</span>{rows.map(([letter, fit, why], k) => (
-                <span class:list={['hszr', { chosen: k === 0 }]}><span class="letter">{letter}</span><span class="why"><b>{fit}</b><span>{why}</span></span></span>
-              ))}</div>
-              <div class="hq">{q}</div>
+              {scene.kind === 'size'
+                ? <div class="hsz size">
+                    <span class="label">{t.sizeCard.label}</span>
+                    <span class="szchips">{scene.sizes.map((z) => <span class={z === scene.fit ? 'szc fit' : z === scene.style ? 'szc style' : 'szc'}>{z}</span>)}</span>
+                    <span class="sztag fit"><svg viewBox="0 0 24 24">{ICON.ruler.map((d) => <path d={d} />)}</svg><b>{scene.fit}</b> {t.sizeCard.fit}</span>
+                    <span class="sztag style"><svg viewBox="0 0 24 24"><path class="fill" d={ICON.heart[0]} /></svg><b>{scene.style}</b> {t.sizeCard.style}</span>
+                  </div>
+                : <div class="hsz"><span class="label">{scene.label}</span>{scene.rows.map(([letter, fit, why], k) => (
+                    <span class:list={['hszr', { chosen: k === 0 }]}><span class="letter">{letter}</span><span class="why"><b>{fit}</b><span>{why}</span></span></span>
+                  ))}</div>}
+              <div class="hq">{scene.q}</div>
               <div class="hdots"><i></i><i></i><i></i></div>
-              <div class="ha"><span>{a}</span></div>
+              <div class="ha"><span>{scene.a}</span></div>
             </div>
           ))}
         </div>
@@ -335,6 +344,17 @@ const SHARE_ROW = MENU_ICONS.indexOf('share');
   .hszr.chosen { box-shadow: inset 0 0 0 1.5px #0a0a0a; }
   .letter { flex: none; min-width: 34px; height: 34px; padding: 0 6px; border-radius: 11px; background: #f1f1ef; color: #0a0a0a; display: grid; place-items: center; font-size: 16px; font-weight: 700; }
   .chosen .letter { background: #0a0a0a; color: #fff; }
+  /* The app's size picker: every size, the one that fits filled ink with a ruler, the one to taste outlined rose with a heart. */
+  .hsz.size { min-width: 240px; gap: 10px; padding: 12px 12px 14px; }
+  .szchips { display: flex; gap: 5px; }
+  .szc { flex: 1; display: grid; place-items: center; min-width: 34px; height: 36px; border-radius: 10px; background: #efeeeb; color: #0a0a0a; font-size: 13px; font-weight: 500; }
+  .szc.fit { background: #0a0a0b; color: #f4f4f2; font-weight: 700; }
+  .szc.style { box-shadow: inset 0 0 0 1.5px #c96a7e; }
+  .sztag { display: flex; align-items: center; gap: 7px; padding: 0 4px; font-size: 13px; color: #3a3a3c; white-space: nowrap; }
+  .sztag b { color: #0a0a0a; font-weight: 700; }
+  .sztag svg { width: 14px; height: 14px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+  .sztag.style, .sztag.style b { color: #c96a7e; }
+  .sztag .fill { fill: currentColor; stroke: none; }
   .why { display: grid; gap: 2px; min-width: 0; }
   .why b { font-size: 14px; letter-spacing: -.02em; white-space: nowrap; }
   .why span { font-family: var(--font-mono); font-size: 8.5px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: #6b6b6b; white-space: nowrap; }
@@ -351,6 +371,7 @@ const SHARE_ROW = MENU_ICONS.indexOf('share');
     .hphone { top: 20px; left: 0; right: 0; margin-inline: auto; }
     .hpop { z-index: 7; }
     .hsz { left: auto; right: 0; top: 120px; min-width: 196px; }
+    .hsz.size { min-width: 224px; }
     .hq { right: 0; top: 404px; max-width: 200px; }
     .hdots, .ha { left: 0; top: 486px; }
     .ha { width: 210px; }

@@ -45,11 +45,13 @@ const en = {
     wardrobe: { title: 'wardrobe', search: 'search', select: 'select', tabs: ['items', 'outfits', 'tried'], tryOn: 'try the outfit' },
     feed: { title: 'feed', search: 'search a @user', tabs: ['for you', 'following'] },
     tryOn: { title: 'try-on', change: 'change pieces', ask: 'ask your stylist about this look' },
-    // Per scene: the card beside the phone (your size from the clothes you kept, or what answers the question), then the question.
+    // Per scene: the card beside the phone, then the question. A piece from a shop or the feed gets its size the way the app
+    // shows it: the one that fits (ruler) and the one to the person's taste (heart). Clothes already owned need no size.
+    sizeCard: { label: 'recommended size', fit: 'fits you', style: 'as you like it' },
     scenes: [
-      { label: 'your size', rows: [['M', 'as cut', 'like the coat you kept'], ['L', 'roomier', 'one size up']], q: 'what goes with it?', a: 'your black trousers and turtleneck. 3 outfits.' },
-      { label: 'your friday', rows: [['18°', 'weather', 'clear at 8 pm'], ['8 pm', 'calendar', 'dinner']], q: 'good for friday’s dinner?', a: 'yes. 18° and dry, no jacket needed.' },
-      { label: 'your size', rows: [['S', 'as cut', 'like the skirt you kept'], ['M', 'roomier', 'one size up']], q: 'do i own something similar?', a: 'your white oxford, yes. only the skirt is new.' },
+      { kind: 'size' as const, sizes: ['XS', 'S', 'M', 'L', 'XL'], fit: 'M', style: 'L', q: 'what goes with it?', a: 'your black trousers and turtleneck. 3 outfits.' },
+      { kind: 'facts' as const, label: 'your friday', rows: [['18°', 'weather', 'clear at 8 pm'], ['8 pm', 'calendar', 'dinner']], q: 'good for friday’s dinner?', a: 'yes. 18° and dry, no jacket needed.' },
+      { kind: 'size' as const, sizes: ['XS', 'S', 'M', 'L'], fit: 'S', style: 'M', q: 'do i own something similar?', a: 'your white oxford, yes. only the skirt is new.' },
     ],
   },
   more: {
@@ -147,10 +149,11 @@ const fr: Copy = {
     wardrobe: { title: 'garde-robe', search: 'rechercher', select: 'choisir', tabs: ['pièces', 'tenues', 'essayés'], tryOn: 'essayer la tenue' },
     feed: { title: 'fil', search: 'rechercher un @compte', tabs: ['pour vous', 'abonnements'] },
     tryOn: { title: 'essayage', change: 'changer de pièces', ask: 'demandez à votre styliste' },
+    sizeCard: { label: 'taille recommandée', fit: 'votre taille', style: 'comme vous l’aimez' },
     scenes: [
-      { label: 'votre taille', rows: [['M', 'coupe prévue', 'comme le manteau gardé'], ['L', 'plus ample', 'une taille au-dessus']], q: 'ça va avec quoi ?', a: 'votre pantalon noir et votre col roulé. 3 tenues.' },
-      { label: 'votre vendredi', rows: [['18°', 'météo', 'dégagé à 20 h'], ['20 h', 'agenda', 'dîner']], q: 'pour le dîner de vendredi ?', a: 'oui. 18° et sec, pas besoin de veste.' },
-      { label: 'votre taille', rows: [['S', 'coupe prévue', 'comme la jupe gardée'], ['M', 'plus ample', 'une taille au-dessus']], q: 'j’ai quelque chose de proche ?', a: 'votre chemise oxford blanche, oui. seule la jupe est nouvelle.' },
+      { kind: 'size', sizes: ['XS', 'S', 'M', 'L', 'XL'], fit: 'M', style: 'L', q: 'ça va avec quoi ?', a: 'votre pantalon noir et votre col roulé. 3 tenues.' },
+      { kind: 'facts', label: 'votre vendredi', rows: [['18°', 'météo', 'dégagé à 20 h'], ['20 h', 'agenda', 'dîner']], q: 'pour le dîner de vendredi ?', a: 'oui. 18° et sec, pas besoin de veste.' },
+      { kind: 'size', sizes: ['XS', 'S', 'M', 'L'], fit: 'S', style: 'M', q: 'j’ai quelque chose de proche ?', a: 'votre chemise oxford blanche, oui. seule la jupe est nouvelle.' },
     ],
   },
   more: {

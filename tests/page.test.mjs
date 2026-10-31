@@ -142,6 +142,24 @@ test('without a store link the app dialog asks for an email to notify', () => {
   }
 });
 
+test('a size card shows the sizes, the one that fits marked with a ruler and the one to taste with a heart, as the app does', () => {
+  for (const lang of LANGS) {
+    const t = COPY[lang].how, cards = home[lang].match(/<div class="hsz size[\s\S]*?<\/div>/g) ?? [];
+    const sized = t.scenes.filter((scene) => scene.kind === 'size');
+    assert.ok(sized.length >= 2, `${lang}: the shop and feed scenes give a size`);
+    assert.equal(cards.length, sized.length, `${lang}: one card per size scene`);
+    cards.forEach((card, k) => {
+      const { sizes, fit, style } = sized[k];
+      assert.deepEqual([...card.matchAll(/class="szc[^"]*"[^>]*>([^<]+)</g)].map((m) => m[1]), sizes, `${lang} card ${k}: the sizes`);
+      assert.match(card, new RegExp(`class="szc fit"[^>]*>${fit}<`), `${lang} card ${k}: ${fit} is the fit`);
+      assert.match(card, new RegExp(`class="szc style"[^>]*>${style}<`), `${lang} card ${k}: ${style} is to taste`);
+      assert.ok(text(card).includes(`${fit} ${t.sizeCard.fit}`) && text(card).includes(`${style} ${t.sizeCard.style}`), `${lang} card ${k}: the two lines`);
+      assert.match(card, /class="sztag fit[\s\S]*?<svg/, `${lang} card ${k}: the ruler`);
+      assert.match(card, /class="sztag style[\s\S]*?<svg/, `${lang} card ${k}: the heart`);
+    });
+  }
+});
+
 test('the sign-up answer shows below the email field and its button, never inside them', () => {
   for (const lang of LANGS) {
     for (const form of home[lang].match(/<form class="notify[\s\S]*?<\/form>/g)) {

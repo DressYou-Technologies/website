@@ -70,7 +70,7 @@ export const how: Section = (root) => {
   tl.set(srcs, { autoAlpha: 0 }, 0)
     .set(rens, { autoAlpha: 0, clipPath: 'inset(100% 0% 0% 0%)' }, 0)
     .set(bubbles, { autoAlpha: 0, scale: .6, y: 18 }, 0)
-    .set(all(wrap, '.hszr'), { autoAlpha: 0, x: -10 }, 0)
+    .set(all(wrap, '.hszr, .sztag'), { autoAlpha: 0, x: -10 }, 0)
     .set(bar, { scaleX: 0 }, 0)
     .set(words, { autoAlpha: 0, yPercent: 70, filter: 'blur(10px)' }, 0);
   const light = (i: number, t: number) => tl.to(steps, { color: (k: number) => (k === i ? INK : DIM), duration: .3, ease: 'power2.out' }, t);
@@ -124,7 +124,7 @@ export const how: Section = (root) => {
     tl.set(src, { autoAlpha: 0 }, P + 1.25);
     light(2, P + 1.4);
     pop(one(p, '.hsz'), P + 1.4);
-    tl.fromTo(all(p, '.hszr'), { autoAlpha: 0, x: -10 }, { autoAlpha: 1, x: 0, duration: .35, stagger: .25, ease: 'power3.out', immediateRender: false }, P + 1.6);
+    tl.fromTo(all(p, '.hszr, .sztag'), { autoAlpha: 0, x: -10 }, { autoAlpha: 1, x: 0, duration: .35, stagger: .25, ease: 'power3.out', immediateRender: false }, P + 1.6);
     light(3, P + 2.2);
     const qEl = one(p, '.hq'), typeEl = one(ren, '.htype'), phEl = one(ren, '.hph'), sendEl = one(ren, '.hsend'), field = one(ren, '.hin');
     const qText = qEl.textContent?.trim() ?? '', typed = { n: 0 };
