@@ -15,7 +15,7 @@ const other = LANGS.find((l) => l !== lang) ?? lang;
 const href = (link: string) => { const [page, hash] = link.split('#'); return localize(lang, page || '/') + (hash ? `#${hash}` : ''); };
 const year = new Date().getFullYear();
 ---
-<footer class="finale" id="get">
+<footer class="finale" id="get" data-tone="dark">
   <div class="row">
     <h2 class="mega">{t.finale.mega.map((w) => <span class="w">{w}</span>)}</h2>
     <div class="join">

@@ -347,13 +347,26 @@ const SHARE_ROW = MENU_ICONS.indexOf('share');
   /* Phones: a narrower scene, so the phone is larger, and the stylist's cards overlap its edges to keep the whole demo
      in one screen (founder, 2026-10-30: fine on phones; wider screens keep Apple's rule that nothing covers the device). */
   @container (max-width: 559.98px) {
-    .hstage { --scene-w: 400px; height: min(calc(100cqw * 660 / 400), calc(100svh - 150px)); }
-    .hphone { left: 0; right: 0; margin-inline: auto; }
+    .hstage { --scene-w: 360px; --scene-h: 640px; height: min(calc(100cqw * 640 / 360), calc(100svh - 150px)); }
+    .hphone { top: 20px; left: 0; right: 0; margin-inline: auto; }
     .hpop { z-index: 7; }
     .hsz { left: auto; right: 0; top: 120px; min-width: 196px; }
     .hq { right: 0; top: 404px; max-width: 200px; }
     .hdots, .ha { left: 0; top: 486px; }
     .ha { width: 210px; }
   }
-  @media (max-width: 599.98px) { ol { display: none; } }
+  /* Phones and tablets: the section is one screen tall, the headline above and the phone filling the rest, with side room. */
+  @media (max-width: 899.98px) {
+    /* Room above for the header: the full bar on tablets, the menu button alone on phones. */
+    .how { display: flex; flex-direction: column; height: max(100svh, 560px); padding: 104px clamp(16px, 4vw, 40px) 20px; }
+    .hwrap { flex: 1; width: 100%; min-height: 0; flex-direction: column; flex-wrap: nowrap; align-items: stretch; gap: 12px; }
+    .copy { flex: none; gap: 20px; }
+    .visual { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+    .hstage { flex: 1 1 auto; height: auto; min-height: 360px; }
+  }
+  @media (max-width: 599.98px) {
+    .how { padding-top: 76px; }
+    ol { display: none; }
+    h2 { text-align: center; }
+  }
 </style>

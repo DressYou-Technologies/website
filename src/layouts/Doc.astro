@@ -13,7 +13,7 @@ const t = COPY[lang].doc;
 <Base lang={lang} path={path} title={`${title} · DressYou`} noindex={noindex}>
   <Header lang={lang} path={path} />
   <main>
-    <section class="band"><h1>{title}</h1>{updated && <p>{t.updated} {updated}</p>}</section>
+    <section class="band" data-tone="dark"><h1>{title}</h1>{updated && <p>{t.updated} {updated}</p>}</section>
     <article class="doc"><slot /></article>
   </main>
   <Finale lang={lang} path={path} />

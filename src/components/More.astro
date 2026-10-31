@@ -23,7 +23,7 @@ const winners = FRIEND_SETS.map((set) => set.reduce((best, look) => (look.votes.
 const heart = 'M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z';
 const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z';
 ---
-<section class="more" id="more">
+<section class="more" id="more" data-tone="dark">
   <div class="head"><h2>{t.title}</h2></div>
   <div class="bento">
     <article class="card wardrobe">
@@ -117,7 +117,11 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
   h3 { margin: 0 0 8px; font-weight: 700; letter-spacing: -.045em; line-height: 1.02; }
   .card p { margin: 0; line-height: 1.5; }
 
-  .wardrobe, .friend { background: radial-gradient(120% 70% at 50% 0%, rgba(255,255,255,.075), rgba(255,255,255,0) 62%), linear-gradient(180deg, #1c1c1f, #0f0f11); box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), inset 0 1px 0 rgba(255,255,255,.09); }
+  .wardrobe, .friend { background: radial-gradient(120% 70% at 50% 0%, rgba(255,255,255,.075), rgba(255,255,255,0) 62%), linear-gradient(180deg, #1c1c1f, #0f0f11); }
+  /* One edge for every card: a hairline of light all the way round, a little brighter along the top, drawn above the
+     card's content so photos never cover it, and a dark outline outside. */
+  .card { box-shadow: 0 0 0 1px rgba(0,0,0,.85); }
+  .card::after { content: ''; position: absolute; inset: 0; z-index: 5; border-radius: inherit; pointer-events: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,.13), inset 0 1px 0 rgba(255,255,255,.12); }
   .ambient { position: absolute; inset: -12%; background-size: cover; background-position: center; filter: blur(28px) saturate(1.2); opacity: .55; pointer-events: none; }
   .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,11,.25), rgba(10,10,11,.7) 62%, rgba(10,10,11,.9)); pointer-events: none; }
   .wbuild, .caption, .fvis, .caption-friend { position: relative; }
@@ -153,7 +157,7 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
   .caption p { max-width: 40ch; color: #a1a1a1; text-wrap: pretty; }
 
   .side { flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
-  .feedtile { position: relative; flex: 1.25 1 auto; min-height: 340px; display: flex; flex-direction: column; justify-content: flex-end; padding: 26px; border-radius: 28px; overflow: hidden; background: #141416; color: #fff; box-shadow: inset 0 0 0 1px rgba(255,255,255,.05); }
+  .feedtile { position: relative; flex: 1.25 1 auto; min-height: 340px; display: flex; flex-direction: column; justify-content: flex-end; padding: 26px; border-radius: 28px; overflow: hidden; background: #141416; color: #fff; }
   .feeds { position: absolute; inset: 0; overflow: hidden; display: flex; gap: 10px; -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,0), #000 14%, #000 86%, rgba(0,0,0,0)), linear-gradient(180deg, rgba(0,0,0,0), #000 14%); -webkit-mask-composite: source-in; mask-image: linear-gradient(90deg, rgba(0,0,0,0), #000 14%, #000 86%, rgba(0,0,0,0)), linear-gradient(180deg, rgba(0,0,0,0), #000 14%); mask-composite: intersect; }
   .feeds .col { flex: 1; min-width: 0; overflow: visible; }
   .feeds .col.lower { margin-top: -60px; }

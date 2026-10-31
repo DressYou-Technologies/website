@@ -16,6 +16,25 @@ function header(top: HTMLElement) {
   update();
 }
 
+// On phones the menu button floats alone, so it takes the colour that reads on whatever is under it: sections on a
+// dark ground say so with data-tone="dark", everything else is light.
+function tone(top: HTMLElement, button: HTMLElement) {
+  const phone = window.matchMedia(FULL_MENU_QUERY);
+  let frame = 0;
+  const update = () => {
+    frame = 0;
+    if (!phone.matches) { top.classList.remove('on-light'); return; }
+    const r = button.getBoundingClientRect();
+    const under = document.elementsFromPoint(r.left + r.width / 2, r.top + r.height / 2).find((el) => !top.contains(el));
+    top.classList.toggle('on-light', !under?.closest('[data-tone="dark"]'));
+  };
+  const queue = () => { if (!frame) frame = requestAnimationFrame(update); };
+  window.addEventListener('scroll', queue, { passive: true });
+  window.addEventListener('resize', queue);
+  phone.addEventListener('change', queue);
+  update();
+}
+
 // The menu opens under the header's right edge, wherever the header's current width puts it.
 function menuPop(top: HTMLElement, menu: HTMLElement) {
   menu.addEventListener('beforetoggle', (e) => {
@@ -129,7 +148,9 @@ function dialogs() {
 export function startChrome() {
   document.documentElement.classList.add('js');
   const top = document.querySelector<HTMLElement>('.top'), menu = document.querySelector<HTMLElement>('#menu');
+  const burger = top?.querySelector<HTMLElement>('.hdr-burger');
   if (top && menu) { header(top); menuPop(top, menu); }
+  if (top && burger) tone(top, burger);
   anchors();
   dialogs();
 }

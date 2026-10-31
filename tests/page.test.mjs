@@ -235,6 +235,15 @@ test('each stylist answer first shows what it checked, in each language', () => 
   }
 });
 
+test('every dark section says so, for the menu button to take a colour that reads on it', async () => {
+  for (const lang of LANGS) {
+    for (const marker of ['class="band"', 'class="more"', 'class="finale"']) {
+      assert.match(home[lang], new RegExp(`<[a-z]+ ${marker}[^>]*data-tone="dark"`), `${lang}: ${marker}`);
+    }
+    assert.match(await read(fileOf(lang, '/legal')), /<section class="band"[^>]*data-tone="dark"/, `${lang}: the legal page's band`);
+  }
+});
+
 test('the confirmation and 404 pages stay out of search', async () => {
   for (const file of ['notified.html', 'en/notified.html', '404.html']) {
     const body = await read(file);
