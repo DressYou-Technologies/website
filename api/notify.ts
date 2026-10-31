@@ -14,7 +14,8 @@ const languageOf = (lang: unknown): Lang => (lang === 'en' ? 'en' : 'fr');
 // Deliberately loose: one @, something before it, and a dotted domain. Brevo's own check is the strict one.
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-type Env = Partial<Record<'BREVO_API_KEY' | 'BREVO_LIST_ID' | 'BREVO_DOI_TEMPLATE_ID_FR' | 'BREVO_DOI_TEMPLATE_ID_EN', string>>;
+const SETTINGS = ['BREVO_API_KEY', 'BREVO_LIST_ID', 'BREVO_DOI_TEMPLATE_ID_FR', 'BREVO_DOI_TEMPLATE_ID_EN'] as const;
+type Env = Partial<Record<(typeof SETTINGS)[number], string>>;
 type Fetcher = (url: string, init: { method: string; headers: Record<string, string>; body: string; signal: AbortSignal }) => Promise<Response>;
 
 const answer = (status: number, body: Record<string, unknown> = {}) =>
@@ -35,7 +36,11 @@ export async function handle(request: Request, env: Env, fetcher: Fetcher): Prom
   if (typeof email !== 'string' || email.length > MAX_EMAIL_LENGTH || !EMAIL.test(email.trim())) return answer(400, { error: 'email' });
 
   const { BREVO_API_KEY: key, BREVO_LIST_ID: list, BREVO_DOI_TEMPLATE_ID_FR: fr, BREVO_DOI_TEMPLATE_ID_EN: en } = env;
-  if (!key || !list || !fr || !en) return answer(503, { error: 'closed' });
+  if (!key || !list || !fr || !en) {
+    // Names only, never values: the deployment's log says which setting this environment lacks.
+    console.error('notify: closed, missing', SETTINGS.filter((name) => !env[name]).join(', '));
+    return answer(503, { error: 'closed' });
+  }
   const language = languageOf(lang), template = language === 'en' ? en : fr;
 
   try {
@@ -46,11 +51,15 @@ export async function handle(request: Request, env: Env, fetcher: Fetcher): Prom
       signal: AbortSignal.timeout(BREVO_TIMEOUT_MS),
     });
     if (res.ok) return answer(200, { ok: true });
+    const { code, message } = (await res.json().catch(() => ({}))) as { code?: string; message?: string };
     // Already on the list: answer as for a new address, so the form never reveals who signed up.
-    const code = res.status === 400 ? ((await res.json().catch(() => ({}))) as { code?: string }).code : undefined;
     if (code === 'duplicate_parameter') return answer(200, { ok: true });
-    return answer(res.status === 400 ? 400 : 502, { error: res.status === 400 ? 'email' : 'upstream' });
-  } catch {
+    // Only a refusal about the address itself is the person's to fix; anything else is the setup's, and is logged.
+    if (res.status === 400 && /e-?mail/i.test(message ?? '')) return answer(400, { error: 'email' });
+    console.error('notify: brevo refused', res.status, code ?? '', message ?? '');
+    return answer(502, { error: 'upstream' });
+  } catch (error) {
+    console.error('notify: brevo unreachable', error instanceof Error ? error.message : String(error));
     return answer(502, { error: 'upstream' });
   }
 }

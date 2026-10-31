@@ -88,3 +88,23 @@ test('no answer is cached', async () => {
   const res = await handle(post(human('ana@example.com')), ENV, brevo().fetcher);
   assert.equal(res.headers.get('cache-control'), 'no-store');
 });
+
+test('a Brevo refusal about its own setup is a failure, logged with its reason, not a bad address', async (t) => {
+  const logged = t.mock.method(console, 'error', () => {});
+  const setup = brevo(400, JSON.stringify({ code: 'invalid_parameter', message: 'An active DOI template does not exist' }));
+  assert.equal((await handle(post(human('ana@example.com')), ENV, setup.fetcher)).status, 502);
+  assert.ok(logged.mock.calls.some((call) => call.arguments.join(' ').includes('An active DOI template does not exist')), 'the reason is logged');
+  assert.ok(!logged.mock.calls.some((call) => call.arguments.join(' ').includes('ana@example.com')), 'the address is never logged');
+  const address = brevo(400, JSON.stringify({ code: 'invalid_parameter', message: 'Invalid email address' }));
+  assert.equal((await handle(post(human('ana@example.com')), ENV, address.fetcher)).status, 400);
+});
+
+test('a closed list logs which settings are missing, never their values', async (t) => {
+  const logged = t.mock.method(console, 'error', () => {});
+  const { BREVO_LIST_ID, BREVO_DOI_TEMPLATE_ID_EN, ...partial } = ENV;
+  assert.equal((await handle(post(human('ana@example.com')), partial, brevo().fetcher)).status, 503);
+  const line = logged.mock.calls.map((call) => call.arguments.join(' ')).join('\n');
+  assert.match(line, /BREVO_LIST_ID/);
+  assert.match(line, /BREVO_DOI_TEMPLATE_ID_EN/);
+  assert.doesNotMatch(line, /test-key/);
+});
