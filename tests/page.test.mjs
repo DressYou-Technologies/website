@@ -332,7 +332,10 @@ test('vercel.json hardens every response and caches the hashed files for good', 
   for (const directive of ["default-src 'self'", "script-src 'self'", "frame-ancestors 'none'", "object-src 'none'", "base-uri 'self'", "form-action 'self'"]) assert.ok(csp.includes(directive), directive);
   assert.equal(all['x-content-type-options'], 'nosniff');
   assert.equal(all['referrer-policy'], 'strict-origin-when-cross-origin');
-  assert.equal(all['cross-origin-resource-policy'], 'same-site');
+  // Every file stays same-site except the email images, which mail apps load from elsewhere.
+  assert.equal(all['cross-origin-resource-policy'], undefined, 'not set on every path, so the email images can differ');
+  assert.equal(headersFor('/((?!email/).*)')['cross-origin-resource-policy'], 'same-site');
+  assert.equal(headersFor('/email/(.*)')['cross-origin-resource-policy'], 'cross-origin');
   assert.match(all['permissions-policy'] ?? '', /camera=\(\)/);
   assert.match(headersFor('/_astro/(.*)')['cache-control'] ?? '', /max-age=31536000, immutable/);
 });
