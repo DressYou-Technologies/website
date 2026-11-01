@@ -17,8 +17,8 @@ const metaIn = (page, attr, key) => page.match(new RegExp(`<meta[^>]*${attr}="${
 // &amp; last, so an escaped entity such as &amp;quot; is decoded once, not twice.
 const decode = (s) => s.replaceAll('&#39;', "'").replaceAll('&quot;', '"').replaceAll('&amp;', '&');
 // The pages in the works stay out of search until they have content.
-const INDEXED = ['/', '/privacy'];
-const SOON = ['/journal', '/legal', '/terms'];
+const INDEXED = ['/', '/legal', '/privacy'];
+const SOON = ['/journal', '/terms'];
 
 test('each home page carries its language, title, description, canonical and alternates', () => {
   for (const lang of LANGS) {
@@ -111,8 +111,8 @@ test('the JSON-LD, llms.txt and sitemap agree with the pages', async () => {
     assert.ok(sitemap.includes(`<loc>${SITE.url}${localize(lang, path)}</loc>`), `${lang} ${path}`);
     await access(new URL(fileOf(lang, path), DIST)).catch(() => assert.fail(`${lang} ${path} is in the sitemap but not built`));
   }
-  assert.doesNotMatch(sitemap, /notified|404|journal|legal|terms/);
-  assert.doesNotMatch(llms, /\/(journal|legal|terms)\b/, 'llms.txt lists a page in the works');
+  assert.doesNotMatch(sitemap, /notified|404|journal|terms/);
+  assert.doesNotMatch(llms, /\/(journal|terms)\b/, 'llms.txt lists a page in the works');
 });
 
 // Founder, 2026-10-30: no semicolons or em dashes in what people read. Plus the search plan's copy rules.
@@ -343,12 +343,12 @@ test('every in-page link has its target on the same page', async () => {
   }
 });
 
-// Until the final legal texts arrive, Journal, the legal notice and the terms all say the same thing, word for word, and
-// show no draft legal text (founder, 2026-11-01). Privacy keeps its notice: the sign-up links to it.
-test('Journal, the legal notice and the terms show one coming-soon message, the address and the way home', async () => {
+// Until their content arrives, Journal and the terms say the same thing, word for word, and show no draft legal text
+// (founder, 2026-11-01). Privacy keeps its notice: the sign-up links to it.
+test('Journal and the terms show one coming-soon message, the address and the way home', async () => {
   const want = {
-    en: { message: ['In the works', 'This page is coming soon. Write to info@dressyouapp.com.', 'Back to DressYou'], home: '/', titles: ['Journal', 'Legal notice', 'Terms'] },
-    fr: { message: ['En préparation', 'Cette page arrive bientôt. Écrivez à info@dressyouapp.com.', 'Retour à DressYou'], home: '/fr', titles: ['Journal', 'Mentions légales', 'Conditions'] },
+    en: { message: ['In the works', 'This page is coming soon. Write to info@dressyouapp.com.', 'Back to DressYou'], home: '/', titles: ['Journal', 'Terms'] },
+    fr: { message: ['En préparation', 'Cette page arrive bientôt. Écrivez à info@dressyouapp.com.', 'Retour à DressYou'], home: '/fr', titles: ['Journal', 'Conditions'] },
   };
   for (const lang of LANGS) {
     for (const [k, path] of SOON.entries()) {
@@ -361,6 +361,13 @@ test('Journal, the legal notice and the terms show one coming-soon message, the 
       assert.match(article, new RegExp(`<a href="${want[lang].home}"[^>]*>${want[lang].message[2]}</a>`), `${lang} ${path}: the way home`);
       assert.match(body, /<meta name="robots" content="noindex"/, `${lang} ${path} is in search`);
     }
+    const legal = await read(fileOf(lang, '/legal')), notice = text(legal.match(/<article class="doc[\s\S]*?<\/article>/)?.[0] ?? '');
+    // A first minimal notice (founder, 2026-11-01): the publisher as registered, its president as publication director, the host.
+    for (const fact of ['DressYou Technologies', '108 706 037', '47 rue Vivienne, 75002 Paris', 'Tamsir Léopold Ely Debris', 'info@dressyouapp.com',
+      'Vercel Inc., 440 N Barranca Avenue #4133, Covina, CA 91723']) assert.ok(notice.includes(fact), `${lang} legal notice: ${fact}`);
+    assert.doesNotMatch(notice, /\[|compléter|to be completed/, `${lang} legal notice shows a placeholder`);
+    assert.match(legal, /<a href="mailto:info@dressyouapp\.com"/, `${lang} legal notice: the address is a mail link`);
+    assert.doesNotMatch(legal, /<meta name="robots" content="noindex"/, `${lang} legal notice is out of search`);
     const privacy = await read(fileOf(lang, '/privacy'));
     assert.match(privacy, /<footer class="finale/, `${lang} privacy has no footer`);
     assert.ok(text(privacy).length > 600 && text(privacy).includes('Brevo'), `${lang} privacy lost its notice`);
