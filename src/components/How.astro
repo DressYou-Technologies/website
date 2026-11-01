@@ -52,8 +52,8 @@ const SHARE_ROW = MENU_ICONS.indexOf('share');
 <section class="how" id="how">
   <div class="hwrap">
     <div class="copy">
-      <h2><span class="nowrap">{t.lead} <span class="soft">{t.from}</span></span><span class="nowrap"><span class="hroll" data-next={t.next}>{t.words.map((w) => <span class="hw">{w}</span>)}<span class="track" aria-hidden="true"><i class="hbar"></i></span></span></span></h2>
-      <ol aria-label={t.stepsLabel}>{t.steps.map((s, i) => <li class="hstep"><span class="num">{String(i + 1).padStart(2, '0')}</span>{s}</li>)}</ol>
+      <h2><span class="hroll" data-next={t.next}>{t.heads.map((h) => <span class="hw">{h}</span>)}<span class="track" aria-hidden="true"><i class="hbar"></i></span></span></h2>
+      <div class="hlists">{t.steps.map((list) => <ol class="hsteps" aria-label={t.stepsLabel}>{list.map((s, i) => <li class="hstep"><span class="num">{String(i + 1).padStart(2, '0')}</span>{s}</li>)}</ol>)}</div>
     </div>
     <div class="visual">
       <div class="hstage" aria-hidden="true">
@@ -175,11 +175,13 @@ const SHARE_ROW = MENU_ICONS.indexOf('share');
   .hwrap { position: relative; max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; gap: clamp(24px, 5vw, 80px); }
   .copy { flex: 1 1 340px; min-width: 0; display: grid; gap: clamp(24px, 4svh, 52px); }
   h2 { margin: 0; text-align: left; font-size: clamp(2rem, 3.8vw, 3.75rem); font-weight: 700; letter-spacing: -.05em; line-height: 1.04; }
-  .nowrap { display: block; white-space: nowrap; }
-  .soft { color: #a1a1a1; }
-  .hroll { position: relative; display: inline-grid; padding-bottom: .12em; cursor: pointer; }
-  .hw { grid-area: 1 / 1; justify-self: start; white-space: nowrap; }
+  /* Each source's heading and step list share one cell, so the tallest sets the height and nothing jumps between scenes. */
+  .hroll { position: relative; display: grid; padding-bottom: .12em; cursor: pointer; }
+  .hw { grid-area: 1 / 1; align-self: end; }
   .hw + .hw { opacity: 0; visibility: hidden; }
+  .hlists { display: grid; }
+  .hsteps { grid-area: 1 / 1; }
+  .hsteps + .hsteps { opacity: 0; visibility: hidden; }
   .track { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; border-radius: 2px; background: rgba(10,10,10,.08); overflow: hidden; }
   .hbar { display: block; height: 100%; background: #0a0a0a; transform-origin: left; transform: scaleX(0); }
   ol { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(10px, 1.6vw, 16px); }
@@ -389,7 +391,7 @@ const SHARE_ROW = MENU_ICONS.indexOf('share');
   }
   @media (max-width: 599.98px) {
     .how { padding-top: 76px; }
-    ol { display: none; }
+    .hlists { display: none; }
     h2 { text-align: center; }
   }
 </style>

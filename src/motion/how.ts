@@ -66,7 +66,7 @@ function share(tl: gsap.core.Timeline, src: HTMLElement, t: number): number {
 // One phone, three sources: tap try on, the twin wears it, the stylist gives the size, then you ask it something.
 export const how: Section = (root) => {
   const wrap = one(root, '.hwrap');
-  const words = all(wrap, '.hw'), bar = one(wrap, '.hbar'), roll = one(wrap, '.hroll'), steps = all(wrap, '.hstep');
+  const heads = all(wrap, '.hw'), bar = one(wrap, '.hbar'), roll = one(wrap, '.hroll'), lists = all(wrap, '.hsteps');
   const srcs = all(wrap, '.hsrc'), rens = all(wrap, '.hren'), pops = all(wrap, '.hpop');
   const bubbles = all(wrap, '.hpop > *');
 
@@ -76,8 +76,9 @@ export const how: Section = (root) => {
     .set(bubbles, { autoAlpha: 0, scale: .6, y: 18 }, 0)
     .set(all(wrap, '.hszr, .sztag'), { autoAlpha: 0, x: -10 }, 0)
     .set(bar, { scaleX: 0 }, 0)
-    .set(words, { autoAlpha: 0, yPercent: 70, filter: 'blur(10px)' }, 0);
-  const light = (i: number, t: number) => tl.to(steps, { color: (k: number) => (k === i ? INK : DIM), duration: .3, ease: 'power2.out' }, t);
+    .set(heads, { autoAlpha: 0, yPercent: 70, filter: 'blur(10px)' }, 0)
+    .set(lists, { autoAlpha: 0 }, 0);
+  const light = (list: Element, i: number, t: number) => tl.to(all(list, '.hstep'), { color: (k: number) => (k === i ? INK : DIM), duration: .3, ease: 'power2.out' }, t);
   const pop = (el: Element, t: number) => tl.to(el, { autoAlpha: 1, scale: 1, y: 0, duration: .6, ease: 'back.out(2.4)' }, t);
   const sweep = (ren: Element, t: number) => tl.fromTo(one(ren, '.hsweep'), { top: '100%', opacity: 1 }, { top: '0%', opacity: 0, duration: .9, ease: 'power3.inOut', immediateRender: false }, t);
   // The wardrobe: pick three pieces, the tab bar gives way to the select bar, and its button is the tap.
@@ -107,27 +108,28 @@ export const how: Section = (root) => {
   const starts: number[] = [];
   let t = 0;
   srcs.forEach((src, i) => {
-    const ren = rens[i], p = pops[i];
+    const ren = rens[i], p = pops[i], list = lists[i];
     const P = src.classList.contains('shop') ? share(tl, src, t) : src.classList.contains('wardrobe') ? pick(src, t) : scroll(src, t);
     const sized = p.querySelector('.hsz.size');
     const ask = P + ASK_AFTER_TAP_SECONDS + (sized ? CHOOSE_SECONDS : 0), end = ask + AFTER_ASK_SECONDS, D = end - t;
     starts.push(t);
     const btn = one(src, '[data-tap]'), ring = one(btn, '.hring');
     tl.addLabel(`h${i}`, t);
-    // The source word rolls in, the headline makes room for it, and its underline counts down the scene.
-    tl.to(words[i], { autoAlpha: 1, yPercent: 0, filter: 'blur(0px)', duration: .7, ease: 'power3.out' }, t)
-      .to(roll, { width: () => words[i].offsetWidth, duration: .6, ease: 'power3.inOut' }, t)
-      .to(words[i], { autoAlpha: 0, yPercent: -70, filter: 'blur(10px)', duration: .45, ease: 'power2.in' }, end - .45)
+    // The source's heading rolls in with its steps, and its underline counts down the scene.
+    tl.to(heads[i], { autoAlpha: 1, yPercent: 0, filter: 'blur(0px)', duration: .7, ease: 'power3.out' }, t)
+      .to(list, { autoAlpha: 1, duration: .4, ease: 'power2.out' }, t)
+      .to(heads[i], { autoAlpha: 0, yPercent: -70, filter: 'blur(10px)', duration: .45, ease: 'power2.in' }, end - .45)
+      .to(list, { autoAlpha: 0, duration: .45, ease: 'power2.in' }, end - .45)
       .to(bar, { scaleX: 0, duration: .3, ease: 'power2.in' }, end - .45);
-    light(0, t);
+    light(list, 0, t);
     tl.fromTo(bar, { scaleX: 0 }, { scaleX: 1, duration: D - .5, ease: 'none', immediateRender: false }, t)
       .to(src, { autoAlpha: 1, duration: .4, ease: 'power2.out' }, t);
     press(tl, btn, ring, P);
-    light(1, P + .3);
+    light(list, 1, P + .3);
     tl.set(ren, { autoAlpha: 1 }, P + .3).to(ren, { clipPath: 'inset(0% 0% 0% 0%)', duration: .9, ease: 'power3.inOut' }, P + .3);
     sweep(ren, P + .3);
     tl.set(src, { autoAlpha: 0 }, P + 1.25);
-    light(2, P + 1.4);
+    light(list, 2, P + 1.4);
     pop(one(p, '.hsz'), P + 1.4);
     tl.fromTo(all(p, '.hszr, .sztag'), { autoAlpha: 0, x: -10 }, { autoAlpha: 1, x: 0, duration: .35, stagger: .25, ease: 'power3.out', immediateRender: false }, P + 1.6);
     // The card opens on the size that fits, then the person taps the one to their taste.
@@ -137,7 +139,7 @@ export const how: Section = (root) => {
       press(tl, style, one(style, '.hring'), chosen);
       tl.to(fit, { ...CHIP_OFF, duration: .25, ease: 'power2.out' }, chosen + .05).to(style, { ...CHIP_ON, duration: .25, ease: 'power2.out' }, chosen + .05);
     }
-    light(3, ask);
+    light(list, 3, ask);
     const qEl = one(p, '.hq'), typeEl = one(ren, '.htype'), phEl = one(ren, '.hph'), sendEl = one(ren, '.hsend'), field = one(ren, '.hin');
     const qText = qEl.textContent?.trim() ?? '', typed = { n: 0 };
     const clear = () => { typeEl.textContent = ''; phEl.style.opacity = '1'; };
@@ -164,7 +166,7 @@ export const how: Section = (root) => {
   const next = () => tl.play(`h${(starts.findLastIndex((start) => start <= tl.time()) + 1) % srcs.length}`);
   const onKey = (e: KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); next(); } };
   let settle: ReturnType<typeof setTimeout> | undefined;
-  const onResize = () => { clearTimeout(settle); settle = setTimeout(() => { gsap.set(roll, { width: 'auto' }); tl.invalidate(); }, RESIZE_SETTLE_MS); };
+  const onResize = () => { clearTimeout(settle); settle = setTimeout(() => tl.invalidate(), RESIZE_SETTLE_MS); };
   roll.setAttribute('role', 'button');
   roll.setAttribute('tabindex', '0');
   roll.title = roll.dataset.next ?? '';

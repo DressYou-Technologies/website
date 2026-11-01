@@ -1,17 +1,5 @@
 ---
 import Doc from '../../layouts/Doc.astro';
-import { LINKS } from '../../data/site';
+import Soon from '../../components/Soon.astro';
 ---
-<Doc lang="fr" title="Mentions légales" path="/legal" updated="30 octobre 2026">
-  <h2>Éditeur</h2>
-  <p>Ce site est édité par DressYou Technologies, <span class="todo">[forme juridique et capital social à compléter]</span>, dont le siège social est situé au 47 rue Vivienne, 75002 Paris, France.</p>
-  <p>Immatriculée au registre du commerce et des sociétés (RCS) de Paris sous le numéro <span class="todo">[RCS et SIREN à compléter]</span>.</p>
-  <p>Contact : <a href={`mailto:${LINKS.email}`}>{LINKS.email}</a></p>
-  <h2>Directeur de la publication</h2>
-  <p><span class="todo">[nom à compléter]</span></p>
-  <h2>Hébergeur</h2>
-  <p>Vercel Inc., 440 N Barranca Avenue #4133, Covina, CA 91723, États-Unis.</p>
-  <h2>Propriété intellectuelle</h2>
-  <p>Le nom DressYou, le logo, le design et les textes de ce site appartiennent à DressYou Technologies. Toute réutilisation nécessite notre accord écrit.</p>
-  <p>Les personnes et les vêtements montrés sur ce site sont des illustrations.</p>
-</Doc>
+<Doc lang="fr" title="Mentions légales" path="/legal" noindex><Soon lang="fr" /></Doc>

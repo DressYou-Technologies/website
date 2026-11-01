@@ -22,13 +22,19 @@ const en = {
   get: { app: 'Get the app', extension: 'Get the extension', qr: 'QR code to download the app' },
   lang: { heading: 'Language', switchTo: 'Français', label: 'Lire en français' },
   menu: { label: 'Menu' },
-  hero: { lines: ['Try it on', "before it's yours."], sub: 'Your twin, your size, your stylist.' },
+  // A page in the works: the same words on each (founder, 2026-11-01), then the address and doc.home.
+  soon: { tag: 'In the works', text: 'This page is coming soon. Write to' },
+  hero: { lines: ['Try it on', "before it's yours."], sub: 'Your Digital Twin. Your style. Your AI stylist.' },
   how: {
-    lead: 'Tap try on',
-    from: 'from',
-    words: ['any shop.', 'your wardrobe.', 'the feed.'],
+    // Per source, in the phone's order (shop, wardrobe, feed): its heading and its four steps, as the content brief words
+    // them (founder, 2026-11-01).
+    heads: ['Try on from your favorite stores.', 'Style your own wardrobe.', 'Discover looks that match your style.'],
     next: 'Next source',
-    steps: ['tap try on', 'see it on you', 'get your size', 'ask your stylist'],
+    steps: [
+      ['Choose a piece', 'Try it on', 'Check your size', 'Ask your stylist'],
+      ['Pick a piece', 'Try it on', 'Build a look', 'Get styling tips'],
+      ['Find a look', 'Try it on', 'Explore pieces', 'Get inspired'],
+    ],
     stepsLabel: 'How it works',
     shopPages: [['Navy overshirt', '€89'], ['Suede loafers', '€140'], ['Wool coat', '€290']],
     // What a shop's product page says around its piece.
@@ -52,10 +58,10 @@ const en = {
     ],
   },
   more: {
-    title: 'More than a try-on.',
-    wardrobe: { lines: ['Fill your wardrobe.', 'Build outfits.'], text: 'Add your clothes once. See every outfit on your twin.' },
-    feed: { title: 'A feed of real people.', text: 'Real photos. Try any look on your twin.', tryOutfit: 'Try the outfit', tryOn: 'Try on' },
-    friend: { ask: 'Ask friends', voting: 'voting…', title: 'Ask a friend.', text: "Can't choose? Your friends vote." },
+    title: 'More than virtual try-on.',
+    wardrobe: { lines: ['Your wardrobe.', 'More looks.'], text: 'Add pieces once. Mix and match them on your Digital Twin.' },
+    feed: { title: 'Looks that match your style.', text: 'Discover pieces worn by people who share your taste.', tryOutfit: 'Try the outfit', tryOn: 'Try on' },
+    friend: { ask: 'Ask your friends', voting: 'voting…', title: 'Get a second opinion.', text: 'Share a look. See what your friends think.' },
   },
   stylist: {
     title: 'A stylist who knows you.',
@@ -94,11 +100,12 @@ const en = {
     ask: 'ask your stylist',
   },
   finale: {
-    mega: ['Wear it', 'first.'],
-    notify: 'One email when the app is out.',
+    mega: ['Fashion,', 'made personal.'],
+    lede: 'Discover looks, try them on and shop with confidence.',
     extension: 'Chrome extension',
     soon: 'coming soon',
     columns: [
+      { label: 'Company', links: [['Journal', '/journal']] },
       { label: 'Legal', links: [['Legal notice', '/legal'], ['Privacy', '/privacy'], ['Terms', '/terms']] },
     ],
     footer: 'Footer',
@@ -127,13 +134,16 @@ const fr: Copy = {
   get: { app: "Télécharger l'app", extension: "Installer l'extension", qr: "QR code pour télécharger l'app" },
   lang: { heading: 'Langue', switchTo: 'English', label: 'Read in English' },
   menu: { label: 'Menu' },
-  hero: { lines: ['Essayez-le', "avant qu'il soit à vous."], sub: 'Votre jumeau, votre taille, votre styliste.' },
+  soon: { tag: 'En préparation', text: 'Cette page arrive bientôt. Écrivez à' },
+  hero: { lines: ['Essayez-le', "avant qu'il soit à vous."], sub: 'Votre jumeau numérique. Votre style. Votre styliste IA.' },
   how: {
-    lead: 'Essayez',
-    from: 'depuis',
-    words: ['toute boutique.', 'votre garde-robe.', 'le fil.'],
+    heads: ['Essayez depuis vos boutiques préférées.', 'Stylisez votre garde-robe.', 'Découvrez des looks qui vous ressemblent.'],
     next: 'Source suivante',
-    steps: ['touchez essayer', 'voyez-le porté', 'obtenez votre taille', 'demandez à votre styliste'],
+    steps: [
+      ['Choisissez une pièce', 'Essayez-la', 'Vérifiez votre taille', 'Demandez à votre styliste'],
+      ['Sélectionnez une pièce', 'Essayez-la', 'Créez un look', 'Recevez des conseils de style'],
+      ['Trouvez un look', 'Essayez-le', 'Explorez les pièces', 'Inspirez-vous'],
+    ],
     stepsLabel: 'Comment ça marche',
     shopPages: [['Surchemise marine', '89 €'], ['Mocassins en daim', '140 €'], ['Manteau en laine', '290 €']],
     shop: { colour: 'Couleur', size: 'Taille', bag: 'Ajouter au panier', delivery: 'Livraison et retours offerts' },
@@ -152,10 +162,10 @@ const fr: Copy = {
     ],
   },
   more: {
-    title: 'Plus qu’un essayage.',
-    wardrobe: { lines: ['Remplissez votre garde-robe.', 'Créez des tenues.'], text: 'Ajoutez vos vêtements une fois. Voyez chaque tenue sur votre jumeau.' },
-    feed: { title: 'Un fil de vraies personnes.', text: 'De vraies photos. Essayez chaque look sur votre jumeau.', tryOutfit: 'Essayer la tenue', tryOn: 'Essayer' },
-    friend: { ask: 'Demander', voting: 'vote en cours…', title: 'Demandez à vos amis.', text: 'Vous hésitez ? Vos amis votent.' },
+    title: 'Plus qu’un essayage virtuel.',
+    wardrobe: { lines: ['Votre garde-robe.', 'Plus de looks.'], text: 'Ajoutez vos pièces une fois. Associez-les sur votre jumeau numérique.' },
+    feed: { title: 'Des looks qui vous ressemblent.', text: 'Découvrez des pièces portées par des personnes qui partagent vos goûts.', tryOutfit: 'Essayer la tenue', tryOn: 'Essayer' },
+    friend: { ask: 'Demander à vos amis', voting: 'vote en cours…', title: 'Demandez un second avis.', text: 'Partagez un look. Voyez ce qu’en pensent vos amis.' },
   },
   stylist: {
     title: 'Un styliste qui vous connaît.',
@@ -193,11 +203,12 @@ const fr: Copy = {
     ask: 'demandez à votre styliste',
   },
   finale: {
-    mega: ['Portez-le', 'en premier.'],
-    notify: 'Un e-mail à la sortie de l’app.',
+    mega: ['La mode,', 'à votre image.'],
+    lede: 'Découvrez des looks, essayez-les et achetez en toute confiance.',
     extension: 'Extension Chrome',
     soon: 'bientôt',
     columns: [
+      { label: 'Entreprise', links: [['Journal', '/journal']] },
       { label: 'Légal', links: [['Mentions légales', '/legal'], ['Confidentialité', '/privacy'], ['Conditions', '/terms']] },
     ],
     footer: 'Pied de page',

@@ -10,13 +10,11 @@ DressYou is a fashion app from Paris. Your own photos make your twin, and you tr
 - Name: DressYou
 - Company: DressYou Technologies, 47 rue Vivienne, 75002 Paris, France
 - Site: https://dressyouapp.com/ in English, https://dressyouapp.com/fr in French
-- Contact: contact@dressyouapp.com
+- Contact: info@dressyouapp.com
 - Status: pre-launch
 
 ## Pages
 
 - [Home](https://dressyouapp.com/)
 - [Accueil](https://dressyouapp.com/fr)
-- [Legal notice](https://dressyouapp.com/legal), [Mentions légales](https://dressyouapp.com/fr/legal)
 - [Privacy](https://dressyouapp.com/privacy), [Confidentialité](https://dressyouapp.com/fr/privacy)
-- [Terms](https://dressyouapp.com/terms), [Conditions](https://dressyouapp.com/fr/terms)

@@ -1,17 +1,5 @@
 ---
 import Doc from '../layouts/Doc.astro';
-import { LINKS } from '../data/site';
+import Soon from '../components/Soon.astro';
 ---
-<Doc lang="en" title="Legal notice" path="/legal" updated="29 October 2026">
-  <h2>Publisher</h2>
-  <p>This site is published by DressYou Technologies, <span class="todo">[legal form and share capital to be completed]</span>, whose registered office is at 47 rue Vivienne, 75002 Paris, France.</p>
-  <p>Registered with the Paris trade and companies register (RCS) under <span class="todo">[RCS and SIREN to be completed]</span>.</p>
-  <p>Contact: <a href={`mailto:${LINKS.email}`}>{LINKS.email}</a></p>
-  <h2>Publication director</h2>
-  <p><span class="todo">[name to be completed]</span></p>
-  <h2>Host</h2>
-  <p>Vercel Inc., 440 N Barranca Avenue #4133, Covina, CA 91723, United States.</p>
-  <h2>Intellectual property</h2>
-  <p>The DressYou name, logo, design and text of this site belong to DressYou Technologies. Reusing them needs our written permission.</p>
-  <p>The people and garments shown on this site are illustrations.</p>
-</Doc>
+<Doc lang="en" title="Legal notice" path="/legal" noindex><Soon lang="en" /></Doc>

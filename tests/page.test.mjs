@@ -16,7 +16,9 @@ const html = home.fr;
 const metaIn = (page, attr, key) => page.match(new RegExp(`<meta[^>]*${attr}="${key}"[^>]*content="([^"]*)"`))?.[1];
 // &amp; last, so an escaped entity such as &amp;quot; is decoded once, not twice.
 const decode = (s) => s.replaceAll('&#39;', "'").replaceAll('&quot;', '"').replaceAll('&amp;', '&');
-const INDEXED = ['/', '/legal', '/privacy', '/terms'];
+// The pages in the works stay out of search until they have content.
+const INDEXED = ['/', '/privacy'];
+const SOON = ['/journal', '/legal', '/terms'];
 
 test('each home page carries its language, title, description, canonical and alternates', () => {
   for (const lang of LANGS) {
@@ -41,9 +43,45 @@ test('the root is English and French lives under /fr', async () => {
   assert.deepEqual(redirects, [{ source: '/en', destination: '/', permanent: true }, { source: '/en/:path*', destination: '/:path*', permanent: true }]);
 });
 
-test('every page and llms.txt give contact@dressyouapp.com, never the old address', async () => {
-  for (const name of [...pages, 'llms.txt']) assert.doesNotMatch(await read(name), /hello@/, name);
-  assert.ok((await read('index.html')).includes('mailto:contact@dressyouapp.com'));
+// The public address is info@ (founder, 2026-11-01, from the content brief), never hello@ or contact@.
+test('every page and llms.txt give info@dressyouapp.com, never an old address', async () => {
+  for (const name of [...pages, 'llms.txt']) assert.doesNotMatch(await read(name), /hello@|contact@/, name);
+  assert.ok((await read('index.html')).includes('mailto:info@dressyouapp.com'));
+});
+
+// Tags read as spaces, so words in sibling spans stay apart.
+const words = (s) => decode(s.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim());
+
+// The content brief's wording, word for word (founder, 2026-11-01). French is drafted from it and pinned by its shape.
+test('the English home page says the wording the brief validated, and none of the longer lines it replaced', () => {
+  const page = words(home.en);
+  for (const line of ["Try it on before it's yours.", 'Your Digital Twin. Your style. Your AI stylist.', 'More than virtual try-on.',
+    'Your wardrobe. More looks.', 'Add pieces once. Mix and match them on your Digital Twin.',
+    'Looks that match your style.', 'Discover pieces worn by people who share your taste.',
+    'Get a second opinion.', 'Share a look. See what your friends think.', 'Ask your friends',
+    'Fashion, made personal.', 'Discover looks, try them on and shop with confidence.']) assert.ok(page.includes(line), line);
+  for (const old of ['Tap try on', 'More than a try-on.', 'Fill your wardrobe.', 'A feed of real people.', 'Wear it first.']) {
+    assert.ok(!page.includes(old), `still says "${old}"`);
+  }
+});
+
+const howOf = (page) => ({
+  heads: [...page.matchAll(/<span class="hw"[^>]*>([\s\S]*?)<\/span>/g)].map((m) => words(m[1])),
+  steps: [...page.matchAll(/<ol class="hsteps[^"]*"[^>]*>([\s\S]*?)<\/ol>/g)].map((m) => [...m[1].matchAll(/<li[^>]*>([\s\S]*?)<\/li>/g)].map((li) => words(li[1]))),
+});
+
+test('the phone demo gives each source its own heading and four steps', () => {
+  assert.deepEqual(howOf(home.en), {
+    heads: ['Try on from your favorite stores.', 'Style your own wardrobe.', 'Discover looks that match your style.'],
+    steps: [
+      ['01 Choose a piece', '02 Try it on', '03 Check your size', '04 Ask your stylist'],
+      ['01 Pick a piece', '02 Try it on', '03 Build a look', '04 Get styling tips'],
+      ['01 Find a look', '02 Try it on', '03 Explore pieces', '04 Get inspired'],
+    ],
+  });
+  const fr = howOf(home.fr);
+  assert.equal(fr.heads.length, 3);
+  assert.deepEqual(fr.steps.map((list) => list.map((step) => step.slice(0, 2))), Array(3).fill(['01', '02', '03', '04']));
 });
 
 // The stylist speaks cleanly: every line it says or ticks off opens with a capital (founder, 2026-10-31).
@@ -73,7 +111,8 @@ test('the JSON-LD, llms.txt and sitemap agree with the pages', async () => {
     assert.ok(sitemap.includes(`<loc>${SITE.url}${localize(lang, path)}</loc>`), `${lang} ${path}`);
     await access(new URL(fileOf(lang, path), DIST)).catch(() => assert.fail(`${lang} ${path} is in the sitemap but not built`));
   }
-  assert.doesNotMatch(sitemap, /notified|404/);
+  assert.doesNotMatch(sitemap, /notified|404|journal|legal|terms/);
+  assert.doesNotMatch(llms, /\/(journal|legal|terms)\b/, 'llms.txt lists a page in the works');
 });
 
 // Founder, 2026-10-30: no semicolons or em dashes in what people read. Plus the search plan's copy rules.
@@ -246,12 +285,25 @@ test('the footer lists only working links, the other language and the company de
       [t.dialog.notify.privacy, localize(lang, '/privacy')],
       ...t.finale.columns.flatMap((column) => column.links.map(([label, link]) => [label, local(link)])),
       [t.lang.switchTo, localize(other, '/')],
-      ['contact@dressyouapp.com', 'mailto:contact@dressyouapp.com'],
+      ['info@dressyouapp.com', 'mailto:info@dressyouapp.com'],
     ]);
     const words = decode(text(footer));
     for (const fact of [`© ${new Date().getFullYear()} DressYou Technologies`, '47 rue Vivienne, 75002 Paris']) assert.ok(words.includes(fact), `${lang}: ${fact}`);
     assert.match(footer, /<form class="notify[^"]*"[^>]*data-lang="/, `${lang}: the footer asks for an email itself`);
     assert.doesNotMatch(footer, /<picture|<img(?![^>]*alt="DressYou")/, `${lang}: the footer shows no picture besides the logo`);
+  }
+});
+
+// The footer keeps the four routes the content brief names (founder, 2026-11-01).
+test('the footer links Journal, the legal notice, privacy and terms to their pages', () => {
+  const want = {
+    en: [['Journal', '/journal'], ['Legal notice', '/legal'], ['Privacy', '/privacy'], ['Terms', '/terms']],
+    fr: [['Journal', '/fr/journal'], ['Mentions légales', '/fr/legal'], ['Confidentialité', '/fr/privacy'], ['Conditions', '/fr/terms']],
+  };
+  for (const lang of LANGS) {
+    const nav = home[lang].match(/<nav class="cols"[\s\S]*?<\/nav>/)[0];
+    const links = [...nav.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)].map(([, href, label]) => [words(label), href]);
+    assert.deepEqual(links.slice(0, 4), want[lang], lang);
   }
 });
 
@@ -267,7 +319,7 @@ test('the header logo goes home, and the menu offers the other language with no 
     const menu = header.slice(header.indexOf('id="menu"'));
     const links = [...menu.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)].map(([, href, label]) => [decode(text(label)), href]);
     assert.deepEqual(links, [[other.toUpperCase(), localize(other, '/')]], lang);
-    for (const path of ['/about', '/journal', '/careers', '/press', '/help']) {
+    for (const path of ['/about', '/careers', '/press', '/help']) {
       await assert.rejects(access(new URL(fileOf(lang, path), DIST)), `${lang} ${path} is still built`);
     }
   }
@@ -291,17 +343,27 @@ test('every in-page link has its target on the same page', async () => {
   }
 });
 
-test('the legal pages exist in both languages and name the publisher', async () => {
+// Until the final legal texts arrive, Journal, the legal notice and the terms all say the same thing, word for word, and
+// show no draft legal text (founder, 2026-11-01). Privacy keeps its notice: the sign-up links to it.
+test('Journal, the legal notice and the terms show one coming-soon message, the address and the way home', async () => {
+  const want = {
+    en: { message: ['In the works', 'This page is coming soon. Write to info@dressyouapp.com.', 'Back to DressYou'], home: '/', titles: ['Journal', 'Legal notice', 'Terms'] },
+    fr: { message: ['En préparation', 'Cette page arrive bientôt. Écrivez à info@dressyouapp.com.', 'Retour à DressYou'], home: '/fr', titles: ['Journal', 'Mentions légales', 'Conditions'] },
+  };
   for (const lang of LANGS) {
-    const legal = text(await read(fileOf(lang, '/legal')));
-    for (const fact of ['DressYou Technologies', '47 rue Vivienne, 75002 Paris', 'contact@dressyouapp.com', 'Vercel']) assert.ok(legal.includes(fact), `${lang}: ${fact}`);
-    for (const path of ['/privacy', '/terms']) {
-      const body = await read(fileOf(lang, path));
-      assert.match(body, new RegExp(`<html lang="${lang}"`));
-      assert.match(body, /<header class="top/, `${lang} ${path} has no header`);
-      assert.match(body, /<footer class="finale/, `${lang} ${path} has no footer`);
-      assert.ok(text(body).length > 600, `${lang} ${path} is still a stub`);
+    for (const [k, path] of SOON.entries()) {
+      const body = await read(fileOf(lang, path)), article = body.match(/<article class="doc[\s\S]*?<\/article>/)?.[0] ?? '';
+      assert.match(body, new RegExp(`<html lang="${lang}"`), `${lang} ${path}`);
+      assert.equal(words(body.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)[1]), want[lang].titles[k], `${lang} ${path}: its own title`);
+      assert.deepEqual([...article.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/g)].map((m) => decode(text(m[1]))), want[lang].message, `${lang} ${path}`);
+      assert.doesNotMatch(article, /<h2|<ul/, `${lang} ${path} still shows a draft`);
+      assert.match(article, /<a href="mailto:info@dressyouapp\.com"[^>]*>info@dressyouapp\.com<\/a>/, `${lang} ${path}: the address is a mail link`);
+      assert.match(article, new RegExp(`<a href="${want[lang].home}"[^>]*>${want[lang].message[2]}</a>`), `${lang} ${path}: the way home`);
+      assert.match(body, /<meta name="robots" content="noindex"/, `${lang} ${path} is in search`);
     }
+    const privacy = await read(fileOf(lang, '/privacy'));
+    assert.match(privacy, /<footer class="finale/, `${lang} privacy has no footer`);
+    assert.ok(text(privacy).length > 600 && text(privacy).includes('Brevo'), `${lang} privacy lost its notice`);
   }
 });
 

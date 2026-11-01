@@ -2,7 +2,7 @@ import { SITE } from '../data/site';
 import { LANGS, localize } from '../i18n/lang';
 
 // Every indexable page, in both languages, each listing its alternates (Google's hreflang sitemap form).
-export const PAGES = ['/', '/legal', '/privacy', '/terms'];
+export const PAGES = ['/', '/privacy'];
 
 export function GET(): Response {
   const href = (lang: (typeof LANGS)[number], path: string) => `${SITE.url}${localize(lang, path)}`;

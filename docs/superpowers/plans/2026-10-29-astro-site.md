@@ -23,7 +23,7 @@
 - Copy is the design's, verbatim, except: the dialog line `coming soon.`, the footer line `People shown on this page are AI-generated.`, feed handles beyond naya/sasha/mei (`theo`, `lea`, `ines`, `kofi`), and the legal pages.
 - Hidden until they have a destination: the header menu (all its entries are dead, and the language switch is dropped, so the burger goes), the footer's Company column. No `href="#"` ships.
 - `SITE.url = "https://dressyouapp.com"`, `SITE.tagline = "Try it on before it's yours."`, `SITE.description = "DressYou makes a twin from your own photos, so you can try on clothes from any shop, your wardrobe or the feed before you buy."`
-- `LINKS.appUrl = null`, `LINKS.extensionUrl = null`, `LINKS.email = "contact@dressyouapp.com"`. A null link turns its button into a dialog trigger (Task 3).
+- `LINKS.appUrl = null`, `LINKS.extensionUrl = null`, `LINKS.email = "info@dressyouapp.com"`. A null link turns its button into a dialog trigger (Task 3).
 - No runtime request to a third-party origin: no CDN script, font or stylesheet.
 - Without the `motion` class on `<html>` (reduced motion, or JS not run), every animated element shows its end state (listed per task). JS adds the class before it animates.
 - Named constants for every tuned value, declared once: `STORY_LENGTH_PX = 3600`, `DRIFT_SECONDS = 8`, `HEADER_FOLD_AT = 80`, `WIDE_QUERY = "(min-width: 901px)"`, `MOTION_QUERY = "(prefers-reduced-motion: no-preference)"`; others as the port meets them.
