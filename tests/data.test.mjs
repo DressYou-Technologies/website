@@ -4,7 +4,7 @@ import test from 'node:test';
 import * as site from '../src/data/site.ts';
 
 const ASSETS = new URL('../src/assets/', import.meta.url);
-const GROUPS = ['people', 'feed', 'garments'];
+const GROUPS = ['people', 'feed', 'garments', 'shops'];
 const MODEL = 'gpt-image-2.5-sunburst';
 const WALL_COLUMNS = 9;
 const WALL_ROWS = 3;
@@ -30,7 +30,7 @@ const manifest = JSON.parse(await readFile(new URL('manifest.json', ASSETS), 'ut
 
 // Every string in the data that names an image: anything shaped like an asset id.
 const ids = (value) => typeof value === 'string'
-  ? (/^(twin|render-|wall-|feed-|g-)/.test(value) ? [value] : [])
+  ? (/^(twin|render-|wall-|feed-|g-|shop-)/.test(value) ? [value] : [])
   : Array.isArray(value) || (value && typeof value === 'object') ? Object.values(value).flatMap(ids) : [];
 
 test('every image id in the data exists as a master', () => {
@@ -39,8 +39,12 @@ test('every image id in the data exists as a master', () => {
   for (const id of used) assert.ok(masters.has(id), `${id} has no master`);
 });
 
-test('every master has a manifest entry with its model', () => {
-  for (const id of masters.keys()) assert.equal(manifest[id]?.model, MODEL, id);
+// A master is either generated, naming its model, or a shop's own photo, naming where it came from (founder, 2026-11-01).
+test('every master has a manifest entry: its model, or the shop, product and photo it comes from', () => {
+  for (const id of masters.keys()) {
+    const { model, source } = manifest[id] ?? {};
+    assert.ok(model === MODEL || (source?.brand && source.product && /^https:/.test(source.productUrl) && /^https:/.test(source.imageUrl)), id);
+  }
 });
 
 test('the wall is 9 columns of 3 different people, none repeated', () => {
@@ -100,8 +104,14 @@ test("every try-on is a studio photo in the hero's recipe, not a cutout", () => 
   }
 });
 
-test('every shop page in the share story shows a flat garment', () => {
-  for (const page of site.HOW.shop.pages) assert.match(page.image, /^g-/, page.domain);
+// Each shop page shows that shop's own packshot of its piece, never a model wearing it (founder, 2026-10-30 and
+// 2026-11-01), and the piece shared to DressYou is cut out like the wardrobe's.
+test('every shop page in the share story shows its own shop\'s packshot, and the shared piece is cut out', async () => {
+  for (const page of site.HOW.shop.pages) {
+    assert.match(page.image, /^shop-/, page.domain);
+    assert.equal(new URL(manifest[page.image].source.productUrl).hostname.replace(/^www\./, ''), page.domain, page.domain);
+  }
+  assert.ok(await cutout(site.HOW.shop.garment), site.HOW.shop.garment);
 });
 
 test('each friend has a name and a photo', async () => {

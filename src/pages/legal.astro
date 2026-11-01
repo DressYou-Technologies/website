@@ -1,5 +1,13 @@
 ---
 import Doc from '../layouts/Doc.astro';
-import Soon from '../components/Soon.astro';
+import { LINKS } from '../data/site';
 ---
-<Doc lang="en" title="Legal notice" path="/legal" noindex><Soon lang="en" /></Doc>
+<Doc lang="en" title="Legal notice" path="/legal" updated="1 November 2026">
+  <h2>Publisher</h2>
+  <p>This site is published by DressYou Technologies, a simplified joint-stock company (SAS) registered with the Paris trade and companies register (RCS) under number 108 706 037, whose registered office is at 47 rue Vivienne, 75002 Paris, France.</p>
+  <p>Contact: <a href={`mailto:${LINKS.email}`}>{LINKS.email}</a></p>
+  <h2>Publication director</h2>
+  <p>Tamsir Léopold Ely Debris, President of DressYou Technologies.</p>
+  <h2>Host</h2>
+  <p>Vercel Inc., 440 N Barranca Avenue #4133, Covina, CA 91723, United States.</p>
+</Doc>
