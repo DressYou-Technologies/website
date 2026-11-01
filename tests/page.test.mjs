@@ -255,7 +255,10 @@ test('the shop demo browses Uniqlo, Arc\'teryx and Zara in their own words, then
     const domains = home[lang].match(/<span class="domains"[^>]*>([\s\S]*?)<\/span>\s*<svg/)?.[1] ?? '';
     assert.deepEqual([...domains.matchAll(/>([a-z.']+)</g)].map((m) => m[1]), ['uniqlo.com', 'arcteryx.com', 'zara.com'], lang);
     const sheet = home[lang].match(/<div class="sh-head[\s\S]*?<div class="sh-apps/)?.[0] ?? '';
-    assert.ok(decode(text(sheet)).includes('zara.com') && sheet.includes('/shop-zara-coat.'), `${lang}: the sheet shares the Zara page`);
+    const [, title, domain] = sheet.match(/<span class="sh-what"[^>]*><b[^>]*>([^<]*)<\/b><span[^>]*>([^<]*)<\/span>/) ?? [];
+    assert.equal(domain, 'zara.com', `${lang}: the sheet shares the Zara page`);
+    assert.equal(decode(title ?? ''), COPY[lang].how.shops.zara.title, `${lang}: the sheet names Zara's page`);
+    assert.ok(sheet.includes('/shop-zara-coat.'), `${lang}: the sheet shows the Zara coat`);
     assert.doesNotMatch(home[lang], /\.example\b/, `${lang}: a made-up shop is left`);
   }
 });
