@@ -19,7 +19,7 @@ const year = new Date().getFullYear();
   <div class="cta">
     <h2 class="mega">{t.finale.mega.map((w) => <span class="w">{w}</span>)}</h2>
     <div class="join">
-      <p class="lede">{t.finale.notify}</p>
+      <p class="lede">{t.finale.lede}</p>
       <NotifyForm lang={lang} dark />
       <GetLink kind="extension" class="xchip"><svg viewBox="0 0 24 24" aria-hidden="true" width="16" height="16"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle><path d="M21.17 8H12"></path><path d="M3.95 6.06 8.54 14"></path><path d="M10.88 21.94 15.46 14"></path></svg>{t.finale.extension}{!LINKS.extensionUrl && <span>{t.finale.soon}</span>}</GetLink>
     </div>

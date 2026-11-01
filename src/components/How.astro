@@ -52,8 +52,8 @@ const SHARE_ROW = MENU_ICONS.indexOf('share');
 <section class="how" id="how">
   <div class="hwrap">
     <div class="copy">
-      <h2><span class="nowrap">{t.lead} <span class="soft">{t.from}</span></span><span class="nowrap"><span class="hroll" data-next={t.next}>{t.words.map((w) => <span class="hw">{w}</span>)}<span class="track" aria-hidden="true"><i class="hbar"></i></span></span></span></h2>
-      <ol aria-label={t.stepsLabel}>{t.steps.map((s, i) => <li class="hstep"><span class="num">{String(i + 1).padStart(2, '0')}</span>{s}</li>)}</ol>
+      <h2><span class="hroll" data-next={t.next}>{t.heads.map((h) => <span class="hw">{h}</span>)}<span class="track" aria-hidden="true"><i class="hbar"></i></span></span></h2>
+      <div class="hlists">{t.steps.map((list) => <ol class="hsteps" aria-label={t.stepsLabel}>{list.map((s, i) => <li class="hstep"><span class="num">{String(i + 1).padStart(2, '0')}</span>{s}</li>)}</ol>)}</div>
     </div>
     <div class="visual">
       <div class="hstage" aria-hidden="true">
@@ -152,7 +152,7 @@ const SHARE_ROW = MENU_ICONS.indexOf('share');
               {scene.kind === 'size'
                 ? <div class="hsz size">
                     <span class="label">{t.sizeCard.label}</span>
-                    <span class="szchips">{scene.sizes.map((z) => <span class={z === scene.fit ? 'szc fit' : z === scene.style ? 'szc style' : 'szc'}>{z}</span>)}</span>
+                    <span class="szchips">{scene.sizes.map((z) => <span class={z === scene.fit ? 'szc fit' : z === scene.style ? 'szc style' : 'szc'}>{z}{z === scene.style && <span class="hring dark"></span>}</span>)}</span>
                     <span class="sztag fit"><svg viewBox="0 0 24 24">{ICON.ruler.map((d) => <path d={d} />)}</svg><b>{scene.fit}</b> {t.sizeCard.fit}</span>
                     <span class="sztag style"><svg viewBox="0 0 24 24"><path class="fill" d={ICON.heart[0]} /></svg><b>{scene.style}</b> {t.sizeCard.style}</span>
                   </div>
@@ -175,11 +175,13 @@ const SHARE_ROW = MENU_ICONS.indexOf('share');
   .hwrap { position: relative; max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; gap: clamp(24px, 5vw, 80px); }
   .copy { flex: 1 1 340px; min-width: 0; display: grid; gap: clamp(24px, 4svh, 52px); }
   h2 { margin: 0; text-align: left; font-size: clamp(2rem, 3.8vw, 3.75rem); font-weight: 700; letter-spacing: -.05em; line-height: 1.04; }
-  .nowrap { display: block; white-space: nowrap; }
-  .soft { color: #a1a1a1; }
-  .hroll { position: relative; display: inline-grid; padding-bottom: .12em; cursor: pointer; }
-  .hw { grid-area: 1 / 1; justify-self: start; white-space: nowrap; }
+  /* Each source's heading and step list share one cell, so the tallest sets the height and nothing jumps between scenes. */
+  .hroll { position: relative; display: grid; padding-bottom: .12em; cursor: pointer; }
+  .hw { grid-area: 1 / 1; align-self: end; }
   .hw + .hw { opacity: 0; visibility: hidden; }
+  .hlists { display: grid; }
+  .hsteps { grid-area: 1 / 1; }
+  .hsteps + .hsteps { opacity: 0; visibility: hidden; }
   .track { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; border-radius: 2px; background: rgba(10,10,10,.08); overflow: hidden; }
   .hbar { display: block; height: 100%; background: #0a0a0a; transform-origin: left; transform: scaleX(0); }
   ol { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(10px, 1.6vw, 16px); }
@@ -344,12 +346,14 @@ const SHARE_ROW = MENU_ICONS.indexOf('share');
   .hszr.chosen { box-shadow: inset 0 0 0 1.5px #0a0a0a; }
   .letter { flex: none; min-width: 34px; height: 34px; padding: 0 6px; border-radius: 11px; background: #f1f1ef; color: #0a0a0a; display: grid; place-items: center; font-size: 16px; font-weight: 700; }
   .chosen .letter { background: #0a0a0a; color: #fff; }
-  /* The app's size picker: every size, the one that fits filled ink with a ruler, the one to taste outlined rose with a heart. */
+  /* The app's size picker: every size, the one that fits filled ink with a ruler, the one to taste outlined rose with a heart.
+     It opens on the size that fits; the person then taps the one to taste (how.ts). */
   .hsz.size { min-width: 240px; gap: 10px; padding: 12px 12px 14px; }
   .szchips { display: flex; gap: 5px; }
-  .szc { flex: 1; display: grid; place-items: center; min-width: 34px; height: 36px; border-radius: 10px; background: #efeeeb; color: #0a0a0a; font-size: 13px; font-weight: 500; }
+  .szc { position: relative; flex: 1; display: grid; place-items: center; min-width: 34px; height: 36px; border-radius: 10px; background: #efeeeb; color: #0a0a0a; font-size: 13px; font-weight: 500; }
   .szc.fit { background: #0a0a0b; color: #f4f4f2; font-weight: 700; }
   .szc.style { box-shadow: inset 0 0 0 1.5px #c96a7e; }
+  .szc .hring { width: 40px; height: 40px; margin: -20px 0 0 -20px; }
   .sztag { display: flex; align-items: center; gap: 7px; padding: 0 4px; font-size: 13px; color: #3a3a3c; white-space: nowrap; }
   .sztag b { color: #0a0a0a; font-weight: 700; }
   .sztag svg { width: 14px; height: 14px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
@@ -387,7 +391,7 @@ const SHARE_ROW = MENU_ICONS.indexOf('share');
   }
   @media (max-width: 599.98px) {
     .how { padding-top: 76px; }
-    ol { display: none; }
+    .hlists { display: none; }
     h2 { text-align: center; }
   }
 </style>

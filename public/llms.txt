@@ -1,6 +1,6 @@
 # DressYou
 
-> Essayage virtuel sur votre jumeau. Virtual try-on on your own twin.
+> Virtual try-on on your own twin. Essayage virtuel sur votre jumeau.
 
 DressYou is a fashion app from Paris. Your own photos make your twin, and you try on clothes from any online shop, your wardrobe or the feed before you buy. The app also builds outfits from the clothes you own, lets friends vote between looks, and includes a stylist that answers from your wardrobe. The app is not released yet. iOS, Android and a Chrome extension are announced, and the site takes an email to say when it is out.
 
@@ -9,14 +9,12 @@ DressYou is a fashion app from Paris. Your own photos make your twin, and you tr
 
 - Name: DressYou
 - Company: DressYou Technologies, 47 rue Vivienne, 75002 Paris, France
-- Site: https://dressyouapp.com/ in French, https://dressyouapp.com/en in English
-- Contact: hello@dressyouapp.com
+- Site: https://dressyouapp.com/ in English, https://dressyouapp.com/fr in French
+- Contact: info@dressyouapp.com
 - Status: pre-launch
 
 ## Pages
 
-- [Accueil](https://dressyouapp.com/)
-- [Home](https://dressyouapp.com/en)
-- [Mentions légales](https://dressyouapp.com/legal), [Legal notice](https://dressyouapp.com/en/legal)
-- [Confidentialité](https://dressyouapp.com/privacy), [Privacy](https://dressyouapp.com/en/privacy)
-- [Conditions](https://dressyouapp.com/terms), [Terms](https://dressyouapp.com/en/terms)
+- [Home](https://dressyouapp.com/)
+- [Accueil](https://dressyouapp.com/fr)
+- [Privacy](https://dressyouapp.com/privacy), [Confidentialité](https://dressyouapp.com/fr/privacy)

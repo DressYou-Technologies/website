@@ -1,14 +1,15 @@
 ---
 import Doc from '../layouts/Doc.astro';
 import { COPY } from '../i18n/copy';
+import { localize } from '../i18n/lang';
 
-// One page for every unknown path: the path gives no language, so French first and English below.
-const fr = COPY.fr.notFound, en = COPY.en.notFound;
+// One page for every unknown path: the path gives no language, so English first and French below.
+const en = COPY.en.notFound, fr = COPY.fr.notFound;
 ---
-<!-- Its language switch goes to the English home, so it takes the home page's path. -->
-<Doc lang="fr" title={fr.title} path="/" noindex>
-  <p>{fr.text}</p>
-  <p><a href="/">{fr.home}</a></p>
-  <h2 lang="en">{en.title}</h2>
-  <p lang="en">{en.text} <a href="/en">{en.home}</a></p>
+<!-- Its language switch goes to the French home, so it takes the home page's path. -->
+<Doc lang="en" title={en.title} path="/" noindex>
+  <p>{en.text}</p>
+  <p><a href={localize('en', '/')}>{en.home}</a></p>
+  <h2 lang="fr">{fr.title}</h2>
+  <p lang="fr">{fr.text} <a href={localize('fr', '/')}>{fr.home}</a></p>
 </Doc>

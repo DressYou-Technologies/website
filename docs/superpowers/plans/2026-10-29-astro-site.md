@@ -23,7 +23,7 @@
 - Copy is the design's, verbatim, except: the dialog line `coming soon.`, the footer line `People shown on this page are AI-generated.`, feed handles beyond naya/sasha/mei (`theo`, `lea`, `ines`, `kofi`), and the legal pages.
 - Hidden until they have a destination: the header menu (all its entries are dead, and the language switch is dropped, so the burger goes), the footer's Company column. No `href="#"` ships.
 - `SITE.url = "https://dressyouapp.com"`, `SITE.tagline = "Try it on before it's yours."`, `SITE.description = "DressYou makes a twin from your own photos, so you can try on clothes from any shop, your wardrobe or the feed before you buy."`
-- `LINKS.appUrl = null`, `LINKS.extensionUrl = null`, `LINKS.email = "hello@dressyouapp.com"`. A null link turns its button into a dialog trigger (Task 3).
+- `LINKS.appUrl = null`, `LINKS.extensionUrl = null`, `LINKS.email = "info@dressyouapp.com"`. A null link turns its button into a dialog trigger (Task 3).
 - No runtime request to a third-party origin: no CDN script, font or stylesheet.
 - Without the `motion` class on `<html>` (reduced motion, or JS not run), every animated element shows its end state (listed per task). JS adds the class before it animates.
 - Named constants for every tuned value, declared once: `STORY_LENGTH_PX = 3600`, `DRIFT_SECONDS = 8`, `HEADER_FOLD_AT = 80`, `WIDE_QUERY = "(min-width: 901px)"`, `MOTION_QUERY = "(prefers-reduced-motion: no-preference)"`; others as the port meets them.
@@ -130,7 +130,7 @@
 
 - [ ] **Step 1: Failing tests:**
   - `a null store link opens a dialog instead of linking` — with `LINKS.appUrl === null`, the header, hero and finale "Get the app" are `<button data-get="app">`; same for the extension; `dist/index.html` has `<dialog id="get-app">` containing `coming soon.`.
-  - `the footer lists only working links and the AI line` — footer has `How it works`, `Wardrobe`, `Stylist`, `Legal notice`, `Privacy`, `Terms` with hrefs `#how`, `#more`, `#stylist`, `/legal`, `/privacy`, `/terms`, a `mailto:hello@dressyouapp.com`, and the text `People shown on this page are AI-generated.`
+  - `the footer lists only working links and the AI line` — footer has `How it works`, `Wardrobe`, `Stylist`, `Legal notice`, `Privacy`, `Terms` with hrefs `#how`, `#more`, `#stylist`, `/legal`, `/privacy`, `/terms`, a `mailto:contact@dressyouapp.com`, and the text `People shown on this page are AI-generated.`
 - [ ] **Step 2: Run** — FAIL.
 - [ ] **Step 3: Port** `header.top` (brand, "Get the extension", "Get the app" with the hover QR popover only when `LINKS.appUrl` is set), the `.qr-modal` as a native `<dialog>` (title from the design: `Get the app.` / `Get the extension.`; QR when the link is set, else `coming soon.`), and `footer.finale` (mega words, CTAs, logo, email, Product and Legal columns, AI line). Logic from the export's `boot` (scroll and anchor parts), `hideHeader`, `fold`, `scrollToY`, `qrHoverOn/Off`, `openApp/closeApp/showApp`, `closing` (finale words, moved to Task 7's motion module).
 - [ ] **Step 4: Run** — PASS. Walk desktop and mobile: the header pill folds after 80 px and stays dark at the page bottom; the dialog opens from all three buttons, closes on Escape and on the scrim, returns focus.
@@ -191,7 +191,7 @@
 - Consumes: `Base.astro`, `SITE`, `LINKS`, `Section`.
 - Produces: `finale: Section`.
 
-- [ ] **Step 1: Failing test** `the legal pages exist and name the publisher` — `dist/legal.html` contains `DressYou Technologies`, `47 rue Vivienne, 75002 Paris`, `hello@dressyouapp.com`, `Vercel`; `dist/privacy.html` and `dist/terms.html` exist with the site's header and footer.
+- [ ] **Step 1: Failing test** `the legal pages exist and name the publisher` — `dist/legal.html` contains `DressYou Technologies`, `47 rue Vivienne, 75002 Paris`, `contact@dressyouapp.com`, `Vercel`; `dist/privacy.html` and `dist/terms.html` exist with the site's header and footer.
 - [ ] **Step 2: Run** — FAIL.
 - [ ] **Step 3: Write the pages** in the design's type and spacing. Legal notice: publisher, address, email, host (Vercel Inc., address taken from vercel.com/legal, not memory), and the founder's fields as visible `[to be completed]` markers: legal form and share capital, RCS and SIREN, publication director. Privacy: the site sets no cookies, runs no analytics and has no forms (check that each is true in the build); Vercel processes request logs as host; contact email. Terms: use of the site, intellectual property of the brand, no account on the site, French law. Finale motion from `closing()`.
 - [ ] **Step 4: Run** — PASS.

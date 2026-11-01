@@ -1,10 +1,10 @@
 import { gsap } from 'gsap';
 import { FULL_MENU_QUERY, HEADER_FOLD_AT, HERO_PASSED_OFFSET, MENU_GAP_PX, MOTION_QUERY } from '../lib/constants';
-import { one } from '../motion/dom';
+import { all, one } from '../motion/dom';
 
 const motion = () => window.matchMedia(MOTION_QUERY).matches;
 
-// The header is a pill once scrolled, at one size either way, and shows its symbol and buttons once the hero is gone.
+// The header is a pill once scrolled, at one size either way, and shows its buttons once the hero is gone.
 function header(top: HTMLElement) {
   const hero = document.querySelector<HTMLElement>('.hero');
   const update = () => {
@@ -16,17 +16,19 @@ function header(top: HTMLElement) {
   update();
 }
 
-// On phones the menu button floats alone, so it takes the colour that reads on whatever is under it: sections on a
-// dark ground say so with data-tone="dark", everything else is light.
-function tone(top: HTMLElement, button: HTMLElement) {
+// On phones the logo and the menu button float with no plate, so each takes the colour that reads on whatever is under
+// it: sections on a dark ground say so with data-tone="dark", everything else is light.
+function tone(top: HTMLElement, marks: HTMLElement[]) {
   const phone = window.matchMedia(FULL_MENU_QUERY);
   let frame = 0;
   const update = () => {
     frame = 0;
-    if (!phone.matches) { top.classList.remove('on-light'); return; }
-    const r = button.getBoundingClientRect();
-    const under = document.elementsFromPoint(r.left + r.width / 2, r.top + r.height / 2).find((el) => !top.contains(el));
-    top.classList.toggle('on-light', !under?.closest('[data-tone="dark"]'));
+    for (const mark of marks) {
+      if (!phone.matches) { mark.classList.remove('on-light'); continue; }
+      const r = mark.getBoundingClientRect();
+      const under = document.elementsFromPoint(r.left + r.width / 2, r.top + r.height / 2).find((el) => !top.contains(el));
+      mark.classList.toggle('on-light', !under?.closest('[data-tone="dark"]'));
+    }
   };
   const queue = () => { if (!frame) frame = requestAnimationFrame(update); };
   window.addEventListener('scroll', queue, { passive: true });
@@ -148,9 +150,8 @@ function dialogs() {
 export function startChrome() {
   document.documentElement.classList.add('js');
   const top = document.querySelector<HTMLElement>('.top'), menu = document.querySelector<HTMLElement>('#menu');
-  const burger = top?.querySelector<HTMLElement>('.hdr-burger');
   if (top && menu) { header(top); menuPop(top, menu); }
-  if (top && burger) tone(top, burger);
+  if (top) tone(top, all(top, '.brand, .hdr-burger'));
   anchors();
   dialogs();
 }

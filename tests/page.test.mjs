@@ -9,14 +9,16 @@ import { LANGS, localize } from '../src/i18n/lang.ts';
 const DIST = new URL('../dist/', import.meta.url);
 const read = (path) => readFile(new URL(path, DIST), 'utf8');
 const pages = (await readdir(DIST, { recursive: true })).filter((f) => f.endsWith('.html'));
-// A page's built file, from its language and language-neutral path: "/" in English is en.html, "/legal" is en/legal.html.
+// A page's built file, from its language and language-neutral path: "/" in French is fr.html, "/legal" is fr/legal.html.
 const fileOf = (lang, path) => { const url = localize(lang, path); return url === '/' ? 'index.html' : `${url.slice(1)}.html`; };
 const home = Object.fromEntries(await Promise.all(LANGS.map(async (lang) => [lang, await read(fileOf(lang, '/'))])));
 const html = home.fr;
 const metaIn = (page, attr, key) => page.match(new RegExp(`<meta[^>]*${attr}="${key}"[^>]*content="([^"]*)"`))?.[1];
 // &amp; last, so an escaped entity such as &amp;quot; is decoded once, not twice.
 const decode = (s) => s.replaceAll('&#39;', "'").replaceAll('&quot;', '"').replaceAll('&amp;', '&');
-const INDEXED = ['/', '/legal', '/privacy', '/terms'];
+// The pages in the works stay out of search until they have content.
+const INDEXED = ['/', '/privacy'];
+const SOON = ['/journal', '/legal', '/terms'];
 
 test('each home page carries its language, title, description, canonical and alternates', () => {
   for (const lang of LANGS) {
@@ -28,7 +30,67 @@ test('each home page carries its language, title, description, canonical and alt
     assert.equal(metaIn(page, 'property', 'og:image'), `${SITE.url}/og-image.jpg`);
     assert.ok(page.includes(`<link rel="canonical" href="${SITE.url}${localize(lang, '/')}"`), `${lang} canonical`);
     for (const alt of LANGS) assert.ok(page.includes(`<link rel="alternate" hreflang="${alt}" href="${SITE.url}${localize(alt, '/')}"`), `${lang} → ${alt}`);
-    assert.ok(page.includes(`<link rel="alternate" hreflang="x-default" href="${SITE.url}/en"`), `${lang} x-default`);
+    assert.ok(page.includes(`<link rel="alternate" hreflang="x-default" href="${SITE.url}/"`), `${lang} x-default`);
+  }
+});
+
+// English is the default (founder, 2026-10-31): English at the root, French under /fr, and the old /en links land at the root.
+test('the root is English and French lives under /fr', async () => {
+  for (const [file, lang] of [['index.html', 'en'], ['legal.html', 'en'], ['fr.html', 'fr'], ['fr/legal.html', 'fr']]) {
+    assert.match(await read(file), new RegExp(`<html lang="${lang}"`), file);
+  }
+  const { redirects = [] } = JSON.parse(await readFile(new URL('../vercel.json', import.meta.url), 'utf8'));
+  assert.deepEqual(redirects, [{ source: '/en', destination: '/', permanent: true }, { source: '/en/:path*', destination: '/:path*', permanent: true }]);
+});
+
+// The public address is info@ (founder, 2026-11-01, from the content brief), never hello@ or contact@.
+test('every page and llms.txt give info@dressyouapp.com, never an old address', async () => {
+  for (const name of [...pages, 'llms.txt']) assert.doesNotMatch(await read(name), /hello@|contact@/, name);
+  assert.ok((await read('index.html')).includes('mailto:info@dressyouapp.com'));
+});
+
+// Tags read as spaces, so words in sibling spans stay apart.
+const words = (s) => decode(s.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim());
+
+// The content brief's wording, word for word (founder, 2026-11-01). French is drafted from it and pinned by its shape.
+test('the English home page says the wording the brief validated, and none of the longer lines it replaced', () => {
+  const page = words(home.en);
+  for (const line of ["Try it on before it's yours.", 'Your Digital Twin. Your style. Your AI stylist.', 'More than virtual try-on.',
+    'Your wardrobe. More looks.', 'Add pieces once. Mix and match them on your Digital Twin.',
+    'Looks that match your style.', 'Discover pieces worn by people who share your taste.',
+    'Get a second opinion.', 'Share a look. See what your friends think.', 'Ask your friends',
+    'Fashion, made personal.', 'Discover looks, try them on and shop with confidence.']) assert.ok(page.includes(line), line);
+  for (const old of ['Tap try on', 'More than a try-on.', 'Fill your wardrobe.', 'A feed of real people.', 'Wear it first.']) {
+    assert.ok(!page.includes(old), `still says "${old}"`);
+  }
+});
+
+const howOf = (page) => ({
+  heads: [...page.matchAll(/<span class="hw"[^>]*>([\s\S]*?)<\/span>/g)].map((m) => words(m[1])),
+  steps: [...page.matchAll(/<ol class="hsteps[^"]*"[^>]*>([\s\S]*?)<\/ol>/g)].map((m) => [...m[1].matchAll(/<li[^>]*>([\s\S]*?)<\/li>/g)].map((li) => words(li[1]))),
+});
+
+test('the phone demo gives each source its own heading and four steps', () => {
+  assert.deepEqual(howOf(home.en), {
+    heads: ['Try on from your favorite stores.', 'Style your own wardrobe.', 'Discover looks that match your style.'],
+    steps: [
+      ['01 Choose a piece', '02 Try it on', '03 Check your size', '04 Ask your stylist'],
+      ['01 Pick a piece', '02 Try it on', '03 Build a look', '04 Get styling tips'],
+      ['01 Find a look', '02 Try it on', '03 Explore pieces', '04 Get inspired'],
+    ],
+  });
+  const fr = howOf(home.fr);
+  assert.equal(fr.heads.length, 3);
+  assert.deepEqual(fr.steps.map((list) => list.map((step) => step.slice(0, 2))), Array(3).fill(['01', '02', '03', '04']));
+});
+
+// The stylist speaks cleanly: every line it says or ticks off opens with a capital (founder, 2026-10-31).
+test("the stylist's lines open with a capital letter, in each language", () => {
+  for (const lang of LANGS) {
+    const { stylist: s, how } = COPY[lang], tabs = [s.opinion, s.day, s.trip, s.find, s.buy];
+    const lines = [s.opinion.a, s.day.a, s.trip.head, s.trip.a, s.find.fit, s.buy.a, ...how.scenes.map((scene) => scene.a),
+      ...tabs.flatMap((tab) => tab.checks.flatMap(([, label, value]) => [label, value]))];
+    for (const line of lines) assert.match(line, /^[\p{Lu}\d€]/u, `${lang}: "${line}"`);
   }
 });
 
@@ -49,7 +111,8 @@ test('the JSON-LD, llms.txt and sitemap agree with the pages', async () => {
     assert.ok(sitemap.includes(`<loc>${SITE.url}${localize(lang, path)}</loc>`), `${lang} ${path}`);
     await access(new URL(fileOf(lang, path), DIST)).catch(() => assert.fail(`${lang} ${path} is in the sitemap but not built`));
   }
-  assert.doesNotMatch(sitemap, /notified|404/);
+  assert.doesNotMatch(sitemap, /notified|404|journal|legal|terms/);
+  assert.doesNotMatch(llms, /\/(journal|legal|terms)\b/, 'llms.txt lists a page in the works');
 });
 
 // Founder, 2026-10-30: no semicolons or em dashes in what people read. Plus the search plan's copy rules.
@@ -222,7 +285,7 @@ test('the footer lists only working links, the other language and the company de
       [t.dialog.notify.privacy, localize(lang, '/privacy')],
       ...t.finale.columns.flatMap((column) => column.links.map(([label, link]) => [label, local(link)])),
       [t.lang.switchTo, localize(other, '/')],
-      ['hello@dressyouapp.com', 'mailto:hello@dressyouapp.com'],
+      ['info@dressyouapp.com', 'mailto:info@dressyouapp.com'],
     ]);
     const words = decode(text(footer));
     for (const fact of [`© ${new Date().getFullYear()} DressYou Technologies`, '47 rue Vivienne, 75002 Paris']) assert.ok(words.includes(fact), `${lang}: ${fact}`);
@@ -231,21 +294,33 @@ test('the footer lists only working links, the other language and the company de
   }
 });
 
-test('the header menu opens the company pages and the other language, and each company page is in the works and out of search', async () => {
-  const sitemap = await read('sitemap.xml');
+// The footer keeps the four routes the content brief names (founder, 2026-11-01).
+test('the footer links Journal, the legal notice, privacy and terms to their pages', () => {
+  const want = {
+    en: [['Journal', '/journal'], ['Legal notice', '/legal'], ['Privacy', '/privacy'], ['Terms', '/terms']],
+    fr: [['Journal', '/fr/journal'], ['Mentions légales', '/fr/legal'], ['Confidentialité', '/fr/privacy'], ['Conditions', '/fr/terms']],
+  };
   for (const lang of LANGS) {
-    const header = home[lang].match(/<header[\s\S]*?<\/header>/)[0], t = COPY[lang], other = LANGS.find((l) => l !== lang);
+    const nav = home[lang].match(/<nav class="cols"[\s\S]*?<\/nav>/)[0];
+    const links = [...nav.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)].map(([, href, label]) => [words(label), href]);
+    assert.deepEqual(links.slice(0, 4), want[lang], lang);
+  }
+});
+
+// Only finished pages are linked (founder, 2026-10-31): the company pages wait, so the menu keeps the other language.
+test('the header logo goes home, and the menu offers the other language with no page in the works', async () => {
+  for (const lang of LANGS) {
+    const header = home[lang].match(/<header[\s\S]*?<\/header>/)[0], other = LANGS.find((l) => l !== lang);
+    const brand = header.match(/<a class="brand"[\s\S]*?<\/a>/)?.[0] ?? '';
+    assert.match(brand, new RegExp(`^<a class="brand"[^>]*href="${localize(lang, '/')}"[^>]*aria-label="DressYou"`), `${lang}: the logo is not a link home`);
+    // The white logo and the black one, crossfaded as the menu button changes colour.
+    assert.deepEqual([...brand.matchAll(/<img[^>]*src="[^"]*\/(logo-(?:white|black))[^"]*"/g)].map((m) => m[1]), ['logo-white', 'logo-black'], lang);
     assert.match(header, /<button[^>]*popovertarget="menu"/, `${lang}: no menu button`);
     const menu = header.slice(header.indexOf('id="menu"'));
-    assert.match(header, /id="menu"[^>]*popover/, `${lang}: the menu is not a popover`);
     const links = [...menu.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)].map(([, href, label]) => [decode(text(label)), href]);
-    assert.deepEqual(links, [...t.menu.links.map(([label, path]) => [label, localize(lang, path)]), [other.toUpperCase(), localize(other, '/')]]);
-    for (const [label, path] of t.menu.links) {
-      const body = await read(fileOf(lang, path));
-      assert.match(body, /<meta name="robots" content="noindex"/, `${lang} ${path}`);
-      assert.doesNotMatch(body, /rel="canonical"/, `${lang} ${path}`);
-      assert.ok(decode(text(body)).includes(label) && decode(text(body)).includes(t.soon.tag), `${lang} ${path} is not the page in the works`);
-      assert.ok(!sitemap.includes(`${SITE.url}${localize(lang, path)}<`), `${lang} ${path} is in the sitemap`);
+    assert.deepEqual(links, [[other.toUpperCase(), localize(other, '/')]], lang);
+    for (const path of ['/about', '/careers', '/press', '/help']) {
+      await assert.rejects(access(new URL(fileOf(lang, path), DIST)), `${lang} ${path} is still built`);
     }
   }
 });
@@ -268,17 +343,27 @@ test('every in-page link has its target on the same page', async () => {
   }
 });
 
-test('the legal pages exist in both languages and name the publisher', async () => {
+// Until the final legal texts arrive, Journal, the legal notice and the terms all say the same thing, word for word, and
+// show no draft legal text (founder, 2026-11-01). Privacy keeps its notice: the sign-up links to it.
+test('Journal, the legal notice and the terms show one coming-soon message, the address and the way home', async () => {
+  const want = {
+    en: { message: ['In the works', 'This page is coming soon. Write to info@dressyouapp.com.', 'Back to DressYou'], home: '/', titles: ['Journal', 'Legal notice', 'Terms'] },
+    fr: { message: ['En préparation', 'Cette page arrive bientôt. Écrivez à info@dressyouapp.com.', 'Retour à DressYou'], home: '/fr', titles: ['Journal', 'Mentions légales', 'Conditions'] },
+  };
   for (const lang of LANGS) {
-    const legal = text(await read(fileOf(lang, '/legal')));
-    for (const fact of ['DressYou Technologies', '47 rue Vivienne, 75002 Paris', 'hello@dressyouapp.com', 'Vercel']) assert.ok(legal.includes(fact), `${lang}: ${fact}`);
-    for (const path of ['/privacy', '/terms']) {
-      const body = await read(fileOf(lang, path));
-      assert.match(body, new RegExp(`<html lang="${lang}"`));
-      assert.match(body, /<header class="top/, `${lang} ${path} has no header`);
-      assert.match(body, /<footer class="finale/, `${lang} ${path} has no footer`);
-      assert.ok(text(body).length > 600, `${lang} ${path} is still a stub`);
+    for (const [k, path] of SOON.entries()) {
+      const body = await read(fileOf(lang, path)), article = body.match(/<article class="doc[\s\S]*?<\/article>/)?.[0] ?? '';
+      assert.match(body, new RegExp(`<html lang="${lang}"`), `${lang} ${path}`);
+      assert.equal(words(body.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)[1]), want[lang].titles[k], `${lang} ${path}: its own title`);
+      assert.deepEqual([...article.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/g)].map((m) => decode(text(m[1]))), want[lang].message, `${lang} ${path}`);
+      assert.doesNotMatch(article, /<h2|<ul/, `${lang} ${path} still shows a draft`);
+      assert.match(article, /<a href="mailto:info@dressyouapp\.com"[^>]*>info@dressyouapp\.com<\/a>/, `${lang} ${path}: the address is a mail link`);
+      assert.match(article, new RegExp(`<a href="${want[lang].home}"[^>]*>${want[lang].message[2]}</a>`), `${lang} ${path}: the way home`);
+      assert.match(body, /<meta name="robots" content="noindex"/, `${lang} ${path} is in search`);
     }
+    const privacy = await read(fileOf(lang, '/privacy'));
+    assert.match(privacy, /<footer class="finale/, `${lang} privacy has no footer`);
+    assert.ok(text(privacy).length > 600 && text(privacy).includes('Brevo'), `${lang} privacy lost its notice`);
   }
 });
 
@@ -307,7 +392,7 @@ test('every dark section says so, for the menu button to take a colour that read
 });
 
 test('the confirmation and 404 pages stay out of search', async () => {
-  for (const file of ['notified.html', 'en/notified.html', '404.html']) {
+  for (const file of ['notified.html', 'fr/notified.html', '404.html']) {
     const body = await read(file);
     assert.match(body, /<meta name="robots" content="noindex"/, file);
     assert.doesNotMatch(body, /rel="canonical"/, file);

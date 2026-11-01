@@ -22,17 +22,17 @@ test('a valid email starts Brevo\'s double opt-in on the list', async () => {
   assert.equal(calls.length, 1);
   assert.equal(calls[0].url, 'https://api.brevo.com/v3/contacts/doubleOptinConfirmation');
   assert.equal(calls[0].init.headers['api-key'], 'test-key');
-  assert.deepEqual(JSON.parse(calls[0].init.body), { email: 'ana@example.com', includeListIds: [7], templateId: 12, redirectionUrl: `${ORIGIN}/notified` });
+  assert.deepEqual(JSON.parse(calls[0].init.body), { email: 'ana@example.com', includeListIds: [7], templateId: 12, redirectionUrl: `${ORIGIN}/fr/notified` });
 });
 
-test('the email and the page after it are in the language the person signed up in, French otherwise', async () => {
+test('the email and the page after it are in the language the person signed up in, English otherwise', async () => {
   const { calls, fetcher } = brevo();
   await handle(post(human('ana@example.com', 'en')), ENV, fetcher);
   await handle(post(human('ana@example.com', 'fr')), ENV, fetcher);
   await handle(post(human('ana@example.com', 'xx')), ENV, fetcher);
   await handle(post(human('ana@example.com', 'toString')), ENV, fetcher);
   const sent = calls.map((c) => JSON.parse(c.init.body)).map(({ templateId, redirectionUrl }) => [templateId, redirectionUrl]);
-  assert.deepEqual(sent, [[13, `${ORIGIN}/en/notified`], [12, `${ORIGIN}/notified`], [12, `${ORIGIN}/notified`], [12, `${ORIGIN}/notified`]]);
+  assert.deepEqual(sent, [[13, `${ORIGIN}/notified`], [12, `${ORIGIN}/fr/notified`], [13, `${ORIGIN}/notified`], [13, `${ORIGIN}/notified`]]);
 });
 
 test('the list stays closed until both language templates are set', async () => {
