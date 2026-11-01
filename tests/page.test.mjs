@@ -237,6 +237,29 @@ test('the friends card asks with its button, offers every friend, and each round
   }
 });
 
+// The phone browses real shops' phone pages, copied from them with their own packshots (founder, 2026-11-01), then shares
+// Zara's coat. Their words are each shop's own, per language.
+test('the shop demo browses Uniqlo, Arc\'teryx and Zara in their own words, then shares the Zara coat', () => {
+  const want = {
+    en: ['Soufflé Yarn Crew Neck Jumper', "BETA SL JACKET WOMEN'S", '€500.00', 'ZW COLLECTION MIDI WOOL BLEND COAT', '149.00 EUR', 'ADD'],
+    fr: ['VESTE BETA SL FEMME', '500,00 €', 'MANTEAU MI-LONG AVEC LAINE ZW COLLECTION', '149,00 EUR', 'AJOUTER'],
+  };
+  for (const lang of LANGS) {
+    const shop = home[lang].match(/<div class="hsrc shop[\s\S]*?<div class="toolbar/)?.[0] ?? '';
+    assert.deepEqual([...shop.matchAll(/<div class="spage (\w+)/g)].map((m) => m[1]), ['uniqlo', 'arcteryx', 'zara'], lang);
+    for (const [k, id] of ['shop-uniqlo-jumper', 'shop-arcteryx-jacket', 'shop-zara-coat'].entries()) {
+      assert.ok(shop.split('<div class="spage ')[k + 1].includes(`/${id}.`), `${lang}: page ${k} shows ${id}`);
+    }
+    const words = decode(text(shop));
+    for (const line of want[lang]) assert.ok(words.includes(line), `${lang}: ${line}`);
+    const domains = home[lang].match(/<span class="domains"[^>]*>([\s\S]*?)<\/span>\s*<svg/)?.[1] ?? '';
+    assert.deepEqual([...domains.matchAll(/>([a-z.']+)</g)].map((m) => m[1]), ['uniqlo.com', 'arcteryx.com', 'zara.com'], lang);
+    const sheet = home[lang].match(/<div class="sh-head[\s\S]*?<div class="sh-apps/)?.[0] ?? '';
+    assert.ok(decode(text(sheet)).includes('zara.com') && sheet.includes('/shop-zara-coat.'), `${lang}: the sheet shares the Zara page`);
+    assert.doesNotMatch(home[lang], /\.example\b/, `${lang}: a made-up shop is left`);
+  }
+});
+
 test('a size card shows the sizes, the one that fits marked with a ruler and the one to taste with a heart, as the app does', () => {
   for (const lang of LANGS) {
     const t = COPY[lang].how, cards = home[lang].match(/<div class="hsz size[\s\S]*?<\/div>/g) ?? [];

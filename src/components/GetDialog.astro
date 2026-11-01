@@ -12,9 +12,9 @@ interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = COPY[lang].dialog, get = COPY[lang].get;
 
-// The extension demo tries on the shop scene's last page: the trench.
-const last = HOW.shop.pages.length - 1, page = HOW.shop.pages[last];
-const [pageName, pagePrice] = COPY[lang].how.shopPages[last];
+// The extension demo tries on the shop scene's last page: Zara's coat.
+const page = HOW.shop.pages[HOW.shop.pages.length - 1];
+const { name: pageName, price: pagePrice } = COPY[lang].how.shops.zara;
 ---
 <dialog id="get-app" class="get" aria-labelledby="get-app-title">
   <div class="card">
@@ -37,7 +37,7 @@ const [pageName, pagePrice] = COPY[lang].how.shopPages[last];
     <div class="xdemo" aria-hidden="true">
       <div class="xbar"><i></i><i></i><i></i><span class="xurl">{page.domain}</span><span class="xext"><Image src={appIcon} width={22} height={22} densities={[1, 2]} alt="" /><span class="xring"></span></span></div>
       <div class="xpage">
-        <div class="xshot"><Picture class="cutout" src={image(page.image)} formats={['avif', 'webp']} widths={[240, 480]} sizes="200px" alt="" loading="lazy" /></div>
+        <div class="xshot"><Picture class="cutout" src={image(HOW.shop.garment)} formats={['avif', 'webp']} widths={[240, 480]} sizes="200px" alt="" loading="lazy" /></div>
         <div class="xinfo"><b>{pageName}</b><span>{pagePrice}</span><span class="xsizes">{['XS', 'S', 'M', 'L'].map((s) => <i>{s}</i>)}</span><span class="xbag">{t.extension.bag}</span></div>
       </div>
       <div class="xpanel">
