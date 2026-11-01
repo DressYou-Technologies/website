@@ -182,7 +182,8 @@ const SHARE_ROW = MENU_ICONS.indexOf('share');
   .hlists { display: grid; }
   .hsteps { grid-area: 1 / 1; }
   .hsteps + .hsteps { opacity: 0; visibility: hidden; }
-  .track { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; border-radius: 2px; background: rgba(10,10,10,.08); overflow: hidden; }
+  /* Under the heading's words, as wide as its longest line (how.ts), and centred with them on phones. */
+  .track { position: absolute; left: 0; bottom: 0; width: 100%; height: 3px; border-radius: 2px; background: rgba(10,10,10,.08); overflow: hidden; }
   .hbar { display: block; height: 100%; background: #0a0a0a; transform-origin: left; transform: scaleX(0); }
   ol { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(10px, 1.6vw, 16px); }
   .hstep { display: flex; align-items: baseline; gap: 14px; color: #bdbdbd; font-size: clamp(1.25rem, 2vw, 1.625rem); font-weight: 600; letter-spacing: -.03em; line-height: 1.15; }
@@ -389,9 +390,12 @@ const SHARE_ROW = MENU_ICONS.indexOf('share');
     .visual { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
     .hstage { flex: 1 1 auto; height: auto; min-height: 360px; }
   }
+  /* The underline counts a scene down, so it has no meaning without motion. */
+  @media (prefers-reduced-motion: reduce) { .track { display: none; } }
   @media (max-width: 599.98px) {
     .how { padding-top: 76px; }
     .hlists { display: none; }
     h2 { text-align: center; }
+    .track { left: 50%; translate: -50% 0; }
   }
 </style>
