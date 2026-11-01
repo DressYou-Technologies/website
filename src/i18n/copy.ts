@@ -92,13 +92,13 @@ const en = {
     find: {
       q: 'a black knit polo under €150, for friday.',
       checks: checks(['budget', 'Budget', '€150 max'], ['size', 'Size', 'M in stock'], ['style', 'Your style', 'Black knits'], ['outfits', 'Goes with', '3 of your outfits'], ['delivery', 'Delivery', 'Not guaranteed by Friday']),
-      name: 'Knit polo', price: '€120 · nord studio', fit: 'Goes with your ecru trousers', cta: 'Try it on',
+      name: 'Knit polo', price: '€149 · Les Deux', fit: 'Goes with your ecru trousers', cta: 'Try it on',
     },
     buy: {
       q: 'an outfit for saturday, under €100.',
       checks: checks(['calendar', 'Event', 'Birthday dinner'], ['wardrobe', 'You own', 'Black trousers, boots'], ['budget', 'Budget', '€100 max'], ['size', 'Size', 'M in stock'], ['delivery', 'Delivery', 'Not guaranteed by Saturday']),
       a: 'This knit looks lovely with your black trousers and boots. If it arrives late, your white oxford works beautifully too.',
-      name: 'Mock-neck knit', price: '€85 · nord studio', cta: 'Buy on nord studio',
+      name: 'Merino turtleneck', price: '€99.95 · Benetton', cta: 'Buy on Benetton',
     },
     ask: 'ask your stylist',
   },
@@ -199,13 +199,13 @@ const fr: Copy = {
     find: {
       q: 'un polo en maille noir, moins de 150 €, pour vendredi.',
       checks: checks(['budget', 'Budget', '150 € max'], ['size', 'Taille', 'M en stock'], ['style', 'Votre style', 'Mailles noires'], ['outfits', 'Va avec', '3 de vos tenues'], ['delivery', 'Livraison', 'Non garantie avant vendredi']),
-      name: 'Polo en maille', price: '120 € · nord studio', fit: 'Va avec votre pantalon écru', cta: 'L’essayer',
+      name: 'Polo en maille', price: '149 € · Les Deux', fit: 'Va avec votre pantalon écru', cta: 'L’essayer',
     },
     buy: {
       q: 'une tenue pour samedi, moins de 100 €.',
       checks: checks(['calendar', 'Événement', 'Dîner d’anniversaire'], ['wardrobe', 'Vous avez', 'Pantalon noir, bottines'], ['budget', 'Budget', '100 € max'], ['size', 'Taille', 'M en stock'], ['delivery', 'Livraison', 'Non garantie avant samedi']),
       a: 'Cette maille sera très jolie avec votre pantalon noir et vos bottines. Si elle arrive tard, votre chemise oxford blanche sera parfaite aussi.',
-      name: 'Maille col montant', price: '85 € · nord studio', cta: 'Acheter sur nord studio',
+      name: 'Col roulé en mérinos', price: '99,95 € · Benetton', cta: 'Acheter sur Benetton',
     },
     ask: 'demandez à votre styliste',
   },
