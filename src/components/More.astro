@@ -36,7 +36,7 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
           ))}</div></div></div>
         ))}</div>
         <div class="wlayer">
-          {first.pieces.map((id) => <Image class="wfly cutout" src={image(id)} width={80} height={80} alt="" loading="lazy" />)}
+          {first.pieces.map((id) => <Image class="wfly cutout" src={image(id)} width={80} height={80} densities={[1, 2]} alt="" loading="lazy" />)}
           <div class="wout">
             {OUTFITS.map((outfit, i) => <Picture src={image(outfit.render)} formats={['avif', 'webp']} widths={[480, 800, 1152]} sizes="(min-width: 900px) 380px, 70vw" alt="" loading="lazy" pictureAttributes={{ 'data-outfit': String(i), class: i === 0 ? 'shown' : '' }} />)}
             <span class="wshine"></span>
@@ -57,7 +57,7 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
             <div class:list={['col', { lower: t === 1 }]}><div class={t === 0 ? 'ftk-a' : 'ftk-b'}>{[...posts, ...posts].map((post) => (
               <div class="post">
                 <div class="who"><span class="avatar">{post.handle[0].toUpperCase()}</span><b>{post.handle}</b><span class="age">{post.age}</span></div>
-                <div class="photo"><Picture src={image(post.image)} formats={['avif', 'webp']} widths={[220, 400]} sizes="200px" alt="" loading="lazy" /></div>
+                <div class="photo"><Picture src={image(post.image)} formats={['avif', 'webp']} widths={[220, 400, 640, 960]} sizes="(min-width: 1100px) 300px, 47vw" alt="" loading="lazy" /></div>
                 <div class="actions">
                   <span class:list={['like', { liked: post.liked }]}><svg viewBox="0 0 24 24" width="13" height="13"><path d={heart}></path></svg></span>
                   <svg viewBox="0 0 24 24" width="13" height="13"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path></svg>
@@ -94,7 +94,7 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
         <div class="fstage" aria-hidden="true">{FRIEND_ROUNDS.map((round, r) => (
           <div class:list={['fround', { first: r === 0 }]}>
             <div class="fpick4">{round.looks.map((id, k) => (
-              <span class:list={['fthumb', { chosen: round.picked.includes(k) }]}><Picture src={image(id)} formats={['avif', 'webp']} widths={[160, 240]} sizes="90px" alt="" loading="lazy" /><span class="ftick"><svg viewBox="0 0 24 24" width="12" height="12"><path d="M20 6 9 17l-5-5"></path></svg></span><span class="ftap"></span></span>
+              <span class:list={['fthumb', { chosen: round.picked.includes(k) }]}><Picture src={image(id)} formats={['avif', 'webp']} widths={[180, 340]} sizes="170px" alt="" loading="lazy" /><span class="ftick"><svg viewBox="0 0 24 24" width="12" height="12"><path d="M20 6 9 17l-5-5"></path></svg></span><span class="ftap"></span></span>
             ))}</div>
             <div class="fduo">{round.picked.map((k, side) => (
               <div class="fopt">
@@ -114,6 +114,8 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
   .more { --title: clamp(2.125rem, 4.6vw, 3.625rem); --title-gap: clamp(20px, 3svh, 32px); padding: var(--section-pad) clamp(16px, 3vw, 48px); background: #0a0a0b; color: #f4f4f2; }
   .head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px 48px; max-width: 1440px; margin: 0 auto var(--title-gap); }
   h2 { margin: 0; font-size: var(--title); font-weight: 700; letter-spacing: -.05em; line-height: 1; }
+  /* Below 40px the display tracking closes letters up, so it eases to the demo heading's (4.6vw drops under 40px at 870px). */
+  @media (max-width: 869.98px) { h2 { letter-spacing: -.035em; } }
   .bento { display: flex; flex-wrap: wrap; gap: 16px; max-width: 1440px; margin: 0 auto; }
   svg { flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
   :global(picture) { display: block; }
@@ -169,7 +171,7 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
   .who { display: flex; align-items: center; gap: 6px; padding: 8px 10px; }
   .avatar { width: 20px; height: 20px; flex: none; border-radius: 50%; background: #0a0a0a; color: #fff; display: grid; place-items: center; font-size: 9px; font-weight: 700; }
   .who b { font-size: 11px; font-weight: 600; }
-  .age { margin-left: auto; font-family: var(--font-mono); font-size: 8px; color: rgba(10,10,11,.62); }
+  .age { margin-left: auto; font-family: var(--font-mono); font-size: 11px; font-weight: 500; color: rgba(10,10,11,.62); }
   .photo { position: relative; aspect-ratio: 4 / 5; background: #efeeeb; }
   .actions { display: flex; align-items: center; gap: 10px; padding: 7px 10px 9px; }
   .like { display: flex; color: #0a0a0a; }

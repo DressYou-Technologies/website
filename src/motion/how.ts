@@ -16,7 +16,7 @@ const MENU_SECONDS = .9;              // Safari's page menu shows this long befo
 const SHEET_SECONDS = 1.2;            // the share sheet shows this long before DressYou is tapped
 const FIT_MAX = 1.2, FIT_PAD_X = 8, FIT_PAD_Y = 16;
 const RESIZE_SETTLE_MS = 120;
-const DIM = '#bdbdbd', INK = '#0a0a0a';
+const DIM = '#767676', INK = '#0a0a0a';  // DIM: the lightest grey at 4.5:1 on white (WCAG 1.4.3)
 const TILE_EDGE = 'inset 0 0 0 1px rgba(10,10,11,.08)', TILE_PICKED = 'inset 0 0 0 2px #0a0a0b';
 // A size chip chosen and not, as How.astro draws .szc.fit and .szc.
 const CHIP_ON = { backgroundColor: '#0a0a0b', color: '#f4f4f2', fontWeight: 700 }, CHIP_OFF = { backgroundColor: '#efeeeb', color: '#0a0a0a', fontWeight: 500 };

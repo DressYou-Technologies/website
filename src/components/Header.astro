@@ -55,7 +55,7 @@ const t = COPY[lang];
   /* On the hero, which has its own buttons, the header keeps its logo and menu; the buttons come in after it. */
   :global(html.js) .top:not(.app-shown) .bar :global(.hdr-ext) { opacity: 0; visibility: hidden; }
   /* The white logo and the black one share a place: the black one shows where the menu button turns ink (chrome.ts). */
-  .brand { display: grid; align-items: center; text-decoration: none; }
+  .brand { display: grid; align-items: center; min-height: 44px; text-decoration: none; }
   .brand :global(.logo) { grid-area: 1 / 1; width: auto; height: 24px; transition: opacity .45s ease; }
   .brand :global(.logo.black), .brand.on-light :global(.logo.white) { opacity: 0; }
   .brand.on-light :global(.logo.black) { opacity: 1; }
@@ -79,7 +79,7 @@ const t = COPY[lang];
 
   /* The export's burger: two bars that cross while the menu is open. 44 px keeps the touch target. */
   .hdr-burger { display: grid; place-items: center; width: 44px; height: 44px; margin-left: 2px; padding: 0; border: 0; border-radius: 14px; background: transparent; color: #fff; cursor: pointer; transition: background-color .2s, color .45s ease; }
-  .hdr-burger:hover { background-color: rgba(255,255,255,.1); }
+  @media (hover: hover) { .hdr-burger:hover { background-color: rgba(255,255,255,.1); } }
   .bars { position: relative; display: block; width: 16px; height: 10px; }
   .bars i { position: absolute; left: 0; right: 0; height: 1.6px; border-radius: 1px; background: currentColor; transition: transform .32s cubic-bezier(.32,.94,.3,1), top .32s cubic-bezier(.32,.94,.3,1); }
   .bars i:first-child { top: 0; }
@@ -94,7 +94,7 @@ const t = COPY[lang];
   .menu-langs { display: flex; align-items: center; gap: 8px; font-size: .9375rem; font-weight: 700; letter-spacing: -.01em; }
   .menu-langs a, .menu-langs span { padding: 4px 2px; color: #0a0a0a; text-decoration: none; }
   .menu-langs a { opacity: .35; transition: opacity .2s; }
-  .menu-langs a:hover { opacity: 1; }
+  @media (hover: hover) { .menu-langs a:hover { opacity: 1; } }
   .menu-langs .slash { padding: 0; color: #c8c8c8; }
   /* Below 600 px the header's extension button folds away, so the menu carries both ways to get DressYou. */
   .menu-get { display: none; }
