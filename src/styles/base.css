@@ -1,6 +1,12 @@
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--white); color: var(--ink); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; overflow-x: clip; padding-bottom: 12px; }
 a, a:hover { color: inherit; }
+/* Anchors and keyboard focus land below the floating header: its bottom edge (88px, 64px on phones) plus 8px (WCAG 2.4.11). */
+html { scroll-padding-top: 96px; }
+@media (max-width: 599.98px) { html { scroll-padding-top: 72px; } }
+/* Headings balance their lines and paragraphs avoid a lone last word. */
+h1, h2, h3 { text-wrap: balance; }
+p { text-wrap: pretty; }
 img { display: block; }
 /* The twin and the garments are cutouts: whole, centred on the studio grey, with room on every side. */
 img.cutout { object-fit: contain; padding: var(--cutout-pad); background: var(--cutout-bg); }

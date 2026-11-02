@@ -59,7 +59,7 @@ const { name: pageName, price: pagePrice } = COPY[lang].how.shops.zara;
   .card { display: grid; justify-items: center; gap: 16px; padding: 40px 32px 32px; }
   .get::backdrop { background: rgba(0,0,0,.55); backdrop-filter: blur(8px); }
   .close { position: absolute; top: 14px; right: 14px; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 50%; background: rgba(10,10,10,.06); color: #0a0a0a; display: grid; place-items: center; cursor: pointer; }
-  .close:hover { background: rgba(10,10,10,.12); }
+  @media (hover: hover) { .close:hover { background: rgba(10,10,10,.12); } }
   .close svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
   .title { margin: 0; padding-bottom: .08em; font-size: 2.25rem; font-weight: 700; letter-spacing: -.05em; line-height: 1; -webkit-mask-image: linear-gradient(to top, #000 var(--m, 100%), rgba(0,0,0,0) calc(var(--m, 100%) + 40%)); mask-image: linear-gradient(to top, #000 var(--m, 100%), rgba(0,0,0,0) calc(var(--m, 100%) + 40%)); }
   .lede { margin: -4px 0 0; max-width: 30ch; color: rgba(10,10,11,.62); font-size: 1rem; line-height: 1.45; text-wrap: balance; }
