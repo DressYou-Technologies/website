@@ -237,6 +237,17 @@ test('the friends card asks with its button, offers every friend, and each round
   }
 });
 
+// Under the heading, one dot per source (stores, wardrobe, feed); the playing one stretches into a pill as its scene runs
+// (founder, 2026-11-02), replacing the loading line.
+test('the phone demo marks its three sources with a dot each, not a loading line', () => {
+  for (const lang of LANGS) {
+    const how = home[lang].match(/<section class="how"[\s\S]*?<\/section>/)?.[0] ?? '';
+    assert.match(how, /<span class="hpager"[^>]*aria-hidden="true"/, `${lang}: no dots`);
+    assert.equal((how.match(/<i class="hpg"/g) ?? []).length, 3, lang);
+    assert.doesNotMatch(how, /class="(track|hbar)"/, `${lang}: the loading line is still there`);
+  }
+});
+
 // The phone browses real shops' phone pages, copied from them with their own packshots (founder, 2026-11-01), then shares
 // Zara's coat. Their words are each shop's own, per language.
 test('the shop demo browses Uniqlo, Arc\'teryx and Zara in their own words, then shares the Zara coat', () => {
