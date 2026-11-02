@@ -12,7 +12,7 @@ const CHAT_MIN = 300, CHAT_MAX = 760;
 const STACK_GAP = 16;
 const LABELS = ['opinion', 'day', 'trip', 'find', 'shop'];
 const POP = .18;                          // one part of the answer arriving
-const CHECKS_AT = .66, CHECK_EACH = .11;  // within a step: the checks card opens, then each check ticks in turn
+const CHECKS_AT = .66, CHECK_EACH = .11;  // within a step: the checks card opens, then each check lights up in turn
 const ANSWER_AT = 1.38, LABEL_AT = STEP - .08;  // the answer starts once every check is ticked, then the step's snap point
 const ANSWER_STAGGER = .09;
 const INK = '#0a0a0a', PAPER = '#f4f4f2';
@@ -39,7 +39,6 @@ export const stylist: Section = (root, wide) => {
   gsap.set(all(sec, '.sg .sin'), { opacity: 0, scale: .3, y: 10, transformOrigin: '0% 100%' });
   gsap.set(all(sec, '.sck'), { opacity: 0, y: 8 });
   gsap.set(all(sec, '.ck'), { opacity: .35 });
-  gsap.set(all(sec, '.ck-tick'), { scale: .5, opacity: 0 });
   // Show the group's end, unless that would push its question under the fade: then show the question.
   const scrollTo = (i: number) => Math.max(0, Math.min(groups[i].offsetTop - FADE_PX, groups[i].offsetTop + groups[i].offsetHeight - view.offsetHeight));
   // Once the answer arrives (the checks have been read by then), show the group's end; on a short screen where it
@@ -85,7 +84,7 @@ export const stylist: Section = (root, wide) => {
       .to(one(g, '.sck'), { opacity: 1, y: 0, duration: .12, ease: 'power3.out' }, t0 + CHECKS_AT);
     all(g, '.ck').forEach((row, k) => {
       const at = t0 + CHECKS_AT + .08 + k * CHECK_EACH;
-      tl.to(row, { opacity: 1, duration: .06 }, at).to(one(row, '.ck-tick'), { opacity: 1, scale: 1, duration: .07, ease: 'power3.out' }, at + .04);
+      tl.to(row, { opacity: 1, duration: .06 }, at);
     });
     tl.to(track, { y: () => -settle(i), duration: .3, ease: 'power3.inOut' }, t0 + ANSWER_AT - .08)
       .to(parts, { opacity: 1, y: 0, scale: 1, duration: POP, ease: 'power3.out', stagger }, t0 + ANSWER_AT)
