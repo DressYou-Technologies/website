@@ -131,7 +131,10 @@ const readable = (page) => [
 
 test('no page, title, description or llms.txt breaks the copy rules', async () => {
   const sources = [...await Promise.all(pages.map(async (page) => [page, readable(await read(page))])), ['llms.txt', await read('llms.txt')]];
+  // The privacy notice is counsel's draft, kept word for word (it uses semicolons) until counsel and the founder settle it.
+  const COUNSEL_TEXT = new Set(['privacy.html', 'fr/privacy.html']);
   for (const [name, body] of sources) for (const [bad, what] of BANNED) {
+    if (bad === ';' && COUNSEL_TEXT.has(name)) continue;
     const at = body.toLowerCase().indexOf(bad);
     assert.equal(at, -1, `${name} has ${what}: …${body.slice(Math.max(0, at - 40), at + 20)}…`);
   }
@@ -440,6 +443,17 @@ test('every dark section says so, for the menu button to take a colour that read
       assert.match(home[lang], new RegExp(`<[a-z]+ ${marker}[^>]*data-tone="dark"`), `${lang}: ${marker}`);
     }
     assert.match(await read(fileOf(lang, '/legal')), /<section class="band"[^>]*data-tone="dark"/, `${lang}: the legal page's band`);
+  }
+});
+
+// The privacy notice is the counsel draft from the DressYou repository (founder, 2026-11-02, preview first): the app's
+// onboarding links its AI section as #ai, and every point still open shows as a marked note, never as plain text.
+test('the privacy notice gives its AI section the anchor the app links to, and marks every open point', async () => {
+  for (const [lang, title] of [['en', '2.3 AI: OpenAI and TypeSafe'], ['fr', '2.3 IA : OpenAI et TypeSafe']]) {
+    const body = await read(fileOf(lang, '/privacy'));
+    assert.equal(decode(text(body.match(/<h3 id="ai"[^>]*>([\s\S]*?)<\/h3>/)?.[1] ?? '')), title, lang);
+    assert.doesNotMatch(body, /\[\[(FOUNDER|COUNSEL)/, `${lang}: an open point shows as raw text`);
+    assert.ok((body.match(/<mark class="open"/g) ?? []).length >= 41, `${lang}: open points not marked`);
   }
 });
 
