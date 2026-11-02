@@ -30,6 +30,7 @@ const en = {
     // them (founder, 2026-11-01).
     heads: ['Try on from your favorite stores.', 'Style your own wardrobe.', 'Discover looks that match your style.'],
     next: 'Next source',
+    pause: 'Pause the demos',
     steps: [
       ['Choose a piece', 'Try it on', 'Check your size', 'Ask your stylist'],
       ['Pick a piece', 'Try it on', 'Build a look', 'Get styling tips'],
@@ -142,6 +143,7 @@ const fr: Copy = {
   how: {
     heads: ['Essayez depuis vos boutiques préférées.', 'Stylisez votre garde-robe.', 'Découvrez des looks qui vous ressemblent.'],
     next: 'Source suivante',
+    pause: 'Mettre les démos en pause',
     steps: [
       ['Choisissez une pièce', 'Essayez-la', 'Vérifiez votre taille', 'Demandez à votre styliste'],
       ['Sélectionnez une pièce', 'Essayez-la', 'Créez un look', 'Recevez des conseils de style'],

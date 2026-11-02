@@ -1,6 +1,6 @@
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { all, one } from './dom';
+import { isHeld, loopWhileShown, setHeld } from './hold';
 import type { Section } from './index';
 
 // Every beat after the tap is timed from the tap press; each source decides how long it plays before it.
@@ -64,7 +64,7 @@ function share(tl: gsap.core.Timeline, src: HTMLElement, t: number): number {
 }
 
 // One phone, three sources: tap try on, the twin wears it, the stylist gives the size, then you ask it something.
-export const how: Section = (root) => {
+export const how: Section = (root, _wide, ctx) => {
   const wrap = one(root, '.hwrap');
   const heads = all(wrap, '.hw'), marks = all(wrap, '.hpg'), fills = marks.map((m) => one(m, 'b')), roll = one(wrap, '.hroll'), lists = all(wrap, '.hsteps');
   const pager = getComputedStyle(one(wrap, '.hpager')), dot = parseFloat(pager.getPropertyValue('--dot')), pill = parseFloat(pager.getPropertyValue('--pill'));
@@ -166,9 +166,14 @@ export const how: Section = (root) => {
     t = end;
   });
 
-  ScrollTrigger.create({ trigger: wrap, start: 'top 80%', end: 'bottom 15%', onToggle: (self) => (self.isActive ? tl.play() : tl.pause()) });
+  loopWhileShown(ctx, { trigger: wrap, start: 'top 80%', end: 'bottom 15%' }, () => tl.play(), () => tl.pause());
   const current = () => starts.findLastIndex((start) => start <= tl.time());
-  const next = () => tl.play(`h${(current() + 1) % srcs.length}`);
+  // Skipping while paused shows the next scene's start and stays paused.
+  const next = () => { const label = `h${(current() + 1) % srcs.length}`; if (isHeld()) tl.seek(label); else tl.play(label); };
+  const pause = one(wrap, '.hpause');
+  const onPause = () => { setHeld(!isHeld()); pause.setAttribute('aria-pressed', String(isHeld())); };
+  pause.setAttribute('aria-pressed', String(isHeld()));
+  pause.addEventListener('click', onPause);
   const onKey = (e: KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); next(); } };
   let settle: ReturnType<typeof setTimeout> | undefined;
   // iOS fires resize each time its toolbar collapses on scroll; only a new width changes what the timeline measured.
@@ -192,6 +197,7 @@ export const how: Section = (root) => {
     roll.removeAttribute('title');
     roll.removeEventListener('click', next);
     roll.removeEventListener('keydown', onKey);
+    pause.removeEventListener('click', onPause);
     window.removeEventListener('resize', onResize);
   };
 };
