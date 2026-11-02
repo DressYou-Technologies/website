@@ -89,7 +89,7 @@ test("the stylist's lines open with a capital letter, in each language", () => {
   for (const lang of LANGS) {
     const { stylist: s, how } = COPY[lang], tabs = [s.opinion, s.day, s.trip, s.find, s.buy];
     const lines = [s.opinion.a, s.day.a, s.trip.head, s.trip.a, s.find.fit, s.buy.a, ...how.scenes.map((scene) => scene.a),
-      ...tabs.flatMap((tab) => tab.checks.flatMap(([, label, value]) => [label, value]))];
+      ...tabs.flatMap((tab) => tab.checks.map(([, line]) => line))];
     for (const line of lines) assert.match(line, /^[\p{Lu}\d€]/u, `${lang}: "${line}"`);
   }
 });
@@ -234,6 +234,17 @@ test('the friends card asks with its button, offers every friend, and each round
       assert.doesNotMatch(opts[1 - winner], /fwin/, `${lang} round ${r}: only one pick`);
       assert.ok(opts[winner].includes(`/${looks[picked[winner]]}.`), `${lang} round ${r}: the pick shows its look`);
     });
+  }
+});
+
+// Under the heading, one dot per source (stores, wardrobe, feed); the playing one stretches into a pill as its scene runs
+// (founder, 2026-11-02), replacing the loading line.
+test('the phone demo marks its three sources with a dot each, not a loading line', () => {
+  for (const lang of LANGS) {
+    const how = home[lang].match(/<section class="how"[\s\S]*?<\/section>/)?.[0] ?? '';
+    assert.match(how, /<span class="hpager"[^>]*aria-hidden="true"/, `${lang}: no dots`);
+    assert.equal((how.match(/<i class="hpg"/g) ?? []).length, 3, lang);
+    assert.doesNotMatch(how, /class="(track|hbar)"/, `${lang}: the loading line is still there`);
   }
 });
 
@@ -408,11 +419,19 @@ test('each stylist answer first shows what it checked, in each language', () => 
     groups.forEach((group, k) => {
       const card = group.match(/<div class="sck[\s\S]*?<\/div>/)?.[0] ?? '';
       assert.ok(group.indexOf('class="sck') < group.indexOf('class="sin'), `${lang} tab ${k}: the answer comes before the checks`);
-      const rows = [...card.matchAll(/class="ck-label"[^>]*>([^<]*)<\/span><span class="ck-value"[^>]*>([^<]*)</g)].map(([, label, value]) => [decode(label), decode(value)]);
+      // One icon and one short line per check, so each line plainly belongs to its icon (founder, 2026-11-02).
+      const rows = [...card.matchAll(/<span class="ck"[^>]*>([\s\S]*?)<\/span>\s*(?=<span class="ck"|<\/div>)/g)].map((m) => m[1]);
       assert.ok(rows.length >= 3, `${lang} tab ${k} checks ${rows.length} things`);
-      assert.deepEqual(rows, tabs[k].checks.map(([, label, value]) => [label, value]), `${lang} tab ${k}`);
+      for (const row of rows) {
+        assert.equal((row.match(/class="ck-ico"/g) ?? []).length, 1, `${lang} tab ${k}: one icon a row`);
+        assert.equal((row.match(/class="ck-text"/g) ?? []).length, 1, `${lang} tab ${k}: one line a row`);
+      }
+      assert.deepEqual(rows.map((row) => decode(row.match(/class="ck-text"[^>]*>([^<]*)</)?.[1] ?? '')), tabs[k].checks.map(([, line]) => line), `${lang} tab ${k}`);
     });
   }
+  const find = { en: ['€150 max', 'Size M in stock', 'You like black knits', 'Goes with 3 of your outfits', 'Delivery not guaranteed by Friday'],
+    fr: ['150\u00a0€ max', 'Taille M en stock', 'Vous aimez les mailles noires', 'Va avec 3 de vos tenues', 'Livraison non garantie avant vendredi'] };
+  for (const lang of LANGS) assert.deepEqual(COPY[lang].stylist.find.checks.map(([, line]) => line), find[lang], lang);
 });
 
 test('every dark section says so, for the menu button to take a colour that reads on it', async () => {

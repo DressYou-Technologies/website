@@ -6,9 +6,9 @@ import type { Lang } from './lang';
 // question asked, never how it tracks behaviour (founder, 2026-10-30). The stylist speaks politely and warmly, every line
 // opening with a capital (founder, 2026-10-31).
 
-// What the stylist checked before an answer: the kind of thing (its icon and colour), a label and the value it found.
+// What the stylist checked before an answer: the kind of thing (its icon) and one short line saying what it found.
 export type CheckKind = 'weather' | 'calendar' | 'wardrobe' | 'style' | 'budget' | 'size' | 'delivery' | 'outfits';
-type Check = [kind: CheckKind, label: string, value: string];
+type Check = [kind: CheckKind, line: string];
 const checks = (...rows: Check[]): Check[] => rows;
 
 const en = {
@@ -74,29 +74,29 @@ const en = {
     checked: 'Checked for you',
     opinion: {
       q: 'should i buy this coat?', item: 'Wool blend coat · €89.95',
-      checks: checks(['size', 'Size', 'M, like the coat you kept'], ['wardrobe', 'You own', 'A similar camel coat'], ['outfits', 'Goes with', '2 of your outfits']),
+      checks: checks(['size', 'Size M, like the coat you kept'], ['wardrobe', 'You own a similar camel coat'], ['outfits', 'Goes with 2 of your outfits']),
       a: 'Good eye! Your camel coat already does the same job, so I’d skip this one.',
     },
     day: {
       q: 'what should i wear today?',
-      checks: checks(['weather', 'Weather', '14°, rain at 6 pm'], ['calendar', 'Calendar', 'Dinner at 8 pm'], ['wardrobe', 'Wardrobe', '52 pieces']),
+      checks: checks(['weather', '14°, rain at 6 pm'], ['calendar', 'Dinner at 8 pm'], ['wardrobe', '52 pieces in your wardrobe']),
       a: 'Your white oxford, black trousers, overshirt and Chelsea boots would be lovely. Rain is coming, so I’d save the suede for another day.',
       cta: 'Try it on',
     },
     trip: {
       q: 'pack for lisbon, 4 days in may.',
-      checks: checks(['calendar', 'Dates', '14 to 17 May'], ['weather', 'Weather', '23° on average'], ['calendar', 'Plans', '1 dinner'], ['wardrobe', 'Wardrobe', '52 pieces']),
+      checks: checks(['calendar', '14 to 17 May'], ['weather', '23° on average'], ['calendar', '1 dinner planned'], ['wardrobe', '52 pieces in your wardrobe']),
       head: 'Lisbon · 4 days', count: '6 pieces · 5 outfits',
       a: 'Everything comes from your wardrobe, so there’s nothing to buy. Have a lovely trip!',
     },
     find: {
       q: 'a black knit polo under €150, for friday.',
-      checks: checks(['budget', 'Budget', '€150 max'], ['size', 'Size', 'M in stock'], ['style', 'Your style', 'Black knits'], ['outfits', 'Goes with', '3 of your outfits'], ['delivery', 'Delivery', 'Not guaranteed by Friday']),
+      checks: checks(['budget', '€150 max'], ['size', 'Size M in stock'], ['style', 'You like black knits'], ['outfits', 'Goes with 3 of your outfits'], ['delivery', 'Delivery not guaranteed by Friday']),
       name: 'Knit polo', price: '€149 · Les Deux', fit: 'Goes with your ecru trousers', cta: 'Try it on',
     },
     buy: {
       q: 'an outfit for saturday, under €100.',
-      checks: checks(['calendar', 'Event', 'Birthday dinner'], ['wardrobe', 'You own', 'Black trousers, boots'], ['budget', 'Budget', '€100 max'], ['size', 'Size', 'M in stock'], ['delivery', 'Delivery', 'Not guaranteed by Saturday']),
+      checks: checks(['calendar', 'Birthday dinner'], ['wardrobe', 'You own black trousers and boots'], ['budget', '€100 max'], ['size', 'Size M in stock'], ['delivery', 'Delivery not guaranteed by Saturday']),
       a: 'This knit looks lovely with your black trousers and boots. If it arrives late, your white oxford works beautifully too.',
       name: 'Merino turtleneck', price: '€99.95 · Benetton', cta: 'Buy on Benetton',
     },
@@ -181,29 +181,29 @@ const fr: Copy = {
     checked: 'Vérifié pour vous',
     opinion: {
       q: 'j’achète ce manteau ?', item: 'Manteau en laine mélangée · 89,95 €',
-      checks: checks(['size', 'Taille', 'M, comme le manteau gardé'], ['wardrobe', 'Vous avez', 'Un manteau camel proche'], ['outfits', 'Va avec', '2 de vos tenues']),
+      checks: checks(['size', 'Taille M, comme le manteau gardé'], ['wardrobe', 'Vous avez un manteau camel proche'], ['outfits', 'Va avec 2 de vos tenues']),
       a: 'Joli choix ! Votre manteau camel remplit déjà ce rôle, je vous conseille de passer votre tour.',
     },
     day: {
       q: 'je porte quoi aujourd’hui ?',
-      checks: checks(['weather', 'Météo', '14°, pluie à 18 h'], ['calendar', 'Agenda', 'Dîner à 20 h'], ['wardrobe', 'Garde-robe', '52 pièces']),
+      checks: checks(['weather', '14°, pluie à 18 h'], ['calendar', 'Dîner à 20 h'], ['wardrobe', '52 pièces dans votre garde-robe']),
       a: 'Votre chemise oxford blanche, le pantalon noir, la surchemise et les bottines chelsea iront très bien. La pluie arrive, gardez le daim pour un autre jour.',
       cta: 'L’essayer',
     },
     trip: {
       q: 'valise pour lisbonne, 4 jours en mai.',
-      checks: checks(['calendar', 'Dates', 'Du 14 au 17 mai'], ['weather', 'Météo', '23° en moyenne'], ['calendar', 'Au programme', '1 dîner'], ['wardrobe', 'Garde-robe', '52 pièces']),
+      checks: checks(['calendar', 'Du 14 au 17 mai'], ['weather', '23° en moyenne'], ['calendar', '1 dîner prévu'], ['wardrobe', '52 pièces dans votre garde-robe']),
       head: 'Lisbonne · 4 jours', count: '6 pièces · 5 tenues',
       a: 'Tout vient de votre garde-robe, rien à acheter. Bon voyage !',
     },
     find: {
       q: 'un polo en maille noir, moins de 150 €, pour vendredi.',
-      checks: checks(['budget', 'Budget', '150 € max'], ['size', 'Taille', 'M en stock'], ['style', 'Votre style', 'Mailles noires'], ['outfits', 'Va avec', '3 de vos tenues'], ['delivery', 'Livraison', 'Non garantie avant vendredi']),
+      checks: checks(['budget', '150 € max'], ['size', 'Taille M en stock'], ['style', 'Vous aimez les mailles noires'], ['outfits', 'Va avec 3 de vos tenues'], ['delivery', 'Livraison non garantie avant vendredi']),
       name: 'Polo en maille', price: '149 € · Les Deux', fit: 'Va avec votre pantalon écru', cta: 'L’essayer',
     },
     buy: {
       q: 'une tenue pour samedi, moins de 100 €.',
-      checks: checks(['calendar', 'Événement', 'Dîner d’anniversaire'], ['wardrobe', 'Vous avez', 'Pantalon noir, bottines'], ['budget', 'Budget', '100 € max'], ['size', 'Taille', 'M en stock'], ['delivery', 'Livraison', 'Non garantie avant samedi']),
+      checks: checks(['calendar', 'Dîner d’anniversaire'], ['wardrobe', 'Vous avez un pantalon noir et des bottines'], ['budget', '100 € max'], ['size', 'Taille M en stock'], ['delivery', 'Livraison non garantie avant samedi']),
       a: 'Cette maille sera très jolie avec votre pantalon noir et vos bottines. Si elle arrive tard, votre chemise oxford blanche sera parfaite aussi.',
       name: 'Col roulé en mérinos', price: '99,95 € · Benetton', cta: 'Acheter sur Benetton',
     },

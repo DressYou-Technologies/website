@@ -1,8 +1,9 @@
 ---
 import type { CheckKind } from '../i18n/copy';
 
-// What the stylist checked before it answers: each row ticks in turn (motion/stylist.ts), all ticked without motion.
-interface Props { title: string; checks: [kind: CheckKind, label: string, value: string][] }
+// What the stylist checked before it answers: one icon and one short line a row, each row lighting up in turn
+// (motion/stylist.ts), all lit without motion.
+interface Props { title: string; checks: [kind: CheckKind, line: string][] }
 const { title, checks } = Astro.props;
 // Lucide icon paths (ISC), one per kind of check; circles and rects the paths leave out are listed beside them.
 const ICON: Record<CheckKind, { paths: string[]; circles?: [number, number, number][]; rect?: true }> = {
@@ -18,33 +19,22 @@ const ICON: Record<CheckKind, { paths: string[]; circles?: [number, number, numb
 ---
 <div class="sck">
   <span class="ck-title">{title}</span>
-  {checks.map(([kind, label, value]) => (
+  {checks.map(([kind, line]) => (
     <span class="ck">
       <span class="ck-ico"><svg viewBox="0 0 24 24" aria-hidden="true">{ICON[kind].rect && <rect width="18" height="18" x="3" y="4" rx="2" />}{ICON[kind].paths.map((d) => <path d={d} />)}{(ICON[kind].circles ?? []).map(([cx, cy, r]) => <circle cx={cx} cy={cy} r={r} />)}</svg></span>
-      <span class="ck-label">{label}</span>
-      <span class="ck-value">{value}</span>
-      <span class="ck-tick"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>
+      <span class="ck-text">{line}</span>
     </span>
   ))}
 </div>
 
 <style>
-  .sck { display: grid; gap: 4px; min-width: min(100%, 340px); max-width: 100%; padding: 14px 14px 12px; border-radius: 20px; background: #fff; box-shadow: 0 0 0 1px rgba(10,10,10,.06), 0 10px 26px rgba(0,0,0,.05); }
-  .ck-title { margin: 0 2px 6px; font-size: .8125rem; font-weight: 600; color: #6b6b6b; }
-  .ck { display: grid; grid-template-columns: 30px minmax(0, 7.5em) minmax(0, 1fr) 16px; align-items: center; gap: 10px; min-height: 34px; padding: 2px; }
-  /* White icons on black, as the stylist's chosen tab (founder, 2026-10-31): the words carry the meaning. */
-  .ck-ico { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 9px; background: #0a0a0a; color: #fff; }
-  svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-  .ck-label { font-size: .875rem; color: #6b6b6b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .ck-value { font-size: .9375rem; font-weight: 600; letter-spacing: -.01em; color: #0a0a0a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .ck-tick { display: grid; place-items: center; width: 16px; height: 16px; color: #3f7552; }
-  .ck-tick svg { width: 14px; height: 14px; stroke-width: 2.6; }
-  @media (max-width: 480px) {
-    .sck { padding: 12px 10px 10px; }
-    .ck { grid-template-columns: 28px minmax(0, 1fr) 14px; gap: 8px; }
-    .ck-ico { width: 28px; height: 28px; grid-row: span 2; }
-    .ck-label { grid-column: 2; font-size: .75rem; line-height: 1.1; }
-    .ck-value { grid-column: 2; font-size: .875rem; white-space: normal; line-height: 1.2; }
-    .ck-tick { grid-column: 3; grid-row: 1 / span 2; }
-  }
+  /* Small and quiet: each row is its icon and one line, so the two read as a pair (founder, 2026-11-02). */
+  .sck { display: grid; gap: 7px; justify-self: start; width: fit-content; max-width: 100%; padding: 12px 16px 13px 12px; border-radius: 16px; background: #fff; box-shadow: 0 0 0 1px rgba(10,10,10,.06), 0 8px 20px rgba(0,0,0,.04); }
+  .ck-title { margin: 0 0 1px 2px; font-size: .75rem; font-weight: 500; color: #8a8a8a; }
+  /* The icon sits on the line's first row, so a line that wraps stays beside its own icon. */
+  .ck { display: flex; align-items: flex-start; gap: 10px; }
+  /* White icons on black, as the stylist's chosen tab (founder, 2026-10-31). */
+  .ck-ico { flex: none; display: grid; place-items: center; width: 22px; height: 22px; border-radius: 7px; background: #0a0a0a; color: #fff; }
+  svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .ck-text { min-width: 0; padding-top: 2px; font-size: .875rem; line-height: 18px; color: #0a0a0a; }
 </style>

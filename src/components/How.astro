@@ -60,7 +60,7 @@ const NAV: Record<Shop, Icon[]> = { uniqlo: ['search', 'user', 'cart', 'menu'], 
 <section class="how" id="how">
   <div class="hwrap">
     <div class="copy">
-      <h2><span class="hroll" data-next={t.next}>{t.heads.map((h) => <span class="hw">{h}</span>)}<span class="track" aria-hidden="true"><i class="hbar"></i></span></span></h2>
+      <h2><span class="hroll" data-next={t.next}>{t.heads.map((h) => <span class="hw">{h}</span>)}<span class="hpager" aria-hidden="true">{t.heads.map(() => <i class="hpg"><b></b></i>)}</span></span></h2>
       <div class="hlists">{t.steps.map((list) => <ol class="hsteps" aria-label={t.stepsLabel}>{list.map((s, i) => <li class="hstep"><span class="num">{String(i + 1).padStart(2, '0')}</span>{s}</li>)}</ol>)}</div>
     </div>
     <div class="visual">
@@ -209,17 +209,20 @@ const NAV: Record<Shop, Icon[]> = { uniqlo: ['search', 'user', 'cart', 'menu'], 
   .how { padding: var(--section-pad) clamp(16px, 3vw, 48px); }
   .hwrap { position: relative; max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; gap: clamp(24px, 5vw, 80px); }
   .copy { flex: 1 1 340px; min-width: 0; display: grid; gap: clamp(24px, 4svh, 52px); }
-  h2 { margin: 0; text-align: left; font-size: clamp(2rem, 3.8vw, 3.75rem); font-weight: 700; letter-spacing: -.05em; line-height: 1.04; }
+  /* At most two lines at any width in both languages, with air between them (founder, 2026-11-02: it felt stacked). */
+  h2 { margin: 0; text-align: left; font-size: clamp(1.875rem, 2.9vw, 2.875rem); font-weight: 700; letter-spacing: -.035em; line-height: 1.12; text-wrap: balance; }
   /* Each source's heading and step list share one cell, so the tallest sets the height and nothing jumps between scenes. */
-  .hroll { position: relative; display: grid; padding-bottom: .12em; cursor: pointer; }
+  .hroll { position: relative; display: grid; cursor: pointer; }
   .hw { grid-area: 1 / 1; align-self: end; }
   .hw + .hw { opacity: 0; visibility: hidden; }
   .hlists { display: grid; }
   .hsteps { grid-area: 1 / 1; }
   .hsteps + .hsteps { opacity: 0; visibility: hidden; }
-  /* Under the heading's words, as wide as its longest line (how.ts), and centred with them on phones. */
-  .track { position: absolute; left: 0; bottom: 0; width: 100%; height: 3px; border-radius: 2px; background: rgba(10,10,10,.08); overflow: hidden; }
-  .hbar { display: block; height: 100%; background: #0a0a0a; transform-origin: left; transform: scaleX(0); }
+  /* One dot per source under the heading; the playing one stretches into a pill that fills as its scene runs (how.ts reads
+     both sizes from here). */
+  .hpager { --dot: 7px; --pill: 30px; display: flex; gap: 8px; margin-top: .45em; }
+  .hpg { position: relative; display: block; width: var(--dot); height: var(--dot); border-radius: 999px; background: #d4d4d4; overflow: hidden; }
+  .hpg b { position: absolute; inset: 0; background: #0a0a0a; transform-origin: left; transform: scaleX(0); }
   ol { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(10px, 1.6vw, 16px); }
   .hstep { display: flex; align-items: baseline; gap: 14px; color: #bdbdbd; font-size: clamp(1.25rem, 2vw, 1.625rem); font-weight: 600; letter-spacing: -.03em; line-height: 1.15; }
   .hstep:first-child { color: #0a0a0a; }
@@ -448,12 +451,12 @@ const NAV: Record<Shop, Icon[]> = { uniqlo: ['search', 'user', 'cart', 'menu'], 
     .visual { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
     .hstage { flex: 1 1 auto; height: auto; min-height: 360px; }
   }
-  /* The underline counts a scene down, so it has no meaning without motion. */
-  @media (prefers-reduced-motion: reduce) { .track { display: none; } }
+  /* The dots count the scenes down, so they have no meaning without motion. */
+  @media (prefers-reduced-motion: reduce) { .hpager { display: none; } }
   @media (max-width: 599.98px) {
     .how { padding-top: 76px; }
     .hlists { display: none; }
     h2 { text-align: center; }
-    .track { left: 50%; translate: -50% 0; }
+    .hpager { justify-content: center; }
   }
 </style>
