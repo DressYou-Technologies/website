@@ -60,7 +60,13 @@ const NAV: Record<Shop, Icon[]> = { uniqlo: ['search', 'user', 'cart', 'menu'], 
 <section class="how" id="how">
   <div class="hwrap">
     <div class="copy">
-      <h2><span class="hroll" data-next={t.next}>{t.heads.map((h) => <span class="hw">{h}</span>)}<span class="hpager" aria-hidden="true">{t.heads.map(() => <i class="hpg"><b></b></i>)}</span></span></h2>
+      <div class="hhead">
+        <h2><span class="hroll" data-next={t.next}>{t.heads.map((h) => <span class="hw">{h}</span>)}</span></h2>
+        <div class="hctl">
+          <span class="hpager" aria-hidden="true">{t.heads.map(() => <i class="hpg"><b></b></i>)}</span>
+          <button class="hpause" type="button" aria-pressed="false" aria-label={t.pause}><svg class="bars" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="4" width="4" height="16" rx="1" /><rect x="14" y="4" width="4" height="16" rx="1" /></svg><svg class="play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.4-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5z" /></svg></button>
+        </div>
+      </div>
       <div class="hlists">{t.steps.map((list) => <ol class="hsteps" aria-label={t.stepsLabel}>{list.map((s, i) => <li class="hstep"><span class="num">{String(i + 1).padStart(2, '0')}</span>{s}</li>)}</ol>)}</div>
     </div>
     <div class="visual">
@@ -220,9 +226,18 @@ const NAV: Record<Shop, Icon[]> = { uniqlo: ['search', 'user', 'cart', 'menu'], 
   .hsteps + .hsteps { opacity: 0; visibility: hidden; }
   /* One dot per source under the heading; the playing one stretches into a pill that fills as its scene runs (how.ts reads
      both sizes from here). */
-  .hpager { --dot: 7px; --pill: 30px; display: flex; gap: 8px; margin-top: .45em; }
+  .hhead { display: grid; gap: 16px; }
+  .hctl { display: flex; align-items: center; gap: 14px; }
+  .hpager { --dot: 7px; --pill: 30px; display: flex; gap: 8px; }
   .hpg { position: relative; display: block; width: var(--dot); height: var(--dot); border-radius: 999px; background: #d4d4d4; overflow: hidden; }
   .hpg b { position: absolute; inset: 0; background: #0a0a0a; transform-origin: left; transform: scaleX(0); }
+  /* Pauses every looping demo on the page (motion/hold.ts): 24px, 44px to tap through its ::before. */
+  .hpause { position: relative; display: grid; place-items: center; width: 24px; height: 24px; padding: 0; border: 0; border-radius: 50%; background: #efefed; color: #0a0a0a; cursor: pointer; }
+  .hpause::before { content: ''; position: absolute; inset: -10px; }
+  .hpause svg { width: 10px; height: 10px; fill: currentColor; }
+  .hpause .play, .hpause[aria-pressed="true"] .bars { display: none; }
+  .hpause[aria-pressed="true"] .play { display: block; }
+  @media (hover: hover) { .hpause:hover { background: #e2e2df; } }
   ol { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(10px, 1.6vw, 16px); }
   .hstep { display: flex; align-items: baseline; gap: 14px; color: #767676; font-size: clamp(1.25rem, 2vw, 1.625rem); font-weight: 600; letter-spacing: -.01em; line-height: 1.15; }
   .hstep:first-child { color: #0a0a0a; }
@@ -451,12 +466,12 @@ const NAV: Record<Shop, Icon[]> = { uniqlo: ['search', 'user', 'cart', 'menu'], 
     .visual { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
     .hstage { flex: 1 1 auto; height: auto; min-height: 360px; }
   }
-  /* The dots count the scenes down, so they have no meaning without motion. */
-  @media (prefers-reduced-motion: reduce) { .hpager { display: none; } }
+  /* The dots and the pause button only mean something while the demos move (html.motion, motion/index.ts). */
+  :global(html:not(.motion)) .hctl { display: none; }
   @media (max-width: 599.98px) {
     .how { padding-top: 76px; }
     .hlists { display: none; }
     h2 { text-align: center; }
-    .hpager { justify-content: center; }
+    .hctl { justify-content: center; }
   }
 </style>

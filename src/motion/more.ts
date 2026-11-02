@@ -1,8 +1,8 @@
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { landing } from '../lib/landing';
 import { visibleLoop } from '../lib/loop';
 import { all, one } from './dom';
+import { loopWhileShown } from './hold';
 import type { Section } from './index';
 
 const WHITE = '#ffffff', NIGHT = '#0a0a0b';
@@ -23,8 +23,8 @@ export const more: Section = (root, _wide, ctx) => {
   gsap.from(all(section, '.head > *'), { y: 30, opacity: 0, duration: .8, stagger: .1, ease: 'power3.out', scrollTrigger: { trigger: section, start: 'top 80%' } });
   gsap.from(all(section, '.bento .card'), { y: 60, opacity: 0, duration: .9, stagger: .12, ease: 'power3.out', scrollTrigger: { trigger: one(section, '.bento'), start: 'top 85%' } });
   const stopSpin = wardrobe(one(section, '.wardrobe'), ctx);
-  feed(one(section, '.feedtile'));
-  friends(one(section, '.friend'));
+  feed(one(section, '.feedtile'), ctx);
+  friends(one(section, '.friend'), ctx);
   return stopSpin;
 };
 
@@ -101,17 +101,21 @@ function wardrobe(card: HTMLElement, ctx: gsap.Context): () => void {
   // Each pass starts from a callback, which GSAP would record in the section's context for good; keeping passes
   // out of it stops that list growing while the card is on screen. The loop kills the pass in flight itself.
   const loop = visibleLoop((done) => untracked(ctx, () => spin(done)), SPIN_GAP_SECONDS, (seconds, fn) => untracked(ctx, () => gsap.delayedCall(seconds, fn)));
-  ScrollTrigger.create({ trigger: card, start: 'top 80%', end: 'bottom 10%', onToggle: (self) => (self.isActive ? loop.start() : loop.stop()) });
+  loopWhileShown(ctx, { trigger: card, start: 'top 80%', end: 'bottom 10%' }, loop.start, loop.stop);
   return loop.stop;
 }
 
 // The tile scrolls like a feed; "Try on" opens the look's garments, then folds back, while the tile is on screen.
-function feed(tile: HTMLElement) {
-  const onScreen = { trigger: tile, start: 'top bottom', end: 'bottom top', toggleActions: 'play pause resume pause' };
-  gsap.to(one(tile, '.ftk-a'), { yPercent: -50, ease: 'none', duration: FEED_A_SECONDS, repeat: -1, scrollTrigger: onScreen });
-  gsap.fromTo(one(tile, '.ftk-b'), { yPercent: -50 }, { yPercent: 0, ease: 'none', duration: FEED_B_SECONDS, repeat: -1, scrollTrigger: onScreen });
+function feed(tile: HTMLElement, ctx: gsap.Context) {
+  const columns = [
+    gsap.to(one(tile, '.ftk-a'), { yPercent: -50, ease: 'none', duration: FEED_A_SECONDS, repeat: -1, paused: true }),
+    gsap.fromTo(one(tile, '.ftk-b'), { yPercent: -50 }, { yPercent: 0, ease: 'none', duration: FEED_B_SECONDS, repeat: -1, paused: true }),
+  ];
+  loopWhileShown(ctx, { trigger: tile, start: 'top bottom', end: 'bottom top' }, () => columns.forEach((c) => c.play()), () => columns.forEach((c) => c.pause()));
   const chip = one(tile, '.scanchip'), look = one(tile, '.tlook'), cta = one(look, '.tl-cta');
-  gsap.timeline({ repeat: -1, repeatDelay: 1.4, delay: .6, scrollTrigger: { trigger: tile, start: 'top 85%', end: 'bottom 10%', toggleActions: 'play pause resume pause' } })
+  const tryOn = gsap.timeline({ repeat: -1, repeatDelay: 1.4, delay: .6, paused: true });
+  loopWhileShown(ctx, { trigger: tile, start: 'top 85%', end: 'bottom 10%' }, () => tryOn.play(), () => tryOn.pause());
+  tryOn
     .to(chip, { scale: .92, duration: .12, ease: 'power2.in' }, .4)
     .to(chip, { scale: 1, opacity: 0, duration: .18 }, .52)
     .fromTo(look, { opacity: 0, scale: .55, transformOrigin: '100% 0%' }, { opacity: 1, scale: 1, duration: .45, ease: 'back.out(1.5)' }, .55)
@@ -133,7 +137,7 @@ function press(loop: gsap.core.Timeline, el: Element, tap: Element, at: number) 
     .to(el, { scale: 1, duration: .32, ease: 'power3.out' }, at + .09)
     .fromTo(tap, { scale: .4, opacity: .9 }, { scale: 1.8, opacity: 0, duration: .5, ease: 'power2.out', immediateRender: false }, at);
 }
-function friends(card: HTMLElement) {
+function friends(card: HTMLElement, ctx: gsap.Context) {
   const send = one(card, '.fsend'), picker = one(card, '.fpicker'), people = all(picker, '.fp'), rounds = all(card, '.fround');
   const lists = all(card, '.fwho');
   const loop = gsap.timeline({ repeat: -1, paused: true });
@@ -210,7 +214,7 @@ function friends(card: HTMLElement) {
       .fromTo(send, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: .4, ease: 'power3.out', immediateRender: false }, swap + .5);
     t = swap + .9;
   });
-  ScrollTrigger.create({ trigger: card, start: 'top 85%', end: 'bottom 10%', onToggle: (self) => (self.isActive ? loop.play() : loop.pause()) });
+  loopWhileShown(ctx, { trigger: card, start: 'top 85%', end: 'bottom 10%' }, () => loop.play(), () => loop.pause());
 }
 
 function untracked(ctx: gsap.Context, make: () => { kill(): unknown }): { kill(): void } {

@@ -248,6 +248,19 @@ test('the phone demo marks its three sources with a dot each, not a loading line
   }
 });
 
+// One switch pauses every looping demo (WCAG 2.2.2; founder, 2026-11-02). It sits beside the dots, outside the heading
+// that skips to the next scene, and says whether it is pressed.
+test('a pause button beside the dots stops the demos, in each language', () => {
+  for (const [lang, label] of [['en', 'Pause the demos'], ['fr', 'Mettre les démos en pause']]) {
+    const how = home[lang].match(/<section class="how"[\s\S]*?<\/section>/)?.[0] ?? '';
+    const button = how.match(/<button class="hpause"[^>]*>/)?.[0] ?? '';
+    assert.match(button, /type="button"/, lang);
+    assert.match(button, /aria-pressed="false"/, lang);
+    assert.equal(decode(button.match(/aria-label="([^"]*)"/)?.[1] ?? ''), label, lang);
+    assert.doesNotMatch(how.match(/<span class="hroll"[\s\S]*?<\/h2>/)?.[0] ?? '', /hpause/, `${lang}: the button sits inside the heading that skips scenes`);
+  }
+});
+
 // The phone browses real shops' phone pages, copied from them with their own packshots (founder, 2026-11-01), then shares
 // Zara's coat. Their words are each shop's own, per language.
 test('the shop demo browses Uniqlo, Arc\'teryx and Zara in their own words, then shares the Zara coat', () => {
