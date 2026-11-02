@@ -36,9 +36,12 @@ const en = {
       ['Find a look', 'Try it on', 'Explore pieces', 'Get inspired'],
     ],
     stepsLabel: 'How it works',
-    shopPages: [['Navy overshirt', '€89'], ['Suede loafers', '€140'], ['Wool coat', '€290']],
-    // What a shop's product page says around its piece.
-    shop: { colour: 'Colour', size: 'Size', bag: 'Add to bag', delivery: 'Free delivery and returns' },
+    // Each shop's own words on its phone product page, read from its French site in this language (2026-11-01).
+    shops: {
+      uniqlo: { name: 'Soufflé Yarn Crew Neck Jumper', colour: 'Colour: 12 PINK', size: 'Size: Men M', sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL'] },
+      arcteryx: { promo: ['Cold-weather essentials', 'Free shipping'], lang: 'EN', crumbs: ["Arc'teryx", "Women's", 'Shell Jackets'], name: "BETA SL JACKET WOMEN'S", price: '€500.00', review: 'Leave a review', colour: 'Colour: Kasumi' },
+      zara: { tabs: ['DESCRIPTION', 'DETAILS', 'MEASUREMENTS'], collection: 'ZARA WOMAN COLLECTION', tag: 'NEW', name: 'ZW COLLECTION MIDI WOOL BLEND COAT', price: '149.00 EUR', add: 'ADD', title: 'ZW COLLECTION MIDI WOOL BLEND COAT - Chocolate | ZARA France' },
+    },
     // Safari and its share sheet as iOS 27 labels them (captured on the iPhone 18 Pro simulator, 2026-10-30).
     safari: {
       menu: ['Translate Website…', 'Share', 'Add to Bookmarks', 'Add Bookmark to…', 'Find on Page', 'Page Zoom'],
@@ -70,7 +73,7 @@ const en = {
     // Before each answer the stylist ticks off what it checked (founder, 2026-10-30), in the order the spec checks them.
     checked: 'Checked for you',
     opinion: {
-      q: 'should i buy this coat?', item: 'Wool coat · €290',
+      q: 'should i buy this coat?', item: 'Wool blend coat · €89.95',
       checks: checks(['size', 'Size', 'M, like the coat you kept'], ['wardrobe', 'You own', 'A similar camel coat'], ['outfits', 'Goes with', '2 of your outfits']),
       a: 'Good eye! Your camel coat already does the same job, so I’d skip this one.',
     },
@@ -89,13 +92,13 @@ const en = {
     find: {
       q: 'a black knit polo under €150, for friday.',
       checks: checks(['budget', 'Budget', '€150 max'], ['size', 'Size', 'M in stock'], ['style', 'Your style', 'Black knits'], ['outfits', 'Goes with', '3 of your outfits'], ['delivery', 'Delivery', 'Not guaranteed by Friday']),
-      name: 'Knit polo', price: '€120 · nord studio', fit: 'Goes with your ecru trousers', cta: 'Try it on',
+      name: 'Knit polo', price: '€149 · Les Deux', fit: 'Goes with your ecru trousers', cta: 'Try it on',
     },
     buy: {
       q: 'an outfit for saturday, under €100.',
       checks: checks(['calendar', 'Event', 'Birthday dinner'], ['wardrobe', 'You own', 'Black trousers, boots'], ['budget', 'Budget', '€100 max'], ['size', 'Size', 'M in stock'], ['delivery', 'Delivery', 'Not guaranteed by Saturday']),
       a: 'This knit looks lovely with your black trousers and boots. If it arrives late, your white oxford works beautifully too.',
-      name: 'Mock-neck knit', price: '€85 · nord studio', cta: 'Buy on nord studio',
+      name: 'Merino turtleneck', price: '€99.95 · Benetton', cta: 'Buy on Benetton',
     },
     ask: 'ask your stylist',
   },
@@ -145,8 +148,12 @@ const fr: Copy = {
       ['Trouvez un look', 'Essayez-le', 'Explorez les pièces', 'Inspirez-vous'],
     ],
     stepsLabel: 'Comment ça marche',
-    shopPages: [['Surchemise marine', '89 €'], ['Mocassins en daim', '140 €'], ['Manteau en laine', '290 €']],
-    shop: { colour: 'Couleur', size: 'Taille', bag: 'Ajouter au panier', delivery: 'Livraison et retours offerts' },
+    // Uniqlo's French name for the jumper is unconfirmed: its site refused the visit (2026-11-01).
+    shops: {
+      uniqlo: { name: 'Pull Col Rond en Fil Soufflé', colour: 'Couleur : 12 ROSE', size: 'Taille : Homme M', sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL'] },
+      arcteryx: { promo: ['Essentiels pour l’hiver', 'Livraison gratuite'], lang: 'FR', crumbs: ["Arc'teryx", 'Femme', 'Vestes Shell'], name: 'VESTE BETA SL FEMME', price: '500,00 €', review: 'Rédiger un avis', colour: 'Couleur: Kasumi' },
+      zara: { tabs: ['DESCRIPTION', 'DÉTAILS', 'DIMENSIONS'], collection: '', tag: 'NEW', name: 'MANTEAU MI-LONG AVEC LAINE ZW COLLECTION', price: '149,00 EUR', add: 'AJOUTER', title: 'MANTEAU MI-LONG AVEC LAINE ZW COLLECTION - Chocolat | ZARA France' },
+    },
     safari: {
       menu: ['Traduire le site web…', 'Partager', 'Ajouter aux signets', 'Ajouter un signet à…', 'Rechercher dans la page', 'Zoom de la page'],
       options: 'Options', more: 'Plus', actions: ['Copier', 'Ajouter aux signets', 'Ajouter à la liste de lecture', 'Afficher plus'],
@@ -173,7 +180,7 @@ const fr: Copy = {
     tabs: ['Demander un avis', 'S’habiller aujourd’hui', 'Préparer une valise', 'Trouver une pièce', 'Acheter pour un événement'],
     checked: 'Vérifié pour vous',
     opinion: {
-      q: 'j’achète ce manteau ?', item: 'Manteau en laine · 290 €',
+      q: 'j’achète ce manteau ?', item: 'Manteau en laine mélangée · 89,95 €',
       checks: checks(['size', 'Taille', 'M, comme le manteau gardé'], ['wardrobe', 'Vous avez', 'Un manteau camel proche'], ['outfits', 'Va avec', '2 de vos tenues']),
       a: 'Joli choix ! Votre manteau camel remplit déjà ce rôle, je vous conseille de passer votre tour.',
     },
@@ -192,13 +199,13 @@ const fr: Copy = {
     find: {
       q: 'un polo en maille noir, moins de 150 €, pour vendredi.',
       checks: checks(['budget', 'Budget', '150 € max'], ['size', 'Taille', 'M en stock'], ['style', 'Votre style', 'Mailles noires'], ['outfits', 'Va avec', '3 de vos tenues'], ['delivery', 'Livraison', 'Non garantie avant vendredi']),
-      name: 'Polo en maille', price: '120 € · nord studio', fit: 'Va avec votre pantalon écru', cta: 'L’essayer',
+      name: 'Polo en maille', price: '149 € · Les Deux', fit: 'Va avec votre pantalon écru', cta: 'L’essayer',
     },
     buy: {
       q: 'une tenue pour samedi, moins de 100 €.',
       checks: checks(['calendar', 'Événement', 'Dîner d’anniversaire'], ['wardrobe', 'Vous avez', 'Pantalon noir, bottines'], ['budget', 'Budget', '100 € max'], ['size', 'Taille', 'M en stock'], ['delivery', 'Livraison', 'Non garantie avant samedi']),
       a: 'Cette maille sera très jolie avec votre pantalon noir et vos bottines. Si elle arrive tard, votre chemise oxford blanche sera parfaite aussi.',
-      name: 'Maille col montant', price: '85 € · nord studio', cta: 'Acheter sur nord studio',
+      name: 'Col roulé en mérinos', price: '99,95 € · Benetton', cta: 'Acheter sur Benetton',
     },
     ask: 'demandez à votre styliste',
   },

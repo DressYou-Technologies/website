@@ -29,23 +29,24 @@ export const WALL: ImageId[][] = [
   ['wall-w-blonde', 'wall-m-preppy', 'wall-w-track'],
 ];
 
-// A product page on some shop's site: the phone swipes through a few open tabs, then shares the last one to DressYou.
-// The .example domains are reserved for examples, so no real shop is implied. Each shop has its own look, as fashion
-// sites do (wordmark, palette, button), and shows its piece as a flat lay with the colours it comes in.
-// Its name and price are copy, per language, in the same order (src/i18n/copy.ts, how.shopPages).
-export interface ShopPage { domain: string; brand: string; image: ImageId; look: 'stark' | 'warm' | 'soft'; swatches: string[]; sizes: string[] }
+// Real shops' product pages as their phone sites lay them out, each with the shop's own packshot (founder, 2026-11-01):
+// the phone swipes through the open tabs, then shares the last one to DressYou. Their words are copy, per language
+// (src/i18n/copy.ts, how.shops), and `garment` is the shared piece cut out.
+export type Shop = 'uniqlo' | 'arcteryx' | 'zara';
+export interface ShopPage { shop: Shop; domain: string; image: ImageId }
 // The phone's try-ons are studio photos in the hero's recipe (founder, 2026-10-30), not cutouts.
 export const HOW: {
-  shop: { pages: ShopPage[]; render: ImageId };
+  shop: { pages: ShopPage[]; garment: ImageId; render: ImageId };
   wardrobe: { grid: ImageId[]; picks: ImageId[]; render: ImageId };
   feed: { scrolled: Post[]; post: Post; next: Post; render: ImageId };
 } = {
   shop: {
     pages: [
-      { domain: 'nord.example', brand: 'Nord Studio', image: 'g-navy-overshirt', look: 'stark', swatches: ['#27324a', '#2b2b2b', '#9c8f78'], sizes: ['XS', 'S', 'M', 'L', 'XL'] },
-      { domain: 'clair.example', brand: 'Maison Clair', image: 'g-brown-loafers', look: 'warm', swatches: ['#5a3a26', '#1f1f1f'], sizes: ['40', '41', '42', '43', '44'] },
-      { domain: 'neuf.example', brand: 'Atelier Neuf', image: 'g-brown-coat', look: 'soft', swatches: ['#4a3326', '#b08a62', '#1c1c1c'], sizes: ['XS', 'S', 'M', 'L'] },
+      { shop: 'uniqlo', domain: 'uniqlo.com', image: 'shop-uniqlo-jumper' },
+      { shop: 'arcteryx', domain: 'arcteryx.com', image: 'shop-arcteryx-jacket' },
+      { shop: 'zara', domain: 'zara.com', image: 'shop-zara-coat' },
     ],
+    garment: 'g-zara-coat',
     render: 'render-w-coat',
   },
   wardrobe: {

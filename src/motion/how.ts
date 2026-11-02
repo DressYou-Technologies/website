@@ -23,6 +23,13 @@ const CHIP_ON = { backgroundColor: '#0a0a0b', color: '#f4f4f2', fontWeight: 700 
 
 // Layout, not motion: the whole phone scene scales as one piece to its stage, with or without animation.
 // The scene's own size comes from CSS, which switches it between the wide and the stacked layout.
+// The longest line of a heading, so its underline runs under the words rather than across the column.
+function widest(el: Element): number {
+  const range = document.createRange();
+  range.selectNodeContents(el);
+  return Math.max(...Array.from(range.getClientRects(), (r) => r.width));
+}
+
 export function fitPhone() {
   const stage = one(document, '.hstage');
   const scene = one(document, '.hfit');
@@ -66,7 +73,7 @@ function share(tl: gsap.core.Timeline, src: HTMLElement, t: number): number {
 // One phone, three sources: tap try on, the twin wears it, the stylist gives the size, then you ask it something.
 export const how: Section = (root) => {
   const wrap = one(root, '.hwrap');
-  const heads = all(wrap, '.hw'), bar = one(wrap, '.hbar'), roll = one(wrap, '.hroll'), lists = all(wrap, '.hsteps');
+  const heads = all(wrap, '.hw'), bar = one(wrap, '.hbar'), line = one(wrap, '.track'), roll = one(wrap, '.hroll'), lists = all(wrap, '.hsteps');
   const srcs = all(wrap, '.hsrc'), rens = all(wrap, '.hren'), pops = all(wrap, '.hpop');
   const bubbles = all(wrap, '.hpop > *');
 
@@ -117,6 +124,7 @@ export const how: Section = (root) => {
     tl.addLabel(`h${i}`, t);
     // The source's heading rolls in with its steps, and its underline counts down the scene.
     tl.to(heads[i], { autoAlpha: 1, yPercent: 0, filter: 'blur(0px)', duration: .7, ease: 'power3.out' }, t)
+      .to(line, { width: () => widest(heads[i]), duration: .6, ease: 'power3.inOut' }, t)
       .to(list, { autoAlpha: 1, duration: .4, ease: 'power2.out' }, t)
       .to(heads[i], { autoAlpha: 0, yPercent: -70, filter: 'blur(10px)', duration: .45, ease: 'power2.in' }, end - .45)
       .to(list, { autoAlpha: 0, duration: .45, ease: 'power2.in' }, end - .45)
@@ -163,10 +171,18 @@ export const how: Section = (root) => {
   });
 
   ScrollTrigger.create({ trigger: wrap, start: 'top 80%', end: 'bottom 15%', onToggle: (self) => (self.isActive ? tl.play() : tl.pause()) });
-  const next = () => tl.play(`h${(starts.findLastIndex((start) => start <= tl.time()) + 1) % srcs.length}`);
+  const current = () => starts.findLastIndex((start) => start <= tl.time());
+  const next = () => tl.play(`h${(current() + 1) % srcs.length}`);
   const onKey = (e: KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); next(); } };
   let settle: ReturnType<typeof setTimeout> | undefined;
-  const onResize = () => { clearTimeout(settle); settle = setTimeout(() => tl.invalidate(), RESIZE_SETTLE_MS); };
+  // iOS fires resize each time its toolbar collapses on scroll; only a new width changes what the timeline measured.
+  let width = innerWidth;
+  const onResize = () => {
+    if (innerWidth === width) return;
+    width = innerWidth;
+    clearTimeout(settle);
+    settle = setTimeout(() => { gsap.set(line, { width: widest(heads[current()]) }); tl.invalidate(); }, RESIZE_SETTLE_MS);
+  };
   roll.setAttribute('role', 'button');
   roll.setAttribute('tabindex', '0');
   roll.title = roll.dataset.next ?? '';

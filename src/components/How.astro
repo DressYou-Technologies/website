@@ -3,7 +3,7 @@ import { Image, Picture } from 'astro:assets';
 import appIcon from '../assets/brand/app-icon.png';
 import dewai from '../assets/brand/dewai-face.png';
 import frame from '../assets/device/iphone-18-pro-black.png';
-import { HOW } from '../data/site';
+import { HOW, type Shop } from '../data/site';
 import { image } from '../lib/image';
 import { COPY } from '../i18n/copy';
 import type { Lang } from '../i18n/lang';
@@ -12,9 +12,14 @@ interface Props { lang: Lang }
 const t = COPY[Astro.props.lang].how;
 const renders = [HOW.shop.render, HOW.wardrobe.render, HOW.feed.render];
 const post = HOW.feed.post;
-// Each shop page's name and price come from the copy, in page order; the last page is the one shared.
-const pages = HOW.shop.pages.map((page, k) => ({ ...page, name: t.shopPages[k][0], price: t.shopPages[k][1] }));
-const shared = pages[pages.length - 1];
+// Real shops' first phone screens, in the order the phone swipes through them; the last one is shared.
+const shops = t.shops, pages = HOW.shop.pages, shared = pages[pages.length - 1];
+// What each page shows besides its words, as captured (2026-11-01): the jumper's seven colours with pink chosen, the
+// jacket's four with Kasumi chosen, its rating and photo count, and the size Uniqlo preselects.
+const UNIQLO_SWATCHES = ['#ece6da', '#5e7fb8', '#5d8566', '#55585a', '#e7b7b0', '#cbbda6', '#26324a'];
+const UNIQLO_CHOSEN = 4, UNIQLO_SIZE = 'M';
+const ARC_SWATCHES = ['#c9cbd0', '#b9b9e6', '#6f1d2b', '#121212'];
+const ARC_CHOSEN = 1, ARC_RATING = 4.62, ARC_STARS = 5, ARC_REVIEWS = 79, ARC_PHOTOS = 10;
 // Lucide icon paths (ISC). Safari's and the share sheet's follow iOS 27's glyphs; the app's follow the app kit.
 const ICON = {
   back: ['m15 18-6-6 6-6'], page: ['M21 5H3', 'M15 12H3', 'M17 19H3'], reload: ['M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8', 'M21 3v5h-5'],
@@ -27,7 +32,8 @@ const ICON = {
   zoom: ['m21 21-4.3-4.3', 'M11 8v6', 'M8 11h6'],
   copy: ['M8 8h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2Z', 'M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2'],
   glasses: ['M14 15a2 2 0 0 0-2-1 2 2 0 0 0-2 1', 'M2.5 13 5 7c.7-1.3 1.4-2 3-2', 'M21.5 13 19 7c-.7-1.3-1.5-2-3-2'],
-  down: ['m6 9 6 6 6-6'], right: ['m9 18 6-6-6-6'],
+  down: ['m6 9 6 6 6-6'], right: ['m9 18 6-6-6-6'], lines: ['M4 9h16', 'M4 15h16'],
+  user: ['M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2'], cart: ['M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12'],
   plus: ['M5 12h14', 'M12 5v14'], search: ['m21 21-4.3-4.3'], sliders: ['M10 5H3', 'M12 19H3', 'M14 3v4', 'M16 17v4', 'M21 12h-9', 'M21 19h-5', 'M21 5h-7', 'M8 10v4', 'M8 12H3'],
   shirt: ['M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z'],
   layers: ['M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z', 'M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12', 'M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17'],
@@ -43,11 +49,13 @@ const ICON = {
 };
 type Icon = keyof typeof ICON;
 // Circles the paths above leave out, per icon.
-const CIRCLES: Partial<Record<Icon, [number, number, number][]>> = { search: [[11, 11, 8]], zoom: [[11, 11, 8]], glasses: [[6, 15, 4], [18, 15, 4]], friends: [[9, 7, 4]], scan: [[12, 12, 1]], find: [[13, 15, 3]] };
+const CIRCLES: Partial<Record<Icon, [number, number, number][]>> = { user: [[12, 7, 4]], cart: [[8, 21, 1], [19, 21, 1]], search: [[11, 11, 8]], zoom: [[11, 11, 8]], glasses: [[6, 15, 4], [18, 15, 4]], friends: [[9, 7, 4]], scan: [[12, 12, 1]], find: [[13, 15, 3]] };
 const MENU_ICONS: Icon[] = ['translate', 'share', 'bookmark', 'bookmarkTo', 'find', 'zoom'];
 const ACTION_ICONS: Icon[] = ['copy', 'bookmark', 'glasses', 'down'];
 const TAB_ICONS: Icon[] = ['shirt', 'layers', 'history'];
 const SHARE_ROW = MENU_ICONS.indexOf('share');
+// Each shop's header icons, right of its logo, as its phone site draws them.
+const NAV: Record<Shop, Icon[]> = { uniqlo: ['search', 'user', 'cart', 'menu'], arcteryx: ['search', 'user', 'bag', 'menu'], zara: ['bookmark', 'search'] };
 ---
 <section class="how" id="how">
   <div class="hwrap">
@@ -65,16 +73,43 @@ const SHARE_ROW = MENU_ICONS.indexOf('share');
               <div class="ui">
                 <div class="hsrc shop">
                   <div class="spages">{pages.map((page) => (
-                    <div class:list={['spage', page.look]}>
-                      <div class="snav"><svg viewBox="0 0 24 24">{ICON.menu.map((d) => <path d={d} />)}</svg><b class="sbrand">{page.brand}</b><svg viewBox="0 0 24 24">{ICON.bag.map((d) => <path d={d} />)}</svg></div>
-                      <div class="shot"><Picture class="cutout" src={image(page.image)} formats={['avif', 'webp']} widths={[300, 600]} sizes="262px" alt="" loading="lazy" /></div>
-                      <div class="sinfo">
-                        <div class="stitle"><span class="sname">{page.name}</span><span class="sprice">{page.price}</span></div>
-                        <div class="swatches">{page.swatches.map((hex, k) => <i class={k === 0 ? 'on' : undefined} style={`background:${hex}`}></i>)}</div>
-                        <div class="sizes">{page.sizes.map((size) => <span>{size}</span>)}</div>
-                        <span class="sbag">{t.shop.bag}</span>
-                        <span class="sdeliv">{t.shop.delivery}</span>
-                      </div>
+                    <div class:list={['spage', page.shop]}>
+                      {page.shop === 'uniqlo' && <>
+                        <div class="snav"><span class="uqlogo"><b>UNI<br />QLO</b><b>ユニ<br />クロ</b></span><span class="sicons">{NAV.uniqlo.map((k) => <svg viewBox="0 0 24 24">{ICON[k].map((d) => <path d={d} />)}{(CIRCLES[k] ?? []).map(([cx, cy, r]) => <circle cx={cx} cy={cy} r={r} />)}</svg>)}</span></div>
+                        <div class="shot"><Picture src={image(page.image)} formats={['avif', 'webp']} widths={[300, 600]} sizes="262px" alt="" loading="lazy" /></div>
+                        <div class="sinfo">
+                          <p class="uqname">{shops.uniqlo.name}</p>
+                          <p class="uqlabel">{shops.uniqlo.colour}</p>
+                          <span class="chips">{UNIQLO_SWATCHES.map((hex, k) => <i class={k === UNIQLO_CHOSEN ? 'on' : undefined} style={`background:${hex}`}></i>)}</span>
+                          <p class="uqlabel">{shops.uniqlo.size}</p>
+                          <span class="boxes">{shops.uniqlo.sizes.map((z) => <i class={z === UNIQLO_SIZE ? 'on' : undefined}>{z}</i>)}</span>
+                        </div>
+                      </>}
+                      {page.shop === 'arcteryx' && <>
+                        <div class="arcstrip"><span><u>ARC’TERYX</u>OUTLET</span><span><i class="flag"></i>{shops.arcteryx.lang}</span></div>
+                        <div class="arcpromo"><b>{shops.arcteryx.promo[0]}</b>|<span>{shops.arcteryx.promo[1]}</span><svg viewBox="0 0 24 24">{ICON.down.map((d) => <path d={d} />)}</svg></div>
+                        <div class="snav"><b class="arclogo">ARC’TERYX</b><span class="sicons">{NAV.arcteryx.map((k) => <svg viewBox="0 0 24 24">{ICON[k].map((d) => <path d={d} />)}{(CIRCLES[k] ?? []).map(([cx, cy, r]) => <circle cx={cx} cy={cy} r={r} />)}</svg>)}</span></div>
+                        <div class="sinfo">
+                          <p class="crumbs">{shops.arcteryx.crumbs.map((c) => <u>{c}</u>)}</p>
+                          <p class="arctitle"><span>{shops.arcteryx.name}</span><span>{shops.arcteryx.price}</span></p>
+                          <p class="arcrate"><span class="stars" style={`--rated:${(ARC_RATING / ARC_STARS) * 100}%`}>{'★'.repeat(ARC_STARS)}</span>({ARC_REVIEWS}) <u>{shops.arcteryx.review}</u></p>
+                        </div>
+                        <div class="shot"><Picture src={image(page.image)} formats={['avif', 'webp']} widths={[300, 600]} sizes="262px" alt="" loading="lazy" /><span class="count">1 / {ARC_PHOTOS}</span></div>
+                        <p class="arclabel">{shops.arcteryx.colour}</p>
+                        <span class="chips">{ARC_SWATCHES.map((hex, k) => <i class={k === ARC_CHOSEN ? 'on' : undefined} style={`background:${hex}`}></i>)}</span>
+                      </>}
+                      {page.shop === 'zara' && <>
+                        <div class="snav"><svg viewBox="0 0 24 24">{ICON.lines.map((d) => <path d={d} />)}</svg><span class="sicons">{NAV.zara.map((k) => <svg viewBox="0 0 24 24">{ICON[k].map((d) => <path d={d} />)}{(CIRCLES[k] ?? []).map(([cx, cy, r]) => <circle cx={cx} cy={cy} r={r} />)}</svg>)}<span class="zbag">0</span></span></div>
+                        <div class="shot"><Picture src={image(page.image)} formats={['avif', 'webp']} widths={[300, 600]} sizes="262px" alt="" loading="lazy" /></div>
+                        <div class="sinfo">
+                          <p class="ztabs">{shops.zara.tabs.map((tab, k) => <span class={k === 0 ? 'on' : undefined}>{tab}</span>)}</p>
+                          {shops.zara.collection && <p>{shops.zara.collection}</p>}
+                          <p class="ztag">{shops.zara.tag}</p>
+                          <p>{shops.zara.name}</p>
+                          <p>{shops.zara.price}</p>
+                          <span class="zadd">{shops.zara.add}</span>
+                        </div>
+                      </>}
                     </div>
                   ))}</div>
                   <div class="toolbar">
@@ -91,8 +126,8 @@ const SHARE_ROW = MENU_ICONS.indexOf('share');
                   ))}</div>
                   <div class="sheet glass">
                     <div class="sh-head">
-                      <span class="sh-thumb"><Picture class="cutout" src={image(shared.image)} formats={['avif', 'webp']} widths={[80, 160]} sizes="42px" alt="" loading="lazy" /></span>
-                      <span class="sh-what"><b>{shared.name}</b><span>{shared.domain}</span><span class="sh-options">{t.safari.options}<svg viewBox="0 0 24 24">{ICON.right.map((d) => <path d={d} />)}</svg></span></span>
+                      <span class="sh-thumb"><Picture src={image(shared.image)} formats={['avif', 'webp']} widths={[80, 160]} sizes="42px" alt="" loading="lazy" /></span>
+                      <span class="sh-what"><b>{shops.zara.title}</b><span>{shared.domain}</span><span class="sh-options">{t.safari.options}<svg viewBox="0 0 24 24">{ICON.right.map((d) => <path d={d} />)}</svg></span></span>
                     </div>
                     <div class="sh-apps">
                       <span class="app" data-tap><Image src={appIcon} width={64} height={64} densities={[1, 2]} alt="" /><span>DressYou</span><span class="hring dark"></span></span>
@@ -182,7 +217,8 @@ const SHARE_ROW = MENU_ICONS.indexOf('share');
   .hlists { display: grid; }
   .hsteps { grid-area: 1 / 1; }
   .hsteps + .hsteps { opacity: 0; visibility: hidden; }
-  .track { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; border-radius: 2px; background: rgba(10,10,10,.08); overflow: hidden; }
+  /* Under the heading's words, as wide as its longest line (how.ts), and centred with them on phones. */
+  .track { position: absolute; left: 0; bottom: 0; width: 100%; height: 3px; border-radius: 2px; background: rgba(10,10,10,.08); overflow: hidden; }
   .hbar { display: block; height: 100%; background: #0a0a0a; transform-origin: left; transform: scaleX(0); }
   ol { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(10px, 1.6vw, 16px); }
   .hstep { display: flex; align-items: baseline; gap: 14px; color: #bdbdbd; font-size: clamp(1.25rem, 2vw, 1.625rem); font-weight: 600; letter-spacing: -.03em; line-height: 1.15; }
@@ -224,30 +260,53 @@ const SHARE_ROW = MENU_ICONS.indexOf('share');
   /* Safari: a shop's product page, the bottom toolbar, its page menu and the share sheet. */
   .shop { background: #fff; font-family: -apple-system, BlinkMacSystemFont, var(--font-sans); }
   .spages { position: absolute; inset: 0; overflow: hidden; }
-  /* Three shops, three looks, the way fashion sites differ: a stark sans, a warm serif, a soft serif in capitals. */
-  .spage { --page: #f7f6f3; --plate: #ecebe7; --ink: #111; --button: #111; --radius: 0; position: absolute; inset: 0; padding-top: 54px; background: var(--page); color: var(--ink); }
-  .spage.warm { --page: #f4efe7; --plate: #e9e1d5; --ink: #2b211b; --button: #3b2d24; --radius: 24px; }
-  .spage.soft { --page: #fbfaf8; --plate: #efedea; --ink: #141414; --button: #141414; --radius: 10px; }
-  .snav { display: flex; align-items: center; justify-content: space-between; height: 46px; padding: 0 18px; }
+  /* Three real shops' first phone screens, as captured (2026-11-01), in a neutral sans standing in for their fonts. */
+  .spage { position: absolute; inset: 0; padding-top: 54px; background: #fff; color: #111; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+  .spage p { margin: 0; }
+  .snav { display: flex; align-items: center; justify-content: space-between; height: 52px; padding: 0 16px; }
   .snav svg { width: 22px; height: 22px; stroke-width: 1.5; }
-  .sbrand { font-size: 15px; font-weight: 600; letter-spacing: .42em; text-transform: uppercase; }
-  .warm .sbrand { font-family: ui-serif, 'Iowan Old Style', Georgia, serif; font-size: 25px; font-style: italic; font-weight: 400; letter-spacing: 0; text-transform: none; }
-  .soft .sbrand { font-family: ui-serif, 'Iowan Old Style', Georgia, serif; font-size: 17px; font-weight: 500; letter-spacing: .26em; }
-  .shot { position: relative; height: 416px; background: var(--plate); }
-  .shot :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; --cutout-bg: none; --cutout-pad: 9%; }
-  .sinfo { display: grid; gap: 14px; padding: 16px 18px 0; }
-  .stitle { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
-  .sname { font-size: 15px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; }
-  .warm .sname { font-family: ui-serif, 'Iowan Old Style', Georgia, serif; font-size: 19px; letter-spacing: 0; text-transform: none; }
-  .sprice { font-size: 15px; }
-  .swatches { display: flex; gap: 10px; }
-  .swatches i { width: 18px; height: 18px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(0,0,0,.12); }
-  .swatches i.on { box-shadow: 0 0 0 2px var(--page), 0 0 0 3px var(--ink); }
-  .sizes { display: flex; gap: 6px; }
-  .sizes span { flex: 1; display: grid; place-items: center; height: 38px; border-radius: min(var(--radius), 8px); box-shadow: inset 0 0 0 1px rgba(0,0,0,.16); font-size: 14px; }
-  .sbag { display: grid; place-items: center; height: 50px; border-radius: var(--radius); background: var(--button); color: #fff; font-size: 15px; font-weight: 500; letter-spacing: .04em; }
-  .stark .sbag { text-transform: uppercase; font-size: 13px; letter-spacing: .14em; }
-  .sdeliv { margin-top: -6px; text-align: center; font-size: 12px; color: rgba(0,0,0,.5); }
+  .sicons { display: flex; align-items: center; gap: 16px; }
+  .shot { position: relative; overflow: hidden; }
+  .shot :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .chips { display: flex; gap: 8px; }
+  .chips i { width: 28px; height: 28px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(0,0,0,.12); }
+  .chips i.on { box-shadow: 0 0 0 2px #fff, 0 0 0 3.5px #111; }
+  /* Uniqlo: its red logo, the photo on its grey, then the colour and size pickers. */
+  .uqlogo { display: flex; gap: 2px; }
+  .uqlogo b { display: grid; place-items: center; width: 30px; height: 30px; background: #ff0000; color: #fff; font-size: 9px; font-weight: 800; line-height: 1.05; text-align: center; }
+  .uniqlo .shot { height: 536px; }
+  .uniqlo .sinfo { display: grid; gap: 9px; padding: 14px 16px 0; }
+  .uqname { font-size: 17px; }
+  .uqlabel { font-size: 13px; color: #555; }
+  .boxes { display: flex; flex-wrap: wrap; gap: 8px; }
+  .boxes i { display: grid; place-items: center; min-width: 40px; height: 40px; padding: 0 6px; box-shadow: inset 0 0 0 1px #c4c4c4; font-size: 14px; font-style: normal; }
+  .boxes i.on { background: #111; color: #fff; box-shadow: none; }
+  /* Arc'teryx: its black strip and offer bar, the name and price above the photo. */
+  .arcstrip { display: flex; align-items: center; justify-content: space-between; height: 30px; padding: 0 16px; background: #000; color: #fff; font-size: 11px; }
+  .arcstrip u { margin-right: 14px; }
+  .flag { display: inline-block; width: 14px; height: 10px; margin-right: 6px; vertical-align: -1px; background: linear-gradient(90deg, #0055a4 33%, #fff 33% 66%, #ef4135 66%); }
+  .arcpromo { display: flex; align-items: center; gap: 5px; height: 34px; padding: 0 16px; background: #ececec; font-size: 12px; }
+  .arcpromo svg { width: 14px; height: 14px; stroke-width: 2; }
+  .arclogo { font-size: 21px; font-weight: 300; letter-spacing: .03em; }
+  .arcteryx .sinfo { display: grid; gap: 8px; padding: 4px 16px 12px; }
+  .crumbs { display: flex; gap: 14px; font-size: 13px; font-weight: 600; }
+  .arctitle { display: flex; justify-content: space-between; gap: 18px; font-size: 21px; line-height: 1.1; text-transform: uppercase; }
+  .arctitle span:first-child { max-width: 60%; }
+  .arctitle span:last-child { flex: none; font-weight: 500; text-transform: none; }
+  .arcrate { display: flex; align-items: center; gap: 4px; font-size: 14px; }
+  .stars { margin-right: 4px; background: linear-gradient(90deg, #8b1c22 var(--rated), #cfcfcf var(--rated)); -webkit-background-clip: text; background-clip: text; color: transparent; letter-spacing: 1px; }
+  .arcteryx .shot { height: 536px; }
+  .count { position: absolute; top: 12px; right: 12px; padding: 3px 9px; border-radius: 12px; background: rgba(0,0,0,.6); color: #fff; font-size: 11px; }
+  .arclabel { padding: 10px 16px 8px; font-size: 14px; }
+  .arcteryx .chips { padding: 0 16px; }
+  /* Zara: icons only, a tall photo, then its small capitals and an outlined button. */
+  .zbag { display: grid; place-items: center; width: 22px; height: 17px; border: 1.2px solid currentColor; font-size: 10px; }
+  .zara .shot { height: 565px; }
+  .zara .sinfo { display: grid; gap: 6px; padding: 16px 12px 0; font-size: 11.5px; letter-spacing: .02em; }
+  .ztabs { display: flex; gap: 22px; margin-bottom: 10px; color: #6b6b6b; }
+  .ztabs .on { color: #000; font-weight: 600; }
+  .ztag { font-size: 9px; }
+  .zadd { display: grid; place-items: center; height: 32px; margin-top: 10px; border: 1px solid #000; font-size: 11px; }
   .toolbar { position: absolute; left: 33px; right: 34px; bottom: 34px; z-index: 2; display: flex; align-items: center; gap: 8px; height: 48px; }
   .toolbar .round { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; }
   .toolbar .round:first-child svg { color: rgba(10,10,11,.3); }
@@ -264,9 +323,9 @@ const SHARE_ROW = MENU_ICONS.indexOf('share');
   .sheet { position: absolute; left: 9px; right: 9px; bottom: 9px; z-index: 4; padding: 22px 22px 30px; border-radius: 56px; background: rgba(250,250,250,.94); }
   .sh-head { display: flex; gap: 16px; padding: 0 4px 16px; box-shadow: 0 1px 0 rgba(10,10,11,.1); }
   .sh-thumb { position: relative; flex: none; width: 64px; height: 64px; border-radius: 14px; overflow: hidden; background: #fff; box-shadow: 0 1px 3px rgba(10,10,11,.12); }
-  .sh-thumb :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .sh-thumb :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .sh-what { display: grid; justify-items: start; gap: 2px; min-width: 0; }
-  .sh-what b { font-size: 17px; }
+  .sh-what b { max-width: 100%; overflow: hidden; font-size: 17px; text-overflow: ellipsis; white-space: nowrap; }
   .sh-what > span:not(.sh-options) { color: #8a8a8e; font-size: 15px; }
   .sh-options { display: inline-flex; align-items: center; gap: 2px; height: 34px; margin-top: 6px; padding: 0 12px 0 14px; border-radius: 17px; background: rgba(10,10,11,.05); font-size: 16px; }
   .sh-options svg { width: 16px; height: 16px; stroke-width: 2.2; color: rgba(10,10,11,.5); }
@@ -389,9 +448,12 @@ const SHARE_ROW = MENU_ICONS.indexOf('share');
     .visual { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
     .hstage { flex: 1 1 auto; height: auto; min-height: 360px; }
   }
+  /* The underline counts a scene down, so it has no meaning without motion. */
+  @media (prefers-reduced-motion: reduce) { .track { display: none; } }
   @media (max-width: 599.98px) {
     .how { padding-top: 76px; }
     .hlists { display: none; }
     h2 { text-align: center; }
+    .track { left: 50%; translate: -50% 0; }
   }
 </style>

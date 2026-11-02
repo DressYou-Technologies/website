@@ -123,436 +123,263 @@
   "id": "feed-w-trench",
   "model": "gpt-image-2.5-sunburst",
   "usage": {
-   "input_tokens": 6229,
+   "input_tokens": 7730,
    "input_tokens_details": {
-    "image_tokens": 6000,
-    "text_tokens": 229
+    "image_tokens": 7573,
+    "text_tokens": 157
    },
    "output_tokens": 1510,
    "output_tokens_details": {
     "image_tokens": 1510,
     "text_tokens": 0
    },
-   "total_tokens": 7739
+   "total_tokens": 9240
   },
-  "prompt": "Casual photo posted on Instagram, taken on an iPhone. Natural light. True-to-life colours, unretouched natural skin with real texture and no airbrushing, normal phone-camera sharpness with a little noise, not HDR, not hyper-detailed. Real and unposed. No text, no logos, no brand labels, no watermark. The person is an original, fictional adult (not resembling any real person or celebrity): a woman in her mid-twenties, slim, long dark hair, gold hoops. She wears exactly the garments in these images, keeping each one's colour, fabric, cut and details: the cap facing forward, the trench coat open over the tank top, the jeans and the boots. She stands on a Paris street corner holding a takeaway coffee, looking off to the side, the whole outfit visible from head to boots.",
+  "prompt": "Keep the photo from the first image exactly: the same woman, face, hair, hoops, street, pose, coffee, light, framing and phone-camera texture. Change only her clothes: she wears exactly the garments in the other images, keeping each one's colour, fabric, cut and details: the cap facing forward, the trench coat open over the tank top, the jeans and the knee-high boots. The whole outfit stays visible from head to boots.",
   "size": "1024x1280",
   "quality": "high",
   "refs": [
-   "src-g-black-cap",
-   "src-g-trench",
-   "src-g-white-tank",
-   "src-g-barrel-jeans",
-   "src-g-brown-boots"
+   "id-feed-w-trench",
+   "g-black-cap",
+   "g-trench",
+   "g-white-tank",
+   "g-barrel-jeans",
+   "g-brown-boots"
   ]
  },
  "g-barrel-jeans": {
   "id": "g-barrel-jeans",
-  "model": "gpt-image-2.5-sunburst",
-  "usage": {
-   "input_tokens": 794,
-   "input_tokens_details": {
-    "image_tokens": 672,
-    "text_tokens": 122
-   },
-   "output_tokens": 1395,
-   "output_tokens_details": {
-    "image_tokens": 1395,
-    "text_tokens": 0
-   },
-   "total_tokens": 2189
+  "source": {
+   "brand": "AGOLDE",
+   "colour": "Split (mid wash)",
+   "price": "$258.00",
+   "productUrl": "https://agolde.com/products/luna-pieced-jean-split",
+   "imageUrl": "https://cdn.shopify.com/s/files/1/0269/4076/8349/files/A9039-1535_LUNAPIECEDJEAN_SPLIT.jpg?v=1747779401",
+   "product": "Luna High Rise Pieced Taper in Split",
+   "retrieved": "2026-11-01"
   },
-  "prompt": "Show this exact garment as an e-commerce flat lay: laid flat and smooth on its back, photographed straight from above, both legs laid straight side by side, waistband flat at the top, no belt. Keep the same colour, fabric, texture, stitching, buttons and details. No volume, no ghost mannequin, no body shape inside it. Centred, soft even light, on a fully transparent background with no shadow, hanger, mannequin, person or props. No text, no logos, no brand labels, no watermark.",
-  "size": "960x1280",
-  "quality": "high",
-  "refs": [
-   "src-g-barrel-jeans"
-  ]
+  "made": "cut out with macOS Vision's subject mask, trimmed, alpha WebP"
  },
  "g-black-cap": {
   "id": "g-black-cap",
-  "model": "gpt-image-2.5-sunburst",
-  "usage": {
-   "input_tokens": 1267,
-   "input_tokens_details": {
-    "image_tokens": 1200,
-    "text_tokens": 67
-   },
-   "output_tokens": 1395,
-   "output_tokens_details": {
-    "image_tokens": 1395,
-    "text_tokens": 0
-   },
-   "total_tokens": 2662
+  "source": {
+   "brand": "New Era",
+   "colour": "Black",
+   "price": "\u00a323.00",
+   "productUrl": "https://www.neweracap.co.uk/products/new-york-yankees-essential-black-9forty-cap-10531941",
+   "imageUrl": "https://cdn.shopify.com/s/files/1/0584/9278/0618/files/10531941_2_a191acce-e4d4-4b22-bb78-12b2c16c6bcf.jpg?v=1793277216",
+   "product": "New York Yankees Essential Black 9FORTY Cap",
+   "retrieved": "2026-11-01"
   },
-  "prompt": "Cut out the garment exactly as it is: same shape, colour, fabric, folds, details and light. Remove the background completely so only the garment remains, on a fully transparent background. Add no shadow, mannequin, hanger, person or anything else.",
-  "size": "960x1280",
-  "quality": "high",
-  "refs": [
-   "src-g-black-cap"
-  ]
+  "made": "cut out with macOS Vision's subject mask, trimmed, alpha WebP"
  },
  "g-black-knit-polo": {
   "id": "g-black-knit-polo",
-  "model": "gpt-image-2.5-sunburst",
-  "usage": {
-   "input_tokens": 1017,
-   "input_tokens_details": {
-    "image_tokens": 896,
-    "text_tokens": 121
-   },
-   "output_tokens": 1395,
-   "output_tokens_details": {
-    "image_tokens": 1395,
-    "text_tokens": 0
-   },
-   "total_tokens": 2412
+  "source": {
+   "brand": "Les Deux",
+   "colour": "Black",
+   "price": "\u20ac149.00",
+   "productUrl": "https://lesdeux.com/products/check-structure-knitted-ls-polo-black",
+   "imageUrl": "https://cdn.shopify.com/s/files/1/2987/0758/files/20823859_1002654_100-Black_01.webp?v=1791807870",
+   "product": "Check Structure Knitted LS Polo",
+   "retrieved": "2026-11-01"
   },
-  "prompt": "Show this exact garment as an e-commerce flat lay: laid flat and smooth on its back, photographed straight from above, sleeves laid straight down beside the body, collar and hem flat, buttons closed. Keep the same colour, fabric, texture, stitching, buttons and details. No volume, no ghost mannequin, no body shape inside it. Centred, soft even light, on a fully transparent background with no shadow, hanger, mannequin, person or props. No text, no logos, no brand labels, no watermark.",
-  "size": "960x1280",
-  "quality": "high",
-  "refs": [
-   "src-g-black-knit-polo"
-  ]
+  "made": "cut out with macOS Vision's subject mask, trimmed, alpha WebP"
  },
  "g-black-tee": {
   "id": "g-black-tee",
-  "model": "gpt-image-2.5-sunburst",
-  "usage": {
-   "input_tokens": 1110,
-   "input_tokens_details": {
-    "image_tokens": 992,
-    "text_tokens": 118
-   },
-   "output_tokens": 1395,
-   "output_tokens_details": {
-    "image_tokens": 1395,
-    "text_tokens": 0
-   },
-   "total_tokens": 2505
+  "source": {
+   "brand": "Norse Projects",
+   "colour": "Black",
+   "price": "\u00a365",
+   "productUrl": "https://www.norseprojects.com/products/norse-standard-t-shirt-black",
+   "imageUrl": "https://cdn.shopify.com/s/files/1/0960/6738/7723/files/46473_27ed9c2034-n01-0668-9999_01-packshot-original.jpg?v=1790147416",
+   "product": "Norse Standard T-shirt",
+   "retrieved": "2026-11-01"
   },
-  "prompt": "Show this exact garment as an e-commerce flat lay: laid flat and smooth on its back, photographed straight from above, sleeves laid straight down beside the body, collar and hem flat. Keep the same colour, fabric, texture, stitching, buttons and details. No volume, no ghost mannequin, no body shape inside it. Centred, soft even light, on a fully transparent background with no shadow, hanger, mannequin, person or props. No text, no logos, no brand labels, no watermark.",
-  "size": "960x1280",
-  "quality": "high",
-  "refs": [
-   "src-g-black-tee"
-  ]
+  "made": "cut out with macOS Vision's subject mask, trimmed, alpha WebP"
  },
  "g-black-wide-trousers": {
   "id": "g-black-wide-trousers",
-  "model": "gpt-image-2.5-sunburst",
-  "usage": {
-   "input_tokens": 730,
-   "input_tokens_details": {
-    "image_tokens": 608,
-    "text_tokens": 122
-   },
-   "output_tokens": 1395,
-   "output_tokens_details": {
-    "image_tokens": 1395,
-    "text_tokens": 0
-   },
-   "total_tokens": 2125
+  "source": {
+   "brand": "Massimo Dutti",
+   "colour": "Black",
+   "price": "\u00a3100",
+   "productUrl": "https://www.massimodutti.com/gb/extra-fine-wool-pleated-pants-l05006685",
+   "imageUrl": "https://static.massimodutti.net/assets/public/a31f/fc6e/2a6d4e7ba0a6/8f499f27ec4f/05006600800-o1/05006600800-o1.jpg?ts=1787903980892",
+   "product": "Extra fine wool pleated pants",
+   "retrieved": "2026-11-01"
   },
-  "prompt": "Show this exact garment as an e-commerce flat lay: laid flat and smooth on its back, photographed straight from above, both legs laid straight side by side, waistband flat at the top, no belt. Keep the same colour, fabric, texture, stitching, buttons and details. No volume, no ghost mannequin, no body shape inside it. Centred, soft even light, on a fully transparent background with no shadow, hanger, mannequin, person or props. No text, no logos, no brand labels, no watermark.",
-  "size": "960x1280",
-  "quality": "high",
-  "refs": [
-   "src-g-black-wide-trousers"
-  ]
+  "made": "cut out with macOS Vision's subject mask, trimmed, alpha WebP"
  },
  "g-brown-boots": {
   "id": "g-brown-boots",
-  "model": "gpt-image-2.5-sunburst",
-  "usage": {
-   "input_tokens": 1267,
-   "input_tokens_details": {
-    "image_tokens": 1200,
-    "text_tokens": 67
-   },
-   "output_tokens": 1395,
-   "output_tokens_details": {
-    "image_tokens": 1395,
-    "text_tokens": 0
-   },
-   "total_tokens": 2662
+  "source": {
+   "brand": "Massimo Dutti",
+   "colour": "Brown",
+   "price": "\u00a3230",
+   "productUrl": "https://www.massimodutti.com/gb/leather-riding-boot-l11005850?pelement=62051935",
+   "imageUrl": "https://static.massimodutti.net/assets/public/f88a/60b7/48b448aab4c3/4087ffbc4de2/11005850100-o1/11005850100-o1.jpg?ts=1786611032528",
+   "product": "Leather riding boot",
+   "retrieved": "2026-11-01"
   },
-  "prompt": "Cut out the garment exactly as it is: same shape, colour, fabric, folds, details and light. Remove the background completely so only the garment remains, on a fully transparent background. Add no shadow, mannequin, hanger, person or anything else.",
-  "size": "960x1280",
-  "quality": "high",
-  "refs": [
-   "src-g-brown-boots"
-  ]
+  "made": "cut out with macOS Vision's subject mask, trimmed, alpha WebP"
  },
  "g-brown-loafers": {
   "id": "g-brown-loafers",
-  "model": "gpt-image-2.5-sunburst",
-  "usage": {
-   "input_tokens": 63,
-   "input_tokens_details": {
-    "image_tokens": 0,
-    "text_tokens": 63
-   },
-   "output_tokens": 1395,
-   "output_tokens_details": {
-    "image_tokens": 1395,
-    "text_tokens": 0
-   },
-   "total_tokens": 1458
+  "source": {
+   "brand": "Sebago",
+   "colour": "Dark Brown (suede)",
+   "price": "$285.00",
+   "productUrl": "https://sebago-usa.com/products/classic-dan-rough-out-dark-brown",
+   "imageUrl": "https://cdn.shopify.com/s/files/1/0563/8701/0756/files/Nydock69bac7d0b01ac58790834169bac7d0b01b3.69bac7d0b01b3.jpg?v=1773848652",
+   "product": "Classic Dan Rough Out - Dark Brown",
+   "retrieved": "2026-11-01"
   },
-  "prompt": "E-commerce product cutout of a pair of brown suede penny loafers, three-quarter view, centred, crisp fabric detail, soft even light, on a fully transparent background with no shadow, mannequin, hanger or person. No text, no logos, no brand labels, no watermark.",
-  "size": "960x1280",
-  "quality": "high"
+  "made": "cut out with macOS Vision's subject mask, trimmed, alpha WebP"
  },
  "g-chelsea-boots": {
   "id": "g-chelsea-boots",
-  "model": "gpt-image-2.5-sunburst",
-  "usage": {
-   "input_tokens": 1267,
-   "input_tokens_details": {
-    "image_tokens": 1200,
-    "text_tokens": 67
-   },
-   "output_tokens": 1395,
-   "output_tokens_details": {
-    "image_tokens": 1395,
-    "text_tokens": 0
-   },
-   "total_tokens": 2662
+  "source": {
+   "brand": "Dr. Martens",
+   "colour": "Black",
+   "price": "\u00a3170.00",
+   "productUrl": "https://www.drmartens.com/uk/en_gb/2976-stitch-smooth-leather-chelsea-boots-black/p/22227001",
+   "imageUrl": "https://cdn.media.amplience.net/i/drmartens/22227001.80.jpg",
+   "product": "2976 Yellow Stitch Smooth Leather Chelsea Boots",
+   "retrieved": "2026-11-01"
   },
-  "prompt": "Cut out the garment exactly as it is: same shape, colour, fabric, folds, details and light. Remove the background completely so only the garment remains, on a fully transparent background. Add no shadow, mannequin, hanger, person or anything else.",
-  "size": "960x1280",
-  "quality": "high",
-  "refs": [
-   "src-g-chelsea-boots"
-  ]
+  "made": "cut out with macOS Vision's subject mask, trimmed, alpha WebP"
  },
  "g-dark-straight-jeans": {
   "id": "g-dark-straight-jeans",
-  "model": "gpt-image-2.5-sunburst",
-  "usage": {
-   "input_tokens": 666,
-   "input_tokens_details": {
-    "image_tokens": 544,
-    "text_tokens": 122
-   },
-   "output_tokens": 1395,
-   "output_tokens_details": {
-    "image_tokens": 1395,
-    "text_tokens": 0
-   },
-   "total_tokens": 2061
+  "source": {
+   "brand": "A.P.C.",
+   "colour": "Indigo",
+   "price": "$340.00",
+   "productUrl": "https://www.apc-us.com/products/jean-new-sailor-cozzi-f09131_iai",
+   "imageUrl": "https://cdn.shopify.com/s/files/1/0007/0051/4360/files/COZZI-F09131IAI_00_7453be73-c2f4-47d3-9301-e83716a13e81.jpg",
+   "product": "New Sailor jeans",
+   "retrieved": "2026-11-01"
   },
-  "prompt": "Show this exact garment as an e-commerce flat lay: laid flat and smooth on its back, photographed straight from above, both legs laid straight side by side, waistband flat at the top, no belt. Keep the same colour, fabric, texture, stitching, buttons and details. No volume, no ghost mannequin, no body shape inside it. Centred, soft even light, on a fully transparent background with no shadow, hanger, mannequin, person or props. No text, no logos, no brand labels, no watermark.",
-  "size": "960x1280",
-  "quality": "high",
-  "refs": [
-   "src-g-dark-straight-jeans"
-  ]
+  "made": "cut out with macOS Vision's subject mask, trimmed, alpha WebP"
  },
  "g-ecru-trousers": {
   "id": "g-ecru-trousers",
-  "model": "gpt-image-2.5-sunburst",
-  "usage": {
-   "input_tokens": 794,
-   "input_tokens_details": {
-    "image_tokens": 672,
-    "text_tokens": 122
-   },
-   "output_tokens": 1395,
-   "output_tokens_details": {
-    "image_tokens": 1395,
-    "text_tokens": 0
-   },
-   "total_tokens": 2189
+  "source": {
+   "brand": "Zara",
+   "colour": "Ecru",
+   "price": "\u00a349.99",
+   "productUrl": "https://www.zara.com/uk/en/zw-collection-pleated-wide-leg-trousers-p01987398.html",
+   "imageUrl": "https://static.zara.net/assets/public/a848/5964/129947ab844d/c15b16ee750c/01987398712-e1/01987398712-e1.jpg",
+   "product": "ZW Collection wide-leg pleated trousers",
+   "retrieved": "2026-11-01"
   },
-  "prompt": "Show this exact garment as an e-commerce flat lay: laid flat and smooth on its back, photographed straight from above, both legs laid straight side by side, waistband flat at the top, no belt. Keep the same colour, fabric, texture, stitching, buttons and details. No volume, no ghost mannequin, no body shape inside it. Centred, soft even light, on a fully transparent background with no shadow, hanger, mannequin, person or props. No text, no logos, no brand labels, no watermark.",
-  "size": "960x1280",
-  "quality": "high",
-  "refs": [
-   "src-g-ecru-trousers"
-  ]
+  "made": "cut out with macOS Vision's subject mask, trimmed, alpha WebP"
  },
  "g-grey-crewneck": {
   "id": "g-grey-crewneck",
-  "model": "gpt-image-2.5-sunburst",
-  "usage": {
-   "input_tokens": 1014,
-   "input_tokens_details": {
-    "image_tokens": 896,
-    "text_tokens": 118
-   },
-   "output_tokens": 1395,
-   "output_tokens_details": {
-    "image_tokens": 1395,
-    "text_tokens": 0
-   },
-   "total_tokens": 2409
+  "source": {
+   "brand": "Asket",
+   "colour": "Light Grey",
+   "price": "190 GBP",
+   "productUrl": "https://www.asket.com/en-gb/mens-recycled-cashmere-sweater-light-grey",
+   "imageUrl": "https://images.asket.com/products/images/76_RCS-MA-LTG-thumbnail-original.jpg",
+   "product": "The Recycled Cashmere Sweater",
+   "retrieved": "2026-11-01"
   },
-  "prompt": "Show this exact garment as an e-commerce flat lay: laid flat and smooth on its back, photographed straight from above, sleeves laid straight down beside the body, collar and hem flat. Keep the same colour, fabric, texture, stitching, buttons and details. No volume, no ghost mannequin, no body shape inside it. Centred, soft even light, on a fully transparent background with no shadow, hanger, mannequin, person or props. No text, no logos, no brand labels, no watermark.",
-  "size": "960x1280",
-  "quality": "high",
-  "refs": [
-   "src-g-grey-crewneck"
-  ]
+  "made": "cut out with macOS Vision's subject mask, trimmed, alpha WebP"
  },
  "g-navy-overshirt": {
   "id": "g-navy-overshirt",
-  "model": "gpt-image-2.5-sunburst",
-  "usage": {
-   "input_tokens": 988,
-   "input_tokens_details": {
-    "image_tokens": 864,
-    "text_tokens": 124
-   },
-   "output_tokens": 1395,
-   "output_tokens_details": {
-    "image_tokens": 1395,
-    "text_tokens": 0
-   },
-   "total_tokens": 2383
+  "source": {
+   "brand": "Zara",
+   "colour": "Navy blue",
+   "price": "59.95 EUR",
+   "productUrl": "https://www.zara.com/fr/en/regular-fit-pocket-overshirt-p01437201.html?v1=548756765",
+   "imageUrl": "https://static.zara.net/assets/public/73f9/a2f1/bf7a4e57a9aa/b1d7601e968a/01437201401-f1/01437201401-f1.jpg",
+   "product": "REGULAR FIT POCKET OVERSHIRT",
+   "retrieved": "2026-11-01"
   },
-  "prompt": "Show this exact garment as an e-commerce flat lay: laid flat and smooth on its back, photographed straight from above, sleeves laid straight down beside the body, collar and hem flat, buttoned, pockets flat. Keep the same colour, fabric, texture, stitching, buttons and details. No volume, no ghost mannequin, no body shape inside it. Centred, soft even light, on a fully transparent background with no shadow, hanger, mannequin, person or props. No text, no logos, no brand labels, no watermark.",
-  "size": "960x1280",
-  "quality": "high",
-  "refs": [
-   "src-g-navy-overshirt"
-  ]
+  "made": "cut out with macOS Vision's subject mask, trimmed, alpha WebP"
  },
  "g-pinstripe-trousers": {
   "id": "g-pinstripe-trousers",
-  "model": "gpt-image-2.5-sunburst",
-  "usage": {
-   "input_tokens": 794,
-   "input_tokens_details": {
-    "image_tokens": 672,
-    "text_tokens": 122
-   },
-   "output_tokens": 1395,
-   "output_tokens_details": {
-    "image_tokens": 1395,
-    "text_tokens": 0
-   },
-   "total_tokens": 2189
+  "source": {
+   "brand": "Mango",
+   "colour": "Navy",
+   "price": "\u00a349.99",
+   "productUrl": "https://shop.mango.com/gb/en/p/women/trousers/casual/pinstripe-wide-leg-trousers/37045854/56/00",
+   "imageUrl": "https://media.mango.com/is/image/punto/37045854-56-900?wid=2048",
+   "product": "Pinstripe wide leg trousers",
+   "retrieved": "2026-11-01"
   },
-  "prompt": "Show this exact garment as an e-commerce flat lay: laid flat and smooth on its back, photographed straight from above, both legs laid straight side by side, waistband flat at the top, no belt. Keep the same colour, fabric, texture, stitching, buttons and details. No volume, no ghost mannequin, no body shape inside it. Centred, soft even light, on a fully transparent background with no shadow, hanger, mannequin, person or props. No text, no logos, no brand labels, no watermark.",
-  "size": "960x1280",
-  "quality": "high",
-  "refs": [
-   "src-g-pinstripe-trousers"
-  ]
+  "made": "cut out with macOS Vision's subject mask, trimmed, alpha WebP"
  },
  "g-taupe-sweater": {
   "id": "g-taupe-sweater",
-  "model": "gpt-image-2.5-sunburst",
-  "usage": {
-   "input_tokens": 1078,
-   "input_tokens_details": {
-    "image_tokens": 960,
-    "text_tokens": 118
-   },
-   "output_tokens": 1395,
-   "output_tokens_details": {
-    "image_tokens": 1395,
-    "text_tokens": 0
-   },
-   "total_tokens": 2473
+  "source": {
+   "brand": "Benetton",
+   "colour": "Dove gray (a taupe m\u00e9lange)",
+   "price": "\u20ac99,95",
+   "productUrl": "https://fr.benetton.com/en/products/dove-gray-turtleneck-in-pure-merino-wool-dove-gray-1002u2180_530",
+   "imageUrl": "https://cdn.shopify.com/s/files/1/0953/6729/9416/files/3lm2roSwSGuZtq6EsDhrBA.jpg?v=1793430373",
+   "product": "Dove gray turtleneck in pure Merino wool",
+   "retrieved": "2026-11-01"
   },
-  "prompt": "Show this exact garment as an e-commerce flat lay: laid flat and smooth on its back, photographed straight from above, sleeves laid straight down beside the body, collar and hem flat. Keep the same colour, fabric, texture, stitching, buttons and details. No volume, no ghost mannequin, no body shape inside it. Centred, soft even light, on a fully transparent background with no shadow, hanger, mannequin, person or props. No text, no logos, no brand labels, no watermark.",
-  "size": "960x1280",
-  "quality": "high",
-  "refs": [
-   "src-g-taupe-sweater"
-  ]
+  "made": "cut out with macOS Vision's subject mask, trimmed, alpha WebP"
  },
  "g-trench": {
   "id": "g-trench",
-  "model": "gpt-image-2.5-sunburst",
-  "usage": {
-   "input_tokens": 705,
-   "input_tokens_details": {
-    "image_tokens": 576,
-    "text_tokens": 129
-   },
-   "output_tokens": 1395,
-   "output_tokens_details": {
-    "image_tokens": 1395,
-    "text_tokens": 0
-   },
-   "total_tokens": 2100
+  "source": {
+   "brand": "Burberry",
+   "colour": "Honey beige",
+   "price": "\u00a31,895",
+   "productUrl": "https://uk.burberry.com/long-kensington-heritage-trench-coat-p81172491",
+   "imageUrl": "https://assets.burberry.com/is/image/Burberryltd/261B635F-1661-4CE4-B16E-ABE43922961B?$BBY_V3_SL_1$&wid=3000&hei=3000",
+   "product": "Long Kensington Heritage Trench Coat",
+   "retrieved": "2026-11-01"
   },
-  "prompt": "Show this exact garment as an e-commerce flat lay: laid flat and smooth on its back, photographed straight from above, sleeves laid straight down beside the body, collar and hem flat, buttoned, the belt tied loosely at the waist. Keep the same colour, fabric, texture, stitching, buttons and details. No volume, no ghost mannequin, no body shape inside it. Centred, soft even light, on a fully transparent background with no shadow, hanger, mannequin, person or props. No text, no logos, no brand labels, no watermark.",
-  "size": "960x1280",
-  "quality": "high",
-  "refs": [
-   "src-g-trench"
-  ]
+  "made": "cut out with macOS Vision's subject mask, trimmed, alpha WebP"
  },
  "g-white-oxford-shirt": {
   "id": "g-white-oxford-shirt",
-  "model": "gpt-image-2.5-sunburst",
-  "usage": {
-   "input_tokens": 989,
-   "input_tokens_details": {
-    "image_tokens": 864,
-    "text_tokens": 125
-   },
-   "output_tokens": 1395,
-   "output_tokens_details": {
-    "image_tokens": 1395,
-    "text_tokens": 0
-   },
-   "total_tokens": 2384
+  "source": {
+   "brand": "Drake's",
+   "colour": "White",
+   "price": "\u00a3225",
+   "productUrl": "https://www.drakes.com/products/white-oxford-cotton-cloth-button-down-shirt-1",
+   "imageUrl": "https://cdn.shopify.com/s/files/1/0640/6121/0837/files/DR2A4A21843-01000-1.jpg",
+   "product": "White Oxford Cotton Cloth Button-Down Shirt",
+   "retrieved": "2026-11-01"
   },
-  "prompt": "Show this exact garment as an e-commerce flat lay: laid flat and smooth on its back, photographed straight from above, sleeves laid straight down beside the body, collar and hem flat, buttoned, collar laid flat. Keep the same colour, fabric, texture, stitching, buttons and details. No volume, no ghost mannequin, no body shape inside it. Centred, soft even light, on a fully transparent background with no shadow, hanger, mannequin, person or props. No text, no logos, no brand labels, no watermark.",
-  "size": "960x1280",
-  "quality": "high",
-  "refs": [
-   "src-g-white-oxford-shirt"
-  ]
+  "made": "cut out with macOS Vision's subject mask, trimmed, alpha WebP"
  },
  "g-white-sneakers": {
   "id": "g-white-sneakers",
-  "model": "gpt-image-2.5-sunburst",
-  "usage": {
-   "input_tokens": 67,
-   "input_tokens_details": {
-    "image_tokens": 0,
-    "text_tokens": 67
-   },
-   "output_tokens": 1395,
-   "output_tokens_details": {
-    "image_tokens": 1395,
-    "text_tokens": 0
-   },
-   "total_tokens": 1462
+  "source": {
+   "brand": "Veja",
+   "colour": "White Natural",
+   "price": "\u00a3125",
+   "productUrl": "https://www.veja-store.com/en_gb/p/campo-leather-white-natural-CP0502429.html",
+   "imageUrl": "https://media.veja-store.com/images/t_sfcc-pdp-zoom-desktop-v3/v1781690726/VEJA/PACKSHOTS/CP0502429_1/veja-sneakers-campo-leather-white-cp0502429_1.jpg",
+   "product": "Campo Leather White Natural",
+   "retrieved": "2026-11-01"
   },
-  "prompt": "E-commerce product cutout of a pair of clean white leather low-top sneakers with no logos, three-quarter view, centred, crisp fabric detail, soft even light, on a fully transparent background with no shadow, mannequin, hanger or person. No text, no logos, no brand labels, no watermark.",
-  "size": "960x1280",
-  "quality": "high"
+  "made": "cut out with macOS Vision's subject mask, trimmed, alpha WebP"
  },
  "g-white-tank": {
   "id": "g-white-tank",
-  "model": "gpt-image-2.5-sunburst",
-  "usage": {
-   "input_tokens": 815,
-   "input_tokens_details": {
-    "image_tokens": 704,
-    "text_tokens": 111
-   },
-   "output_tokens": 1395,
-   "output_tokens_details": {
-    "image_tokens": 1395,
-    "text_tokens": 0
-   },
-   "total_tokens": 2210
+  "source": {
+   "brand": "Colorful Standard",
+   "colour": "Optical White",
+   "price": "\u00a327.00",
+   "productUrl": "https://colorfulstandard.com/en-gb/products/women-organic-rib-tank-top-women-tank-top-optical-white-female",
+   "imageUrl": "https://cdn.shopify.com/s/files/1/0053/5615/9064/files/CS2054_Female_WomenOrganicRibTankTop-OpticalWhite_2_352f3b05-272b-4407-9405-b8a6445c05eb.jpg?v=1745829661",
+   "product": "Women Organic Rib Tank Top - Optical White",
+   "retrieved": "2026-11-01"
   },
-  "prompt": "Show this exact garment as an e-commerce flat lay: laid flat and smooth on its back, photographed straight from above, straps flat, hem straight. Keep the same colour, fabric, texture, stitching, buttons and details. No volume, no ghost mannequin, no body shape inside it. Centred, soft even light, on a fully transparent background with no shadow, hanger, mannequin, person or props. No text, no logos, no brand labels, no watermark.",
-  "size": "960x1280",
-  "quality": "high",
-  "refs": [
-   "src-g-white-tank"
-  ]
+  "made": "cut out with macOS Vision's subject mask, trimmed, alpha WebP"
  },
  "wall-m-athletic": {
   "id": "wall-m-athletic",
@@ -1096,23 +923,16 @@
  },
  "g-brown-coat": {
   "id": "g-brown-coat",
-  "model": "gpt-image-2.5-sunburst",
-  "usage": {
-   "input_tokens": 132,
-   "input_tokens_details": {
-    "image_tokens": 0,
-    "text_tokens": 132
-   },
-   "output_tokens": 1395,
-   "output_tokens_details": {
-    "image_tokens": 1395,
-    "text_tokens": 0
-   },
-   "total_tokens": 1527
+  "source": {
+   "brand": "Zara",
+   "colour": "Brown",
+   "price": "89.95 EUR",
+   "productUrl": "https://www.zara.com/fr/en/relaxed-fit-wool-blend-coat-p08281615.html?v1=557384785",
+   "imageUrl": "https://static.zara.net/assets/public/d064/25c6/6a244affbf34/2df175ff8efd/08281615700-f1/08281615700-f1.jpg",
+   "product": "RELAXED FIT WOOL BLEND COAT",
+   "retrieved": "2026-11-01"
   },
-  "prompt": "A long chocolate-brown double-faced wool coat, single-breasted with notch lapels and no belt. Show this exact garment as an e-commerce flat lay: laid flat and smooth on its back, photographed straight from above, sleeves laid straight down beside the body, buttoned, lapels flat. Keep the same colour, fabric, texture, stitching, buttons and details. No volume, no ghost mannequin, no body shape inside it. Centred, soft even light, on a fully transparent background with no shadow, hanger, mannequin, person or props. No text, no logos, no brand labels, no watermark.",
-  "size": "960x1280",
-  "quality": "high"
+  "made": "cut out with macOS Vision's subject mask, trimmed, alpha WebP"
  },
  "feed-w-shirt": {
   "id": "feed-w-shirt",
@@ -1138,22 +958,23 @@
   "id": "render-m-polo",
   "model": "gpt-image-2.5-sunburst",
   "usage": {
-   "input_tokens": 3416,
+   "input_tokens": 4568,
    "input_tokens_details": {
-    "image_tokens": 3072,
-    "text_tokens": 344
+    "image_tokens": 4226,
+    "text_tokens": 342
    },
    "output_tokens": 408,
    "output_tokens_details": {
     "image_tokens": 408,
     "text_tokens": 0
    },
-   "total_tokens": 3824
+   "total_tokens": 4976
   },
-  "prompt": "Photo of an original, fictional adult (not resembling any real person or celebrity): a man in his early twenties, Senegalese with deep dark skin, a neat close-cropped haircut, clean-shaven, tall and slim with a long-legged fashion-model build. He wears the black knit polo tucked into the ecru pleated trousers, with the brown suede loafers, each exactly as in the images. Posed like a calm e-commerce catalogue model, relaxed and natural, never dramatic: shoulders relaxed and level, head level, a calm neutral expression with lips gently closed, arms hanging loosely with a small gap from the body, soft loose hands with fingers gently curved, hands kept clear of the garment's details, feet about hip-width apart, the camera straight on at waist height. Standing front-on with the weight evenly on both feet, arms relaxed at the sides, looking into the camera. Full-length studio fashion photo in the style of a clean digital try-on render. Seamless warm light grey (#e9e8e5) studio backdrop with a soft gradient and a gentle floor shadow, soft diffused light. True-to-life colours, unretouched natural skin with real texture and no airbrushing, normal phone-camera sharpness with a little noise, not HDR, not hyper-detailed. The whole body shows from head to shoes, with generous space above the head and below the feet: the person takes about three quarters of the frame's height. No text, no logos, no brand labels, no watermark.",
+  "prompt": "Keep the person from the first image exactly: same face, hair, skin tone, body and proportions, same studio, light and photo texture. Dress them in the black knit polo tucked into the ecru wide pleated trousers, with the dark brown suede loafers, each exactly as in the images. Take nothing else from the other images. Posed like a calm e-commerce catalogue model, relaxed and natural, never dramatic: shoulders relaxed and level, head level, a calm neutral expression with lips gently closed, arms hanging loosely with a small gap from the body, soft loose hands with fingers gently curved, hands kept clear of the garment's details, feet about hip-width apart, the camera straight on at waist height. Standing front-on with the weight evenly on both feet, arms relaxed at the sides, looking into the camera. Full-length studio fashion photo in the style of a clean digital try-on render. Seamless warm light grey (#e9e8e5) studio backdrop with a soft gradient and a gentle floor shadow, soft diffused light. True-to-life colours, unretouched natural skin with real texture and no airbrushing, normal phone-camera sharpness with a little noise, not HDR, not hyper-detailed. The whole body shows from head to shoes, with generous space above the head and below the feet: the person takes about three quarters of the frame's height. No text, no logos, no brand labels, no watermark.",
   "size": "1152x1536",
   "quality": "medium",
   "refs": [
+   "id-render-m-polo",
    "g-black-knit-polo",
    "g-ecru-trousers",
    "g-brown-loafers"
@@ -1163,23 +984,24 @@
   "id": "render-w-coat",
   "model": "gpt-image-2.5-sunburst",
   "usage": {
-   "input_tokens": 1547,
+   "input_tokens": 3282,
    "input_tokens_details": {
-    "image_tokens": 1200,
-    "text_tokens": 347
+    "image_tokens": 2937,
+    "text_tokens": 345
    },
    "output_tokens": 408,
    "output_tokens_details": {
     "image_tokens": 408,
     "text_tokens": 0
    },
-   "total_tokens": 1955
+   "total_tokens": 3690
   },
-  "prompt": "Photo of an original, fictional adult (not resembling any real person or celebrity): a woman in her early twenties, of mixed Moroccan and French heritage with light olive skin, dark hair slicked back into a neat low bun with a clean middle part, no jewellery, tall and slim with a long-legged fashion-model build. She wears the coat from the image, open, exactly as it is, over a black fine-knit turtleneck, slim black tailored trousers and black pointed leather slingbacks. Posed like a calm e-commerce catalogue model, relaxed and natural, never dramatic: shoulders relaxed and level, head level, a calm neutral expression with lips gently closed, arms hanging loosely with a small gap from the body, soft loose hands with fingers gently curved, hands kept clear of the garment's details, feet about hip-width apart, the camera straight on at waist height. Standing front-on with the weight settled on one leg and the other knee softly bent, arms relaxed at the sides, looking into the camera. Full-length studio fashion photo in the style of a clean digital try-on render. Seamless warm light grey (#e9e8e5) studio backdrop with a soft gradient and a gentle floor shadow, soft diffused light. True-to-life colours, unretouched natural skin with real texture and no airbrushing, normal phone-camera sharpness with a little noise, not HDR, not hyper-detailed. The whole body shows from head to shoes, with generous space above the head and below the feet: the person takes about three quarters of the frame's height. No text, no logos, no brand labels, no watermark.",
+  "prompt": "Keep the person from the first image exactly: same face, hair, skin tone, body and proportions, same studio, light and photo texture. Replace her coat with the coat from the second image, worn open, exactly as it is: its colour, fabric, collar, buttons and length. Keep her black fine-knit turtleneck, slim black tailored trousers and black pointed leather slingbacks. Take nothing else from the second image. Posed like a calm e-commerce catalogue model, relaxed and natural, never dramatic: shoulders relaxed and level, head level, a calm neutral expression with lips gently closed, arms hanging loosely with a small gap from the body, soft loose hands with fingers gently curved, hands kept clear of the garment's details, feet about hip-width apart, the camera straight on at waist height. Standing front-on with the weight settled on one leg and the other knee softly bent, arms relaxed at the sides, looking into the camera. Full-length studio fashion photo in the style of a clean digital try-on render. Seamless warm light grey (#e9e8e5) studio backdrop with a soft gradient and a gentle floor shadow, soft diffused light. True-to-life colours, unretouched natural skin with real texture and no airbrushing, normal phone-camera sharpness with a little noise, not HDR, not hyper-detailed. The whole body shows from head to shoes, with generous space above the head and below the feet: the person takes about three quarters of the frame's height. No text, no logos, no brand labels, no watermark.",
   "size": "1152x1536",
   "quality": "medium",
   "refs": [
-   "g-brown-coat"
+   "id-render-w-coat",
+   "g-zara-coat"
   ]
  },
  "render-w-shirt": {
@@ -1210,23 +1032,23 @@
   "id": "render-w-trench",
   "model": "gpt-image-2.5-sunburst",
   "usage": {
-   "input_tokens": 6106,
+   "input_tokens": 6243,
    "input_tokens_details": {
-    "image_tokens": 5724,
-    "text_tokens": 382
+    "image_tokens": 5858,
+    "text_tokens": 385
    },
    "output_tokens": 408,
    "output_tokens_details": {
     "image_tokens": 408,
     "text_tokens": 0
    },
-   "total_tokens": 6514
+   "total_tokens": 6651
   },
-  "prompt": "Keep the person from the first image exactly: same face, hair, skin tone, body and proportions, same studio, light and photo texture. Dress them in the white tank, the ecru pleated trousers and the brown suede loafers, with the beige cotton trench coat worn open over them, each exactly as in the images. Remove her brown wool coat, black turtleneck, black trousers and slingbacks completely. Take nothing else from the other images. Posed like a calm e-commerce catalogue model, relaxed and natural, never dramatic: shoulders relaxed and level, head level, a calm neutral expression with lips gently closed, arms hanging loosely with a small gap from the body, soft loose hands with fingers gently curved, hands kept clear of the garment's details, feet about hip-width apart, the camera straight on at waist height. Standing front-on with the weight settled on one leg and the other knee softly bent, arms relaxed at the sides, looking into the camera. Full-length studio fashion photo in the style of a clean digital try-on render. Seamless warm light grey (#e9e8e5) studio backdrop with a soft gradient and a gentle floor shadow, soft diffused light. True-to-life colours, unretouched natural skin with real texture and no airbrushing, normal phone-camera sharpness with a little noise, not HDR, not hyper-detailed. The whole body shows from head to shoes, with generous space above the head and below the feet: the person takes about three quarters of the frame's height. No text, no logos, no brand labels, no watermark.",
+  "prompt": "Keep the person from the first image exactly: same face, hair, skin tone, body and proportions, same studio, light and photo texture. Dress them in the white ribbed tank, the ecru wide pleated trousers and the dark brown suede loafers, with the beige trench coat worn open over them, each exactly as in the images. Remove her brown wool coat, black turtleneck, black trousers and slingbacks completely. Take nothing else from the other images. Posed like a calm e-commerce catalogue model, relaxed and natural, never dramatic: shoulders relaxed and level, head level, a calm neutral expression with lips gently closed, arms hanging loosely with a small gap from the body, soft loose hands with fingers gently curved, hands kept clear of the garment's details, feet about hip-width apart, the camera straight on at waist height. Standing front-on with the weight settled on one leg and the other knee softly bent, arms relaxed at the sides, looking into the camera. Full-length studio fashion photo in the style of a clean digital try-on render. Seamless warm light grey (#e9e8e5) studio backdrop with a soft gradient and a gentle floor shadow, soft diffused light. True-to-life colours, unretouched natural skin with real texture and no airbrushing, normal phone-camera sharpness with a little noise, not HDR, not hyper-detailed. The whole body shows from head to shoes, with generous space above the head and below the feet: the person takes about three quarters of the frame's height. No text, no logos, no brand labels, no watermark.",
   "size": "1152x1536",
   "quality": "medium",
   "refs": [
-   "render-w-coat",
+   "id-render-w-coat",
    "g-white-tank",
    "g-ecru-trousers",
    "g-brown-loafers",
@@ -1237,23 +1059,23 @@
   "id": "render-m-overshirt",
   "model": "gpt-image-2.5-sunburst",
   "usage": {
-   "input_tokens": 6094,
+   "input_tokens": 7519,
    "input_tokens_details": {
-    "image_tokens": 5724,
-    "text_tokens": 370
+    "image_tokens": 7148,
+    "text_tokens": 371
    },
    "output_tokens": 408,
    "output_tokens_details": {
     "image_tokens": 408,
     "text_tokens": 0
    },
-   "total_tokens": 6502
+   "total_tokens": 7927
   },
-  "prompt": "Keep the person from the first image exactly: same face, hair, skin tone, body and proportions, same studio, light and photo texture. Dress them in the grey crewneck, the black wide pleated trousers and the black chelsea boots, with the navy overshirt worn open over them, each exactly as in the images. Take nothing else from the other images. Posed like a calm e-commerce catalogue model, relaxed and natural, never dramatic: shoulders relaxed and level, head level, a calm neutral expression with lips gently closed, arms hanging loosely with a small gap from the body, soft loose hands with fingers gently curved, hands kept clear of the garment's details, feet about hip-width apart, the camera straight on at waist height. Standing front-on, one hand resting loosely in a pocket and the other arm relaxed at the side, weight settled on one leg, looking softly just past the camera. Full-length studio fashion photo in the style of a clean digital try-on render. Seamless warm light grey (#e9e8e5) studio backdrop with a soft gradient and a gentle floor shadow, soft diffused light. True-to-life colours, unretouched natural skin with real texture and no airbrushing, normal phone-camera sharpness with a little noise, not HDR, not hyper-detailed. The whole body shows from head to shoes, with generous space above the head and below the feet: the person takes about three quarters of the frame's height. No text, no logos, no brand labels, no watermark.",
+  "prompt": "Keep the person from the first image exactly: same face, hair, skin tone, body and proportions, same studio, light and photo texture. Dress them in the grey crewneck, the black wide pleated trousers and the black leather chelsea boots, with the navy overshirt worn open over them, each exactly as in the images. Take nothing else from the other images. Posed like a calm e-commerce catalogue model, relaxed and natural, never dramatic: shoulders relaxed and level, head level, a calm neutral expression with lips gently closed, arms hanging loosely with a small gap from the body, soft loose hands with fingers gently curved, hands kept clear of the garment's details, feet about hip-width apart, the camera straight on at waist height. Standing front-on, one hand resting loosely in a pocket and the other arm relaxed at the side, weight settled on one leg, looking softly just past the camera. Full-length studio fashion photo in the style of a clean digital try-on render. Seamless warm light grey (#e9e8e5) studio backdrop with a soft gradient and a gentle floor shadow, soft diffused light. True-to-life colours, unretouched natural skin with real texture and no airbrushing, normal phone-camera sharpness with a little noise, not HDR, not hyper-detailed. The whole body shows from head to shoes, with generous space above the head and below the feet: the person takes about three quarters of the frame's height. No text, no logos, no brand labels, no watermark.",
   "size": "1152x1536",
   "quality": "medium",
   "refs": [
-   "render-m-polo",
+   "id-render-m-polo",
    "g-grey-crewneck",
    "g-black-wide-trousers",
    "g-chelsea-boots",
@@ -1264,24 +1086,24 @@
   "id": "render-m-coat",
   "model": "gpt-image-2.5-sunburst",
   "usage": {
-   "input_tokens": 6177,
+   "input_tokens": 6659,
    "input_tokens_details": {
-    "image_tokens": 5820,
-    "text_tokens": 357
+    "image_tokens": 6300,
+    "text_tokens": 359
    },
    "output_tokens": 408,
    "output_tokens_details": {
     "image_tokens": 408,
     "text_tokens": 0
    },
-   "total_tokens": 6585
+   "total_tokens": 7067
   },
-  "prompt": "Keep the person from the first image exactly: same face, hair, skin tone, body and proportions, same studio, light and photo texture. Dress them in the black tee, the ecru pleated trousers and the white leather sneakers, with the long brown wool coat worn open over them, each exactly as in the images. Take nothing else from the other images. Posed like a calm e-commerce catalogue model, relaxed and natural, never dramatic: shoulders relaxed and level, head level, a calm neutral expression with lips gently closed, arms hanging loosely with a small gap from the body, soft loose hands with fingers gently curved, hands kept clear of the garment's details, feet about hip-width apart, the camera straight on at waist height. Standing front-on with the weight evenly on both feet, arms relaxed at the sides, looking into the camera. Full-length studio fashion photo in the style of a clean digital try-on render. Seamless warm light grey (#e9e8e5) studio backdrop with a soft gradient and a gentle floor shadow, soft diffused light. True-to-life colours, unretouched natural skin with real texture and no airbrushing, normal phone-camera sharpness with a little noise, not HDR, not hyper-detailed. The whole body shows from head to shoes, with generous space above the head and below the feet: the person takes about three quarters of the frame's height. No text, no logos, no brand labels, no watermark.",
+  "prompt": "Keep the person from the first image exactly: same face, hair, skin tone, body and proportions, same studio, light and photo texture. Dress them in the black knit polo, the ecru wide pleated trousers and the white leather sneakers, with the long brown wool coat worn open over them, each exactly as in the images. Take nothing else from the other images. Posed like a calm e-commerce catalogue model, relaxed and natural, never dramatic: shoulders relaxed and level, head level, a calm neutral expression with lips gently closed, arms hanging loosely with a small gap from the body, soft loose hands with fingers gently curved, hands kept clear of the garment's details, feet about hip-width apart, the camera straight on at waist height. Standing front-on with the weight evenly on both feet, arms relaxed at the sides, looking into the camera. Full-length studio fashion photo in the style of a clean digital try-on render. Seamless warm light grey (#e9e8e5) studio backdrop with a soft gradient and a gentle floor shadow, soft diffused light. True-to-life colours, unretouched natural skin with real texture and no airbrushing, normal phone-camera sharpness with a little noise, not HDR, not hyper-detailed. The whole body shows from head to shoes, with generous space above the head and below the feet: the person takes about three quarters of the frame's height. No text, no logos, no brand labels, no watermark.",
   "size": "1152x1536",
   "quality": "medium",
   "refs": [
-   "render-m-polo",
-   "g-black-tee",
+   "id-render-m-polo",
+   "g-black-knit-polo",
    "g-ecru-trousers",
    "g-white-sneakers",
    "g-brown-coat"
@@ -1401,5 +1223,57 @@
   "refs": [
    "render-m-polo"
   ]
+ },
+ "g-zara-coat": {
+  "id": "g-zara-coat",
+  "source": {
+   "brand": "Zara",
+   "colour": "Chocolate",
+   "price": "149.00 EUR",
+   "productUrl": "https://www.zara.com/fr/en/zw-collection-midi-wool-blend-coat-p07216762.html?v1=583773051",
+   "imageUrl": "https://static.zara.net/assets/public/f6da/6a27/00124e02bea4/808fc1090a26/07216762717-f1/07216762717-f1.jpg",
+   "product": "ZW COLLECTION MIDI WOOL BLEND COAT",
+   "retrieved": "2026-11-01"
+  },
+  "made": "cut out with macOS Vision's subject mask, trimmed, alpha WebP"
+ },
+ "shop-uniqlo-jumper": {
+  "id": "shop-uniqlo-jumper",
+  "source": {
+   "brand": "Uniqlo",
+   "colour": "12 PINK",
+   "price": "39,90 \u20ac",
+   "productUrl": "https://www.uniqlo.com/fr/en/products/E486080-000/00?colorDisplayCode=12",
+   "imageUrl": "https://image.uniqlo.com/UQ/ST3/WesternCommon/imagesgoods/486080/sub/goods_486080_sub14_3x4.jpg",
+   "product": "Souffl\u00e9 Yarn Crew Neck Jumper (Men)",
+   "retrieved": "2026-11-01"
+  },
+  "made": "the shop's packshot as published, resized, JPEG"
+ },
+ "shop-arcteryx-jacket": {
+  "id": "shop-arcteryx-jacket",
+  "source": {
+   "brand": "Arc'teryx",
+   "colour": "Kasumi",
+   "price": "\u20ac500.00",
+   "productUrl": "https://arcteryx.com/fr/en/shop/womens/beta-sl-jacket-0881",
+   "imageUrl": "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F26-X000010881-Beta-SL-Jacket-Kasumi-Women-s.jpg",
+   "product": "Beta SL Jacket Women's",
+   "retrieved": "2026-11-01"
+  },
+  "made": "the shop's packshot as published, resized, JPEG"
+ },
+ "shop-zara-coat": {
+  "id": "shop-zara-coat",
+  "source": {
+   "brand": "Zara",
+   "colour": "Chocolate",
+   "price": "149.00 EUR",
+   "productUrl": "https://www.zara.com/fr/en/zw-collection-midi-wool-blend-coat-p07216762.html?v1=583773051",
+   "imageUrl": "https://static.zara.net/assets/public/f6da/6a27/00124e02bea4/808fc1090a26/07216762717-f1/07216762717-f1.jpg",
+   "product": "ZW COLLECTION MIDI WOOL BLEND COAT",
+   "retrieved": "2026-11-01"
+  },
+  "made": "the shop's packshot as published, resized, JPEG"
  }
 }

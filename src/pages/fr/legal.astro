@@ -1,5 +1,13 @@
 ---
 import Doc from '../../layouts/Doc.astro';
-import Soon from '../../components/Soon.astro';
+import { LINKS } from '../../data/site';
 ---
-<Doc lang="fr" title="Mentions légales" path="/legal" noindex><Soon lang="fr" /></Doc>
+<Doc lang="fr" title="Mentions légales" path="/legal" updated="1er novembre 2026">
+  <h2>Éditeur</h2>
+  <p>Ce site est édité par DressYou Technologies, société par actions simplifiée (SAS) immatriculée au registre du commerce et des sociétés (RCS) de Paris sous le numéro 108 706 037, dont le siège social est situé au 47 rue Vivienne, 75002 Paris, France.</p>
+  <p>Contact : <a href={`mailto:${LINKS.email}`}>{LINKS.email}</a></p>
+  <h2>Directeur de la publication</h2>
+  <p>Tamsir Léopold Ely Debris, président de DressYou Technologies.</p>
+  <h2>Hébergeur</h2>
+  <p>Vercel Inc., 440 N Barranca Avenue #4133, Covina, CA 91723, États-Unis.</p>
+</Doc>
