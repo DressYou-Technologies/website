@@ -124,8 +124,10 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
   .wbuild, .caption, .ftitle, .fslot, .fsend, .fstage { position: relative; }
   .wardrobe { position: relative; flex: 1.35 1 420px; min-width: 0; display: flex; flex-direction: column; overflow: hidden; border-radius: 28px; }
   .wbuild { position: relative; flex: 1; min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); align-content: center; gap: 6px; padding: clamp(24px, 4vw, 40px) 0 8px; }
-  .wrows { display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,.35), #000 18%, #000 70%, rgba(0,0,0,.2)); mask-image: linear-gradient(180deg, rgba(0,0,0,.35), #000 18%, #000 70%, rgba(0,0,0,.2)); }
-  .wrow { position: relative; overflow: hidden; padding: 8px 0; -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,0), #000 16%, #000 84%, rgba(0,0,0,0)); mask-image: linear-gradient(90deg, rgba(0,0,0,0), #000 16%, #000 84%, rgba(0,0,0,0)); }
+  /* The picked tile scales up with its check past its corner; rows pad for that and pull back by the same amount, so the
+     layout is unchanged and nothing clips. */
+  .wrows { padding: 10px 0; margin: -10px 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,.35), #000 18%, #000 70%, rgba(0,0,0,.2)); mask-image: linear-gradient(180deg, rgba(0,0,0,.35), #000 18%, #000 70%, rgba(0,0,0,.2)); }
+  .wrow { position: relative; overflow: hidden; padding: 18px 0; margin: -10px 0; -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,0), #000 16%, #000 84%, rgba(0,0,0,0)); mask-image: linear-gradient(90deg, rgba(0,0,0,0), #000 16%, #000 84%, rgba(0,0,0,0)); }
   .wtrack { display: flex; gap: 10px; width: max-content; will-change: transform; }
   .wg { position: relative; flex: none; width: clamp(56px, min(5.8vw, 9svh), 90px); aspect-ratio: 1; border-radius: 16px; background: linear-gradient(180deg, rgba(255,255,255,.94), rgba(250,249,246,.78)); box-shadow: inset 0 1px 0 #fff, inset 0 0 0 1px rgba(255,255,255,.45); }
   .wg :global(img.cutout) { background: none; }
