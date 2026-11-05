@@ -131,8 +131,9 @@ const readable = (page) => [
 
 test('no page, title, description or llms.txt breaks the copy rules', async () => {
   const sources = [...await Promise.all(pages.map(async (page) => [page, readable(await read(page))])), ['llms.txt', await read('llms.txt')]];
-  // The draft privacy notice is counsel's text, kept word for word (it uses semicolons) until counsel and the founder settle it.
-  const COUNSEL_TEXT = new Set(['privacy-draft.html', 'fr/privacy-draft.html']);
+  // The draft privacy notice and terms are counsel's text, kept word for word (they use semicolons) until counsel and the
+  // founder settle them.
+  const COUNSEL_TEXT = new Set(['privacy-draft.html', 'fr/privacy-draft.html', 'terms-draft.html', 'fr/terms-draft.html']);
   for (const [name, body] of sources) for (const [bad, what] of BANNED) {
     if (bad === ';' && COUNSEL_TEXT.has(name)) continue;
     const at = body.toLowerCase().indexOf(bad);
@@ -486,21 +487,51 @@ test('the privacy notice names Stockholm, never Paris or France, as where DressY
   }
 });
 
-// The draft is for TestFlight only (founder, 2026-11-05): the app's policy bundle links it and nothing on the site does,
-// while /privacy keeps the waitlist notice.
-test('the draft privacy notice stays out of search, the sitemap and llms.txt, and no other page links it', async () => {
-  const drafts = LANGS.map((lang) => fileOf(lang, '/privacy-draft'));
-  for (const file of drafts) {
-    const body = await read(file);
-    assert.match(body, /<meta name="robots" content="noindex, nofollow">/, file);
-    assert.doesNotMatch(body, /rel="canonical"/, file);
-  }
-  for (const page of pages.filter((page) => !drafts.includes(page))) assert.doesNotMatch(await read(page), /privacy-draft/, `${page} links the draft`);
-  for (const file of ['sitemap.xml', 'llms.txt']) assert.doesNotMatch(await read(file), /privacy-draft/, file);
+// The drafts are for TestFlight only (founder, 2026-11-05): the app's policy bundle links them and no public page does,
+// while /privacy and /terms keep what main shows. The drafts may link each other: the terms cite the draft notice.
+test('the draft privacy notice and terms stay out of search, the sitemap and llms.txt, and no other page links them', async () => {
   const { headers } = JSON.parse(await readFile(new URL('../vercel.json', import.meta.url), 'utf8'));
-  for (const lang of LANGS) {
-    const rule = headers.find((h) => h.source === localize(lang, '/privacy-draft'));
-    assert.ok(rule?.headers.some((h) => h.key === 'X-Robots-Tag' && h.value === 'noindex, nofollow'), `${lang}: no X-Robots-Tag on the draft`);
+  for (const path of ['/privacy-draft', '/terms-draft']) {
+    const drafts = LANGS.map((lang) => fileOf(lang, path)), name = new RegExp(path.slice(1));
+    for (const file of drafts) {
+      const body = await read(file);
+      assert.match(body, /<meta name="robots" content="noindex, nofollow">/, file);
+      assert.doesNotMatch(body, /rel="canonical"/, file);
+    }
+    for (const page of pages.filter((page) => !page.endsWith('-draft.html'))) assert.doesNotMatch(await read(page), name, `${page} links ${path}`);
+    for (const file of ['sitemap.xml', 'llms.txt']) assert.doesNotMatch(await read(file), name, `${file} lists ${path}`);
+    for (const lang of LANGS) {
+      const rule = headers.find((h) => h.source === localize(lang, path));
+      assert.ok(rule?.headers.some((h) => h.key === 'X-Robots-Tag' && h.value === 'noindex, nofollow'), `${lang}: no X-Robots-Tag on ${path}`);
+    }
+  }
+});
+
+// The draft terms are counsel's text (DressYou repository, docs/legal/terms-{en,fr}-draft.md): every open point shows as a
+// marked note, never as raw text, under the draft banner.
+test('the draft terms carry their seventeen sections and mark every open point', async () => {
+  for (const [lang, founder, counsel] of [['en', 'Founder to decide:', 'Counsel to confirm:'], ['fr', 'À trancher\u00a0:', 'À confirmer par le conseil\u00a0:']]) {
+    const article = (await read(fileOf(lang, '/terms-draft'))).match(/<article class="doc"[^>]*>([\s\S]*?)<\/article>/)?.[1] ?? '';
+    assert.match(article, /<p class="draft">/, `${lang}: no draft banner`);
+    assert.equal((article.match(/<h2[ >]/g) ?? []).length, 17, `${lang}: sections`);
+    assert.doesNotMatch(article, /\[\[(FOUNDER|COUNSEL)/, `${lang}: an open point shows as raw text`);
+    assert.equal(article.split(`<b>${founder}</b>`).length - 1, 16, `${lang}: founder points`);
+    assert.equal(article.split(`<b>${counsel}</b>`).length - 1, 17, `${lang}: counsel points`);
+  }
+});
+
+// The drafts come from the DressYou repository, whose links name its own files: on the site each must reach a page.
+test('no link on a draft page points at a repository file or at a page the site does not have', async () => {
+  const built = (pathname) => pathname === '/' ? ['index.html'] : [`${pathname.slice(1)}.html`, pathname.slice(1), `${pathname.slice(1)}/index.html`];
+  for (const path of ['/privacy-draft', '/terms-draft']) for (const lang of LANGS) {
+    const file = fileOf(lang, path), base = `${SITE.url}${localize(lang, path)}`;
+    for (const [, href] of (await read(file)).matchAll(/<a\b[^>]*href="([^"]+)"/g)) {
+      assert.doesNotMatch(href, /\.md(#|$)/, `${file} links a repository file: ${href}`);
+      const url = new URL(decode(href), base);
+      if (url.origin !== SITE.url || href.startsWith('#')) continue;
+      const found = await Promise.any(built(decodeURI(url.pathname)).map((name) => access(new URL(name, DIST)))).then(() => true, () => false);
+      assert.ok(found, `${file} links ${href}, which the site does not have`);
+    }
   }
 });
 

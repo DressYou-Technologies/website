@@ -1,0 +1,12 @@
+---
+import Doc from '../layouts/Doc.astro';
+import { Content } from '../legal/terms-en.md';
+
+// The counsel draft of the terms (DressYou repository, docs/legal/terms-en-draft.md at 7987649e), for TestFlight only
+// (founder, 2026-11-05): the app's policy bundle links it, nothing on the site does, and /terms keeps its page in the
+// works. Highlighted notes are points still open.
+---
+<Doc lang="en" title="Terms" path="/terms-draft" noindex nofollow>
+  <p class="draft">Draft for review. These terms are not yet approved, and the highlighted points are still open.</p>
+  <Content />
+</Doc>
