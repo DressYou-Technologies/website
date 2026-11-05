@@ -6,8 +6,8 @@ import { COPY } from '../i18n/copy';
 import { LANGS, localize, type Lang } from '../i18n/lang';
 
 // `path` is language-neutral ("/", "/legal"): the page exists at that path in English and under /fr in French.
-interface Props { lang: Lang; path: string; title?: string; description?: string; noindex?: boolean }
-const { lang, path, noindex = false } = Astro.props;
+interface Props { lang: Lang; path: string; title?: string; description?: string; noindex?: boolean; nofollow?: boolean }
+const { lang, path, noindex = false, nofollow = false } = Astro.props;
 const meta = COPY[lang].meta;
 const title = Astro.props.title ?? meta.title, description = Astro.props.description ?? meta.description;
 const url = (l: Lang) => `${SITE.url}${localize(l, path)}`;
@@ -48,7 +48,7 @@ const graph = {
     <meta name="theme-color" content="#000000">
     <title>{title}</title>
     <meta name="description" content={description}>
-    <meta name="robots" content={noindex ? 'noindex' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'}>
+    <meta name="robots" content={noindex ? (nofollow ? 'noindex, nofollow' : 'noindex') : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'}>
     {!noindex && <>
       <link rel="canonical" href={canonical}>
       {LANGS.map((l) => <link rel="alternate" hreflang={l} href={url(l)} />)}

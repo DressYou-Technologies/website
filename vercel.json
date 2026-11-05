@@ -20,6 +20,14 @@
       ]
     },
     {
+      "source": "/privacy-draft",
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
+    },
+    {
+      "source": "/fr/privacy-draft",
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
+    },
+    {
       "source": "/((?!email/).*)",
       "headers": [{ "key": "Cross-Origin-Resource-Policy", "value": "same-site" }]
     },

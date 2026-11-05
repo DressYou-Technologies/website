@@ -1,0 +1,12 @@
+---
+import Doc from '../layouts/Doc.astro';
+import { Content } from '../legal/privacy-en.md';
+
+// The counsel draft of the privacy notice (DressYou repository, docs/legal/privacy-en-draft.md at 8ef710a4), for
+// TestFlight only (founder, 2026-11-05): the app's policy bundle links it, nothing on the site does, and /privacy keeps
+// the waitlist notice. Highlighted notes are points still open. The app links section 2.3 as #ai.
+---
+<Doc lang="en" title="Privacy" path="/privacy-draft" noindex nofollow>
+  <p class="draft">Draft for review. This notice is not yet approved, and the highlighted points are still open.</p>
+  <Content />
+</Doc>

@@ -6,11 +6,11 @@ import GetDialog from '../components/GetDialog.astro';
 import { COPY } from '../i18n/copy';
 import type { Lang } from '../i18n/lang';
 
-interface Props { lang: Lang; title: string; path: string; updated?: string; noindex?: boolean }
-const { lang, title, path, updated, noindex = false } = Astro.props;
+interface Props { lang: Lang; title: string; path: string; updated?: string; noindex?: boolean; nofollow?: boolean }
+const { lang, title, path, updated, noindex = false, nofollow = false } = Astro.props;
 const t = COPY[lang].doc;
 ---
-<Base lang={lang} path={path} title={`${title} · DressYou`} noindex={noindex}>
+<Base lang={lang} path={path} title={`${title} · DressYou`} noindex={noindex} nofollow={nofollow}>
   <Header lang={lang} path={path} />
   <main>
     <section class="band" data-tone="dark"><h1>{title}</h1>{updated && <p>{t.updated} {updated}</p>}</section>
