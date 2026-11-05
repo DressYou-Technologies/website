@@ -1,8 +1,8 @@
 ## 1. The service and these terms
 
-DressYou lets you organise your clothes, see garments on a generated image of yourself, get size answers and outfit suggestions, ask friends for their opinion, and post photographs of your outfits. It is operated by the company named in the [legal notice](legal-notice-en-draft.md). These terms apply to the DressYou apps for iOS and Android, the browser extension, the website dressyouapp.com and the pages opened from an ask link.
+DressYou lets you organise your clothes, see garments on a generated image of yourself, get size answers and outfit suggestions, ask friends for their opinion, and post photographs of your outfits. It is operated by the company named in the [legal notice](/legal). These terms apply to the DressYou apps for iOS and Android, the browser extension, the website dressyouapp.com and the pages opened from an ask link.
 
-You accept these terms when you create your account, and DressYou records the version you accepted and the date. They are separate from the [privacy notice](privacy-en-draft.md), which explains how DressYou processes your data, and from the consents DressYou asks for on their own; accepting these terms never authorises optional processing.
+You accept these terms when you create your account, and DressYou records the version you accepted and the date. They are separate from the [privacy notice](/privacy-draft), which explains how DressYou processes your data, and from the consents DressYou asks for on their own; accepting these terms never authorises optional processing.
 
 Sections 6 and 7 cover renders, the paid tier and purchases. <mark class="open" data-id="sales-terms"><b>Counsel to confirm:</b> Do the paid tier and render purchases need separate terms of sale, or can these sections serve, given that the stores sell them?</mark>
 
@@ -12,7 +12,7 @@ DressYou is for people aged 18 or over, in the countries where it is offered <ma
 
 ## 3. Your account
 
-You create an account before body capture and your first try-on. You sign in with your email address and a password, or with Sign in with Apple, and you can add passkeys and two-step verification. <mark class="open" data-id="google-sign-in"><b>Founder to decide:</b> Does Google sign-in ship at launch? §4.1 draws it; the code has none.</mark> Use only your own account and keep its sign-in methods secure. In the app you can see where you are signed in, sign out a device or a linked browser, and sign out everywhere else. If you think someone else has used your account, tell DressYou through the user contact point in the [DSA texts](dsa-en-draft.md).
+You create an account before body capture and your first try-on. You sign in with your email address and a password, or with Sign in with Apple, and you can add passkeys and two-step verification. <mark class="open" data-id="google-sign-in"><b>Founder to decide:</b> Does Google sign-in ship at launch? §4.1 draws it; the code has none.</mark> Use only your own account and keep its sign-in methods secure. In the app you can see where you are signed in, sign out a device or a linked browser, and sign out everywhere else. If you think someone else has used your account, tell DressYou through the user contact point in the DSA texts.
 
 ## 4. Body capture and your twin
 
@@ -122,7 +122,7 @@ Only genuine try-ons count. DressYou may refuse or withdraw renders earned throu
 
 **Measures.** When an item or an account breaks these terms or the law, DressYou can remove the item, keep a held post unpublished, suspend or close the account, or withhold rewards.
 
-**Statement of reasons and appeal.** DressYou tells you each measure it takes against your content or account, with its reasons, and you can appeal it once; a person reviews the appeal within 7 days. The [DSA texts](dsa-en-draft.md) set out these statements and the appeal.
+**Statement of reasons and appeal.** DressYou tells you each measure it takes against your content or account, with its reasons, and you can appeal it once; a person reviews the appeal within 7 days. The DSA texts set out these statements and the appeal.
 
 **Reports from anyone.** Anyone, with or without an account, can report content through the notice form in the DSA texts. DressYou informs the authorities of suspected offences that threaten someone's life or safety, as the law requires.
 
@@ -165,4 +165,4 @@ DressYou provides the service with care but cannot promise that it will always b
 
 ## 17. Complaints, mediation and applicable law
 
-Send a complaint to DressYou through the user contact point in the [DSA texts](dsa-en-draft.md). If your written complaint does not resolve the matter, you can refer it free of charge to the consumer mediator <mark class="open" data-id="mediator"><b>Founder to decide:</b> the consumer mediator DressYou joins, with its address and website</mark>. <mark class="open" data-id="governing-law"><b>Counsel to confirm:</b> Which law governs these terms and which courts have jurisdiction, given the operator's establishment? Mandatory consumer protection of the person's country of residence continues to apply.</mark>
+Send a complaint to DressYou through the user contact point in the DSA texts. If your written complaint does not resolve the matter, you can refer it free of charge to the consumer mediator <mark class="open" data-id="mediator"><b>Founder to decide:</b> the consumer mediator DressYou joins, with its address and website</mark>. <mark class="open" data-id="governing-law"><b>Counsel to confirm:</b> Which law governs these terms and which courts have jurisdiction, given the operator's establishment? Mandatory consumer protection of the person's country of residence continues to apply.</mark>

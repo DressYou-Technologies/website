@@ -487,8 +487,8 @@ test('the privacy notice names Stockholm, never Paris or France, as where DressY
   }
 });
 
-// The drafts are for TestFlight only (founder, 2026-11-05): the app's policy bundle links them and nothing on the site
-// does, while /privacy and /terms keep what main shows.
+// The drafts are for TestFlight only (founder, 2026-11-05): the app's policy bundle links them and no public page does,
+// while /privacy and /terms keep what main shows. The drafts may link each other: the terms cite the draft notice.
 test('the draft privacy notice and terms stay out of search, the sitemap and llms.txt, and no other page links them', async () => {
   const { headers } = JSON.parse(await readFile(new URL('../vercel.json', import.meta.url), 'utf8'));
   for (const path of ['/privacy-draft', '/terms-draft']) {
@@ -498,7 +498,7 @@ test('the draft privacy notice and terms stay out of search, the sitemap and llm
       assert.match(body, /<meta name="robots" content="noindex, nofollow">/, file);
       assert.doesNotMatch(body, /rel="canonical"/, file);
     }
-    for (const page of pages.filter((page) => !drafts.includes(page))) assert.doesNotMatch(await read(page), name, `${page} links ${path}`);
+    for (const page of pages.filter((page) => !page.endsWith('-draft.html'))) assert.doesNotMatch(await read(page), name, `${page} links ${path}`);
     for (const file of ['sitemap.xml', 'llms.txt']) assert.doesNotMatch(await read(file), name, `${file} lists ${path}`);
     for (const lang of LANGS) {
       const rule = headers.find((h) => h.source === localize(lang, path));
@@ -517,6 +517,21 @@ test('the draft terms carry their seventeen sections and mark every open point',
     assert.doesNotMatch(article, /\[\[(FOUNDER|COUNSEL)/, `${lang}: an open point shows as raw text`);
     assert.equal(article.split(`<b>${founder}</b>`).length - 1, 16, `${lang}: founder points`);
     assert.equal(article.split(`<b>${counsel}</b>`).length - 1, 17, `${lang}: counsel points`);
+  }
+});
+
+// The drafts come from the DressYou repository, whose links name its own files: on the site each must reach a page.
+test('no link on a draft page points at a repository file or at a page the site does not have', async () => {
+  const built = (pathname) => pathname === '/' ? ['index.html'] : [`${pathname.slice(1)}.html`, pathname.slice(1), `${pathname.slice(1)}/index.html`];
+  for (const path of ['/privacy-draft', '/terms-draft']) for (const lang of LANGS) {
+    const file = fileOf(lang, path), base = `${SITE.url}${localize(lang, path)}`;
+    for (const [, href] of (await read(file)).matchAll(/<a\b[^>]*href="([^"]+)"/g)) {
+      assert.doesNotMatch(href, /\.md(#|$)/, `${file} links a repository file: ${href}`);
+      const url = new URL(decode(href), base);
+      if (url.origin !== SITE.url || href.startsWith('#')) continue;
+      const found = await Promise.any(built(decodeURI(url.pathname)).map((name) => access(new URL(name, DIST)))).then(() => true, () => false);
+      assert.ok(found, `${file} links ${href}, which the site does not have`);
+    }
   }
 });
 
