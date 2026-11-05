@@ -131,7 +131,10 @@ const readable = (page) => [
 
 test('no page, title, description or llms.txt breaks the copy rules', async () => {
   const sources = [...await Promise.all(pages.map(async (page) => [page, readable(await read(page))])), ['llms.txt', await read('llms.txt')]];
+  // The draft privacy notice is counsel's text, kept word for word (it uses semicolons) until counsel and the founder settle it.
+  const COUNSEL_TEXT = new Set(['privacy-draft.html', 'fr/privacy-draft.html']);
   for (const [name, body] of sources) for (const [bad, what] of BANNED) {
+    if (bad === ';' && COUNSEL_TEXT.has(name)) continue;
     const at = body.toLowerCase().indexOf(bad);
     assert.equal(at, -1, `${name} has ${what}: …${body.slice(Math.max(0, at - 40), at + 20)}…`);
   }
@@ -453,6 +456,60 @@ test('every dark section says so, for the menu button to take a colour that read
       assert.match(home[lang], new RegExp(`<[a-z]+ ${marker}[^>]*data-tone="dark"`), `${lang}: ${marker}`);
     }
     assert.match(await read(fileOf(lang, '/legal')), /<section class="band"[^>]*data-tone="dark"/, `${lang}: the legal page's band`);
+  }
+});
+
+// The privacy notice is the counsel draft from the DressYou repository (founder, 2026-11-02, preview first): the app's
+// onboarding links its AI section as #ai, and every point still open shows as a marked note, never as plain text.
+test('the privacy notice gives its AI section the anchor the app links to, and marks every open point', async () => {
+  for (const [lang, title] of [['en', '2.3 AI: OpenAI and TypeSafe'], ['fr', '2.3 IA : OpenAI et TypeSafe']]) {
+    const body = await read(fileOf(lang, '/privacy-draft'));
+    assert.equal(decode(text(body.match(/<h3 id="ai"[^>]*>([\s\S]*?)<\/h3>/)?.[1] ?? '')), title, lang);
+    assert.doesNotMatch(body, /\[\[(FOUNDER|COUNSEL)/, `${lang}: an open point shows as raw text`);
+    assert.ok((body.match(/<mark class="open"/g) ?? []).length >= 41, `${lang}: open points not marked`);
+  }
+});
+
+// DressYou stores data in Stockholm since its move to eu-north-1 (DressYou #490, #504); the notice says so in both
+// languages. The organisation's address in the page's JSON-LD is not a storage claim, so only the notice is read.
+test('the privacy notice names Stockholm, never Paris or France, as where DressYou stores data', async () => {
+  const STORED = {
+    en: ['DressYou stores your data in the EU (Sweden)', 'Everything the service stores and logs Stockholm, Sweden Declared',
+      'verification and reset links Stockholm, Sweden Declared', 'DressYou stores your data in Stockholm, Sweden.'],
+    fr: ['DressYou stocke vos données dans l’UE (Suède)', 'Tout ce que le service conserve et journalise Stockholm, Suède Déclaré',
+      'vérification et de réinitialisation Stockholm, Suède Déclaré', 'DressYou conserve vos données à Stockholm, en Suède.'],
+  };
+  for (const [lang, claims] of Object.entries(STORED)) {
+    const notice = decode(text((await read(fileOf(lang, '/privacy-draft'))).match(/<article class="doc"[^>]*>([\s\S]*?)<\/article>/)?.[1] ?? ''));
+    assert.doesNotMatch(notice, /\b(Paris|France)\b/, `${lang}: the notice still names Paris or France`);
+    for (const claim of claims) assert.ok(notice.includes(claim), `${lang}: missing "${claim}"`);
+  }
+});
+
+// The draft is for TestFlight only (founder, 2026-11-05): the app's policy bundle links it and nothing on the site does,
+// while /privacy keeps the waitlist notice.
+test('the draft privacy notice stays out of search, the sitemap and llms.txt, and no other page links it', async () => {
+  const drafts = LANGS.map((lang) => fileOf(lang, '/privacy-draft'));
+  for (const file of drafts) {
+    const body = await read(file);
+    assert.match(body, /<meta name="robots" content="noindex, nofollow">/, file);
+    assert.doesNotMatch(body, /rel="canonical"/, file);
+  }
+  for (const page of pages.filter((page) => !drafts.includes(page))) assert.doesNotMatch(await read(page), /privacy-draft/, `${page} links the draft`);
+  for (const file of ['sitemap.xml', 'llms.txt']) assert.doesNotMatch(await read(file), /privacy-draft/, file);
+  const { headers } = JSON.parse(await readFile(new URL('../vercel.json', import.meta.url), 'utf8'));
+  for (const lang of LANGS) {
+    const rule = headers.find((h) => h.source === localize(lang, '/privacy-draft'));
+    assert.ok(rule?.headers.some((h) => h.key === 'X-Robots-Tag' && h.value === 'noindex, nofollow'), `${lang}: no X-Robots-Tag on the draft`);
+  }
+});
+
+test('the public privacy notice stays the waitlist notice, in search', async () => {
+  for (const [lang, opening] of [['en', 'This notice covers this website only.'], ['fr', 'Cette notice couvre uniquement ce site.']]) {
+    const body = await read(fileOf(lang, '/privacy'));
+    assert.ok(decode(text(body)).includes(opening), `${lang}: /privacy lost the waitlist notice`);
+    assert.doesNotMatch(body, /id="ai"|class="draft"|<mark class="open"/, `${lang}: the draft reached /privacy`);
+    assert.match(body, /<meta name="robots" content="index, follow/, `${lang}: /privacy left search`);
   }
 });
 
