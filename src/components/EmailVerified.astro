@@ -1,0 +1,23 @@
+---
+import Doc from '../layouts/Doc.astro';
+import { APP_URL } from '../lib/auth';
+import { COPY } from '../i18n/copy';
+import type { Lang } from '../i18n/lang';
+
+// Where the verification mail lands. Both results are written here, hidden; src/scripts/auth.ts shows the link's.
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = COPY[lang].verified;
+---
+<Doc lang={lang} title={t.title} path="/auth/verified" noindex nofollow>
+  <noscript><p>{t.noscript}</p></noscript>
+  <section data-state="verified" hidden><p>{t.verified}</p></section>
+  <section data-state="failed" hidden><p>{t.failed}</p></section>
+  <p><a href={APP_URL}>{t.open}</a></p>
+  <p>{t.help}</p>
+</Doc>
+
+<script>
+  import { startVerified } from '../scripts/auth';
+  startVerified();
+</script>
