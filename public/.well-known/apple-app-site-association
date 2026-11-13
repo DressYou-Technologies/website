@@ -4,6 +4,7 @@
       {
         "appIDs": ["Y3AYTV4AK8.com.dressyouapp.ios"],
         "components": [
+          { "/": "/auth/reset" },
           { "/": "/auth/verified" }
         ]
       }
