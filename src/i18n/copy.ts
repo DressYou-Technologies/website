@@ -1,5 +1,4 @@
 import type { Lang } from './lang';
-import { PASSWORD_MAX, PASSWORD_MIN } from '../lib/auth.ts';
 
 // Every string the page shows, per language. French is authored, not translated word for word (voice guide §6).
 // No semicolons and no em dashes anywhere (founder, 2026-10-30). Copy never names a measurement or says how a piece fits.
@@ -124,31 +123,15 @@ const en = {
   },
   doc: { updated: 'Last updated', home: 'Back to DressYou' },
   notFound: { title: 'This page does not exist.', text: 'The link may be old.', home: 'Go to the home page' },
-  // Where the account mails land (src/lib/auth.ts). Lower case and in the app's words where it has them
+  // Where the verification mail lands (src/lib/auth.ts). In the app's words where it has them
   // (ios/DressYou/Resources/Localizable.xcstrings, the key beside each line), so the site and the app say the same thing.
-  reset: {
-    title: 'reset your password',
-    lede: 'choose a new password.', // signin.reset.newpassword
-    label: 'new password',
-    hint: `${PASSWORD_MIN} to ${PASSWORD_MAX} characters.`,
-    save: 'save new password', // signin.reset.save
-    saving: 'saving…',
-    short: `use at least ${PASSWORD_MIN} characters.`,
-    long: `use at most ${PASSWORD_MAX} characters.`,
-    busy: 'too many tries just now. wait a moment.', // signin.failure.ratelimited
-    unconfirmed: 'the change could not be confirmed. try again.', // organization.unavailable
-    done: 'your password has changed. sign in with your new password.', // signin.reset.changed
-    invalid: 'this reset link is invalid or has expired. request a new one.', // signin.reset.invalid
-    missing: 'this page has no reset link. open the link in your email again.',
-    noscript: 'this page needs javascript to save a new password.',
-  },
   verified: {
-    title: 'email verification',
-    verified: 'email verification completed. you can sign in.', // signin.verification.complete
-    failed: 'this verification link could not be confirmed. request a new email.', // signin.verification.failed
-    open: 'open DressYou',
-    help: 'if the app does not open, open DressYou on your phone.',
-    noscript: 'open DressYou and sign in.',
+    title: 'Email verification',
+    verified: 'Email verification completed. You can sign in.', // signin.verification.complete
+    failed: 'This verification link could not be confirmed. Request a new email.', // signin.verification.failed
+    open: 'Open DressYou',
+    help: 'If the app does not open, open DressYou on your phone.',
+    noscript: 'Open DressYou and sign in.',
   },
 };
 
@@ -258,29 +241,13 @@ const fr: Copy = {
   },
   doc: { updated: 'Mis à jour le', home: 'Retour à DressYou' },
   notFound: { title: 'Cette page n’existe pas.', text: 'Le lien est peut-être ancien.', home: 'Aller à l’accueil' },
-  reset: {
-    title: 'réinitialisez votre mot de passe',
-    lede: 'choisissez un nouveau mot de passe.',
-    label: 'nouveau mot de passe',
-    hint: `${PASSWORD_MIN} à ${PASSWORD_MAX} caractères.`,
-    save: 'enregistrer le nouveau mot de passe',
-    saving: 'enregistrement…',
-    short: `utilisez au moins ${PASSWORD_MIN} caractères.`,
-    long: `utilisez ${PASSWORD_MAX} caractères maximum.`,
-    busy: 'trop d’essais à l’instant. patientez un moment.',
-    unconfirmed: 'la modification n’a pas pu être confirmée. réessayez.',
-    done: 'votre mot de passe a été modifié. connectez-vous avec le nouveau.',
-    invalid: 'ce lien de réinitialisation est invalide ou a expiré. demandez-en un nouveau.',
-    missing: 'cette page n’a pas de lien de réinitialisation. rouvrez le lien reçu par e-mail.',
-    noscript: 'cette page a besoin de javascript pour enregistrer un nouveau mot de passe.',
-  },
   verified: {
-    title: 'vérification de l’adresse e-mail',
-    verified: 'adresse e-mail vérifiée. vous pouvez vous connecter.',
-    failed: 'ce lien de vérification n’a pas pu être confirmé. demandez un nouvel e-mail.',
-    open: 'ouvrir DressYou',
-    help: 'si l’app ne s’ouvre pas, ouvrez DressYou sur votre téléphone.',
-    noscript: 'ouvrez DressYou et connectez-vous.',
+    title: 'Vérification de l’adresse e-mail',
+    verified: 'Adresse e-mail vérifiée. Vous pouvez vous connecter.',
+    failed: 'Ce lien de vérification n’a pas pu être confirmé. Demandez un nouvel e-mail.',
+    open: 'Ouvrir DressYou',
+    help: 'Si l’app ne s’ouvre pas, ouvrez DressYou sur votre téléphone.',
+    noscript: 'Ouvrez DressYou et connectez-vous.',
   },
 };
 

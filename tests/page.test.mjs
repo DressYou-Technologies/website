@@ -578,10 +578,11 @@ test('vercel.json hardens every response and caches the hashed files for good', 
   assert.match(headersFor('/_astro/(.*)')['cache-control'] ?? '', /max-age=31536000, immutable/);
 });
 
-// The account mails link here; the app opens them (iOS AccountAuthURL.swift). Any other path stays a web page.
-test('the apple app-site-association opens only the reset and verified links in the app, served as JSON', async () => {
+// The verification mail links here; the app opens it (iOS AccountAuthURL.swift). Any other path stays a web page. The password
+// reset moved into the app, as an emailed code (founder, 2026-11-13), so /auth/reset is no longer claimed.
+test('the apple app-site-association opens only the verified link in the app, served as JSON', async () => {
   assert.deepEqual(JSON.parse(await read('.well-known/apple-app-site-association')), {
-    applinks: { details: [{ appIDs: ['Y3AYTV4AK8.com.dressyouapp.ios'], components: [{ '/': '/auth/reset' }, { '/': '/auth/verified' }] }] },
+    applinks: { details: [{ appIDs: ['Y3AYTV4AK8.com.dressyouapp.ios'], components: [{ '/': '/auth/verified' }] }] },
   });
   const { headers } = JSON.parse(await readFile(new URL('../vercel.json', import.meta.url), 'utf8'));
   assert.deepEqual(headers.find((h) => h.source === '/.well-known/apple-app-site-association')?.headers, [{ key: 'Content-Type', value: 'application/json' }]);
