@@ -123,6 +123,16 @@ const en = {
   },
   doc: { updated: 'Last updated', home: 'Back to DressYou' },
   notFound: { title: 'This page does not exist.', text: 'The link may be old.', home: 'Go to the home page' },
+  // Where the verification mail lands (src/lib/auth.ts). In the app's words where it has them
+  // (ios/DressYou/Resources/Localizable.xcstrings, the key beside each line), so the site and the app say the same thing.
+  verified: {
+    title: 'Email verification',
+    verified: 'Email verification completed. You can sign in.', // signin.verification.complete
+    failed: 'This verification link could not be confirmed. Request a new email.', // signin.verification.failed
+    open: 'Open DressYou',
+    help: 'If the app does not open, open DressYou on your phone.',
+    noscript: 'Open DressYou and sign in.',
+  },
 };
 
 export type Copy = typeof en;
@@ -231,6 +241,14 @@ const fr: Copy = {
   },
   doc: { updated: 'Mis à jour le', home: 'Retour à DressYou' },
   notFound: { title: 'Cette page n’existe pas.', text: 'Le lien est peut-être ancien.', home: 'Aller à l’accueil' },
+  verified: {
+    title: 'Vérification de l’adresse e-mail',
+    verified: 'Adresse e-mail vérifiée. Vous pouvez vous connecter.',
+    failed: 'Ce lien de vérification n’a pas pu être confirmé. Demandez un nouvel e-mail.',
+    open: 'Ouvrir DressYou',
+    help: 'Si l’app ne s’ouvre pas, ouvrez DressYou sur votre téléphone.',
+    noscript: 'Ouvrez DressYou et connectez-vous.',
+  },
 };
 
 export const COPY: Record<Lang, Copy> = { en, fr };
