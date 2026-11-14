@@ -38,8 +38,7 @@ test('the waitlist function is gone, and the confirmation pages stay for links a
 // One message, as the live notice promises: English and French together, since the list stores no language. Brevo's
 // campaign tool adds the unsubscribe footer. Nothing in it loads from anywhere, so opening it tells no server anything.
 test('the launch email says the app is out in both languages, links the App Store and tracks nothing', async () => {
-  const email = await read(new URL('emails/launch.html', ROOT));
-  const body = email.replace(/<!--[\s\S]*?-->/g, '');
+  const body = await read(new URL('emails/launch.html', ROOT));
   assert.match(body, /<html lang="en">/);
   assert.match(body, /<[a-z]+[^>]* lang="fr"/, 'no French part');
   const links = [...body.matchAll(/href="([^"]+)"/g)].map((m) => m[1]);
