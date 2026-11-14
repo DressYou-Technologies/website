@@ -17,8 +17,8 @@ const metaIn = (page, attr, key) => page.match(new RegExp(`<meta[^>]*${attr}="${
 // &amp; last, so an escaped entity such as &amp;quot; is decoded once, not twice.
 const decode = (s) => s.replaceAll('&#39;', "'").replaceAll('&quot;', '"').replaceAll('&amp;', '&');
 // The pages in the works stay out of search until they have content.
-const INDEXED = ['/', '/legal', '/privacy'];
-const SOON = ['/journal', '/terms'];
+const INDEXED = ['/', '/legal', '/privacy', '/terms', '/support'];
+const SOON = ['/journal'];
 
 test('each home page carries its language, title, description, canonical and alternates', () => {
   for (const lang of LANGS) {
@@ -40,7 +40,7 @@ test('the root is English and French lives under /fr', async () => {
     assert.match(await read(file), new RegExp(`<html lang="${lang}"`), file);
   }
   const { redirects = [] } = JSON.parse(await readFile(new URL('../vercel.json', import.meta.url), 'utf8'));
-  assert.deepEqual(redirects, [{ source: '/en', destination: '/', permanent: true }, { source: '/en/:path*', destination: '/:path*', permanent: true }]);
+  assert.deepEqual(redirects.slice(0, 2), [{ source: '/en', destination: '/', permanent: true }, { source: '/en/:path*', destination: '/:path*', permanent: true }]);
 });
 
 // The public address is info@ (founder, 2026-11-01, from the content brief), never hello@ or contact@.
@@ -111,8 +111,8 @@ test('the JSON-LD, llms.txt and sitemap agree with the pages', async () => {
     assert.ok(sitemap.includes(`<loc>${SITE.url}${localize(lang, path)}</loc>`), `${lang} ${path}`);
     await access(new URL(fileOf(lang, path), DIST)).catch(() => assert.fail(`${lang} ${path} is in the sitemap but not built`));
   }
-  assert.doesNotMatch(sitemap, /notified|404|journal|terms/);
-  assert.doesNotMatch(llms, /\/(journal|terms)\b/, 'llms.txt lists a page in the works');
+  assert.doesNotMatch(sitemap, /notified|404|journal/);
+  assert.doesNotMatch(llms, /\/journal\b/, 'llms.txt lists a page in the works');
 });
 
 // Founder, 2026-10-30: no semicolons or em dashes in what people read. Plus the search plan's copy rules.
@@ -131,9 +131,8 @@ const readable = (page) => [
 
 test('no page, title, description or llms.txt breaks the copy rules', async () => {
   const sources = [...await Promise.all(pages.map(async (page) => [page, readable(await read(page))])), ['llms.txt', await read('llms.txt')]];
-  // The draft privacy notice and terms are counsel's text, kept word for word (they use semicolons) until counsel and the
-  // founder settle them.
-  const COUNSEL_TEXT = new Set(['privacy-draft.html', 'fr/privacy-draft.html', 'terms-draft.html', 'fr/terms-draft.html']);
+  // The privacy notice and terms are counsel's text, published word for word (they use semicolons).
+  const COUNSEL_TEXT = new Set(['privacy.html', 'fr/privacy.html', 'terms.html', 'fr/terms.html']);
   for (const [name, body] of sources) for (const [bad, what] of BANNED) {
     if (bad === ';' && COUNSEL_TEXT.has(name)) continue;
     const at = body.toLowerCase().indexOf(bad);
@@ -397,12 +396,11 @@ test('every in-page link has its target on the same page', async () => {
   }
 });
 
-// Until their content arrives, Journal and the terms say the same thing, word for word, and show no draft legal text
-// (founder, 2026-11-01). Privacy keeps its notice: the sign-up links to it.
-test('Journal and the terms show one coming-soon message, the address and the way home', async () => {
+// Until its content arrives, Journal says the coming-soon message, word for word (founder, 2026-11-01).
+test('Journal shows the coming-soon message, the address and the way home', async () => {
   const want = {
-    en: { message: ['In the works', 'This page is coming soon. Write to info@dressyouapp.com.', 'Back to DressYou'], home: '/', titles: ['Journal', 'Terms'] },
-    fr: { message: ['En préparation', 'Cette page arrive bientôt. Écrivez à info@dressyouapp.com.', 'Retour à DressYou'], home: '/fr', titles: ['Journal', 'Conditions'] },
+    en: { message: ['In the works', 'This page is coming soon. Write to info@dressyouapp.com.', 'Back to DressYou'], home: '/', titles: ['Journal'] },
+    fr: { message: ['En préparation', 'Cette page arrive bientôt. Écrivez à info@dressyouapp.com.', 'Retour à DressYou'], home: '/fr', titles: ['Journal'] },
   };
   for (const lang of LANGS) {
     for (const [k, path] of SOON.entries()) {
@@ -460,19 +458,17 @@ test('every dark section says so, for the menu button to take a colour that read
   }
 });
 
-// The privacy notice is the counsel draft from the DressYou repository (founder, 2026-11-02, preview first): the app's
-// onboarding links its AI section as #ai, and every point still open shows as a marked note, never as plain text.
-test('the privacy notice gives its AI section the anchor the app links to, and marks every open point', async () => {
+// The privacy notice is the app's, published from the DressYou repository by scripts/legal.mjs: the app's onboarding
+// links its AI section as #ai.
+test('the privacy notice gives its AI section the anchor the app links to', async () => {
   for (const [lang, title] of [['en', '2.3 AI: OpenAI and TypeSafe'], ['fr', '2.3 IA : OpenAI et TypeSafe']]) {
-    const body = await read(fileOf(lang, '/privacy-draft'));
+    const body = await read(fileOf(lang, '/privacy'));
     assert.equal(decode(text(body.match(/<h3 id="ai"[^>]*>([\s\S]*?)<\/h3>/)?.[1] ?? '')), title, lang);
-    assert.doesNotMatch(body, /\[\[(FOUNDER|COUNSEL)/, `${lang}: an open point shows as raw text`);
-    assert.ok((body.match(/<mark class="open"/g) ?? []).length >= 41, `${lang}: open points not marked`);
   }
 });
 
 // DressYou stores data in Stockholm since its move to eu-north-1 (DressYou #490, #504); the notice says so in both
-// languages. The organisation's address in the page's JSON-LD is not a storage claim, so only the notice is read.
+// languages. Addresses are not storage claims, so only what DressYou says it stores is read.
 test('the privacy notice names Stockholm, never Paris or France, as where DressYou stores data', async () => {
   const STORED = {
     en: ['DressYou stores your data in the EU (Sweden)', 'Everything the service stores and logs Stockholm, Sweden Declared',
@@ -481,49 +477,36 @@ test('the privacy notice names Stockholm, never Paris or France, as where DressY
       'vérification et de réinitialisation Stockholm, Suède Déclaré', 'DressYou conserve vos données à Stockholm, en Suède.'],
   };
   for (const [lang, claims] of Object.entries(STORED)) {
-    const notice = decode(text((await read(fileOf(lang, '/privacy-draft'))).match(/<article class="doc"[^>]*>([\s\S]*?)<\/article>/)?.[1] ?? ''));
-    assert.doesNotMatch(notice, /\b(Paris|France)\b/, `${lang}: the notice still names Paris or France`);
+    const notice = decode(text((await read(fileOf(lang, '/privacy'))).match(/<article class="doc"[^>]*>([\s\S]*?)<\/article>/)?.[1] ?? ''));
+    // Paris is the company's registered office and Brevo's address, never where DressYou keeps data.
+    assert.doesNotMatch(notice, /DressYou (stores|stocke|conserve)[^.]*\b(Paris|France)\b/, `${lang}: the notice says DressYou stores data in Paris or France`);
     for (const claim of claims) assert.ok(notice.includes(claim), `${lang}: missing "${claim}"`);
   }
 });
 
-// The drafts are for TestFlight only (founder, 2026-11-05): the app's policy bundle links them and no public page does,
-// while /privacy and /terms keep what main shows. The drafts may link each other: the terms cite the draft notice.
-test('the draft privacy notice and terms stay out of search, the sitemap and llms.txt, and no other page links them', async () => {
-  const { headers } = JSON.parse(await readFile(new URL('../vercel.json', import.meta.url), 'utf8'));
+// The drafts were for TestFlight (founder, 2026-11-05). Now only their redirects answer at those addresses, and no page
+// links them.
+test('the draft privacy notice and terms are no longer built, and no page links them', async () => {
   for (const path of ['/privacy-draft', '/terms-draft']) {
-    const drafts = LANGS.map((lang) => fileOf(lang, path)), name = new RegExp(path.slice(1));
-    for (const file of drafts) {
-      const body = await read(file);
-      assert.match(body, /<meta name="robots" content="noindex, nofollow">/, file);
-      assert.doesNotMatch(body, /rel="canonical"/, file);
-    }
-    for (const page of pages.filter((page) => !page.endsWith('-draft.html'))) assert.doesNotMatch(await read(page), name, `${page} links ${path}`);
-    for (const file of ['sitemap.xml', 'llms.txt']) assert.doesNotMatch(await read(file), name, `${file} lists ${path}`);
-    for (const lang of LANGS) {
-      const rule = headers.find((h) => h.source === localize(lang, path));
-      assert.ok(rule?.headers.some((h) => h.key === 'X-Robots-Tag' && h.value === 'noindex, nofollow'), `${lang}: no X-Robots-Tag on ${path}`);
-    }
+    for (const lang of LANGS) await assert.rejects(access(new URL(fileOf(lang, path), DIST)), `${lang} ${path} is still built`);
+    for (const page of pages) assert.doesNotMatch(await read(page), new RegExp(path.slice(1)), `${page} links ${path}`);
   }
 });
 
-// The draft terms are counsel's text (DressYou repository, docs/legal/terms-{en,fr}-draft.md): every open point shows as a
-// marked note, never as raw text, under the draft banner.
-test('the draft terms carry their seventeen sections and mark every open point', async () => {
-  for (const [lang, founder, counsel] of [['en', 'Founder to decide:', 'Counsel to confirm:'], ['fr', 'À trancher\u00a0:', 'À confirmer par le conseil\u00a0:']]) {
-    const article = (await read(fileOf(lang, '/terms-draft'))).match(/<article class="doc"[^>]*>([\s\S]*?)<\/article>/)?.[1] ?? '';
-    assert.match(article, /<p class="draft">/, `${lang}: no draft banner`);
+// The terms are counsel's text (DressYou repository, docs/legal/terms-{en,fr}-draft.md), with every note for counsel or
+// the founder left out.
+test('the terms carry their seventeen sections and no review note', async () => {
+  for (const lang of LANGS) {
+    const article = (await read(fileOf(lang, '/terms'))).match(/<article class="doc"[^>]*>([\s\S]*?)<\/article>/)?.[1] ?? '';
     assert.equal((article.match(/<h2[ >]/g) ?? []).length, 17, `${lang}: sections`);
-    assert.doesNotMatch(article, /\[\[(FOUNDER|COUNSEL)/, `${lang}: an open point shows as raw text`);
-    assert.equal(article.split(`<b>${founder}</b>`).length - 1, 16, `${lang}: founder points`);
-    assert.equal(article.split(`<b>${counsel}</b>`).length - 1, 17, `${lang}: counsel points`);
+    assert.doesNotMatch(article, /<mark class="open"|class="draft"|\[\[/, `${lang}: a review note shows`);
   }
 });
 
-// The drafts come from the DressYou repository, whose links name its own files: on the site each must reach a page.
-test('no link on a draft page points at a repository file or at a page the site does not have', async () => {
+// The texts come from the DressYou repository, whose links name its own files: on the site each must reach a page.
+test('no link in the privacy notice or terms points at a repository file or at a page the site does not have', async () => {
   const built = (pathname) => pathname === '/' ? ['index.html'] : [`${pathname.slice(1)}.html`, pathname.slice(1), `${pathname.slice(1)}/index.html`];
-  for (const path of ['/privacy-draft', '/terms-draft']) for (const lang of LANGS) {
+  for (const path of ['/privacy', '/terms']) for (const lang of LANGS) {
     const file = fileOf(lang, path), base = `${SITE.url}${localize(lang, path)}`;
     for (const [, href] of (await read(file)).matchAll(/<a\b[^>]*href="([^"]+)"/g)) {
       assert.doesNotMatch(href, /\.md(#|$)/, `${file} links a repository file: ${href}`);
@@ -535,12 +518,14 @@ test('no link on a draft page points at a repository file or at a page the site 
   }
 });
 
-test('the public privacy notice stays the waitlist notice, in search', async () => {
-  for (const [lang, opening] of [['en', 'This notice covers this website only.'], ['fr', 'Cette notice couvre uniquement ce site.']]) {
-    const body = await read(fileOf(lang, '/privacy'));
-    assert.ok(decode(text(body)).includes(opening), `${lang}: /privacy lost the waitlist notice`);
-    assert.doesNotMatch(body, /id="ai"|class="draft"|<mark class="open"/, `${lang}: the draft reached /privacy`);
-    assert.match(body, /<meta name="robots" content="index, follow/, `${lang}: /privacy left search`);
+// The app's notice replaces the website's: it covers the site, and its section 2.13 carries the launch list it promised.
+test('the privacy notice covers the website and its launch list, and stays in search', async () => {
+  for (const [lang, site, launch] of [['en', /the website dressyouapp\.com/, '2.13 Being told when the app is out'], ['fr', /le site dressyouapp\.com/, '2.13 Être prévenu de la sortie de l’application']]) {
+    const body = await read(fileOf(lang, '/privacy')), words = decode(text(body));
+    assert.match(words, site, `${lang}: the notice does not cover the website`);
+    assert.ok(words.includes(launch) && words.includes('Brevo'), `${lang}: the launch list is not covered`);
+    assert.doesNotMatch(body, /class="draft"|<mark class="open"/, `${lang}: a review note reached /privacy`);
+    for (const path of ['/privacy', '/terms']) assert.match(await read(fileOf(lang, path)), /<meta name="robots" content="index, follow/, `${lang}: ${path} is out of search`);
   }
 });
 

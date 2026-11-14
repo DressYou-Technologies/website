@@ -1,0 +1,15 @@
+---
+import Doc from '../layouts/Doc.astro';
+import { LINKS } from '../data/site';
+import { COPY } from '../i18n/copy';
+import type { Lang } from '../i18n/lang';
+
+// The support page the app and its store listing link.
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = COPY[lang].support;
+---
+<Doc lang={lang} title={t.title} path="/support">
+  <p>{t.help} <a href={`mailto:${LINKS.support}`}>{LINKS.support}</a>.</p>
+  <p>{t.report}</p>
+</Doc>

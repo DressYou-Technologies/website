@@ -1,22 +1,27 @@
+---
+source: DressYou docs/legal/terms-en-draft.md at 24398d0a4
+updated: 2026-11-14
+---
+
 ## 1. The service and these terms
 
 DressYou lets you organise your clothes, see garments on a generated image of yourself, get size answers and outfit suggestions, ask friends for their opinion, and post photographs of your outfits. It is operated by the company named in the [legal notice](/legal). These terms apply to the DressYou apps for iOS and Android, the browser extension, the website dressyouapp.com and the pages opened from an ask link.
 
-You accept these terms when you create your account, and DressYou records the version you accepted and the date. They are separate from the [privacy notice](/privacy-draft), which explains how DressYou processes your data, and from the consents DressYou asks for on their own; accepting these terms never authorises optional processing.
+You accept these terms when you create your account, and DressYou records the version you accepted and the date. They are separate from the [privacy notice](/privacy), which explains how DressYou processes your data, and from the consents DressYou asks for on their own; accepting these terms never authorises optional processing.
 
-Sections 6 and 7 cover renders, the paid tier and purchases. <mark class="open" data-id="sales-terms"><b>Counsel to confirm:</b> Do the paid tier and render purchases need separate terms of sale, or can these sections serve, given that the stores sell them?</mark>
+Sections 6 and 7 cover renders, the paid tier and purchases.
 
 ## 2. Who can use DressYou
 
-DressYou is for people aged 18 or over, in the countries where it is offered <mark class="open" data-id="territories"><b>Founder to decide:</b> the countries where DressYou is offered at launch; France and the European Union is the working assumption</mark>. You confirm your age before body capture, and an age check takes place before DressYou processes your photographs. <mark class="open" data-id="minor-account"><b>Counsel to confirm:</b> What follows when an account is found to belong to a person under 18: deletion of body data and posts, and any notification? Counsel brief B13(2).</mark>
+DressYou is for people aged 18 or over, in the countries where it is offered: France and the other countries of the European Union. DressYou checks that you're 18 or older before you use the app. On an iPhone with iOS 26 or later, DressYou asks Apple whether you're 18 or older, and refuses anyone under 18. On an older iPhone, or if you decline Apple's prompt, your own declaration that you're 18 or older stands.
 
 ## 3. Your account
 
-You create an account before body capture and your first try-on. You sign in with your email address and a password, or with Sign in with Apple, and you can add passkeys and two-step verification. <mark class="open" data-id="google-sign-in"><b>Founder to decide:</b> Does Google sign-in ship at launch? §4.1 draws it; the code has none.</mark> Use only your own account and keep its sign-in methods secure. In the app you can see where you are signed in, sign out a device or a linked browser, and sign out everywhere else. If you think someone else has used your account, tell DressYou through the user contact point in the DSA texts.
+You create an account before body capture and your first try-on. You sign in with your email address and a password, or with Sign in with Apple, and you can add passkeys and two-step verification. Use only your own account and keep its sign-in methods secure. In the app you can see where you are signed in, sign out a device or a linked browser, and sign out everywhere else. If you think someone else has used your account, tell DressYou at support@dressyouapp.com.
 
 ## 4. Body capture and your twin
 
-Body capture takes photographs of you, with the app's camera or from your photo library: the first front, the second back, and any further ones as appearance context. All of them go to the image provider to make your twin. <mark class="open" data-id="capture-photo-count"><b>Founder to decide:</b> Should capture be limited to the front and back photographs? The app imports up to 16, the API accepts up to 20, and the worker sends up to 16 to the image provider for the twin, refusing a source with more.</mark> Before you send them, you confirm that you are 18 or over and that they show only you. Never capture or import photographs of another person.
+Body capture takes photographs of you, with the app's camera or from your photo library: the first front, the second back, and any further ones as appearance context. All of them go to the image provider to make your twin. Before you send them, you confirm that you are 18 or over and that they show only you. Never capture or import photographs of another person.
 
 Capture refuses a photograph that shows more than one person, does not show a whole body, is below the quality needed, or shows nudity, underwear or swimwear, and guides you to try again.
 
@@ -26,7 +31,7 @@ The photographs make your twin and nothing else: DressYou takes no measurement f
 
 ## 5. Generated images, size answers and the stylist
 
-Your twin, your try-on images and garment images are generated by an AI image model, and each carries a visible mark saying so. A generated image shows how a garment may look on you; it never answers whether the garment fits. Size answers are a separate element: each states its basis and how sure it is, and near the boundary between two sizes it gives both. Measurements are optional: you add them in the app whenever you choose. <mark class="open" data-id="capture-height"><b>Founder to decide:</b> The app still asks your height with the capture photographs and the API requires it, while decision 35 has no measurement step in onboarding: remove height from capture before publication?</mark> When DressYou has too little to go on, the size answer says so and offers two ways to get one, adding a garment you own with its size or adding your measurements, and the try-on works either way. A size answer is a recommendation, not a guarantee. <mark class="open" data-id="size-liability"><b>Counsel to confirm:</b> Can a recommendation that states its basis and confidence create liability for a wrong size, can these terms limit it, and does that change once it is part of a paid subscription? Counsel brief A9.</mark>
+Your twin, your try-on images and garment images are generated by an AI image model, with no visible mark on them. A generated image shows how a garment may look on you; it never answers whether the garment fits. Size answers are a separate element: each states its basis and how sure it is, and near the boundary between two sizes it gives both. Measurements are optional: you add them in the app whenever you choose. When DressYou has too little to go on, the size answer says so and offers two ways to get one, adding a garment you own with its size or adding your measurements, and the try-on works either way. A size answer is a recommendation, not a guarantee.
 
 The stylist suggests outfits from your wardrobe and answers your questions. It suggests items to buy only when you ask for them, and it never buys anything for you. Conversations with the stylist have their own monthly limit, which is not displayed; when you reach it, the conversation pauses until the renewal date and the suggestions on your screens keep working. The paid tier removes the pause.
 
@@ -36,7 +41,7 @@ The retailer, not DressYou, sells the garment and answers for its delivery, retu
 
 A render is one generated image of your twin wearing garments. Adding garments to your wardrobe, composing outfits and browsing are free and use no renders.
 
-Renders come from three sources, used in this order: a free monthly allowance, then renders you earned, then renders you bought. A monthly reset never uses renders you bought, and bought renders never expire. <mark class="open" data-id="free-allowance"><b>Founder to decide:</b> the size of the free monthly allowance and when it resets</mark> <mark class="open" data-id="earned-render-expiry"><b>Founder to decide:</b> Do earned renders expire?</mark>
+At launch every render is free and unlimited, within the fair-use limits that apply to every account, so no allowance is counted and renders are neither earned nor bought. Once these open, renders come from three sources, used in this order: a free monthly allowance, then renders you earned, then renders you bought. A monthly reset never uses renders you bought, and bought renders never expire.
 
 The remaining free allowance is not displayed: you meet the limit when you reach it, together with its renewal date. The balance of renders you bought is always shown.
 
@@ -48,19 +53,17 @@ Renders have no cash value. They cannot be exchanged for money, sold or transfer
 
 ## 7. The paid tier and purchases
 
-At launch the paid tier and renders are sold through the App Store on iOS and Google Play on Android, under the store's terms of sale and payment; DressYou checks each purchase with the store. Purchase on the website is not offered at launch.
+At launch nothing is sold: the paid tier and bought renders are built and stay off until DressYou opens them. Once open, they are sold through the App Store on iOS and Google Play on Android, under the store's terms of sale and payment; DressYou checks each purchase with the store. Purchase on the website is not offered.
 
-The paid tier is a monthly subscription. At launch it includes renders under a high fair-use cap, priority rendering, two twin generations a month and stylist conversations without the monthly pause. <mark class="open" data-id="stylist-pause"><b>Founder to decide:</b> Does the launch paid tier include stylist conversations without the monthly pause? §4.9's 2026-09-05 decision says so; decision 7's launch list does not repeat it, and the stylist's production provider is unselected.</mark> It renews each month through the store until you cancel it in the store's subscription settings. <mark class="open" data-id="paid-tier-price"><b>Founder to decide:</b> the price at launch</mark> <mark class="open" data-id="fair-use-cap"><b>Founder to decide:</b> the fair-use render cap, and how it is stated to subscribers</mark> <mark class="open" data-id="unlimited-wording"><b>Counsel to confirm:</b> The design presents the capped offer as unlimited: may it be called unlimited under French consumer law, and what must be disclosed?</mark>
+Once open, the paid tier is a monthly subscription. It includes renders under a high fair-use cap, priority rendering, two twin generations a month and stylist conversations without the monthly pause. It renews each month through the store until you cancel it in the store's subscription settings.
 
 Renders are offered on the screen shown when your allowance runs out, priced in euros; you choose the quantity. A receipt for each purchase is kept under renders you bought, with a route to dispute it through support.
 
-Once per account, when your wardrobe reaches a set number of garments, DressYou offers a discount on the paid tier. The offer states the discounted price, the price at renewal and a deadline; the deadline is real, and the offer does not come back once it has passed. <mark class="open" data-id="reward-discount-price"><b>Counsel to confirm:</b> Must this offer state the lowest price of the previous 30 days?</mark>
+Once per account, when your wardrobe reaches a set number of garments, DressYou offers a discount on the paid tier. The offer states the discounted price, the price at renewal and a deadline; the deadline is real, and the offer does not come back once it has passed.
 
-DressYou tests prices, discounts, offers and limits by assigning accounts to groups at random. A test never changes what DressYou says about fit, your body or a garment, and the price shown is always the price charged. <mark class="open" data-id="price-experiments"><b>Counsel to confirm:</b> Is a price that differs by random group a personalised price that must be disclosed, and do the stores' rules allow such tests? Counsel brief C3.</mark>
+DressYou tests prices, discounts, offers and limits by assigning accounts to groups at random. A test never changes what DressYou says about fit, your body or a garment, and the price shown is always the price charged.
 
-<mark class="open" data-id="withdrawal-right"><b>Counsel to confirm:</b> How does the 14-day right of withdrawal apply to the subscription and to renders delivered at once, what must the purchase flow show, and how do the French rules on renewing contracts apply to a store subscription?</mark>
-
-Deleting your account deletes its render balances, including renders you bought. <mark class="open" data-id="deletion-and-subscription"><b>Founder to decide:</b> Does deleting the account cancel a running store subscription, and what is the person told before deletion?</mark> <mark class="open" data-id="unused-purchases"><b>Counsel to confirm:</b> What is owed for bought renders left unused when an account is deleted or closed?</mark>
+Deleting your account deletes its render balances, including renders you bought. At launch nothing is sold, so deleting your account ends no subscription.
 
 ## 8. Posting and community rules
 
@@ -68,19 +71,19 @@ Deleting your account deletes its render balances, including renders you bought.
 
 A post is a real photograph of you wearing clothes you own. Your face need not appear. A post may not be a photograph of garments alone, a generated image, including your twin or a try-on, or a photograph of someone else presented as you.
 
-Anyone else in the photograph must have agreed to appear; you declare it when you post. <mark class="open" data-id="photo-warranty"><b>Counsel to confirm:</b> Under French image rights and the GDPR, what must the poster warrant about other people pictured, and on what basis does DressYou host their image? Counsel brief A4(1).</mark> <mark class="open" data-id="minors-pictured"><b>Founder to decide:</b> May a post show a minor beside the poster, and on whose agreement?</mark>
+Anyone else in the photograph must have agreed to appear; you declare it when you post. A post must not show anyone under 18, and one that does is removed when reported.
 
-A post showing swimwear or underwear is held until a person at DressYou has reviewed it.
+One automatic check per posted photograph holds a photograph it reads as showing underwear, at a probability of 0.70 or more, until a person at DressYou has reviewed it. Swimwear publishes like any post.
 
 You can add a caption, hashtags and links to the garments you wear. A post without a linked garment is allowed and is shown less often. Some posts come from DressYou itself, or from creators DressYou invited before launch; they are marked as such.
 
 ### 8.2 Your public profile
 
-You post under a public name you choose. Your public photo stays off unless you add one. Your profile page lists your posts and nothing else. <mark class="open" data-id="post-audience"><b>Founder to decide:</b> Who can see posts and profiles (working assumption: signed-in users only), can they be seen outside the app, and can a poster limit the audience?</mark>
+You post under a public name you choose. Your public photo stays off unless you add one. Your profile page lists your posts and nothing else. Your profile's level sets who sees your posts: public reaches every signed-in account, and followers reaches only the followers you accept. A new profile starts at followers. A post's share link opens the App Store and shows nothing of the post outside DressYou.
 
 ### 8.3 Comments, likes, saves, follows and blocks
 
-You can comment on posts in threads, like and save posts, and follow other accounts; following is one-way. Likes and saves are shown without counts. The everyone tab shows posts from everyone; the following tab shows posts from the accounts you follow. You can block an account. <mark class="open" data-id="block-effect"><b>Founder to decide:</b> What does a block hide, in each direction: posts, comments, profile, rewards?</mark>
+You can comment on posts in threads, like and save posts, and follow other accounts; following is one-way. Likes and saves are shown without counts. The everyone tab shows posts from everyone; the following tab shows posts from the accounts you follow. You can block an account. A block works both ways: neither of you sees the other's profile, posts or comments or finds the other in search, every follow and request between you ends, and messaging with it, and a try-on by a blocked account earns no reward.
 
 ### 8.4 Community rules
 
@@ -96,37 +99,37 @@ Everything you post, comment or write in DressYou follows these rules:
 
 ### 8.5 Rights in your posts
 
-You keep the rights in what you post. By posting, you allow DressYou, free of charge and without exclusivity, to host, reproduce and display your post in DressYou and in links shared from it, for as long as the post is online, and to adapt its format for display. <mark class="open" data-id="content-licence"><b>Counsel to confirm:</b> Are the scope and duration of this licence right, including posts shared outside DressYou and copies held after deletion?</mark>
+You keep the rights in what you post. By posting, you allow DressYou, free of charge and without exclusivity, to host, reproduce and display your post in DressYou and in links shared from it, for as long as the post is online, and to adapt its format for display.
 
 When you delete a post, it leaves DressYou; copies that others kept or shared outside DressYou cannot be recalled.
 
 ### 8.6 Commission and reward disclosure
 
-DressYou earns a commission when someone buys through a shop link, and a poster earns a render when someone tries on a garment the post links. Every post with shop links says so. Commission never affects which posts are shown or in what order. <mark class="open" data-id="disclosure-copy"><b>Counsel to confirm:</b> What wording and placement satisfy the French rules for this disclosure, and does the try-on reward make every post the poster's own commercial communication? Counsel brief B11, B12(2).</mark>
+DressYou earns a commission when someone buys through a shop link, and a poster earns a render when someone tries on a garment the post links. Every post with shop links says so. Commission never affects which posts are shown or in what order.
 
 ## 9. Posting rewards
 
 When another adult completes a try-on of a garment your post links, you earn one render. The try-on must come from someone other than you, and from an account not blocked as described in section 8.3.
 
-Rewards are capped per post, per poster each month, never above one free monthly allowance, and by a monthly total across all posters. <mark class="open" data-id="reward-caps"><b>Founder to decide:</b> the cap per post, the monthly cap per poster and the monthly pool at launch</mark>
+At launch rewards are built and stay off, since every render is free and unlimited. Once open, rewards are capped per post, per poster each month, never above one free monthly allowance, and by a monthly total across all posters.
 
 Earned renders are renders: they have no cash value, cannot be exchanged for money and cannot be transferred. DressYou rewards posters in renders only.
 
-Only genuine try-ons count. DressYou may refuse or withdraw renders earned through fake accounts, coordinated try-ons or other manufactured engagement, with a statement of reasons and an appeal (section 10). <mark class="open" data-id="reward-tax"><b>Counsel to confirm:</b> Are renders earned for engagement consideration that DAC7 makes reportable, or a taxable benefit? Counsel brief B12(1).</mark>
+Only genuine try-ons count. DressYou may refuse or withdraw renders earned through fake accounts, coordinated try-ons or other manufactured engagement, with a statement of reasons and an appeal (section 10).
 
 ## 10. Moderation
 
 **Screening.** Every post, caption, hashtag and comment is screened automatically before it appears, including matching against known child sexual abuse material. Screening either lets an item appear or holds it for a person to review.
 
-**Review by a person.** A person reviews every held item and every report. DressYou's review targets are 24 hours for held posts, 24 hours for reports in a serious category, whose item is hidden as soon as it is reported, and 72 hours for other reports. <mark class="open" data-id="serious-categories"><b>Founder to decide:</b> Which report reasons count as serious, with the item hidden on report?</mark>
+**Review by a person.** A person reviews every held item and every report. DressYou's review targets are 24 hours for held posts, 24 hours for reports in a serious category, whose item is hidden as soon as it is reported, and 72 hours for other reports. The serious categories are child safety, nudity or sexual content, and a photo of someone posted without their agreement. Reports of impersonation, harassment or something else are reviewed within 24 hours, without hiding the item.
 
 **Measures.** When an item or an account breaks these terms or the law, DressYou can remove the item, keep a held post unpublished, suspend or close the account, or withhold rewards.
 
-**Statement of reasons and appeal.** DressYou tells you each measure it takes against your content or account, with its reasons, and you can appeal it once; a person reviews the appeal within 7 days. The DSA texts set out these statements and the appeal.
+**Statement of reasons and appeal.** DressYou tells you each measure it takes against your content or account, with its reasons, and you can appeal it once; a person reviews the appeal within 7 days. To appeal, write to support@dressyouapp.com.
 
-**Reports from anyone.** Anyone, with or without an account, can report content through the notice form in the DSA texts. DressYou informs the authorities of suspected offences that threaten someone's life or safety, as the law requires.
+**Reports from anyone.** With an account, you report content in the app. Someone without the app reports an ask page with its "Report this page" link, which opens an email to support@dressyouapp.com, or writes to support@dressyouapp.com directly. DressYou informs the authorities of suspected offences that threaten someone's life or safety, as the law requires.
 
-**How the feed is ordered.** In the first release the everyone tab orders posts by a small fixed rule from taste and engagement, and shows you lower a post whose garment comes in no size that fits you. Commission never affects the order, and DressYou does not rank by comparing one person's body with another's. <mark class="open" data-id="ranking-disclosure"><b>Counsel to confirm:</b> Must these terms describe the ranking in more detail, although Article 27 of the DSA does not bind a micro or small platform? Counsel brief B2.</mark>
+**How the feed is ordered.** In the first release the everyone tab orders posts by a small fixed rule from taste and engagement, and shows you lower a post whose garment comes in no size that fits you. Commission never affects the order, and DressYou does not rank by comparing one person's body with another's.
 
 ## 11. Ask a friend and sharing
 
@@ -151,18 +154,18 @@ DressYou gives you a personal right to use its apps, extension and website under
 
 ## 14. Changes to the service and to these terms
 
-DressYou develops the service and may add, change or remove features. DressYou informs account holders of any significant change to these terms before it applies. <mark class="open" data-id="terms-changes"><b>Counsel to confirm:</b> What notice period applies, and how do existing account holders accept a new version? Today the version accepted is recorded only at account creation.</mark>
+DressYou develops the service and may add, change or remove features. DressYou informs account holders of any significant change to these terms before it applies.
 
 ## 15. Suspension, closure and account deletion
 
 You can delete your account at any time in the app; DressYou asks you to sign in again first if your last sign-in is not recent. Deletion removes your account and its data as the privacy notice explains, with the limits it states. Copies that others kept, and files you exported, cannot be recalled.
 
-DressYou can suspend or close an account that seriously or repeatedly breaks these terms or the law, including a fake account or an impersonation, with a statement of reasons and an appeal. <mark class="open" data-id="restriction-grounds"><b>Counsel to confirm:</b> What grounds, notice and proportionality must these terms state for suspending or closing an account, and what may a suspended person still export?</mark>
+DressYou can suspend or close an account that seriously or repeatedly breaks these terms or the law, including a fake account or an impersonation, with a statement of reasons and an appeal.
 
 ## 16. Liability
 
-DressYou provides the service with care but cannot promise that it will always be available or free of errors. DressYou does not sell the garments shown. Nothing in these terms limits the rights consumer law gives you or excludes liability that cannot lawfully be excluded. <mark class="open" data-id="liability"><b>Counsel to confirm:</b> What limits on liability may these terms state for a consumer service that includes a paid subscription?</mark>
+DressYou provides the service with care but cannot promise that it will always be available or free of errors. DressYou does not sell the garments shown. Nothing in these terms limits the rights consumer law gives you or excludes liability that cannot lawfully be excluded.
 
 ## 17. Complaints, mediation and applicable law
 
-Send a complaint to DressYou through the user contact point in the DSA texts. If your written complaint does not resolve the matter, you can refer it free of charge to the consumer mediator <mark class="open" data-id="mediator"><b>Founder to decide:</b> the consumer mediator DressYou joins, with its address and website</mark>. <mark class="open" data-id="governing-law"><b>Counsel to confirm:</b> Which law governs these terms and which courts have jurisdiction, given the operator's establishment? Mandatory consumer protection of the person's country of residence continues to apply.</mark>
+Send a complaint to DressYou at support@dressyouapp.com. If your written complaint does not resolve the matter, you can refer it free of charge to a consumer mediator, which DressYou names before any paid service opens.

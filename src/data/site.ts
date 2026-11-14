@@ -10,10 +10,11 @@ export interface Outfit { pieces: [ImageId, ImageId, ImageId, ImageId]; render: 
 export const SITE = { url: 'https://dressyouapp.com' };
 
 // A null store link turns its buttons into the "coming soon." dialog.
-export const LINKS: { appUrl: string | null; extensionUrl: string | null; email: string } = {
+export const LINKS: { appUrl: string | null; extensionUrl: string | null; email: string; support: string } = {
   appUrl: null,
   extensionUrl: null,
   email: 'info@dressyouapp.com',
+  support: 'support@dressyouapp.com',
 };
 
 // Column-major: 9 columns on the hero cylinder, 3 tiles each.

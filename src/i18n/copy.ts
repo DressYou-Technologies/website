@@ -133,6 +133,8 @@ const en = {
     help: 'If the app does not open, open DressYou on your phone.',
     noscript: 'Open DressYou and sign in.',
   },
+  // The support page: the address for people using the app, then the in-app report (`report`, Localizable.xcstrings).
+  support: { title: 'Support', help: 'Need help with DressYou? Write to', report: 'To report a post or a message, tap Report on it in the app.' },
 };
 
 export type Copy = typeof en;
@@ -249,6 +251,7 @@ const fr: Copy = {
     help: 'Si l’app ne s’ouvre pas, ouvrez DressYou sur votre téléphone.',
     noscript: 'Ouvrez DressYou et connectez-vous.',
   },
+  support: { title: 'Assistance', help: 'Besoin d’aide avec DressYou\u202f? Écrivez à', report: 'Pour signaler une publication ou un message, touchez Signaler dessus dans l’app.' },
 };
 
 export const COPY: Record<Lang, Copy> = { en, fr };

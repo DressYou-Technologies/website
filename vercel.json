@@ -6,7 +6,11 @@
   "cleanUrls": true,
   "redirects": [
     { "source": "/en", "destination": "/", "permanent": true },
-    { "source": "/en/:path*", "destination": "/:path*", "permanent": true }
+    { "source": "/en/:path*", "destination": "/:path*", "permanent": true },
+    { "source": "/privacy-draft", "destination": "/privacy", "permanent": true },
+    { "source": "/terms-draft", "destination": "/terms", "permanent": true },
+    { "source": "/fr/privacy-draft", "destination": "/fr/privacy", "permanent": true },
+    { "source": "/fr/terms-draft", "destination": "/fr/terms", "permanent": true }
   ],
   "headers": [
     {
@@ -18,22 +22,6 @@
         { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()" },
         { "key": "Cross-Origin-Opener-Policy", "value": "same-origin" }
       ]
-    },
-    {
-      "source": "/privacy-draft",
-      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
-    },
-    {
-      "source": "/fr/privacy-draft",
-      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
-    },
-    {
-      "source": "/terms-draft",
-      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
-    },
-    {
-      "source": "/fr/terms-draft",
-      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
     },
     {
       "source": "/((?!email/).*)",
