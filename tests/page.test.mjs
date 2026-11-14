@@ -520,9 +520,10 @@ test('no link in the privacy notice or terms points at a repository file or at a
 
 // The app's notice replaces the website's: it covers the site, and its section 2.13 carries the launch list it promised.
 test('the privacy notice covers the website and its launch list, and stays in search', async () => {
-  for (const [lang, launch] of [['en', '2.13 Being told when the app is out'], ['fr', '2.13 Être prévenu de la sortie de l’application']]) {
+  for (const [lang, site, launch] of [['en', /the website dressyouapp\.com/, '2.13 Being told when the app is out'], ['fr', /le site dressyouapp\.com/, '2.13 Être prévenu de la sortie de l’application']]) {
     const body = await read(fileOf(lang, '/privacy')), words = decode(text(body));
-    assert.ok(words.includes('dressyouapp.com') && words.includes(launch) && words.includes('Brevo'), `${lang}: the launch list is not covered`);
+    assert.match(words, site, `${lang}: the notice does not cover the website`);
+    assert.ok(words.includes(launch) && words.includes('Brevo'), `${lang}: the launch list is not covered`);
     assert.doesNotMatch(body, /class="draft"|<mark class="open"/, `${lang}: a review note reached /privacy`);
     for (const path of ['/privacy', '/terms']) assert.match(await read(fileOf(lang, path)), /<meta name="robots" content="index, follow/, `${lang}: ${path} is out of search`);
   }
