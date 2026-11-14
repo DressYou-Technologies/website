@@ -1,7 +1,8 @@
 import { CHOSEN, DEFAULT_LANG, localize, opensInFrench } from '../i18n/lang';
 import { all } from '../motion/dom';
 
-// For a page that follows the browser's language: true when it is leaving for the French page.
+// For a page that follows the browser's language, today only /auth/verified: true when it is leaving for the French page.
+// Other pages serve their own language at their own address (founder, 2026-11-14: offer the other language, never redirect).
 export function followBrowserLang(): boolean {
   if (opensInFrench(document.documentElement.lang, location.search, navigator.languages)) {
     // replace, so Back skips the English page rather than landing on it and moving again.

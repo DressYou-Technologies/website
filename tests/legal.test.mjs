@@ -37,6 +37,17 @@ test('the draft privacy notice and terms redirect to the published ones, in each
   }
 });
 
+// Founder, 2026-11-14: offer the other language, never move the reader there. Each page serves its own language at its
+// own address, so no script these pages load navigates on its own. /auth/verified still does, until the founder says.
+test('support, privacy and terms never send the reader to another language', async () => {
+  const navigates = async (file) => {
+    const scripts = [...(await read(file)).matchAll(/<script[^>]*src="\/([^"]+)"/g)].map((m) => m[1]);
+    return (await Promise.all(scripts.map((src) => read(src)))).some((code) => code.includes('location.replace'));
+  };
+  assert.ok(await navigates(fileOf('en', '/auth/verified')), 'the check cannot see a redirect');
+  for (const lang of LANGS) for (const path of ['/support', '/privacy', '/terms']) assert.ok(!(await navigates(fileOf(lang, path))), `${lang} ${path} redirects`);
+});
+
 // Reports go to support@dressyouapp.com or an ask page's "Report this page" line (DressYou #782, #784): no page links the
 // DSA drafts, which the site does not publish.
 test('no built page links a DSA draft', async () => {
