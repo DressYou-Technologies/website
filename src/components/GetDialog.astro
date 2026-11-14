@@ -6,7 +6,6 @@ import { image } from '../lib/image';
 import { qrSvg } from '../lib/qr';
 import { COPY } from '../i18n/copy';
 import type { Lang } from '../i18n/lang';
-import NotifyForm from './NotifyForm.astro';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
@@ -19,13 +18,9 @@ const { name: pageName, price: pagePrice } = COPY[lang].how.shops.zara;
 <dialog id="get-app" class="get" aria-labelledby="get-app-title">
   <div class="card">
     <form method="dialog"><button class="close" aria-label={t.close}><svg viewBox="0 0 24 24" aria-hidden="true" width="18" height="18"><path d="M18 6 6 18M6 6l12 12"></path></svg></button></form>
-    {LINKS.appUrl
-      ? <><h2 class="title" id="get-app-title">{t.appReady}</h2><div class="qr" role="img" aria-label={get.qr} set:html={qrSvg(LINKS.appUrl)} /></>
-      : <>
-          <h2 class="title" id="get-app-title">{t.notify.title}</h2>
-          <p class="lede">{t.notify.lede}</p>
-          <NotifyForm lang={lang} />
-        </>}
+    <h2 class="title" id="get-app-title">{t.appReady}</h2>
+    <div class="qr" role="img" aria-label={get.qr} set:html={qrSvg(LINKS.appUrl)} />
+    <a class="cta" href={LINKS.appUrl} target="_blank" rel="noopener">{get.store}</a>
   </div>
 </dialog>
 
