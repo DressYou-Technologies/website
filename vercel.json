@@ -6,7 +6,11 @@
   "cleanUrls": true,
   "redirects": [
     { "source": "/en", "destination": "/", "permanent": true },
-    { "source": "/en/:path*", "destination": "/:path*", "permanent": true }
+    { "source": "/en/:path*", "destination": "/:path*", "permanent": true },
+    { "source": "/privacy-draft", "destination": "/privacy", "permanent": true },
+    { "source": "/terms-draft", "destination": "/terms", "permanent": true },
+    { "source": "/fr/privacy-draft", "destination": "/fr/privacy", "permanent": true },
+    { "source": "/fr/terms-draft", "destination": "/fr/terms", "permanent": true }
   ],
   "headers": [
     {

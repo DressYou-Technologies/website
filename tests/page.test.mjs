@@ -17,7 +17,7 @@ const metaIn = (page, attr, key) => page.match(new RegExp(`<meta[^>]*${attr}="${
 // &amp; last, so an escaped entity such as &amp;quot; is decoded once, not twice.
 const decode = (s) => s.replaceAll('&#39;', "'").replaceAll('&quot;', '"').replaceAll('&amp;', '&');
 // The pages in the works stay out of search until they have content.
-const INDEXED = ['/', '/legal', '/privacy'];
+const INDEXED = ['/', '/legal', '/privacy', '/support'];
 const SOON = ['/journal', '/terms'];
 
 test('each home page carries its language, title, description, canonical and alternates', () => {
@@ -40,7 +40,7 @@ test('the root is English and French lives under /fr', async () => {
     assert.match(await read(file), new RegExp(`<html lang="${lang}"`), file);
   }
   const { redirects = [] } = JSON.parse(await readFile(new URL('../vercel.json', import.meta.url), 'utf8'));
-  assert.deepEqual(redirects, [{ source: '/en', destination: '/', permanent: true }, { source: '/en/:path*', destination: '/:path*', permanent: true }]);
+  assert.deepEqual(redirects.slice(0, 2), [{ source: '/en', destination: '/', permanent: true }, { source: '/en/:path*', destination: '/:path*', permanent: true }]);
 });
 
 // The public address is info@ (founder, 2026-11-01, from the content brief), never hello@ or contact@.

@@ -19,3 +19,4 @@ DressYou is a fashion app. Your own photos make your twin, and you try on clothe
 - [Accueil](https://dressyouapp.com/fr)
 - [Legal notice](https://dressyouapp.com/legal), [Mentions légales](https://dressyouapp.com/fr/legal)
 - [Privacy](https://dressyouapp.com/privacy), [Confidentialité](https://dressyouapp.com/fr/privacy)
+- [Support](https://dressyouapp.com/support), [Assistance](https://dressyouapp.com/fr/support)
