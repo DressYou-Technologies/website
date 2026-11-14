@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { access, readdir, readFile } from 'node:fs/promises';
 import test from 'node:test';
-import { SITE } from '../src/data/site.ts';
+import { LINKS, SITE } from '../src/data/site.ts';
 import { COPY } from '../src/i18n/copy.ts';
 import { LANGS, localize } from '../src/i18n/lang.ts';
 
@@ -184,9 +184,7 @@ const text = (s) => {
   return out.replace(/\s+/g, ' ').trim();
 };
 
-test('a null store link opens a dialog instead of linking, in each language', async () => {
-  const { LINKS } = await import('../src/data/site.ts');
-  assert.equal(LINKS.appUrl, null);
+test('the app, and the extension while it has no store link, open a dialog instead of linking, in each language', async () => {
   assert.equal(LINKS.extensionUrl, null);
   for (const lang of LANGS) {
     for (const [label, kind] of [[COPY[lang].get.app, 'app'], [COPY[lang].get.extension, 'extension']]) {
@@ -202,18 +200,6 @@ test('a null store link opens a dialog instead of linking, in each language', as
 });
 
 const dialogOf = (lang, kind) => home[lang].match(new RegExp(`<dialog[^>]*id="get-${kind}"[^>]*>([\\s\\S]*?)</dialog>`))[1];
-
-test('without a store link the app dialog asks for an email to notify', () => {
-  for (const lang of LANGS) {
-    const dialog = dialogOf(lang, 'app'), t = COPY[lang].dialog;
-    assert.match(dialog, /<input[^>]*type="email"[^>]*name="email"[^>]*required/);
-    // The bot trap: out of reach for people and assistive tech, filled by bots.
-    assert.match(dialog, /<input[^>]*name="website"[^>]*tabindex="-1"[^>]*aria-hidden="true"/);
-    assert.ok(dialog.includes(`>${t.notify.submit}</button>`), `${lang} submit`);
-    assert.ok(dialog.includes(`href="${localize(lang, '/privacy')}"`), `${lang} privacy link`);
-    assert.ok(dialog.includes(`data-lang="${lang}"`));
-  }
-});
 
 test('the friends card asks with its button, offers every friend, and each round shows its looks, the friends asked and their pick', async () => {
   const { FRIENDS, FRIEND_ROUNDS } = await import('../src/data/site.ts');
@@ -309,18 +295,6 @@ test('a size card shows the sizes, the one that fits marked with a ruler and the
   }
 });
 
-test('the sign-up answer shows below the email field and its button, never inside them', () => {
-  for (const lang of LANGS) {
-    for (const form of home[lang].match(/<form class="notify[\s\S]*?<\/form>/g)) {
-      const row = form.match(/<div class="row"[^>]*>[\s\S]*?<\/div>/)?.[0] ?? '';
-      assert.match(row, /type="email"/, `${lang}: the field is in the row`);
-      assert.match(row, /type="submit"/, `${lang}: the button is in the row`);
-      assert.doesNotMatch(row, /class="status/, `${lang}: the answer is inside the row`);
-      assert.ok(form.indexOf('class="status') > form.indexOf(row), `${lang}: the answer comes after the row`);
-    }
-  }
-});
-
 test('without a store link the extension dialog shows its demo and no link out', () => {
   for (const lang of LANGS) {
     const dialog = dialogOf(lang, 'extension');
@@ -336,14 +310,13 @@ test('the footer lists only working links, the other language and the company de
     const links = [...footer.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)].map(([, href, label]) => [decode(text(label)), href]);
     const local = (link) => { const [page, hash] = link.split('#'); return localize(lang, page || '/') + (hash ? `#${hash}` : ''); };
     assert.deepEqual(links, [
-      [t.dialog.notify.privacy, localize(lang, '/privacy')],
+      [t.get.store, LINKS.appUrl],
       ...t.finale.columns.flatMap((column) => column.links.map(([label, link]) => [label, local(link)])),
       [t.lang.switchTo, localize(other, '/')],
       ['info@dressyouapp.com', 'mailto:info@dressyouapp.com'],
     ]);
     const words = decode(text(footer));
     for (const fact of [`© ${new Date().getFullYear()} DressYou Technologies`, '47 rue Vivienne, 75002 Paris']) assert.ok(words.includes(fact), `${lang}: ${fact}`);
-    assert.match(footer, /<form class="notify[^"]*"[^>]*data-lang="/, `${lang}: the footer asks for an email itself`);
     assert.doesNotMatch(footer, /<picture|<img(?![^>]*alt="DressYou")/, `${lang}: the footer shows no picture besides the logo`);
   }
 });

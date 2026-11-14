@@ -9,9 +9,10 @@ export interface Outfit { pieces: [ImageId, ImageId, ImageId, ImageId]; render: 
 // The name, tagline and descriptions are copy, per language (src/i18n/copy.ts).
 export const SITE = { url: 'https://dressyouapp.com' };
 
-// A null store link turns its buttons into the "coming soon." dialog.
-export const LINKS: { appUrl: string | null; extensionUrl: string | null; email: string } = {
-  appUrl: null,
+// A null store link turns its buttons into the "coming soon." dialog. The app's link is a placeholder until the App Store
+// record is public: tests/launch.test.mjs stays red until it is replaced.
+export const LINKS: { appUrl: string; extensionUrl: string | null; email: string } = {
+  appUrl: 'https://apps.apple.com/app/id0000000000',
   extensionUrl: null,
   email: 'info@dressyouapp.com',
 };

@@ -79,33 +79,6 @@ export function landOnHash() {
   if (target) scrollToSection(target, 'auto');
 }
 
-const NOTIFY_URL = '/api/notify';
-type Answer = 'ok' | 'email' | 'closed' | 'failed';
-
-// "Be notified": the page posts the address to its own function, which hands it to the email list.
-// `shownAt` is when the form came into view: its dialog's opening, or the page's start for the footer's.
-function notify(form: HTMLFormElement, shownAt: () => number) {
-  const email = one<HTMLInputElement>(form, 'input[name="email"]'), trap = one<HTMLInputElement>(form, 'input[name="website"]');
-  const button = one<HTMLButtonElement>(form, 'button[type="submit"]'), status = one(form, '.status');
-  // The page's language supplies the words for each answer, as data attributes on the form.
-  const say = (key: Answer) => { status.textContent = form.dataset[key] ?? ''; status.classList.toggle('error', key !== 'ok'); };
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    if (!email.checkValidity()) { say('email'); email.focus(); return; }
-    button.disabled = true;
-    try {
-      const res = await fetch(NOTIFY_URL, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email: email.value, website: trap.value, elapsed: Math.round(performance.now() - shownAt()), lang: form.dataset.lang }) });
-      const { error } = (await res.json().catch(() => ({}))) as { error?: string };
-      if (res.ok) { say('ok'); form.classList.add('done'); return; }
-      say(error === 'email' || error === 'closed' ? error : 'failed');
-    } catch {
-      say('failed');
-    } finally {
-      button.disabled = false;
-    }
-  });
-}
-
 // The extension demo: tap DressYou in the toolbar, the panel slides in, the twin wears the piece, the size follows.
 function demo(dialog: HTMLDialogElement) {
   const box = dialog.querySelector<HTMLElement>('.xdemo');
@@ -126,14 +99,11 @@ function demo(dialog: HTMLDialogElement) {
 }
 
 function dialogs() {
-  let openedAt = 0;
-  document.querySelectorAll<HTMLFormElement>('form.notify').forEach((form) => notify(form, () => (form.closest('dialog') ? openedAt : 0)));
   document.querySelectorAll<HTMLButtonElement>('[data-get]').forEach((button) => button.addEventListener('click', () => {
     const dialog = document.getElementById(`get-${button.dataset.get}`);
     if (!(dialog instanceof HTMLDialogElement)) return;
     button.closest<HTMLElement>('[popover]')?.hidePopover();
     dialog.showModal();
-    openedAt = performance.now();
     demo(dialog);
     dialog.addEventListener('close', () => button.focus({ preventScroll: true }), { once: true });
     if (!motion()) return;

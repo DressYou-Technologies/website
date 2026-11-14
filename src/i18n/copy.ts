@@ -19,7 +19,7 @@ const en = {
     locale: 'en_GB',
     tagline: "Try it on before it's yours.",
   },
-  get: { app: 'Get the app', extension: 'Get the extension', qr: 'QR code to download the app' },
+  get: { app: 'Get the app', extension: 'Get the extension', qr: 'QR code to download the app', store: 'Download on the App Store' },
   lang: { heading: 'Language', switchTo: 'Français', label: 'Lire en français' },
   menu: { label: 'Menu' },
   // A page in the works: the same words on each (founder, 2026-11-01), then the address and doc.home.
@@ -116,8 +116,6 @@ const en = {
   },
   dialog: {
     close: 'Close',
-    notify: { title: 'Be the first to know.', lede: 'One email when the app is out.', email: 'Email', placeholder: 'you@example.com', submit: 'Notify me', fine: 'One email to confirm. No spam. Unsubscribe anytime.', privacy: 'Privacy' },
-    says: { ok: 'Check your inbox to confirm.', email: 'This email looks invalid.', closed: 'Sign-ups open soon.', failed: 'Something went wrong. Try again.' },
     appReady: 'Get the app.',
     extension: { title: 'Try on from any shop.', lede: 'DressYou on every product page in Chrome.', bag: 'Add to bag', add: 'Add to Chrome', soon: 'Coming soon to Chrome' },
   },
@@ -145,7 +143,7 @@ const fr: Copy = {
     locale: 'fr_FR',
     tagline: "Essayez-le avant qu'il soit à vous.",
   },
-  get: { app: "Télécharger l'app", extension: "Installer l'extension", qr: "QR code pour télécharger l'app" },
+  get: { app: "Télécharger l'app", extension: "Installer l'extension", qr: "QR code pour télécharger l'app", store: 'Télécharger dans l’App Store' },
   lang: { heading: 'Langue', switchTo: 'English', label: 'Read in English' },
   menu: { label: 'Menu' },
   soon: { tag: 'En préparation', text: 'Cette page arrive bientôt. Écrivez à' },
@@ -234,8 +232,6 @@ const fr: Copy = {
   },
   dialog: {
     close: 'Fermer',
-    notify: { title: 'Ne manquez pas la sortie.', lede: 'Un e-mail à la sortie de l’app.', email: 'E-mail', placeholder: 'vous@exemple.fr', submit: 'Me prévenir', fine: 'Un e-mail de confirmation. Pas de spam. Désinscription à tout moment.', privacy: 'Confidentialité' },
-    says: { ok: 'Confirmez depuis votre boîte mail.', email: 'Adresse e-mail invalide.', closed: 'Les inscriptions ouvrent bientôt.', failed: 'Une erreur est survenue. Réessayez.' },
     appReady: 'Télécharger l’app.',
     extension: { title: 'Essayez depuis toute boutique.', lede: 'DressYou sur chaque page produit dans Chrome.', bag: 'Ajouter au panier', add: 'Ajouter à Chrome', soon: 'Bientôt sur Chrome' },
   },
