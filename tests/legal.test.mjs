@@ -11,7 +11,7 @@ const fileOf = (lang, path) => `${localize(lang, path).slice(1)}.html`;
 const decode = (s) => s.replaceAll('&#39;', "'").replaceAll('&quot;', '"').replaceAll('&amp;', '&');
 // What a person reads: the markup without its scripts, styles and tags. Only markup whitespace collapses, so French
 // narrow no-break spaces stay what they are.
-const shown = (html) => decode(html.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/g, ' ').replace(/<[^>]+>/g, ' ').replace(/[ \t\r\n]+/g, ' '));
+const shown = (html) => decode(html.replace(/<script\b[\s\S]*?<\/script[^>]*>|<style\b[\s\S]*?<\/style[^>]*>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/[ \t\r\n]+/g, ' '));
 
 test('the support page gives the support address and the in-app report, in each language', async () => {
   for (const lang of LANGS) {
