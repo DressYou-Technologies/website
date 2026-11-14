@@ -37,6 +37,13 @@ test('the draft privacy notice and terms redirect to the published ones, in each
   }
 });
 
+// Reports go to support@dressyouapp.com or an ask page's "Report this page" line (DressYou #782, #784): no page links the
+// DSA drafts, which the site does not publish.
+test('no built page links a DSA draft', async () => {
+  const pages = (await readdir(DIST, { recursive: true })).filter((f) => f.endsWith('.html'));
+  for (const page of pages) assert.doesNotMatch(await read(page), /href="[^"]*dsa-[a-z]+-draft/, page);
+});
+
 // Counsel's and the founder's notes in the drafts are internal: no page may show one.
 test('no built page shows a [[…]] note', async () => {
   const pages = (await readdir(DIST, { recursive: true })).filter((f) => f.endsWith('.html'));

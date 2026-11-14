@@ -1,5 +1,5 @@
 ---
-source: DressYou docs/legal/terms-fr-draft.md at 7d26b2bd3
+source: DressYou docs/legal/terms-fr-draft.md at 24398d0a4
 updated: 2026-11-14
 ---
 
@@ -17,7 +17,7 @@ DressYou est réservé aux personnes de 18 ans ou plus, dans les pays où il est
 
 ## 3. Votre compte
 
-Vous créez un compte avant la capture du corps et votre premier essayage. Vous vous connectez avec votre adresse e-mail et un mot de passe, ou avec « Se connecter avec Apple », et vous pouvez ajouter des clés d'accès et la vérification en deux étapes. N'utilisez que votre propre compte et protégez ses moyens de connexion. Dans l'application, vous pouvez voir où votre compte est connecté, déconnecter un appareil ou un navigateur associé, et vous déconnecter partout ailleurs. Si vous pensez que quelqu'un d'autre a utilisé votre compte, prévenez DressYou par le point de contact destiné aux destinataires du service, décrit dans les textes DSA.
+Vous créez un compte avant la capture du corps et votre premier essayage. Vous vous connectez avec votre adresse e-mail et un mot de passe, ou avec « Se connecter avec Apple », et vous pouvez ajouter des clés d'accès et la vérification en deux étapes. N'utilisez que votre propre compte et protégez ses moyens de connexion. Dans l'application, vous pouvez voir où votre compte est connecté, déconnecter un appareil ou un navigateur associé, et vous déconnecter partout ailleurs. Si vous pensez que quelqu'un d'autre a utilisé votre compte, prévenez DressYou en écrivant à support@dressyouapp.com.
 
 ## 4. Capture du corps et votre jumeau
 
@@ -73,7 +73,7 @@ Une publication est une vraie photo de vous portant des vêtements qui vous appa
 
 Toute autre personne visible sur la photo doit avoir accepté d'apparaître ; vous le déclarez au moment de publier. Une publication ne doit montrer aucune personne de moins de 18 ans, et une publication qui en montre une est retirée dès qu'elle est signalée.
 
-Une publication montrant un maillot de bain ou des sous-vêtements est mise en attente jusqu'à son examen par une personne chez DressYou. Modifié le 9 novembre 2026 (décision de la direction) : un maillot de bain se publie comme toute autre publication. Une vérification automatique par photo publiée met en attente une photo qu'elle lit comme montrant des sous-vêtements, avec une probabilité de 0,70 ou plus, jusqu'à son examen par une personne chez DressYou.
+Une vérification automatique par photo publiée met en attente une photo qu'elle lit comme montrant des sous-vêtements, avec une probabilité de 0,70 ou plus, jusqu'à son examen par une personne chez DressYou. Un maillot de bain se publie comme toute autre publication.
 
 Vous pouvez ajouter une légende, des hashtags et des liens vers les vêtements que vous portez. Une publication sans vêtement lié est autorisée et apparaît moins souvent. Certaines publications proviennent de DressYou ou de créateurs et créatrices invités par DressYou avant le lancement ; elles sont signalées comme telles.
 
@@ -125,9 +125,9 @@ Seuls les essayages authentiques comptent. DressYou peut refuser ou retirer des 
 
 **Mesures.** Lorsqu'un élément ou un compte enfreint les présentes conditions ou la loi, DressYou peut retirer l'élément, maintenir non publiée une publication mise en attente, suspendre ou clôturer le compte, ou retenir des récompenses.
 
-**Exposé des motifs et recours.** DressYou vous informe de chaque mesure prise contre votre contenu ou votre compte, avec ses motifs, et vous pouvez la contester une fois ; une personne examine votre recours dans un délai de 7 jours. Les textes DSA décrivent ces exposés des motifs et le recours.
+**Exposé des motifs et recours.** DressYou vous informe de chaque mesure prise contre votre contenu ou votre compte, avec ses motifs, et vous pouvez la contester une fois ; une personne examine votre recours dans un délai de 7 jours. Pour contester, écrivez à support@dressyouapp.com.
 
-**Signalements de toute personne.** Toute personne, titulaire ou non d'un compte, peut signaler un contenu au moyen du formulaire de notification décrit dans les textes DSA. DressYou informe les autorités des soupçons d'infractions menaçant la vie ou la sécurité d'une personne, comme la loi l'exige.
+**Signalements de toute personne.** Avec un compte, vous signalez un contenu dans l'application. Une personne sans l'application signale une page de demande d'avis avec son lien « Signaler cette page », qui ouvre un e-mail à support@dressyouapp.com, ou écrit directement à support@dressyouapp.com. DressYou informe les autorités des soupçons d'infractions menaçant la vie ou la sécurité d'une personne, comme la loi l'exige.
 
 **Ordre du fil.** Dans la première version, l'onglet « tout le monde » classe les publications selon une règle simple et fixe, à partir des goûts et de l'engagement, et vous montre plus bas une publication dont le vêtement n'existe dans aucune taille qui vous convienne. La commission n'influence jamais l'ordre, et DressYou ne classe pas les publications en comparant le corps d'une personne à celui d'une autre.
 
@@ -168,4 +168,4 @@ DressYou fournit le service avec soin, sans pouvoir garantir qu'il sera toujours
 
 ## 17. Réclamations, médiation et droit applicable
 
-Adressez toute réclamation à DressYou par le point de contact destiné aux destinataires du service, décrit dans les textes DSA. Si votre réclamation écrite n'aboutit pas, vous pouvez saisir gratuitement un médiateur de la consommation, que DressYou désigne avant l'ouverture de toute offre payante.
+Envoyez toute réclamation à DressYou à support@dressyouapp.com. Si votre réclamation écrite n'aboutit pas, vous pouvez saisir gratuitement un médiateur de la consommation, que DressYou désigne avant l'ouverture de toute offre payante.

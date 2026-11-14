@@ -1,5 +1,5 @@
 ---
-source: DressYou docs/legal/terms-en-draft.md at 7d26b2bd3
+source: DressYou docs/legal/terms-en-draft.md at 24398d0a4
 updated: 2026-11-14
 ---
 
@@ -17,7 +17,7 @@ DressYou is for people aged 18 or over, in the countries where it is offered: Fr
 
 ## 3. Your account
 
-You create an account before body capture and your first try-on. You sign in with your email address and a password, or with Sign in with Apple, and you can add passkeys and two-step verification. Use only your own account and keep its sign-in methods secure. In the app you can see where you are signed in, sign out a device or a linked browser, and sign out everywhere else. If you think someone else has used your account, tell DressYou through the user contact point in the DSA texts.
+You create an account before body capture and your first try-on. You sign in with your email address and a password, or with Sign in with Apple, and you can add passkeys and two-step verification. Use only your own account and keep its sign-in methods secure. In the app you can see where you are signed in, sign out a device or a linked browser, and sign out everywhere else. If you think someone else has used your account, tell DressYou at support@dressyouapp.com.
 
 ## 4. Body capture and your twin
 
@@ -73,7 +73,7 @@ A post is a real photograph of you wearing clothes you own. Your face need not a
 
 Anyone else in the photograph must have agreed to appear; you declare it when you post. A post must not show anyone under 18, and one that does is removed when reported.
 
-A post showing swimwear or underwear is held until a person at DressYou has reviewed it. Amended on 9 November 2026 (founder decision): swimwear publishes like any post. One automatic check per posted photograph holds a photograph it reads as showing underwear, at a probability of 0.70 or more, until a person at DressYou has reviewed it.
+One automatic check per posted photograph holds a photograph it reads as showing underwear, at a probability of 0.70 or more, until a person at DressYou has reviewed it. Swimwear publishes like any post.
 
 You can add a caption, hashtags and links to the garments you wear. A post without a linked garment is allowed and is shown less often. Some posts come from DressYou itself, or from creators DressYou invited before launch; they are marked as such.
 
@@ -125,9 +125,9 @@ Only genuine try-ons count. DressYou may refuse or withdraw renders earned throu
 
 **Measures.** When an item or an account breaks these terms or the law, DressYou can remove the item, keep a held post unpublished, suspend or close the account, or withhold rewards.
 
-**Statement of reasons and appeal.** DressYou tells you each measure it takes against your content or account, with its reasons, and you can appeal it once; a person reviews the appeal within 7 days. The DSA texts set out these statements and the appeal.
+**Statement of reasons and appeal.** DressYou tells you each measure it takes against your content or account, with its reasons, and you can appeal it once; a person reviews the appeal within 7 days. To appeal, write to support@dressyouapp.com.
 
-**Reports from anyone.** Anyone, with or without an account, can report content through the notice form in the DSA texts. DressYou informs the authorities of suspected offences that threaten someone's life or safety, as the law requires.
+**Reports from anyone.** With an account, you report content in the app. Someone without the app reports an ask page with its "Report this page" link, which opens an email to support@dressyouapp.com, or writes to support@dressyouapp.com directly. DressYou informs the authorities of suspected offences that threaten someone's life or safety, as the law requires.
 
 **How the feed is ordered.** In the first release the everyone tab orders posts by a small fixed rule from taste and engagement, and shows you lower a post whose garment comes in no size that fits you. Commission never affects the order, and DressYou does not rank by comparing one person's body with another's.
 
@@ -168,4 +168,4 @@ DressYou provides the service with care but cannot promise that it will always b
 
 ## 17. Complaints, mediation and applicable law
 
-Send a complaint to DressYou through the user contact point in the DSA texts. If your written complaint does not resolve the matter, you can refer it free of charge to a consumer mediator, which DressYou names before any paid service opens.
+Send a complaint to DressYou at support@dressyouapp.com. If your written complaint does not resolve the matter, you can refer it free of charge to a consumer mediator, which DressYou names before any paid service opens.

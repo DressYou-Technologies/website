@@ -1,5 +1,5 @@
 ---
-source: DressYou docs/legal/privacy-en-draft.md at 7d26b2bd3
+source: DressYou docs/legal/privacy-en-draft.md at 24398d0a4
 updated: 2026-11-14
 ---
 
@@ -85,7 +85,7 @@ A friend votes without an account. DressYou keeps the vote, an optional one-line
 
 ### 2.10 Purchases, renders and shop links
 
-The paid tier and render purchases are paid to Apple or Google through their stores; DressYou never receives your card details. DressYou receives the store's record of each transaction and its notifications, and checks them on its own server to confirm what you bought. It also keeps your render balances: the free allowance, earned renders and purchased renders.
+Planned: no purchase is offered yet. Once the paid tier and render purchases open, they are paid to Apple or Google through their stores; DressYou never receives your card details. DressYou receives the store's record of each transaction and its notifications, and checks them on its own server to confirm what you bought. It also keeps your render balances: the free allowance, earned renders and purchased renders.
 
 A shop link carries a new random reference on each tap, which never names your account. The retailer and its affiliate network record the visit under their own privacy notices, and the network later reports whether a purchase was approved, declined or amended. DressYou keeps a purchase record: the size bought, the dates, the size answer shown, your fit answer, and whether the garment was kept or returned, with the basis for it. You can delete a purchase record, and its influence leaves every value derived from it.
 
@@ -181,7 +181,7 @@ DressYou stores your data in Stockholm, Sweden. OpenAI processes the images of s
 | Known-material match records, with the matched photograph and its post | 12 months from the match, through the account's deletion, unless an authority's order extends the hold; then erased |
 | Reports, notices, decisions and appeals | A decision that was dismissed or reversed, with its reports and appeals, six months after the last decision. An upheld decision is kept while its measure is in force, so while the account stays hidden, a posting suspension runs or the removed content is still there, then six months after the measure ends. Nothing goes while an appeal is open or a legal hold applies, including preservation for child sexual abuse material. When a report goes, only a note that you don't see that post or line remains, until the content or your account is deleted. It is in your export, and "erase all my data" erases it. When a reporter's account is deleted, the report loses its link to that account and the decision remains, as it does when the reported post is deleted. A post under a review concerning a child's safety is kept until the review is decided, through its author's deletion of it, and its photograph through the account's deletion (section 2.8), then erased; storage keeps an earlier copy of the photograph for recovery: it becomes due for deletion at the first midnight UTC at least 7 days later, and is then deleted automatically, which can take some further time |
 | Records of image-provider calls | Kept; on account deletion the link to the account is removed |
-| Records of what you bought from DressYou: the paid tier and renders | |
+| Records of what you bought from DressYou: the paid tier and renders | Planned: no purchase is offered yet. |
 | Support messages | 12 months after the last message |
 | Launch email list (section 2.13) | Until the launch email is sent, or until you unsubscribe |
 

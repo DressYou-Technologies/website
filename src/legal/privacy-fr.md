@@ -1,5 +1,5 @@
 ---
-source: DressYou docs/legal/privacy-fr-draft.md at 7d26b2bd3
+source: DressYou docs/legal/privacy-fr-draft.md at 24398d0a4
 updated: 2026-11-14
 ---
 
@@ -85,7 +85,7 @@ Les personnes sollicitées votent sans compte. DressYou conserve le vote, un com
 
 ### 2.10 Achats, rendus et liens vers les boutiques
 
-L'offre payante et les achats de rendus sont payés à Apple ou à Google par leurs boutiques d'applications ; DressYou ne reçoit jamais vos coordonnées bancaires. DressYou reçoit de la boutique l'enregistrement de chaque transaction et ses notifications, et les vérifie sur son propre serveur pour confirmer votre achat. DressYou conserve aussi vos soldes de rendus : l'allocation gratuite, les rendus gagnés et les rendus achetés.
+Prévu : aucun achat n'est encore proposé. Une fois l'offre payante et les achats de rendus ouverts, ils sont payés à Apple ou à Google par leurs boutiques d'applications ; DressYou ne reçoit jamais vos coordonnées bancaires. DressYou reçoit de la boutique l'enregistrement de chaque transaction et ses notifications, et les vérifie sur son propre serveur pour confirmer votre achat. DressYou conserve aussi vos soldes de rendus : l'allocation gratuite, les rendus gagnés et les rendus achetés.
 
 Un lien vers une boutique porte, à chaque appui, une nouvelle référence aléatoire qui ne désigne jamais votre compte. Le commerçant et son réseau d'affiliation enregistrent la visite selon leurs propres politiques de confidentialité, et le réseau indique ensuite si un achat a été validé, refusé ou modifié. DressYou conserve un relevé d'achat : la taille achetée, les dates, la réponse de taille affichée, votre réponse sur l'ajustement, et si le vêtement a été gardé ou retourné, avec ce qui l'établit. Vous pouvez supprimer un relevé d'achat ; son influence disparaît alors de toutes les valeurs qui en découlent.
 
@@ -181,7 +181,7 @@ DressYou conserve vos données à Stockholm, en Suède. OpenAI traite les images
 | Relevés de correspondance avec un contenu connu, avec la photo concernée et sa publication | 12 mois à compter de la correspondance, malgré la suppression du compte, sauf si une décision d'une autorité prolonge la conservation ; puis effacés |
 | Signalements, notifications, décisions et recours | Une décision écartée ou annulée, avec ses signalements et ses recours, six mois après la dernière décision. Une décision maintenue est conservée tant que sa mesure s'applique, c'est-à-dire tant que le compte reste masqué, qu'une suspension des publications court ou que le contenu retiré existe encore, puis six mois après la fin de la mesure. Rien n'est supprimé tant qu'un recours est ouvert ou qu'une conservation légale s'applique, y compris celle liée aux contenus pédocriminels. Lorsqu'un signalement disparaît, il ne reste qu'une note indiquant que vous ne voyez pas cette publication ou cette ligne, jusqu'à la suppression du contenu ou de votre compte. Elle figure dans votre export, et « effacer toutes mes données » l'efface. Lorsque le compte de la personne à l'origine d'un signalement est supprimé, le signalement perd son lien avec ce compte et la décision demeure, comme lorsque la publication signalée est supprimée. Une publication faisant l'objet d'un examen concernant la sécurité d'un enfant est conservée jusqu'à ce que l'examen soit tranché, malgré sa suppression par son auteur, et sa photo malgré la suppression du compte (section 2.8), puis effacée ; le stockage conserve une copie antérieure de la photo à des fins de récupération : elle devient éligible à la suppression au premier minuit UTC survenant au moins 7 jours plus tard, puis est supprimée automatiquement, ce qui peut prendre un délai supplémentaire |
 | Relevés des appels au prestataire d'images | Conservés ; à la suppression du compte, le lien avec le compte est retiré |
-| Relevés de vos achats auprès de DressYou : offre payante et rendus | |
+| Relevés de vos achats auprès de DressYou : offre payante et rendus | Prévu : aucun achat n'est encore proposé. |
 | Messages à l'assistance | 12 mois après le dernier message |
 | Liste de l'e-mail de lancement (section 2.13) | Jusqu'à l'envoi de l'e-mail de lancement, ou jusqu'à votre désinscription |
 
