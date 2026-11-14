@@ -1,5 +1,6 @@
 ---
 import Doc from '../layouts/Doc.astro';
+import BrowserLang from './BrowserLang.astro';
 import { LINKS } from '../data/site';
 import { COPY } from '../i18n/copy';
 import type { Lang } from '../i18n/lang';
@@ -12,9 +13,5 @@ const t = COPY[lang].support;
 <Doc lang={lang} title={t.title} path="/support">
   <p>{t.help} <a href={`mailto:${LINKS.support}`}>{LINKS.support}</a>.</p>
   <p>{t.report}</p>
+  <BrowserLang />
 </Doc>
-
-<script>
-  import { followBrowserLang } from '../scripts/lang';
-  followBrowserLang();
-</script>

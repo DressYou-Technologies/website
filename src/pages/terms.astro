@@ -1,5 +1,11 @@
 ---
 import Doc from '../layouts/Doc.astro';
-import Soon from '../components/Soon.astro';
+import BrowserLang from '../components/BrowserLang.astro';
+import { Content } from '../legal/terms-en.md';
+
+// Published by scripts/legal.mjs from the DressYou repository's draft; its frontmatter names the commit.
 ---
-<Doc lang="en" title="Terms" path="/terms" noindex><Soon lang="en" /></Doc>
+<Doc lang="en" title="Terms" path="/terms">
+  <Content />
+  <BrowserLang />
+</Doc>

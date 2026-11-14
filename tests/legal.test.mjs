@@ -3,6 +3,7 @@ import { readdir, readFile } from 'node:fs/promises';
 import test from 'node:test';
 import { COPY } from '../src/i18n/copy.ts';
 import { LANGS, localize } from '../src/i18n/lang.ts';
+import { publish } from '../scripts/legal.mjs';
 
 // Runs over the built site: `npm run build` first.
 const DIST = new URL('../dist/', import.meta.url);
@@ -40,4 +41,51 @@ test('the draft privacy notice and terms redirect to the published ones, in each
 test('no built page shows a [[…]] note', async () => {
   const pages = (await readdir(DIST, { recursive: true })).filter((f) => f.endsWith('.html'));
   for (const page of pages) assert.ok(!shown(await read(page)).includes('[['), page);
+});
+
+// scripts/legal.mjs turns the DressYou repository's drafts into the published pages' text.
+const DRAFT = `# DressYou — draft privacy notice
+
+**Draft for counsel review: not legal advice.** See the [counsel brief](counsel-brief.md).
+
+## 1. Who is responsible
+
+DressYou has no officer [[COUNSEL: dpo — Is one required?]]. The [terms](terms-en-draft.md#3-your-account) apply.
+
+[[COUNSEL: whole-paragraph — A note on its own line.]]
+
+### 2.3 AI: OpenAI and TypeSafe
+
+The [DSA texts](dsa-en-draft.md) and the [CNIL](https://www.cnil.fr/fr/plaintes).
+
+| Data | Kept |
+|---|---|
+| Purchases | [[COUNSEL: retention — How long?]] |
+`;
+
+test('publishing a draft drops its title and banner and every note, and keeps the text', () => {
+  const page = publish(DRAFT);
+  assert.ok(page.startsWith('## 1. Who is responsible\n'), page.slice(0, 60));
+  assert.ok(page.includes('DressYou has no officer. The'), 'the note left a gap');
+  assert.doesNotMatch(page, /\[\[|\]\]|counsel|Draft|\n\n\n/i);
+  assert.ok(page.includes('| Purchases | |'), 'a table row lost its shape');
+});
+
+test('links to the other drafts land on the site, links to other repository files keep only their words', () => {
+  const page = publish(DRAFT);
+  assert.ok(page.includes('The [terms](/terms#3-your-account) apply.'));
+  assert.ok(page.includes('The DSA texts and the [CNIL](https://www.cnil.fr/fr/plaintes).'));
+  assert.doesNotMatch(page, /\.md\b/);
+  for (const [file, path] of [['privacy-fr-draft.md', '/fr/privacy'], ['terms-fr-draft.md', '/fr/terms'], ['legal-notice-en-draft.md', '/legal'], ['legal-notice-fr-draft.md', '/fr/legal']]) {
+    assert.ok(publish(`## 1. A\n\nSee [it](${file}).\n`).includes(`See [it](${path}).`), file);
+  }
+});
+
+// The app's onboarding links the privacy notice's AI section as #ai.
+test('the AI section keeps the anchor the app links to', () => {
+  assert.ok(publish(DRAFT).includes('<h3 id="ai">2.3 AI: OpenAI and TypeSafe</h3>'));
+});
+
+test('a founder note stops publication', () => {
+  assert.throws(() => publish('## 1. A\n\nText [[FOUNDER: x — Decide.]].\n'), /FOUNDER/);
 });
