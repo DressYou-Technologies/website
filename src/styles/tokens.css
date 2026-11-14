@@ -8,6 +8,7 @@
   --white: #fff;
   --cutout-bg: linear-gradient(180deg, #f7f6f3, #e6e4df);   /* the studio grey, lit from above */
   --cutout-pad: 10%;
+  --langbar-height: 44px;                                      /* the language bar: one 44px touch row (Apple HIG) */
   --section-pad: clamp(40px, 7svh, 96px);                      /* room above and below a section, so it reads in one screen */
 }
 

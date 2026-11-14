@@ -1,0 +1,31 @@
+---
+import { COPY } from '../i18n/copy';
+import { LANGS, localize, type Lang } from '../i18n/lang';
+
+// One line at the top offering the page in the browser's language (founder, 2026-11-14), never a redirect. Hidden until
+// src/scripts/offer.ts shows it, so without scripts there is no bar and the page is the same.
+interface Props { lang: Lang; path: string }
+const { lang, path } = Astro.props;
+---
+{LANGS.filter((other) => other !== lang).map((other) => (
+  <div class="langbar" lang={other} hidden>
+    <a href={localize(other, path)} hreflang={other}>{COPY[lang].lang.label}</a>
+    <button type="button" aria-label={COPY[other].dialog.close}><svg viewBox="0 0 24 24" aria-hidden="true" width="16" height="16"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
+  </div>
+))}
+
+<script>
+  import { offerLang } from '../scripts/offer';
+  offerLang();
+</script>
+
+<style>
+  .langbar { position: fixed; z-index: 11; top: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: center; gap: 8px; height: var(--langbar-height); padding: 0 8px 0 16px; background: #0a0a0a; color: #fff; font-size: .9375rem; }
+  .langbar[hidden] { display: none; }
+  .langbar a { color: inherit; font-weight: 600; text-underline-offset: 3px; }
+  .langbar button { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; background: none; color: inherit; cursor: pointer; }
+  .langbar svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+  .langbar a:focus-visible, .langbar button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+  /* The floating header moves down by the bar's height while the bar shows. */
+  :global(html.langbar-shown .top) { translate: 0 var(--langbar-height); }
+</style>
