@@ -1,11 +1,5 @@
 ---
-import Doc from '../layouts/Doc.astro';
-import BrowserLang from '../components/BrowserLang.astro';
-import { Content } from '../legal/privacy-en.md';
-
-// Published by scripts/legal.mjs from the DressYou repository's draft; its frontmatter names the commit.
+import LegalPage from '../components/LegalPage.astro';
+import { Content, frontmatter } from '../legal/privacy-en.md';
 ---
-<Doc lang="en" title="Privacy" path="/privacy">
-  <Content />
-  <BrowserLang />
-</Doc>
+<LegalPage lang="en" title="Privacy" path="/privacy" Content={Content} frontmatter={frontmatter} />

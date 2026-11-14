@@ -1,5 +1,6 @@
 ---
 source: DressYou docs/legal/privacy-en-draft.md at 7d26b2bd3
+updated: 2026-11-14
 ---
 
 ## 1. Who is responsible

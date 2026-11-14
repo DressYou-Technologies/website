@@ -89,3 +89,16 @@ test('the AI section keeps the anchor the app links to', () => {
 test('a founder note stops publication', () => {
   assert.throws(() => publish('## 1. A\n\nText [[FOUNDER: x — Decide.]].\n'), /FOUNDER/);
 });
+
+// "Last updated" is derived, never typed: scripts/legal.mjs records the date of the last DressYou commit that changed each
+// draft (git log -1 --format=%cs), and each page shows its own draft's date in its own language.
+test("each published text shows its own draft's commit date as its last update", async () => {
+  const LONG = { en: 'en-GB', fr: 'fr-FR' }, LABEL = { en: 'Last updated', fr: 'Mis à jour le' };
+  for (const name of ['privacy', 'terms']) for (const lang of LANGS) {
+    const source = await readFile(new URL(`../src/legal/${name}-${lang}.md`, import.meta.url), 'utf8');
+    const date = source.match(/^updated: (\d{4}-\d{2}-\d{2})$/m)?.[1];
+    assert.ok(date && source.match(/^source: DressYou docs\/legal\/[a-z-]+-draft\.md at [0-9a-f]{7,40}$/m), `${name}-${lang}.md names no source or date`);
+    const day = new Intl.DateTimeFormat(LONG[lang], { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(date));
+    assert.ok(shown(await read(fileOf(lang, `/${name}`))).includes(`${LABEL[lang]} ${day}`), `${lang} /${name}: not ${day}`);
+  }
+});

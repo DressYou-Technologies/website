@@ -1,8 +1,9 @@
 // Publishes the privacy notice and the terms from the DressYou repository's drafts.
-// node scripts/legal.mjs <DressYou docs/legal directory> <DressYou commit>
+// node scripts/legal.mjs <DressYou repository> <DressYou commit>
 // The page text is the draft's from its first section on: the title and the review banner go, and so does every [[…]]
 // note, which is for counsel and the founder, never for the reader. A FOUNDER note stops publication.
-import { readFileSync, writeFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+import { writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 // The drafts link each other by file name; on the site each is a page.
@@ -32,10 +33,14 @@ export function publish(draft) {
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const [, , dir, commit] = process.argv;
-  if (!dir || !commit) throw new Error('usage: node scripts/legal.mjs <DressYou docs/legal directory> <DressYou commit>');
+  const [, , repo, commit] = process.argv;
+  if (!repo || !commit) throw new Error('usage: node scripts/legal.mjs <DressYou repository> <DressYou commit>');
+  const git = (...args) => execFileSync('git', ['-C', repo, ...args], { encoding: 'utf8' });
   for (const name of DOCUMENTS) {
-    const page = publish(readFileSync(`${dir}/${name}-draft.md`, 'utf8'));
-    writeFileSync(new URL(`../src/legal/${name}.md`, import.meta.url), `---\nsource: DressYou docs/legal/${name}-draft.md at ${commit}\n---\n\n${page}`);
+    const draft = `docs/legal/${name}-draft.md`;
+    const page = publish(git('show', `${commit}:${draft}`));
+    // The page's "last updated": the day of the last commit that changed its draft, never a date typed by hand.
+    const updated = git('log', '-1', '--format=%cs', commit, '--', draft).trim();
+    writeFileSync(new URL(`../src/legal/${name}.md`, import.meta.url), `---\nsource: DressYou ${draft} at ${commit}\nupdated: ${updated}\n---\n\n${page}`);
   }
 }

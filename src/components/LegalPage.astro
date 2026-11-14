@@ -1,0 +1,19 @@
+---
+import type { MarkdownInstance } from 'astro';
+import Doc from '../layouts/Doc.astro';
+import BrowserLang from './BrowserLang.astro';
+import { COPY } from '../i18n/copy';
+import type { Lang } from '../i18n/lang';
+
+// A text published by scripts/legal.mjs. Its date is the day of the last commit that changed its draft, in the page's language.
+type Text = MarkdownInstance<Record<string, unknown>>;
+interface Props { lang: Lang; title: string; path: string; Content: Text['Content']; frontmatter: Text['frontmatter'] }
+const { lang, title, path, Content, frontmatter } = Astro.props;
+if (typeof frontmatter.updated !== 'string') throw new Error(`${path}: its text names no date, rebuild it with scripts/legal.mjs`);
+const updated = new Intl.DateTimeFormat(COPY[lang].meta.locale.replace('_', '-'), { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })
+  .format(new Date(frontmatter.updated));
+---
+<Doc lang={lang} title={title} path={path} updated={updated}>
+  <Content />
+  <BrowserLang />
+</Doc>
