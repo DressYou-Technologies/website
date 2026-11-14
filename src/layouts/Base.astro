@@ -3,6 +3,7 @@ import '../styles/tokens.css';
 import '../styles/base.css';
 import { LINKS, SITE } from '../data/site';
 import { COPY } from '../i18n/copy';
+import LangBar from '../components/LangBar.astro';
 import { LANGS, localize, type Lang } from '../i18n/lang';
 
 // `path` is language-neutral ("/", "/legal"): the page exists at that path in English and under /fr in French.
@@ -78,6 +79,7 @@ const graph = {
     <script type="application/ld+json" set:html={JSON.stringify(graph)} />
   </head>
   <body>
+    <LangBar lang={lang} path={path} />
     <slot />
   </body>
 </html>
