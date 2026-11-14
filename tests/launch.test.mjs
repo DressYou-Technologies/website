@@ -45,6 +45,9 @@ test('the launch email says the app is out in both languages, links the App Stor
   assert.deepEqual([...new Set(links)].sort(), [LINKS.appUrl, 'https://dressyouapp.com'].sort());
   assert.equal(links.filter((href) => href === LINKS.appUrl).length, 2, 'one App Store link per language');
   for (const remote of [/<img\b/i, /<link\b/i, /<script\b/i, /url\(/i, /\{\{/]) assert.doesNotMatch(body, remote, String(remote));
-  const words = decode(body.replace(/<style[\s\S]*?<\/style>/gi, ' ').replace(/<[^>]+>/g, ' '));
+  // Tags out, repeated until none is left, as tests/page.test.mjs reads text.
+  let words = body, previous;
+  do { previous = words; words = words.replace(/<[^>]*>/g, ' '); } while (words !== previous);
+  words = decode(words);
   for (const banned of [';', '—', 'unsubscribe', 'désinscri']) assert.ok(!words.toLowerCase().includes(banned), banned);
 });
