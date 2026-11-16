@@ -55,7 +55,7 @@ const words = (s) => decode(s.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim
 // The content brief's wording, word for word (founder, 2026-11-01). French is drafted from it and pinned by its shape.
 test('the English home page says the wording the brief validated, and none of the longer lines it replaced', () => {
   const page = words(home.en);
-  for (const line of ["Try it on before it's yours.", 'Your Digital Twin. Your style. Your AI stylist.', 'More than virtual try-on.',
+  for (const line of ['Try it on before it’s yours.', 'Your Digital Twin. Your style. Your AI stylist.', 'More than virtual try-on.',
     'Your wardrobe. More looks.', 'Add pieces once. Mix and match them on your Digital Twin.',
     'Looks that match your style.', 'Discover pieces worn by people who share your taste.',
     'Get a second opinion.', 'Share a look. See what your friends think.', 'Ask your friends']) assert.ok(page.includes(line), line);
@@ -104,6 +104,8 @@ test('the JSON-LD, llms.txt and sitemap agree with the pages', async () => {
     assert.equal(webpage.description, COPY[lang].meta.description);
   }
   const llms = await read('llms.txt');
+  for (const lang of LANGS) assert.ok(llms.includes(COPY[lang].meta.description), `llms.txt words the ${lang} pitch its own way`);
+  assert.equal(JSON.parse(await read('site.webmanifest')).description, COPY.en.meta.description, 'the manifest words the pitch its own way');
   for (const lang of LANGS) assert.ok(llms.includes(`${SITE.url}${localize(lang, '/')}`), `llms.txt names the ${lang} home`);
   const sitemap = await read('sitemap.xml');
   for (const path of INDEXED) for (const lang of LANGS) {

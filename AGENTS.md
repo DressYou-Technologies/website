@@ -47,6 +47,6 @@ node scripts/brand.mjs <logo kit>   # regenerate the header wordmark and the foo
 
 ## Metadata
 
-`src/layouts/Base.astro` (head and JSON-LD), `public/sitemap.xml`, `public/llms.txt` and
+`src/layouts/Base.astro` (head and JSON-LD), `src/pages/sitemap.xml.ts`, `public/llms.txt` and
 `public/site.webmanifest` repeat the canonical URL, the name, the tagline and the description from
-`src/data/site.ts`. If one changes, change all of them; `tests/page.test.mjs` checks they agree.
+`src/data/site.ts` and `src/i18n/copy.ts`. If one changes, change all of them; `tests/page.test.mjs` checks they agree.

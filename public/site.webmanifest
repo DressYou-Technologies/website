@@ -1,7 +1,7 @@
 {
   "name": "DressYou",
   "short_name": "DressYou",
-  "description": "DressYou makes a twin from your own photos, so you can try on clothes from any shop, your wardrobe or the feed before you buy.",
+  "description": "DressYou is the social fashion app. Try on clothes from any shop on your twin, style your wardrobe, ask your AI stylist and share looks with friends.",
   "lang": "en",
   "start_url": "/",
   "scope": "/",
