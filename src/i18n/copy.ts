@@ -22,8 +22,6 @@ const en = {
   get: { app: 'Get the app', extension: 'Get the extension', qr: 'QR code to download the app' },
   lang: { heading: 'Language', switchTo: 'Français', label: 'Lire en français' },
   menu: { label: 'Menu' },
-  // A page in the works: the same words on each (founder, 2026-11-01), then the address and doc.home.
-  soon: { tag: 'In the works', text: 'This page is coming soon. Write to' },
   hero: { lines: ['Try it on', "before it's yours."], sub: 'Your Digital Twin. Your style. Your AI stylist.' },
   how: {
     // Per source, in the phone's order (shop, wardrobe, feed): its heading and its four steps, as the content brief words
@@ -108,10 +106,10 @@ const en = {
     lede: 'Discover looks, try them on and shop with confidence.',
     extension: 'Chrome extension',
     soon: 'coming soon',
-    columns: [
-      { label: 'Company', links: [['Journal', '/journal']] },
-      { label: 'Legal', links: [['Legal notice', '/legal'], ['Privacy', '/privacy'], ['Terms', '/terms']] },
-    ],
+    // Only pages that exist (founder, 2026-11-16). The contact address and the other language follow as their own columns.
+    columns: [{ label: 'Legal', links: [['Legal notice', '/legal'], ['Privacy', '/privacy']] }],
+    contact: 'Contact',
+    rights: 'All rights reserved.',
     footer: 'Footer',
   },
   dialog: {
@@ -121,7 +119,7 @@ const en = {
     appReady: 'Get the app.',
     extension: { title: 'Try on from any shop.', lede: 'DressYou on every product page in Chrome.', bag: 'Add to bag', add: 'Add to Chrome', soon: 'Coming soon to Chrome' },
   },
-  doc: { updated: 'Last updated', home: 'Back to DressYou' },
+  doc: { updated: 'Last updated' },
   notFound: { title: 'This page does not exist.', text: 'The link may be old.', home: 'Go to the home page' },
   // Where the verification mail lands (src/lib/auth.ts). In the app's words where it has them
   // (ios/DressYou/Resources/Localizable.xcstrings, the key beside each line), so the site and the app say the same thing.
@@ -148,7 +146,6 @@ const fr: Copy = {
   get: { app: "Télécharger l'app", extension: "Installer l'extension", qr: "QR code pour télécharger l'app" },
   lang: { heading: 'Langue', switchTo: 'English', label: 'Read in English' },
   menu: { label: 'Menu' },
-  soon: { tag: 'En préparation', text: 'Cette page arrive bientôt. Écrivez à' },
   hero: { lines: ['Essayez-le', "avant qu'il soit à vous."], sub: 'Votre jumeau numérique. Votre style. Votre styliste IA.' },
   how: {
     heads: ['Essayez depuis vos boutiques préférées.', 'Stylisez votre garde-robe.', 'Découvrez des looks qui vous ressemblent.'],
@@ -226,10 +223,9 @@ const fr: Copy = {
     lede: 'Découvrez des looks, essayez-les et achetez en toute confiance.',
     extension: 'Extension Chrome',
     soon: 'bientôt',
-    columns: [
-      { label: 'Entreprise', links: [['Journal', '/journal']] },
-      { label: 'Légal', links: [['Mentions légales', '/legal'], ['Confidentialité', '/privacy'], ['Conditions', '/terms']] },
-    ],
+    columns: [{ label: 'Légal', links: [['Mentions légales', '/legal'], ['Confidentialité', '/privacy']] }],
+    contact: 'Contact',
+    rights: 'Tous droits réservés.',
     footer: 'Pied de page',
   },
   dialog: {
@@ -239,7 +235,7 @@ const fr: Copy = {
     appReady: 'Télécharger l’app.',
     extension: { title: 'Essayez depuis toute boutique.', lede: 'DressYou sur chaque page produit dans Chrome.', bag: 'Ajouter au panier', add: 'Ajouter à Chrome', soon: 'Bientôt sur Chrome' },
   },
-  doc: { updated: 'Mis à jour le', home: 'Retour à DressYou' },
+  doc: { updated: 'Mis à jour le' },
   notFound: { title: 'Cette page n’existe pas.', text: 'Le lien est peut-être ancien.', home: 'Aller à l’accueil' },
   verified: {
     title: 'Vérification de l’adresse e-mail',

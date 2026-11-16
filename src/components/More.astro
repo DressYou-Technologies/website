@@ -106,7 +106,7 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
 </section>
 
 <style>
-  .more { --title: clamp(2.125rem, 4.6vw, 3.625rem); --title-gap: clamp(20px, 3svh, 32px); padding: var(--section-pad) clamp(16px, 3vw, 48px); background: #0a0a0b; color: #f4f4f2; }
+  .more { --title: clamp(2.125rem, 4.6vw, 3.625rem); --title-gap: clamp(20px, 3 * var(--svh), 32px); padding: var(--section-pad) clamp(16px, 3vw, 48px); background: #0a0a0b; color: #f4f4f2; }
   .head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px 48px; max-width: 1440px; margin: 0 auto var(--title-gap); }
   h2 { margin: 0; font-size: var(--title); font-weight: 700; letter-spacing: -.05em; line-height: 1; }
   /* Below 40px the display tracking closes letters up, so it eases to the demo heading's (4.6vw drops under 40px at 870px). */
@@ -129,7 +129,7 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
   .wrows { padding: 10px 0; margin: -10px 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,.35), #000 18%, #000 70%, rgba(0,0,0,.2)); mask-image: linear-gradient(180deg, rgba(0,0,0,.35), #000 18%, #000 70%, rgba(0,0,0,.2)); }
   .wrow { position: relative; overflow: hidden; padding: 18px 0; margin: -10px 0; -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,0), #000 16%, #000 84%, rgba(0,0,0,0)); mask-image: linear-gradient(90deg, rgba(0,0,0,0), #000 16%, #000 84%, rgba(0,0,0,0)); }
   .wtrack { display: flex; gap: 10px; width: max-content; will-change: transform; }
-  .wg { position: relative; flex: none; width: clamp(56px, min(5.8vw, 9svh), 90px); aspect-ratio: 1; border-radius: 16px; background: linear-gradient(180deg, rgba(255,255,255,.94), rgba(250,249,246,.78)); box-shadow: inset 0 1px 0 #fff, inset 0 0 0 1px rgba(255,255,255,.45); }
+  .wg { position: relative; flex: none; width: clamp(56px, min(5.8vw, 9 * var(--svh)), 90px); aspect-ratio: 1; border-radius: 16px; background: linear-gradient(180deg, rgba(255,255,255,.94), rgba(250,249,246,.78)); box-shadow: inset 0 1px 0 #fff, inset 0 0 0 1px rgba(255,255,255,.45); }
   .wg :global(img.cutout) { background: none; }
   .wimg { position: absolute; inset: 0; border-radius: 16px; overflow: hidden; }
   .wimg :global(img), .photo :global(img), .tl-g :global(img), .wout :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; }
@@ -246,7 +246,7 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
   @media (max-width: 1099.98px) { .wardrobe, .side { flex-basis: 100%; } }
   /* Wide screens: the whole bento reads in one screen under its title; the cards share that height. */
   @media (min-width: 1100px) {
-    .bento { height: clamp(560px, calc(100svh - 2 * var(--section-pad) - var(--title) - var(--title-gap)), 860px); }
+    .bento { height: clamp(560px, calc(100 * var(--svh) - 2 * var(--section-pad) - var(--title) - var(--title-gap)), 860px); }
     /* The feed takes the larger share; the friends' looks size themselves from the height left in their card. */
     .side { display: grid; grid-template-rows: minmax(0, 1.15fr) minmax(min-content, 1fr); }
     .feedtile { min-height: 0; }

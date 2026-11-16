@@ -4,16 +4,21 @@ import { isHeld, loopWhileShown, setHeld } from './hold';
 import type { Section } from './index';
 
 // Every beat after the tap is timed from the tap press; each source decides how long it plays before it.
-const ASK_AFTER_TAP_SECONDS = 2.2;    // render and size come in, then the person starts asking
-const CHOOSE_SECONDS = 1.2;           // a size card first waits for the size to taste to be tapped
-const AFTER_ASK_SECONDS = 4.3;        // question, answer, then the scene fades
-const WARDROBE_TAP_SECONDS = 3.0;     // three pieces picked, the select bar rises, then the tap
-const FEED_POST_SECONDS = 1.3;        // the feed flicks to each next post this often, then the last one is tapped
-const FEED_SETTLE_SECONDS = 1.1;      // the tried post shows this long before its try-on button is pressed
+// The pace is a person's (founder, 2026-11-16): a tap, a swipe or a flick on something familiar is quick, while looking
+// at the picture and reading take their time.
+const CARD_AFTER_TAP_SECONDS = 2.0;   // looking: the render sweeps in and is seen alone, then its card comes
+const ASK_AFTER_TAP_SECONDS = 3.6;    // reading: the card is read, then the person starts asking
+const CHOOSE_SECONDS = .9;            // quick: a size card first waits for the size to taste to be tapped
+const AFTER_ASK_SECONDS = 5.3;        // reading: question, answer, the time to read it, then the scene fades
+const PICK_FIRST_SECONDS = .5, PICK_EVERY_SECONDS = .35;   // quick: the wardrobe's pieces are tapped one after the other
+const SELECT_SECONDS = 1.1;           // quick: after the last piece the select bar rises, then its button is tapped
+const FEED_POST_SECONDS = 1;          // quick: the feed flicks to each next post this often
+const FEED_SETTLE_SECONDS = 1.3;      // looking: the look found shows this long before its try-on button is pressed
 const FEED_HEAD_PT = 222, STATUS_PT = 54; // the feed's header ends here, in iOS points (How.astro .fhead), and the status bar here
-const TAB_SECONDS = 1.8;              // each open shop tab stays this long before the next swipes in
-const MENU_SECONDS = .9;              // Safari's page menu shows this long before Share is tapped
-const SHEET_SECONDS = 1.2;            // the share sheet shows this long before DressYou is tapped
+const TAB_SECONDS = 1.2;              // quick: each open shop tab passes this fast before the next swipes in
+const PRODUCT_SECONDS = 1.8;          // looking: the tab to share swipes in and is seen before its page menu is tapped
+const MENU_SECONDS = .6;              // quick: Safari's page menu shows this long before Share is tapped
+const SHEET_SECONDS = .7;             // quick: the share sheet shows this long before DressYou is tapped
 const FIT_MAX = 1.2, FIT_PAD_X = 8, FIT_PAD_Y = 16;
 const RESIZE_SETTLE_MS = 120;
 const DIM = '#767676', INK = '#0a0a0a';  // DIM: the lightest grey at 4.5:1 on white (WCAG 1.4.3)
@@ -53,7 +58,7 @@ function share(tl: gsap.core.Timeline, src: HTMLElement, t: number): number {
     tl.to(pages[k], { xPercent: -100, duration: .7, ease: 'power3.inOut' }, swipe).to(page, { xPercent: 0, duration: .7, ease: 'power3.inOut' }, swipe)
       .to(domains[k], { opacity: 0, duration: .3 }, swipe).to(domains[k + 1], { opacity: 1, duration: .3 }, swipe + .35);
   });
-  const opened = t + TAB_SECONDS * pages.length;
+  const opened = t + TAB_SECONDS * (pages.length - 1) + PRODUCT_SECONDS;
   press(tl, pageBtn, one(pageBtn, '.hring'), opened);
   tl.to(menu, { autoAlpha: 1, scale: 1, duration: .35, ease: 'power3.out' }, opened + .1);
   const shared = opened + .1 + MENU_SECONDS;
@@ -88,11 +93,12 @@ export const how: Section = (root, _wide, ctx) => {
     const tiles = all(src, '.hpk'), ticks = tiles.map((tile) => one(tile, '.tick')), tabbar = one(src, '.tabbar'), select = one(src, '.htry');
     tl.set(tiles, { boxShadow: TILE_EDGE }, t).set(ticks, { autoAlpha: 0, scale: .6 }, t).set(tabbar, { autoAlpha: 1, y: 0 }, t).set(select, { autoAlpha: 0, y: 24 }, t);
     tiles.forEach((tile, k) => {
-      const at = t + .6 + k * .45;
+      const at = t + PICK_FIRST_SECONDS + k * PICK_EVERY_SECONDS;
       tl.to(tile, { boxShadow: TILE_PICKED, duration: .2, ease: 'power2.out' }, at).to(ticks[k], { autoAlpha: 1, scale: 1, duration: .3, ease: 'back.out(2.4)' }, at);
     });
-    tl.to(tabbar, { autoAlpha: 0, y: 24, duration: .3, ease: 'power2.in' }, t + 2.1).to(select, { autoAlpha: 1, y: 0, duration: .4, ease: 'power3.out' }, t + 2.2);
-    return t + WARDROBE_TAP_SECONDS;
+    const picked = t + PICK_FIRST_SECONDS + (tiles.length - 1) * PICK_EVERY_SECONDS;
+    tl.to(tabbar, { autoAlpha: 0, y: 24, duration: .3, ease: 'power2.in' }, picked + .3).to(select, { autoAlpha: 1, y: 0, duration: .4, ease: 'power3.out' }, picked + .4);
+    return picked + SELECT_SECONDS;
   };
 
   // The feed: flick past the posts above, settle on the one tried, then press its try-on button.
@@ -133,9 +139,9 @@ export const how: Section = (root, _wide, ctx) => {
     tl.set(ren, { autoAlpha: 1 }, P + .3).to(ren, { clipPath: 'inset(0% 0% 0% 0%)', duration: .9, ease: 'power3.inOut' }, P + .3);
     sweep(ren, P + .3);
     tl.set(src, { autoAlpha: 0 }, P + 1.25);
-    light(list, 2, P + 1.4);
-    pop(one(p, '.hsz'), P + 1.4);
-    tl.fromTo(all(p, '.hszr, .sztag'), { autoAlpha: 0, x: -10 }, { autoAlpha: 1, x: 0, duration: .35, stagger: .25, ease: 'power3.out', immediateRender: false }, P + 1.6);
+    light(list, 2, P + CARD_AFTER_TAP_SECONDS);
+    pop(one(p, '.hsz'), P + CARD_AFTER_TAP_SECONDS);
+    tl.fromTo(all(p, '.hszr, .sztag'), { autoAlpha: 0, x: -10 }, { autoAlpha: 1, x: 0, duration: .35, stagger: .25, ease: 'power3.out', immediateRender: false }, P + CARD_AFTER_TAP_SECONDS + .2);
     // The card opens on the size that fits, then the person taps the one to their taste.
     if (sized) {
       const fit = one(sized, '.szc.fit'), style = one(sized, '.szc.style'), chosen = P + ASK_AFTER_TAP_SECONDS + .2;
@@ -147,6 +153,8 @@ export const how: Section = (root, _wide, ctx) => {
     const qEl = one(p, '.hq'), typeEl = one(ren, '.htype'), phEl = one(ren, '.hph'), sendEl = one(ren, '.hsend'), field = one(ren, '.hin');
     const qText = qEl.textContent?.trim() ?? '', typed = { n: 0 };
     const clear = () => { typeEl.textContent = ''; phEl.style.opacity = '1'; };
+    // Once the question is sent the card has been read: on phones, where it lies over the picture, it leaves (How.astro).
+    tl.set(p, { '--asked': 0 }, t).to(p, { '--asked': 1, duration: .3, ease: 'power2.out' }, ask + 1.08);
     tl.set(typed, { n: 0 }, t).call(clear, undefined, t).set(sendEl, { backgroundColor: 'rgba(10,10,11,0)', color: 'rgba(10,10,11,.4)' }, t)
       .to(field, { scale: 1.02, duration: .25, ease: 'back.out(2)' }, ask)
       .to(phEl, { opacity: 0, duration: .1 }, ask + .05)

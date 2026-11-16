@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import GetLink from './GetLink.astro';
 import NotifyForm from './NotifyForm.astro';
 import { LINKS } from '../data/site';
-import logo from '../assets/brand/logo-white.png';
+import lockup from '../assets/brand/lockup-white.png';
 import { COPY } from '../i18n/copy';
 import { LANGS, localize, type Lang } from '../i18n/lang';
 
@@ -24,21 +24,22 @@ const year = new Date().getFullYear();
       <GetLink kind="extension" class="xchip"><svg viewBox="0 0 24 24" aria-hidden="true" width="16" height="16"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle><path d="M21.17 8H12"></path><path d="M3.95 6.06 8.54 14"></path><path d="M10.88 21.94 15.46 14"></path></svg>{t.finale.extension}{!LINKS.extensionUrl && <span>{t.finale.soon}</span>}</GetLink>
     </div>
   </div>
-  <div class="links">
-    <Image class="logo" src={logo} height={24} densities={[1, 2]} alt="DressYou" />
-    <nav class="cols" aria-label={t.finale.footer}>
-      {t.finale.columns.map(({ label, links }) => (
-        <div><p>{label}</p>{links.map(([text, link]) => <a href={href(link)}>{text}</a>)}</div>
-      ))}
-      <div><p>{t.lang.heading}</p><a href={localize(other, path)} hreflang={other} lang={other}>{t.lang.switchTo}</a></div>
-    </nav>
+  <nav class="cols" aria-label={t.finale.footer}>
+    {t.finale.columns.map(({ label, links }) => (
+      <div><p>{label}</p>{links.map(([text, link]) => <a href={href(link)}>{text}</a>)}</div>
+    ))}
+    <div><p>{t.finale.contact}</p><a href={`mailto:${LINKS.email}`}>{LINKS.email}</a></div>
+    <div><p>{t.lang.heading}</p><a href={localize(other, path)} hreflang={other} lang={other}>{t.lang.switchTo}</a></div>
+  </nav>
+  <div class="sign">
+    <Image class="lockup" src={lockup} widths={[480, 960, lockup.width]} sizes="94vw" alt="DressYou" loading="lazy" />
+    <p class="base">© {year} DressYou Technologies. {t.finale.rights}</p>
   </div>
-  <p class="base"><span>© {year} DressYou Technologies</span><span>47 rue Vivienne, 75002 Paris</span><a href={`mailto:${LINKS.email}`}>{LINKS.email}</a></p>
 </footer>
 
 <style>
   /* Top room clears the fixed header when the footer reaches the top of the screen. */
-  .finale { margin: 0 12px 12px; padding: clamp(104px, 13svh, 136px) clamp(20px, 4vw, 56px) clamp(22px, 3svh, 30px); border-radius: 28px; background: radial-gradient(120% 80% at 50% 0%, #2a2a2e 0%, #151517 48%, #0e0e10 100%); color: #fff; display: grid; gap: clamp(48px, 8svh, 88px); box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
+  .finale { margin: 0 12px 12px; padding: clamp(104px, 13 * var(--svh), 136px) clamp(20px, 4vw, 56px) clamp(22px, 3 * var(--svh), 30px); border-radius: 28px; background: radial-gradient(120% 80% at 50% 0%, #2a2a2e 0%, #151517 48%, #0e0e10 100%); color: #fff; display: grid; gap: clamp(48px, 8 * var(--svh), 88px); box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
 
   /* The call to sign up. Phones and tablets: all centred. Desktops: the headline on the left, the sign-up on the right. */
   .cta { display: grid; justify-items: center; gap: 24px; width: min(100%, 560px); margin: 0 auto; text-align: center; }
@@ -59,31 +60,24 @@ const year = new Date().getFullYear();
   .cta :global(.xchip svg) { fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
   .cta :global(.xchip span) { font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: #8a8a8a; }
 
-  /* The logo, then the link columns, on one grid line. */
-  .links { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 3fr); gap: 32px; align-items: start; padding-top: 36px; border-top: 1px solid rgba(255,255,255,.1); }
-  .links :global(.logo) { width: auto; height: 24px; }
-  .cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px 24px; }
+  /* The footer, arranged like Versine's (founder, 2026-11-16): the pages in columns, each under a bold title one size above
+     its lighter links, then the logo across the card, fading into it, and the rights line. No rule between them. */
+  .cols { display: flex; flex-wrap: wrap; gap: 32px clamp(48px, 9vw, 128px); }
   .cols div { display: grid; gap: 10px; align-content: start; }
-  .cols p { margin: 0 0 4px; font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: #8a8a8a; }
-  .cols a, .base a { color: #cfcfcf; font-size: .9375rem; text-decoration: none; transition: color .2s; }
-  @media (hover: hover) { .cols a:hover, .base a:hover { color: #fff; } }
-  /* Touch: the footer links and the email are 44px rows and the chip 44px tall, to tap without aiming (Apple HIG). */
+  .cols p { margin: 0 0 6px; color: #fff; font-size: 1.0625rem; font-weight: 700; letter-spacing: -.01em; }
+  .cols a { color: #cfcfcf; font-size: .9375rem; text-decoration: none; transition: color .2s; }
+  @media (hover: hover) { .cols a:hover { color: #fff; } }
+  /* Touch: the footer links are 44px rows and the chip 44px tall, to tap without aiming (Apple HIG). */
   @media (pointer: coarse) {
     .cols div { gap: 0; }
-    .cols a, .base a { padding-block: calc((44px - 1lh) / 2); }
+    .cols a { padding-block: calc((44px - 1lh) / 2); }
     .cta :global(.xchip) { height: 44px; }
   }
-  .base { display: flex; flex-wrap: wrap; gap: 6px 22px; margin: 0; padding-top: 22px; border-top: 1px solid rgba(255,255,255,.08); color: #8a8a8a; font-size: .8125rem; }
-  .base a { font-size: .8125rem; }
+  .sign { display: grid; gap: clamp(16px, 2.4vw, 32px); }
+  .sign :global(.lockup) { width: 100%; height: auto; -webkit-mask-image: linear-gradient(to bottom, #000 10%, transparent 95%); mask-image: linear-gradient(to bottom, #000 10%, transparent 95%); }
+  .base { margin: 0; color: #8a8a8a; font-size: .8125rem; }
 
-  /* Tablets: the logo above the columns. Phones: everything centred, the columns two by two. */
-  @media (max-width: 899.98px) {
-    .links { grid-template-columns: minmax(0, 1fr); }
-  }
   @media (max-width: 599.98px) {
     .finale { padding-inline: 20px; }
-    .links { justify-items: center; text-align: center; }
-    .cols { grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; gap: 28px 16px; }
-    .base { flex-direction: column; align-items: center; gap: 6px; text-align: center; }
   }
 </style>

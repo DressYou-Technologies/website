@@ -1,8 +1,24 @@
 import { gsap } from 'gsap';
-import { FULL_MENU_QUERY, HEADER_FOLD_AT, HERO_PASSED_OFFSET, MENU_GAP_PX, MOTION_QUERY } from '../lib/constants';
+import { FULL_MENU_QUERY, HEADER_FOLD_AT, HERO_PASSED_OFFSET, MENU_GAP_PX, MOTION_QUERY, TOUCH_QUERY } from '../lib/constants';
+import { barsMoved } from '../lib/steady';
 import { all, one } from '../motion/dom';
 
 const motion = () => window.matchMedia(MOTION_QUERY).matches;
+
+// The page sizes itself from --svh (tokens.css), which stays put while a browser's bars slide away and back: in an in-app
+// browser that resizes the whole page on every change of scroll direction (founder, 2026-11-16).
+function steadyViewport() {
+  const touch = window.matchMedia(TOUCH_QUERY);
+  let held = { width: 0, height: 0 };
+  const update = () => {
+    const now = { width: window.innerWidth, height: window.innerHeight };
+    if (barsMoved(held, now, touch.matches)) return;
+    held = now;
+    document.documentElement.style.setProperty('--svh', `${now.height / 100}px`);
+  };
+  window.addEventListener('resize', update);
+  update();
+}
 
 // The header is a pill once scrolled, at one size either way, and shows its buttons once the hero is gone.
 function header(top: HTMLElement) {
@@ -149,6 +165,7 @@ function dialogs() {
 
 export function startChrome() {
   document.documentElement.classList.add('js');
+  steadyViewport();
   const top = document.querySelector<HTMLElement>('.top'), menu = document.querySelector<HTMLElement>('#menu');
   if (top && menu) { header(top); menuPop(top, menu); }
   if (top) tone(top, all(top, '.brand, .hdr-burger'));

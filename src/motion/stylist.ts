@@ -24,14 +24,14 @@ export const stylist: Section = (root, wide) => {
   const sec = one(root, '.stylist'), stage = one(sec, '.sstage'), head = one(sec, '.shead'), chat = one(sec, '.schat');
   const view = one(sec, '.sview'), track = one(sec, '.strack'), type = one(sec, '.stype'), ph = one(sec, '.sph'), send = one(sec, '.ssend');
   const tabs = all(sec, '.stab'), groups = all(sec, '.sg');
-  gsap.set(sec, { height: `calc(100svh + ${STORY_LENGTH_PX}px)` });
+  gsap.set(sec, { height: `calc(100 * var(--svh) + ${STORY_LENGTH_PX}px)` });
   const top = wide ? STAGE_TOP : PHONE_TOP, bottom = wide ? STAGE_BOTTOM : PHONE_BOTTOM;
-  gsap.set(stage, { position: 'sticky', top: 0, height: '100svh', paddingTop: top, paddingBottom: bottom, flexWrap: 'nowrap', flexDirection: wide ? 'row' : 'column', alignItems: wide ? 'center' : 'stretch', gap: wide ? undefined : STACK_GAP });
+  gsap.set(stage, { position: 'sticky', top: 0, height: 'calc(100 * var(--svh))', paddingTop: top, paddingBottom: bottom, flexWrap: 'nowrap', flexDirection: wide ? 'row' : 'column', alignItems: wide ? 'center' : 'stretch', gap: wide ? undefined : STACK_GAP });
   if (!wide) {
     gsap.set(one(head, '.stabs'), { gridTemplateAreas: '"tab"' });
     gsap.set(tabs, { gridArea: 'tab' });
   }
-  // The stage is 100svh, the screen with the browser's bars shown, so the input never sits under them.
+  // The stage is the screen with the browser's bars shown (--svh), so the input never sits under them.
   gsap.set(chat, { height: () => Math.min(CHAT_MAX, Math.max(CHAT_MIN, stage.clientHeight - top - bottom - (wide ? 0 : head.offsetHeight + STACK_GAP))) });
   gsap.set(tabs.slice(1), { opacity: 0, x: -24 });
   gsap.set(tabs.slice(1).map((t) => one(t, '.sico')), { backgroundColor: PAPER, color: INK });
