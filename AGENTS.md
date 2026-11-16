@@ -19,7 +19,7 @@ npm run check              # astro check (TypeScript strict)
 npm test                   # node:test over src/data and the built dist/ — build first
 node scripts/shots.mjs <url> <outDir> <desktop|mobile> [reduce|noscript]   # real-time screenshots over CDP
 node scripts/og-image.mjs  # regenerate public/og-image.jpg from the wall
-node scripts/brand.mjs <logo kit>   # regenerate the header wordmark
+node scripts/brand.mjs <logo kit>   # regenerate the header wordmark and the footer's traced one (needs potrace)
 ```
 
 ## Layout

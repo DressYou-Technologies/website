@@ -1,5 +1,6 @@
 ---
 import { LINKS } from '../data/site';
+import wordmark from '../assets/brand/wordmark-white.svg';
 import { COPY } from '../i18n/copy';
 import { localize, type Lang } from '../i18n/lang';
 
@@ -17,15 +18,18 @@ const year = new Date().getFullYear();
     ))}
     <div><p>{t.finale.contact}</p><a href={`mailto:${LINKS.email}`}>{LINKS.email}</a></div>
   </nav>
-  <p class="base">© {year} DressYou Technologies. {t.finale.rights}</p>
+  <div class="sign">
+    <img class="wordmark" src={wordmark.src} width={wordmark.width} height={wordmark.height} alt="DressYou" loading="lazy" decoding="async" />
+    <p class="base">© {year} DressYou Technologies. {t.finale.rights}</p>
+  </div>
 </footer>
 
 <style>
   .finale { margin: 0 12px; padding: clamp(48px, 8 * var(--svh), 88px) clamp(20px, 4vw, 56px) clamp(22px, 3 * var(--svh), 30px); border-radius: 28px; background: radial-gradient(120% 80% at 50% 0%, #2a2a2e 0%, #151517 48%, #0e0e10 100%); color: #fff; display: grid; gap: clamp(48px, 8 * var(--svh), 88px); box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
 
   /* The footer, arranged like Versine's (founder, 2026-11-16): the pages in columns, each under a bold title one size above
-     its lighter links, then the rights line. No rule between them, and no logo: without it the card is cleaner
-     (founder, 2026-11-16, evening). */
+     its lighter links, then the name across the card, fading into it, and the rights line. No rule between them. The name
+     stands without the symbol: cleaner (founder, 2026-11-16, evening). */
   .cols { display: flex; flex-wrap: wrap; gap: 32px clamp(48px, 9vw, 128px); }
   .cols div { display: grid; gap: 10px; align-content: start; }
   .cols p { margin: 0 0 6px; color: #fff; font-size: 1.0625rem; font-weight: 700; letter-spacing: -.01em; }
@@ -36,6 +40,10 @@ const year = new Date().getFullYear();
     .cols div { gap: 0; }
     .cols a { padding-block: calc((44px - 1lh) / 2); }
   }
+  .sign { display: grid; gap: clamp(16px, 2.4vw, 32px); }
+  /* The name sinks into the card: whole at its top, gone just under the letters' baseline (77% down the image), so no
+     half-faded foot shows (founder, 2026-11-16). */
+  .wordmark { --fade: linear-gradient(to bottom, #000, transparent 80%); width: 100%; height: auto; -webkit-mask-image: var(--fade); mask-image: var(--fade); }
   .base { margin: 0; color: #8a8a8a; font-size: .8125rem; }
 
   @media (max-width: 599.98px) {
