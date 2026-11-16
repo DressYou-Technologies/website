@@ -576,3 +576,10 @@ test('the demo section carries the scale limit its script reads to size the phon
   const css = (await Promise.all((await readdir(new URL('_astro/', DIST))).filter((f) => f.endsWith('.css')).map((f) => read(`_astro/${f}`)))).join('');
   assert.match(css, /--fit-max:\s*\d/, 'fitPhone reads --fit-max from the stage (How.astro)');
 });
+
+test('on phones the header bar has no height, so Safari paints no strip behind the status bar', async () => {
+  const css = (await Promise.all((await readdir(new URL('_astro/', DIST))).filter((f) => f.endsWith('.css')).map((f) => read(`_astro/${f}`)))).join('');
+  const phone = css.match(/\.top\[[^\]]*\],\.top\[[^\]]*\]\.folded\{[^}]*\}/)?.[0] ?? '';
+  assert.match(phone, /pointer-events:none/, 'the phone header rule (Header.astro)');
+  assert.match(phone, /[{;]height:0[;}]/, 'a fixed box across the top of the screen makes Safari on iOS 26 and later draw a solid strip there');
+});
