@@ -9,8 +9,13 @@ html { scroll-padding-top: var(--header-clear); }
 /* One hover for every real button: a grey veil, which darkens the light ones and lightens the dark ones. A shadow, since
    the entrance animations leave their own opacity on some of them. */
 @media (hover: hover) {
-  .hdr-ext:hover, .hdr-app > button:hover, .dock-app:hover, .dock-ext:hover, .menu-app:hover, .menu-ext:hover, button.send:not(:disabled):hover, a.cta:hover { box-shadow: inset 0 0 0 999px rgba(128,128,128,.16); }
+  :is(.hdr-ext, .hdr-app > button, .dock-app, .dock-ext, .menu-app, .menu-ext, button.send:not(:disabled), a.cta):hover { box-shadow: inset 0 0 0 999px rgba(128,128,128,.16); }
 }
+/* One press: the button gives a little under the finger. `scale`, so it never fights a transform an animation holds. */
+:is(.hdr-ext, .hdr-app > button, .dock-app, .dock-ext, .menu-app, .menu-ext, button.send:not(:disabled), a.cta):active { scale: .97; }
+/* The press above is the feedback: iOS adds no grey flash of its own. Selected text is tinted in the site's greys. */
+html { -webkit-tap-highlight-color: transparent; }
+::selection { background: rgba(128,128,128,.35); }
 /* Headings balance their lines and paragraphs avoid a lone last word. */
 h1, h2, h3 { text-wrap: balance; }
 p { text-wrap: pretty; }
