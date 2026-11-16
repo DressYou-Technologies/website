@@ -25,7 +25,9 @@ const year = new Date().getFullYear();
 </footer>
 
 <style>
-  .finale { margin: 0 12px; padding: clamp(48px, 8 * var(--svh), 88px) clamp(20px, 4vw, 56px) clamp(22px, 3 * var(--svh), 30px); border-radius: 28px; background: radial-gradient(120% 80% at 50% 0%, #2a2a2e 0%, #151517 48%, #0e0e10 100%); color: #fff; display: grid; gap: clamp(48px, 8 * var(--svh), 88px); box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
+  /* The space above the links and between them and the name follows the card's width, like its side padding. Tied to
+     the screen's height it came out three times the side padding on a tall phone (founder, 2026-11-16). */
+  .finale { --rise: clamp(28px, 5vw, 72px); margin: 0 12px; padding: var(--rise) clamp(20px, 4vw, 56px) clamp(22px, 3 * var(--svh), 30px); border-radius: 28px; background: radial-gradient(120% 80% at 50% 0%, #2a2a2e 0%, #151517 48%, #0e0e10 100%); color: #fff; display: grid; gap: var(--rise); box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
 
   /* The footer, arranged like Versine's (founder, 2026-11-16): the pages in columns, each under a bold title one size above
      its lighter links, then the name across the card, fading into it, and the rights line. No rule between them. The name
