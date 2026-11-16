@@ -1,5 +1,5 @@
 import { gsap } from 'gsap';
-import { FULL_MENU_QUERY, HEADER_FOLD_AT, HERO_PASSED_OFFSET, MENU_GAP_PX, MOTION_QUERY, TOUCH_QUERY } from '../lib/constants';
+import { FULL_MENU_QUERY, HEADER_AWAY_STEP, HEADER_FOLD_AT, HERO_PASSED_OFFSET, MENU_GAP_PX, MOTION_QUERY, TOUCH_QUERY } from '../lib/constants';
 import { barsMoved } from '../lib/steady';
 import { all, one } from '../motion/dom';
 
@@ -23,10 +23,15 @@ function steadyViewport() {
 // The header is a pill once scrolled, at one size either way, and shows its buttons once the hero is gone.
 function header(top: HTMLElement) {
   const hero = document.querySelector<HTMLElement>('.hero');
+  let last = window.scrollY;
   const update = () => {
     const y = window.scrollY;
     top.classList.toggle('folded', y > HEADER_FOLD_AT);
     top.classList.toggle('app-shown', !hero || y > hero.offsetHeight - HERO_PASSED_OFFSET);
+    // Scrolling down, past the fold: phones let the header leave (Header.astro). Scrolling up brings it back.
+    if (Math.abs(y - last) < HEADER_AWAY_STEP) return;
+    top.classList.toggle('away', y > last && y > HEADER_FOLD_AT);
+    last = y;
   };
   window.addEventListener('scroll', update, { passive: true });
   update();
@@ -74,7 +79,8 @@ function menuPop(top: HTMLElement, menu: HTMLElement) {
 function anchors() {
   document.addEventListener('click', (e) => {
     const a = e.target instanceof Element ? e.target.closest<HTMLAnchorElement>('a[href*="#"]') : null;
-    if (!a || a.pathname !== location.pathname) return;
+    // The skip link keeps the browser's own jump, which also moves the keyboard's place in the page.
+    if (!a || a.classList.contains('skip') || a.pathname !== location.pathname) return;
     a.closest<HTMLElement>('[popover]')?.hidePopover();
     const target = document.getElementById(a.hash.slice(1));
     if (!target) return;

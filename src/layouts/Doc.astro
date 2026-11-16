@@ -12,7 +12,7 @@ const t = COPY[lang].doc;
 ---
 <Base lang={lang} path={path} title={`${title} · DressYou`} description={description} noindex={noindex} nofollow={nofollow}>
   <Header lang={lang} path={path} />
-  <main>
+  <main id="main">
     <section class="band" data-tone="dark"><h1>{title}</h1>{updated && <p>{t.updated} {updated}</p>}</section>
     <article class="doc"><slot /></article>
   </main>

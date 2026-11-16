@@ -1,6 +1,6 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { MOTION_QUERY, WIDE_QUERY } from '../lib/constants';
+import { MOTION_QUERY, SHORT_QUERY, WIDE_QUERY } from '../lib/constants';
 import { hero } from './hero';
 import { how } from './how';
 import { more } from './more';
@@ -14,7 +14,7 @@ const SECTIONS: Section[] = [hero, how, more, stylist];
 
 export function startMotion() {
   gsap.registerPlugin(ScrollTrigger);
-  gsap.matchMedia().add({ motion: MOTION_QUERY, wide: WIDE_QUERY }, (ctx) => {
+  gsap.matchMedia().add({ motion: MOTION_QUERY, wide: WIDE_QUERY, short: SHORT_QUERY }, (ctx) => {
     if (!ctx.conditions?.motion) return;
     // Without this class every section shows its end state, still.
     document.documentElement.classList.add('motion');
