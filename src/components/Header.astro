@@ -6,15 +6,15 @@ import { LINKS } from '../data/site';
 import { qrSvg } from '../lib/qr';
 import { COPY } from '../i18n/copy';
 import { LANGS, localize, type Lang } from '../i18n/lang';
-import logoWhite from '../assets/brand/logo-white.png';
-import logoBlack from '../assets/brand/logo-black.png';
+import wordWhite from '../assets/brand/wordmark-white.png';
+import wordBlack from '../assets/brand/wordmark-black.png';
 
 interface Props { lang: Lang; path: string }
 const { lang, path } = Astro.props;
 const t = COPY[lang];
 ---
 <header class="top">
-  <a class="brand" href={localize(lang, '/')} aria-label="DressYou"><Image class="logo white" src={logoWhite} height={24} densities={[1, 2, 3]} alt="" /><Image class="logo black" src={logoBlack} height={24} densities={[1, 2, 3]} alt="" /></a>
+  <a class="brand" href={localize(lang, '/')} aria-label="DressYou"><Image class="logo white" src={wordWhite} height={22} densities={[1, 2, 3]} alt="" /><Image class="logo black" src={wordBlack} height={22} densities={[1, 2, 3]} alt="" /></a>
   <div class="bar">
     <GetLink kind="extension" class="hdr-ext"><DownloadIcon size={16} />{t.get.extension}</GetLink>
     <span class="hdr-app">
@@ -54,9 +54,10 @@ const t = COPY[lang];
 
   /* On the hero, which has its own buttons, the header keeps its logo and menu; the buttons come in after it. */
   :global(html.js) .top:not(.app-shown) .bar :global(.hdr-ext) { opacity: 0; visibility: hidden; }
-  /* The white logo and the black one share a place: the black one shows where the menu button turns ink (chrome.ts). */
+  /* The wordmark alone, without the symbol (founder, 2026-11-16). The white one and the black one share a place: the black
+     one shows where the menu button turns ink (chrome.ts). */
   .brand { display: grid; align-items: center; min-height: 44px; text-decoration: none; }
-  .brand :global(.logo) { grid-area: 1 / 1; width: auto; height: 24px; transition: opacity .45s ease; }
+  .brand :global(.logo) { grid-area: 1 / 1; width: auto; height: 22px; transition: opacity .45s ease; }
   .brand :global(.logo.black), .brand.on-light :global(.logo.white) { opacity: 0; }
   .brand.on-light :global(.logo.black) { opacity: 1; }
 

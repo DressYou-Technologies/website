@@ -16,9 +16,9 @@ const html = home.fr;
 const metaIn = (page, attr, key) => page.match(new RegExp(`<meta[^>]*${attr}="${key}"[^>]*content="([^"]*)"`))?.[1];
 // &amp; last, so an escaped entity such as &amp;quot; is decoded once, not twice.
 const decode = (s) => s.replaceAll('&#39;', "'").replaceAll('&quot;', '"').replaceAll('&amp;', '&');
-// The pages in the works stay out of search until they have content.
 const INDEXED = ['/', '/legal', '/privacy'];
-const SOON = ['/journal', '/terms'];
+// The pages that had no content yet are gone until they have some (founder, 2026-11-16).
+const REMOVED = ['/journal', '/terms'];
 
 test('each home page carries its language, title, description, canonical and alternates', () => {
   for (const lang of LANGS) {
@@ -58,8 +58,7 @@ test('the English home page says the wording the brief validated, and none of th
   for (const line of ["Try it on before it's yours.", 'Your Digital Twin. Your style. Your AI stylist.', 'More than virtual try-on.',
     'Your wardrobe. More looks.', 'Add pieces once. Mix and match them on your Digital Twin.',
     'Looks that match your style.', 'Discover pieces worn by people who share your taste.',
-    'Get a second opinion.', 'Share a look. See what your friends think.', 'Ask your friends',
-    'Fashion, made personal.', 'Discover looks, try them on and shop with confidence.']) assert.ok(page.includes(line), line);
+    'Get a second opinion.', 'Share a look. See what your friends think.', 'Ask your friends']) assert.ok(page.includes(line), line);
   for (const old of ['Tap try on', 'More than a try-on.', 'Fill your wardrobe.', 'A feed of real people.', 'Wear it first.']) {
     assert.ok(!page.includes(old), `still says "${old}"`);
   }
@@ -330,34 +329,35 @@ test('without a store link the extension dialog shows its demo and no link out',
   }
 });
 
-test('the footer lists only working links, the other language and the company details', () => {
+test('the footer lists only working links, the contact address and the rights line, and asks for nothing', () => {
   for (const lang of LANGS) {
-    const footer = home[lang].match(/<footer[\s\S]*?<\/footer>/)[0], t = COPY[lang], other = LANGS.find((l) => l !== lang);
+    const footer = home[lang].match(/<footer[\s\S]*?<\/footer>/)[0], t = COPY[lang];
     const links = [...footer.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)].map(([, href, label]) => [decode(text(label)), href]);
     const local = (link) => { const [page, hash] = link.split('#'); return localize(lang, page || '/') + (hash ? `#${hash}` : ''); };
     assert.deepEqual(links, [
-      [t.dialog.notify.privacy, localize(lang, '/privacy')],
       ...t.finale.columns.flatMap((column) => column.links.map(([label, link]) => [label, local(link)])),
-      [t.lang.switchTo, localize(other, '/')],
       ['info@dressyouapp.com', 'mailto:info@dressyouapp.com'],
     ]);
-    const words = decode(text(footer));
-    for (const fact of [`© ${new Date().getFullYear()} DressYou Technologies`, '47 rue Vivienne, 75002 Paris']) assert.ok(words.includes(fact), `${lang}: ${fact}`);
-    assert.match(footer, /<form class="notify[^"]*"[^>]*data-lang="/, `${lang}: the footer asks for an email itself`);
+    assert.ok(decode(text(footer)).includes(`© ${new Date().getFullYear()} DressYou Technologies. ${t.finale.rights}`), `${lang}: the rights line`);
+    // The logo across the footer: the symbol beside the wordmark (scripts/brand.mjs).
+    assert.match(footer, /<img[^>]*src="[^"]*\/lockup-white[^"]*"[^>]*alt="DressYou"|<img[^>]*alt="DressYou"[^>]*src="[^"]*\/lockup-white/, `${lang}: the footer logo`);
+    assert.doesNotMatch(footer, /<form|<input|<button|<h2/, `${lang}: the footer carries a form, a button or a headline`);
     assert.doesNotMatch(footer, /<picture|<img(?![^>]*alt="DressYou")/, `${lang}: the footer shows no picture besides the logo`);
   }
 });
 
-// The footer keeps the four routes the content brief names (founder, 2026-11-01).
-test('the footer links Journal, the legal notice, privacy and terms to their pages', () => {
+// The footer links only pages that exist (founder, 2026-11-16): every one is built, and the removed ones are not.
+test('the footer links the legal notice and privacy, each to a built page', async () => {
   const want = {
-    en: [['Journal', '/journal'], ['Legal notice', '/legal'], ['Privacy', '/privacy'], ['Terms', '/terms']],
-    fr: [['Journal', '/fr/journal'], ['Mentions légales', '/fr/legal'], ['Confidentialité', '/fr/privacy'], ['Conditions', '/fr/terms']],
+    en: [['Legal notice', '/legal'], ['Privacy', '/privacy']],
+    fr: [['Mentions légales', '/fr/legal'], ['Confidentialité', '/fr/privacy']],
   };
   for (const lang of LANGS) {
     const nav = home[lang].match(/<nav class="cols"[\s\S]*?<\/nav>/)[0];
-    const links = [...nav.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)].map(([, href, label]) => [words(label), href]);
-    assert.deepEqual(links.slice(0, 4), want[lang], lang);
+    const links = [...nav.matchAll(/<a\b[^>]*href="(\/[^"]*)"[^>]*>([\s\S]*?)<\/a>/g)].map(([, href, label]) => [words(label), href]);
+    assert.deepEqual(links.slice(0, want[lang].length), want[lang], lang);
+    for (const [, href] of links) await access(new URL(href === '/' ? 'index.html' : `${href.slice(1)}.html`, DIST)).catch(() => assert.fail(`${lang}: ${href} is linked but not built`));
+    for (const path of REMOVED) await assert.rejects(access(new URL(fileOf(lang, path), DIST)), `${lang} ${path} is still built`);
   }
 });
 
@@ -367,8 +367,8 @@ test('the header logo goes home, and the menu offers the other language with no 
     const header = home[lang].match(/<header[\s\S]*?<\/header>/)[0], other = LANGS.find((l) => l !== lang);
     const brand = header.match(/<a class="brand"[\s\S]*?<\/a>/)?.[0] ?? '';
     assert.match(brand, new RegExp(`^<a class="brand"[^>]*href="${localize(lang, '/')}"[^>]*aria-label="DressYou"`), `${lang}: the logo is not a link home`);
-    // The white logo and the black one, crossfaded as the menu button changes colour.
-    assert.deepEqual([...brand.matchAll(/<img[^>]*src="[^"]*\/(logo-(?:white|black))[^"]*"/g)].map((m) => m[1]), ['logo-white', 'logo-black'], lang);
+    // The wordmark alone, white and black, crossfaded as the menu button changes colour.
+    assert.deepEqual([...brand.matchAll(/<img[^>]*src="[^"]*\/(wordmark-(?:white|black))[^"]*"/g)].map((m) => m[1]), ['wordmark-white', 'wordmark-black'], lang);
     assert.match(header, /<button[^>]*popovertarget="menu"/, `${lang}: no menu button`);
     const menu = header.slice(header.indexOf('id="menu"'));
     const links = [...menu.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)].map(([, href, label]) => [decode(text(label)), href]);
@@ -397,24 +397,9 @@ test('every in-page link has its target on the same page', async () => {
   }
 });
 
-// Until their content arrives, Journal and the terms say the same thing, word for word, and show no draft legal text
-// (founder, 2026-11-01). Privacy keeps its notice: the sign-up links to it.
-test('Journal and the terms show one coming-soon message, the address and the way home', async () => {
-  const want = {
-    en: { message: ['In the works', 'This page is coming soon. Write to info@dressyouapp.com.', 'Back to DressYou'], home: '/', titles: ['Journal', 'Terms'] },
-    fr: { message: ['En préparation', 'Cette page arrive bientôt. Écrivez à info@dressyouapp.com.', 'Retour à DressYou'], home: '/fr', titles: ['Journal', 'Conditions'] },
-  };
+// A first minimal legal notice (founder, 2026-11-01). Privacy keeps its notice: the sign-up links to it.
+test('the legal notice names the publisher, its director and the host', async () => {
   for (const lang of LANGS) {
-    for (const [k, path] of SOON.entries()) {
-      const body = await read(fileOf(lang, path)), article = body.match(/<article class="doc[\s\S]*?<\/article>/)?.[0] ?? '';
-      assert.match(body, new RegExp(`<html lang="${lang}"`), `${lang} ${path}`);
-      assert.equal(words(body.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)[1]), want[lang].titles[k], `${lang} ${path}: its own title`);
-      assert.deepEqual([...article.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/g)].map((m) => decode(text(m[1]))), want[lang].message, `${lang} ${path}`);
-      assert.doesNotMatch(article, /<h2|<ul/, `${lang} ${path} still shows a draft`);
-      assert.match(article, /<a href="mailto:info@dressyouapp\.com"[^>]*>info@dressyouapp\.com<\/a>/, `${lang} ${path}: the address is a mail link`);
-      assert.match(article, new RegExp(`<a href="${want[lang].home}"[^>]*>${want[lang].message[2]}</a>`), `${lang} ${path}: the way home`);
-      assert.match(body, /<meta name="robots" content="noindex"/, `${lang} ${path} is in search`);
-    }
     const legal = await read(fileOf(lang, '/legal')), notice = text(legal.match(/<article class="doc[\s\S]*?<\/article>/)?.[0] ?? '');
     // A first minimal notice (founder, 2026-11-01): the publisher as registered, its president as publication director, the host.
     for (const fact of ['DressYou Technologies', '108 706 037', '47 rue Vivienne, 75002 Paris', 'Tamsir Léopold Ely Debris', 'info@dressyouapp.com',
@@ -488,7 +473,7 @@ test('the privacy notice names Stockholm, never Paris or France, as where DressY
 });
 
 // The drafts are for TestFlight only (founder, 2026-11-05): the app's policy bundle links them and no public page does,
-// while /privacy and /terms keep what main shows. The drafts may link each other: the terms cite the draft notice.
+// while /privacy keeps what main shows. The drafts may link each other: the terms cite the draft notice.
 test('the draft privacy notice and terms stay out of search, the sitemap and llms.txt, and no other page links them', async () => {
   const { headers } = JSON.parse(await readFile(new URL('../vercel.json', import.meta.url), 'utf8'));
   for (const path of ['/privacy-draft', '/terms-draft']) {
@@ -585,4 +570,9 @@ test('the apple app-site-association opens only the reset and verified links in 
   });
   const { headers } = JSON.parse(await readFile(new URL('../vercel.json', import.meta.url), 'utf8'));
   assert.deepEqual(headers.find((h) => h.source === '/.well-known/apple-app-site-association')?.headers, [{ key: 'Content-Type', value: 'application/json' }]);
+});
+
+test('the demo section carries the scale limit its script reads to size the phone', async () => {
+  const css = (await Promise.all((await readdir(new URL('_astro/', DIST))).filter((f) => f.endsWith('.css')).map((f) => read(`_astro/${f}`)))).join('');
+  assert.match(css, /--fit-max:\s*\d/, 'fitPhone reads --fit-max from the stage (How.astro)');
 });

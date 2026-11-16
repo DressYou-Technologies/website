@@ -16,7 +16,7 @@ const t = COPY[lang].doc;
     <section class="band" data-tone="dark"><h1>{title}</h1>{updated && <p>{t.updated} {updated}</p>}</section>
     <article class="doc"><slot /></article>
   </main>
-  <Finale lang={lang} path={path} />
+  <Finale lang={lang} />
   <GetDialog lang={lang} />
 </Base>
 
