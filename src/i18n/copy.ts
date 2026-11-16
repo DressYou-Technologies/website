@@ -13,16 +13,17 @@ const checks = (...rows: Check[]): Check[] => rows;
 
 const en = {
   meta: {
-    title: 'Virtual try-on on your own twin | DressYou',
-    description: 'Make your twin in the app, then try on clothes from any online shop, your wardrobe or the feed before you buy.',
+    // The category first, then the two features people search for (founder, 2026-11-16).
+    title: 'DressYou: social fashion app with virtual try-on and AI stylist',
+    description: 'DressYou is the social fashion app. Try on clothes from any shop on your twin, style your wardrobe, ask your AI stylist and share looks with friends.',
     ogAlt: 'People in different outfits on a curved wall, with the DressYou logo.',
     locale: 'en_GB',
-    tagline: "Try it on before it's yours.",
+    tagline: "Try it on before it’s yours.",
   },
   get: { app: 'Get the app', extension: 'Get the extension', qr: 'QR code to download the app' },
   lang: { label: 'Lire en français' },
   menu: { label: 'Menu' },
-  hero: { lines: ['Try it on', "before it's yours."], sub: 'Your Digital Twin. Your style. Your AI stylist.' },
+  hero: { lines: ['Try it on', "before it’s yours."], sub: 'Your Digital Twin. Your style. Your AI stylist.' },
   how: {
     // Per source, in the phone's order (shop, wardrobe, feed): its heading and its four steps, as the content brief words
     // them (founder, 2026-11-01).
@@ -133,16 +134,16 @@ export type Copy = typeof en;
 
 const fr: Copy = {
   meta: {
-    title: 'Essayage virtuel sur votre jumeau | DressYou',
-    description: "Créez votre jumeau dans l'app, puis essayez les vêtements de n'importe quelle boutique en ligne, de votre garde-robe ou du fil, avant d'acheter.",
+    title: 'DressYou : l’app mode sociale avec essayage virtuel et styliste IA',
+    description: 'DressYou est l’app mode sociale. Essayez les vêtements de toute boutique sur votre jumeau, créez vos tenues, demandez à votre styliste IA et partagez vos looks.',
     ogAlt: 'Des personnes en tenues variées sur un mur incurvé, avec le logo DressYou.',
     locale: 'fr_FR',
-    tagline: "Essayez-le avant qu'il soit à vous.",
+    tagline: "Essayez-le avant qu’il soit à vous.",
   },
-  get: { app: "Télécharger l'app", extension: "Installer l'extension", qr: "QR code pour télécharger l'app" },
+  get: { app: "Télécharger l’app", extension: "Installer l’extension", qr: "QR code pour télécharger l’app" },
   lang: { label: 'Read in English' },
   menu: { label: 'Menu' },
-  hero: { lines: ['Essayez-le', "avant qu'il soit à vous."], sub: 'Votre jumeau numérique. Votre style. Votre styliste IA.' },
+  hero: { lines: ['Essayez-le', "avant qu’il soit à vous."], sub: 'Votre jumeau numérique. Votre style. Votre styliste IA.' },
   how: {
     heads: ['Essayez depuis vos boutiques préférées.', 'Stylisez votre garde-robe.', 'Découvrez des looks qui vous ressemblent.'],
     next: 'Source suivante',
@@ -177,7 +178,7 @@ const fr: Copy = {
     title: 'Plus qu’un essayage virtuel.',
     wardrobe: { lines: ['Votre garde-robe.', 'Plus de looks.'], text: 'Ajoutez vos pièces une fois. Associez-les sur votre jumeau numérique.' },
     feed: { title: 'Des looks qui vous ressemblent.', text: 'Découvrez des pièces portées par des personnes qui partagent vos goûts.', tryOutfit: 'Essayer la tenue', tryOn: 'Essayer' },
-    friend: { ask: 'Demander à vos amis', voting: 'vote en cours…', title: 'Demandez un second avis.', text: 'Partagez un look. Voyez ce qu’en pensent vos amis.' },
+    friend: { ask: 'Demandez à vos amis', voting: 'vote en cours…', title: 'Demandez un second avis.', text: 'Partagez un look. Voyez ce qu’en pensent vos amis.' },
   },
   stylist: {
     title: 'Un styliste qui vous connaît.',
