@@ -4,6 +4,7 @@ import test from 'node:test';
 import { SITE } from '../src/data/site.ts';
 import { COPY } from '../src/i18n/copy.ts';
 import { LANGS, localize } from '../src/i18n/lang.ts';
+import { SHORT_QUERY, WIDE_QUERY } from '../src/lib/constants.ts';
 
 // Runs over the built site: `npm run build` first.
 const DIST = new URL('../dist/', import.meta.url);
@@ -584,4 +585,42 @@ test('on phones the header bar has no height, so Safari paints no strip behind t
   const phone = css.match(/\.top\[[^\]]*\],\.top\[[^\]]*\]\.folded\{[^}]*\}/)?.[0] ?? '';
   assert.match(phone, /pointer-events:none/, 'the phone header rule (Header.astro)');
   assert.match(phone, /[{;]height:0[;}]/, 'a fixed box across the top of the screen makes Safari on iOS 26 and later draw a solid strip there');
+});
+
+const builtCss = async () => (await Promise.all((await readdir(new URL('_astro/', DIST))).filter((f) => f.endsWith('.css')).map((f) => read(`_astro/${f}`)))).join('');
+
+// Each section once set its own side room, width and title size, so their text started on four different left edges
+// (founder, 2026-11-16: "alignment between elements"). They read the shared tokens (tokens.css).
+test('the demo, the bento and the stylist share one gutter, one content width and one title scale', async () => {
+  const css = await builtCss();
+  assert.match(css, /--page-max:\s*1200px/);
+  for (const [token, uses] of [['--gutter', 5], ['--page-max', 4], ['--h2-size', 3], ['--h2-leading', 4]]) {
+    assert.ok(css.split(`var(${token})`).length - 1 >= uses, `${token} is read fewer than ${uses} times: a section sets its own again`);
+  }
+});
+
+test('every page lets the keyboard skip the header, in its language', async () => {
+  for (const page of pages) {
+    const body = await read(page), lang = body.match(/<html lang="(\w+)"/)[1];
+    assert.equal(decode(body.match(/<body[^>]*>\s*<a class="skip" href="#main">([^<]*)<\/a>/)?.[1] ?? ''), COPY[lang].skip, `${page}: the skip link comes first`);
+    assert.match(body, /<main id="main"/, `${page}: the skip link has nowhere to land`);
+  }
+});
+
+test('the link to the other language is named by the letters it shows', () => {
+  for (const lang of LANGS) {
+    const [, name, shown] = home[lang].match(/<a href="[^"]*" hreflang="\w+" lang="\w+" aria-label="([^"]*)"[^>]*>(\w+)<\/a>/) ?? [];
+    assert.ok(shown && decode(name).startsWith(shown), `${lang}: "${name}" does not start with "${shown}" (WCAG 2.5.3)`);
+  }
+});
+
+// A phone held sideways: the header leaves as the page scrolls down, the demo keeps one row and the stylist sits beside
+// its chat (founder, 2026-11-16). The script and the styles name the same screen, and the same start of "wide".
+test('the script and the styles agree on a phone held sideways and on where wide starts', async () => {
+  const css = await builtCss(), short = SHORT_QUERY.match(/max-height: ([\d.]+px)/)[1];
+  const sideways = `(orientation:landscape) and (height<=${short})`;
+  assert.ok(css.replaceAll(' ', '').includes(sideways.replaceAll(' ', '')), `no rule for ${SHORT_QUERY}`);
+  assert.match(css, /\.away:not\(:focus-within,:has\(\.menu-pop:popover-open\)\)\{[^}]*opacity:0/, 'the header never leaves (Header.astro)');
+  const wide = Number(WIDE_QUERY.match(/min-width: (\d+)px/)[1]);
+  assert.ok(css.includes(`(width<=${wide - .02}px)`), `the styles' narrow layouts do not end where ${WIDE_QUERY} starts`);
 });

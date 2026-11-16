@@ -213,11 +213,11 @@ const NAV: Record<Shop, Icon[]> = { uniqlo: ['search', 'user', 'cart', 'menu'], 
 
 <style>
   /* --fit-max: the most the scene is enlarged (fitPhone reads it), which only a tablet's stacked layout has room for. */
-  .how { --wide-scene-w: 600px; --fit-max: 1.4; padding: var(--section-pad) clamp(16px, 3vw, 48px); }
-  .hwrap { position: relative; max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; gap: clamp(24px, 5vw, 80px); }
+  .how { --wide-scene-w: 600px; --fit-max: 1.4; padding: var(--section-pad) var(--gutter); }
+  .hwrap { position: relative; max-width: var(--page-max); margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; gap: clamp(24px, 5vw, 80px); }
   .copy { flex: 1 1 340px; min-width: 0; display: grid; gap: clamp(24px, 4 * var(--svh), 52px); }
   /* At most two lines at any width in both languages, with air between them (founder, 2026-11-02: it felt stacked). */
-  h2 { margin: 0; text-align: left; font-size: clamp(1.875rem, 2.9vw, 2.875rem); font-weight: 700; letter-spacing: -.035em; line-height: 1.12; text-wrap: balance; }
+  h2 { margin: 0; text-align: left; font-size: clamp(1.875rem, 2.9vw, 2.875rem); font-weight: 700; letter-spacing: -.035em; line-height: var(--h2-leading); text-wrap: balance; }
   /* Each source's heading and step list share one cell, so the tallest sets the height and nothing jumps between scenes. */
   .hroll { position: relative; display: grid; cursor: pointer; }
   .hw { grid-area: 1 / 1; align-self: end; }
@@ -472,10 +472,10 @@ const NAV: Record<Shop, Icon[]> = { uniqlo: ['search', 'user', 'cart', 'menu'], 
     .ha { width: 214px; }
   }
   /* Phones and tablets, and wider tablets held upright: the section is one screen tall, the headline above and the phone
-     filling the rest, with side room. */
-  @media (max-width: 899.98px), (max-width: 1199.98px) and (orientation: portrait) {
+     filling the rest, with side room. A phone held sideways has no height for that and keeps the wide layout. */
+  @media (max-width: 599.98px), (max-width: 899.98px) and (min-height: 500px), (max-width: 1199.98px) and (orientation: portrait) {
     /* Room above for the header: the full bar on tablets, the menu button alone on phones. */
-    .how { display: flex; flex-direction: column; height: max(100 * var(--svh), 560px); padding: 104px clamp(16px, 4vw, 40px) 20px; }
+    .how { display: flex; flex-direction: column; height: max(100 * var(--svh), 560px); padding: 104px var(--gutter) 20px; }
     .hwrap { flex: 1; width: 100%; min-height: 0; flex-direction: column; flex-wrap: nowrap; align-items: stretch; gap: 12px; }
     .copy { flex: none; gap: 20px; }
     .visual { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
@@ -492,6 +492,11 @@ const NAV: Record<Shop, Icon[]> = { uniqlo: ['search', 'user', 'cart', 'menu'], 
       .visual { flex: 0 1 auto; }
       .hstage { flex: 0 1 calc(100cqw * var(--scene-ratio)); }
     }
+  }
+  /* A phone held sideways (SHORT_QUERY, lib/constants.ts): one row, and the scene fitted to the screen's height. */
+  @media (orientation: landscape) and (max-height: 499.98px) {
+    .hwrap { flex-wrap: nowrap; }
+    .hstage { height: calc(100 * var(--svh) - 2 * var(--section-pad)); }
   }
   /* The dots and the pause button only mean something while the demos move (html.motion, motion/index.ts). */
   :global(html:not(.motion)) .hctl { display: none; }

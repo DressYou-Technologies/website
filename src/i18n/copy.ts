@@ -117,6 +117,7 @@ const en = {
     extension: { title: 'Try on from any shop.', lede: 'DressYou on every product page in Chrome.', bag: 'Add to bag', add: 'Add to Chrome', soon: 'Coming soon to Chrome' },
   },
   doc: { updated: 'Last updated' },
+  skip: 'Skip to content',
   notFound: { title: 'This page does not exist.', text: 'The link may be old.', home: 'Go to the home page' },
   // Where the verification mail lands (src/lib/auth.ts). In the app's words where it has them
   // (ios/DressYou/Resources/Localizable.xcstrings, the key beside each line), so the site and the app say the same thing.
@@ -229,6 +230,7 @@ const fr: Copy = {
     extension: { title: 'Essayez depuis toute boutique.', lede: 'DressYou sur chaque page produit dans Chrome.', bag: 'Ajouter au panier', add: 'Ajouter à Chrome', soon: 'Bientôt sur Chrome' },
   },
   doc: { updated: 'Mis à jour le' },
+  skip: 'Aller au contenu',
   notFound: { title: 'Cette page n’existe pas.', text: 'Le lien est peut-être ancien.', home: 'Aller à l’accueil' },
   verified: {
     title: 'Vérification de l’adresse e-mail',

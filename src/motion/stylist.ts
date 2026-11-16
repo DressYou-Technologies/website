@@ -8,7 +8,7 @@ import type { Section } from './index';
 const STEP = 1.8;                         // timeline time per question: typed, sent, checked, answered
 const STAGE_TOP = 104, STAGE_BOTTOM = 56; // the pinned stage's padding, around the header and the input
 const PHONE_TOP = 72, PHONE_BOTTOM = 20;  // on phones the header is a single button, so the stage starts higher
-const CHAT_MIN = 300, CHAT_MAX = 760;
+const CHAT_MAX = 760;
 const STACK_GAP = 16;
 const LABELS = ['opinion', 'day', 'trip', 'find', 'shop'];
 const POP = .18;                          // one part of the answer arriving
@@ -20,19 +20,22 @@ const FADE_PX = 64;                       // the chat view's top fade (its mask 
 
 // The stage sticks while the story scrolls: each capability arrives, its question types itself and sends,
 // and the answer pops in. Snapping to each label means a fast scroll always lands on one whole question.
-export const stylist: Section = (root, wide) => {
+export const stylist: Section = (root, wide, ctx) => {
   const sec = one(root, '.stylist'), stage = one(sec, '.sstage'), head = one(sec, '.shead'), chat = one(sec, '.schat');
   const view = one(sec, '.sview'), track = one(sec, '.strack'), type = one(sec, '.stype'), ph = one(sec, '.sph'), send = one(sec, '.ssend');
   const tabs = all(sec, '.stab'), groups = all(sec, '.sg');
   gsap.set(sec, { height: `calc(100 * var(--svh) + ${STORY_LENGTH_PX}px)` });
-  const top = wide ? STAGE_TOP : PHONE_TOP, bottom = wide ? STAGE_BOTTOM : PHONE_BOTTOM;
-  gsap.set(stage, { position: 'sticky', top: 0, height: 'calc(100 * var(--svh))', paddingTop: top, paddingBottom: bottom, flexWrap: 'nowrap', flexDirection: wide ? 'row' : 'column', alignItems: wide ? 'center' : 'stretch', gap: wide ? undefined : STACK_GAP });
+  // A phone held sideways has no height for the heading above the chat, nor for room under the header (which leaves as the
+  // page scrolls down, Header.astro): the two sit side by side, as on wide screens.
+  const short = ctx.conditions?.short === true, row = wide || short;
+  const top = short ? PHONE_BOTTOM : wide ? STAGE_TOP : PHONE_TOP, bottom = wide && !short ? STAGE_BOTTOM : PHONE_BOTTOM;
+  gsap.set(stage, { position: 'sticky', top: 0, height: 'calc(100 * var(--svh))', paddingTop: top, paddingBottom: bottom, flexWrap: 'nowrap', flexDirection: row ? 'row' : 'column', alignItems: row ? 'center' : 'stretch', gap: row ? undefined : STACK_GAP });
   if (!wide) {
     gsap.set(one(head, '.stabs'), { gridTemplateAreas: '"tab"' });
     gsap.set(tabs, { gridArea: 'tab' });
   }
   // The stage is the screen with the browser's bars shown (--svh), so the input never sits under them.
-  gsap.set(chat, { height: () => Math.min(CHAT_MAX, Math.max(CHAT_MIN, stage.clientHeight - top - bottom - (wide ? 0 : head.offsetHeight + STACK_GAP))) });
+  gsap.set(chat, { height: () => Math.min(CHAT_MAX, stage.clientHeight - top - bottom - (row ? 0 : head.offsetHeight + STACK_GAP)) });
   gsap.set(tabs.slice(1), { opacity: 0, x: -24 });
   gsap.set(tabs.slice(1).map((t) => one(t, '.sico')), { backgroundColor: PAPER, color: INK });
   gsap.set(all(sec, '.sg .sq'), { opacity: 0, scale: .2, transformOrigin: '100% 100%' });

@@ -106,12 +106,10 @@ const send = 'M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.63
 </section>
 
 <style>
-  .more { --title: clamp(2.125rem, 4.6vw, 3.625rem); --title-gap: clamp(20px, 3 * var(--svh), 32px); padding: var(--section-pad) clamp(16px, 3vw, 48px); background: #0a0a0b; color: #f4f4f2; }
-  .head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px 48px; max-width: 1440px; margin: 0 auto var(--title-gap); }
-  h2 { margin: 0; font-size: var(--title); font-weight: 700; letter-spacing: -.05em; line-height: 1; }
-  /* Below 40px the display tracking closes letters up, so it eases to the demo heading's (4.6vw drops under 40px at 870px). */
-  @media (max-width: 869.98px) { h2 { letter-spacing: -.035em; } }
-  .bento { display: flex; flex-wrap: wrap; gap: 16px; max-width: 1440px; margin: 0 auto; }
+  .more { --title: calc(var(--h2-size) * var(--h2-leading)); --title-gap: clamp(20px, 3 * var(--svh), 32px); padding: var(--section-pad) var(--gutter); background: #0a0a0b; color: #f4f4f2; }
+  .head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px 48px; max-width: var(--page-max); margin: 0 auto var(--title-gap); }
+  h2 { margin: 0; font-size: var(--h2-size); font-weight: 700; letter-spacing: var(--h2-tracking); line-height: var(--h2-leading); }
+  .bento { display: flex; flex-wrap: wrap; gap: 16px; max-width: var(--page-max); margin: 0 auto; }
   svg { flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
   :global(picture) { display: block; }
   h3 { margin: 0 0 8px; font-weight: 700; letter-spacing: -.045em; line-height: 1.02; }

@@ -1,9 +1,11 @@
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--white); color: var(--ink); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; overflow-x: clip; padding-bottom: 12px; }
 a, a:hover { color: inherit; }
-/* Anchors and keyboard focus land below the floating header: its bottom edge (88px, 64px on phones) plus 8px (WCAG 2.4.11). */
-html { scroll-padding-top: 96px; }
-@media (max-width: 599.98px) { html { scroll-padding-top: 72px; } }
+/* Anchors and keyboard focus land below the floating header (WCAG 2.4.11). */
+html { scroll-padding-top: var(--header-clear); }
+/* Keyboard users skip the header: the link shows only while it holds the focus (WCAG 2.4.1). */
+.skip { position: absolute; z-index: 20; top: 12px; left: 12px; padding: 12px 18px; border-radius: 14px; background: var(--white); color: var(--ink); font-weight: 700; text-decoration: none; transform: translateY(-200%); }
+.skip:focus-visible { transform: none; }
 /* Headings balance their lines and paragraphs avoid a lone last word. */
 h1, h2, h3 { text-wrap: balance; }
 p { text-wrap: pretty; }

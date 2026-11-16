@@ -9,7 +9,8 @@ const PARALLAX_PX = 160;   // alternate columns travel opposite ways while the h
 export const hero: Section = (root) => {
   const section = one(root, '.hero');
   const q = gsap.utils.selector(section);
-  gsap.from(one(root, '.top'), { y: -24, opacity: 0, duration: .8, ease: 'power3.out' });
+  // Its entrance over, the header's place and opacity go back to its styles, which hide it on phones (Header.astro).
+  gsap.from(one(root, '.top'), { y: -24, opacity: 0, duration: .8, ease: 'power3.out', clearProps: 'transform,opacity' });
   gsap.from(q('.stack'), { scale: 1.12, opacity: 0, duration: 1.6, ease: 'power3.out' });
   gsap.from(q('.hero-cta .line > span'), { yPercent: 60, opacity: 0, filter: 'blur(10px)', duration: 1.2, ease: 'power3.out', stagger: .12, delay: .3, clearProps: 'filter' });
   gsap.from(q('.sub'), { y: 12, opacity: 0, duration: .9, ease: 'power3.out', delay: .6 });

@@ -36,7 +36,7 @@ const t = COPY[lang];
       {k > 0 && <span class="slash" aria-hidden="true">/</span>}
       {l === lang
         ? <span class="on" aria-current="true">{l.toUpperCase()}</span>
-        : <a href={localize(l, path)} hreflang={l} lang={l} aria-label={t.lang.label}>{l.toUpperCase()}</a>}
+        : <a href={localize(l, path)} hreflang={l} lang={l} aria-label={`${l.toUpperCase()}. ${t.lang.label}`}>{l.toUpperCase()}</a>}
     </>)}</div>
   </div>
 </header>
@@ -48,7 +48,8 @@ const t = COPY[lang];
     display: flex; align-items: center; justify-content: space-between;
     padding: 10px 10px 10px 20px; border-radius: 22px; color: #fff; background-color: rgba(14,14,14,0);
     transition: width .45s cubic-bezier(.2,.7,.2,1), background-color .35s, box-shadow .35s,
-      padding .42s cubic-bezier(.32,.94,.3,1), top .42s cubic-bezier(.32,.94,.3,1), border-radius .42s cubic-bezier(.32,.94,.3,1);
+      padding .42s cubic-bezier(.32,.94,.3,1), top .42s cubic-bezier(.32,.94,.3,1), border-radius .42s cubic-bezier(.32,.94,.3,1),
+      transform .42s cubic-bezier(.32,.94,.3,1), opacity .3s;
   }
   .top.folded, :global(html:not(.js)) .top { width: min(560px, calc(100% - 24px)); background-color: rgba(14,14,14,.78); backdrop-filter: blur(14px); box-shadow: 0 12px 32px rgba(0,0,0,.18); }
 
@@ -63,7 +64,7 @@ const t = COPY[lang];
 
   .bar { display: flex; align-items: center; gap: 4px; }
   .bar :global(.hdr-ext) {
-    display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 42px;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 44px;
     max-width: clamp(0px, (100vw - 600px) * 100, 240px); padding: 0 clamp(0px, (100vw - 600px) * 100, 20px); overflow: hidden;
     border: 0; border-radius: 14px; background: rgba(255,255,255,.14); color: #fff; font: inherit; font-weight: 600; font-size: .9375rem; text-decoration: none; white-space: nowrap; cursor: pointer;
     transition: height .42s cubic-bezier(.32,.94,.3,1), font-size .42s cubic-bezier(.32,.94,.3,1), border-radius .42s cubic-bezier(.32,.94,.3,1), background-color .35s;
@@ -72,7 +73,7 @@ const t = COPY[lang];
 
   .hdr-app { position: relative; display: inline-flex; max-width: 0; margin-left: -4px; opacity: 0; visibility: hidden; overflow: hidden; pointer-events: none; transition: max-width .6s cubic-bezier(.65,0,.35,1), margin-left .6s cubic-bezier(.65,0,.35,1), opacity .6s cubic-bezier(.65,0,.35,1), visibility .6s; }
   .hdr-app > :global(button) {
-    display: inline-flex; align-items: center; justify-content: center; height: 42px; padding: 0 20px; border: 0; border-radius: 14px;
+    display: inline-flex; align-items: center; justify-content: center; height: 44px; padding: 0 20px; border: 0; border-radius: 14px;
     background: #fff; color: #0a0a0a; font: inherit; font-weight: 600; font-size: .9375rem; white-space: nowrap; cursor: pointer;
     transform: translateX(14px) scale(.92);
     transition: transform .55s cubic-bezier(.65,0,.35,1), height .42s cubic-bezier(.32,.94,.3,1), font-size .42s cubic-bezier(.32,.94,.3,1), border-radius .42s cubic-bezier(.32,.94,.3,1);
@@ -94,7 +95,9 @@ const t = COPY[lang];
   .menu-pop::backdrop { background: transparent; }
   .menu-langs { display: flex; align-items: center; gap: 8px; font-size: .9375rem; font-weight: 700; letter-spacing: -.01em; }
   .menu-langs a, .menu-langs span { padding: 4px 2px; color: #0a0a0a; text-decoration: none; }
-  .menu-langs a { opacity: .35; transition: opacity .2s; }
+  /* The other language: dimmer than the current one yet 4.5:1 on either ground (WCAG 1.4.3), 44px to tap through its ::before. */
+  .menu-langs a { position: relative; opacity: .6; transition: opacity .2s; }
+  .menu-langs a::before { content: ''; position: absolute; inset: -10px -8px; }
   @media (hover: hover) { .menu-langs a:hover { opacity: 1; } }
   .menu-langs .slash { padding: 0; color: #c8c8c8; }
   /* Below 600 px the header's extension button folds away, so the menu carries both ways to get DressYou. */
@@ -132,6 +135,13 @@ const t = COPY[lang];
     .menu-langs a, .menu-langs span { color: #fff; }
     .menu-langs .slash { color: rgba(255,255,255,.3); }
     :global(html:has(.menu-pop:popover-open)) { overflow: hidden; }
+  }
+
+  /* Phones, upright or sideways: the header leaves while the page scrolls down and returns when it scrolls up (founder,
+     2026-11-16), so nothing passes behind it. It stays while it holds the keyboard's focus or its menu is open. */
+  @media (max-width: 599.98px), (orientation: landscape) and (max-height: 499.98px) {
+    .top.away:not(:focus-within, :has(.menu-pop:popover-open)), .top.away:not(:focus-within, :has(.menu-pop:popover-open)) > * { pointer-events: none; }
+    .top.away:not(:focus-within, :has(.menu-pop:popover-open)) { transform: translateY(calc(-1 * var(--header-clear))); opacity: 0; }
   }
 
   /* Past the hero, "Get the app" opens beside the menu. */

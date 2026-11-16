@@ -12,7 +12,19 @@
      slide away and back, which resizes the page there (chrome.ts); every length that follows the screen's height reads it. */
   --svh: 1svh;
   --section-pad: clamp(40px, 7 * var(--svh), 96px);            /* room above and below a section, so it reads in one screen */
+  /* Sections share their side room and their widest content, so their text starts on one left edge. */
+  --gutter: clamp(16px, 3vw, 48px);
+  --page-max: 1200px;
+  /* Section titles: one size, which the screen's height bounds too, with air between two lines (founder, 2026-11-02). */
+  --h2-size: clamp(1.875rem, min(4vw, 7.5 * var(--svh)), 3.375rem);
+  --h2-leading: 1.12;
+  --h2-tracking: -.05em;
+  /* The floating header's bottom edge (88px, 64px on phones) plus 8px. */
+  --header-clear: 96px;
 }
+/* Below 40px the display tracking closes letters up (4vw drops under 40px at 1000px wide, 7.5% of the screen's height at 533px tall). */
+@media (max-width: 999.98px), (max-height: 532.98px) { :root { --h2-tracking: -.035em; } }
+@media (max-width: 599.98px) { :root { --header-clear: 72px; } }
 
 @font-face { font-family: 'Manrope'; font-style: normal; font-weight: 200 800; font-display: swap; src: url('/fonts/Manrope-200-800-latin-ext.woff2') format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
 @font-face { font-family: 'Manrope'; font-style: normal; font-weight: 200 800; font-display: swap; src: url('/fonts/Manrope-200-800-latin.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }

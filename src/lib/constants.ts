@@ -1,6 +1,8 @@
 export const MOTION_QUERY = '(prefers-reduced-motion: no-preference)';
-export const WIDE_QUERY = '(min-width: 901px)';
+export const WIDE_QUERY = '(min-width: 900px)';   // where the styles' narrow layouts end (max-width: 899.98px)
+export const SHORT_QUERY = '(orientation: landscape) and (max-height: 499.98px)';   // a phone held sideways (How.astro, Header.astro)
 export const HEADER_FOLD_AT = 80;          // px scrolled before the header becomes a pill
+export const HEADER_AWAY_STEP = 6;         // px scrolled one way before the phone header leaves or returns: less is a finger's tremor
 export const HERO_PASSED_OFFSET = 90;      // the header's "Get the app" shows this far before the hero ends
 export const TOUCH_QUERY = '(hover: none) and (pointer: coarse)';   // touch-only screens, whose browsers slide their bars away
 export const FULL_MENU_QUERY = '(max-width: 599.98px)';   // phones: the menu takes the whole screen (Header.astro)
