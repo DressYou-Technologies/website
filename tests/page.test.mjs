@@ -58,8 +58,7 @@ test('the English home page says the wording the brief validated, and none of th
   for (const line of ["Try it on before it's yours.", 'Your Digital Twin. Your style. Your AI stylist.', 'More than virtual try-on.',
     'Your wardrobe. More looks.', 'Add pieces once. Mix and match them on your Digital Twin.',
     'Looks that match your style.', 'Discover pieces worn by people who share your taste.',
-    'Get a second opinion.', 'Share a look. See what your friends think.', 'Ask your friends',
-    'Fashion, made personal.', 'Discover looks, try them on and shop with confidence.']) assert.ok(page.includes(line), line);
+    'Get a second opinion.', 'Share a look. See what your friends think.', 'Ask your friends']) assert.ok(page.includes(line), line);
   for (const old of ['Tap try on', 'More than a try-on.', 'Fill your wardrobe.', 'A feed of real people.', 'Wear it first.']) {
     assert.ok(!page.includes(old), `still says "${old}"`);
   }
@@ -330,21 +329,19 @@ test('without a store link the extension dialog shows its demo and no link out',
   }
 });
 
-test('the footer lists only working links, the contact address, the other language and the rights line', () => {
+test('the footer lists only working links, the contact address and the rights line, and asks for nothing', () => {
   for (const lang of LANGS) {
-    const footer = home[lang].match(/<footer[\s\S]*?<\/footer>/)[0], t = COPY[lang], other = LANGS.find((l) => l !== lang);
+    const footer = home[lang].match(/<footer[\s\S]*?<\/footer>/)[0], t = COPY[lang];
     const links = [...footer.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)].map(([, href, label]) => [decode(text(label)), href]);
     const local = (link) => { const [page, hash] = link.split('#'); return localize(lang, page || '/') + (hash ? `#${hash}` : ''); };
     assert.deepEqual(links, [
-      [t.dialog.notify.privacy, localize(lang, '/privacy')],
       ...t.finale.columns.flatMap((column) => column.links.map(([label, link]) => [label, local(link)])),
       ['info@dressyouapp.com', 'mailto:info@dressyouapp.com'],
-      [t.lang.switchTo, localize(other, '/')],
     ]);
     assert.ok(decode(text(footer)).includes(`© ${new Date().getFullYear()} DressYou Technologies. ${t.finale.rights}`), `${lang}: the rights line`);
     // The logo across the footer: the symbol beside the wordmark (scripts/brand.mjs).
     assert.match(footer, /<img[^>]*src="[^"]*\/lockup-white[^"]*"[^>]*alt="DressYou"|<img[^>]*alt="DressYou"[^>]*src="[^"]*\/lockup-white/, `${lang}: the footer logo`);
-    assert.match(footer, /<form class="notify[^"]*"[^>]*data-lang="/, `${lang}: the footer asks for an email itself`);
+    assert.doesNotMatch(footer, /<form|<input|<button|<h2/, `${lang}: the footer carries a form, a button or a headline`);
     assert.doesNotMatch(footer, /<picture|<img(?![^>]*alt="DressYou")/, `${lang}: the footer shows no picture besides the logo`);
   }
 });
@@ -573,4 +570,9 @@ test('the apple app-site-association opens only the reset and verified links in 
   });
   const { headers } = JSON.parse(await readFile(new URL('../vercel.json', import.meta.url), 'utf8'));
   assert.deepEqual(headers.find((h) => h.source === '/.well-known/apple-app-site-association')?.headers, [{ key: 'Content-Type', value: 'application/json' }]);
+});
+
+test('the demo section carries the scale limit its script reads to size the phone', async () => {
+  const css = (await Promise.all((await readdir(new URL('_astro/', DIST))).filter((f) => f.endsWith('.css')).map((f) => read(`_astro/${f}`)))).join('');
+  assert.match(css, /--fit-max:\s*\d/, 'fitPhone reads --fit-max from the stage (How.astro)');
 });

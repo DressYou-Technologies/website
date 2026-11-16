@@ -212,7 +212,8 @@ const NAV: Record<Shop, Icon[]> = { uniqlo: ['search', 'user', 'cart', 'menu'], 
 </section>
 
 <style>
-  .how { padding: var(--section-pad) clamp(16px, 3vw, 48px); }
+  /* --fit-max: the most the scene is enlarged (fitPhone reads it), which only a tablet's stacked layout has room for. */
+  .how { --wide-scene-w: 600px; --fit-max: 1.4; padding: var(--section-pad) clamp(16px, 3vw, 48px); }
   .hwrap { position: relative; max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; gap: clamp(24px, 5vw, 80px); }
   .copy { flex: 1 1 340px; min-width: 0; display: grid; gap: clamp(24px, 4 * var(--svh), 52px); }
   /* At most two lines at any width in both languages, with air between them (founder, 2026-11-02: it felt stacked). */
@@ -246,7 +247,7 @@ const NAV: Record<Shop, Icon[]> = { uniqlo: ['search', 'user', 'cart', 'menu'], 
   .visual { flex: 1.5 1 440px; min-width: 0; container-type: inline-size; }
   /* The scene is laid out at its own size, then scaled as one piece to its stage (fitPhone), which the screen's height bounds
      so the section reads in one screen. Wide: the bubbles stand beside the phone. */
-  .hstage { --scene-w: 600px; --scene-h: 660px; position: relative; width: 100%; height: clamp(440px, calc(100 * var(--svh) - 2 * var(--section-pad)), 800px); overflow: visible; }
+  .hstage { --scene-w: var(--wide-scene-w); --scene-h: 660px; --scene-ratio: calc(660 / 600); position: relative; width: 100%; height: clamp(440px, calc(100 * var(--svh) - 2 * var(--section-pad)), 800px); overflow: visible; }
   /* Centred by half its size, which still holds when the unscaled scene is wider than the stage. */
   .hfit { --phone-h: 600; position: absolute; left: 50%; top: 50%; width: var(--scene-w); height: var(--scene-h); margin: calc(var(--scene-h) / -2) 0 0 calc(var(--scene-w) / -2); }
   .hphone { position: absolute; left: 0; top: 30px; height: calc(var(--phone-h) * 1px); aspect-ratio: 1350 / 2760; }
@@ -451,7 +452,7 @@ const NAV: Record<Shop, Icon[]> = { uniqlo: ['search', 'user', 'cart', 'menu'], 
      the head and leaves once the question is sent (--asked, how.ts), and the question and the answer sit under the
      picture, over the screen's buttons. */
   @container (max-width: 559.98px) {
-    .hstage { --scene-w: 360px; --scene-h: 640px; height: min(calc(100cqw * 640 / 360), calc(100 * var(--svh) - 150px)); }
+    .hstage { --scene-w: 360px; --scene-h: 640px; --scene-ratio: calc(640 / 360); height: min(calc(100cqw * 640 / 360), calc(100 * var(--svh) - 150px)); }
     .hphone { top: 20px; left: 0; right: 0; margin-inline: auto; }
     .hpop { z-index: 7; }
     .hsz { left: auto; right: 0; top: 108px; min-width: 0; gap: 5px; padding: 8px; border-radius: 16px; filter: opacity(calc(1 - var(--asked, 0))); }
@@ -470,14 +471,27 @@ const NAV: Record<Shop, Icon[]> = { uniqlo: ['search', 'user', 'cart', 'menu'], 
     .hdots { padding: 11px 13px; }
     .ha { width: 214px; }
   }
-  /* Phones and tablets: the section is one screen tall, the headline above and the phone filling the rest, with side room. */
-  @media (max-width: 899.98px) {
+  /* Phones and tablets, and wider tablets held upright: the section is one screen tall, the headline above and the phone
+     filling the rest, with side room. */
+  @media (max-width: 899.98px), (max-width: 1199.98px) and (orientation: portrait) {
     /* Room above for the header: the full bar on tablets, the menu button alone on phones. */
     .how { display: flex; flex-direction: column; height: max(100 * var(--svh), 560px); padding: 104px clamp(16px, 4vw, 40px) 20px; }
     .hwrap { flex: 1; width: 100%; min-height: 0; flex-direction: column; flex-wrap: nowrap; align-items: stretch; gap: 12px; }
     .copy { flex: none; gap: 20px; }
     .visual { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
     .hstage { flex: 1 1 auto; height: auto; min-height: 360px; }
+    /* Tablets (founder, 2026-11-16: side by side left an upright iPad mostly empty): the heading and the steps share a
+       row above the scene, no wider than the scene at its largest, and the two sit together in the middle of the screen. */
+    @media (min-width: 600px) {
+      .hwrap { max-width: calc(var(--wide-scene-w) * var(--fit-max)); justify-content: center; gap: clamp(20px, 3 * var(--svh), 40px); }
+      /* The steps drop under the heading when it would have less than two lines' width beside them. */
+      .copy { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 20px clamp(24px, 5vw, 56px); }
+      .hhead { flex: 1 1 20rem; }
+      .hlists { flex: none; }
+      h2 { font-size: clamp(1.875rem, 3.6vw, 2.25rem); }
+      .visual { flex: 0 1 auto; }
+      .hstage { flex: 0 1 calc(100cqw * var(--scene-ratio)); }
+    }
   }
   /* The dots and the pause button only mean something while the demos move (html.motion, motion/index.ts). */
   :global(html:not(.motion)) .hctl { display: none; }

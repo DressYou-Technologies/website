@@ -19,7 +19,7 @@ const TAB_SECONDS = 1.2;              // quick: each open shop tab passes this f
 const PRODUCT_SECONDS = 1.8;          // looking: the tab to share swipes in and is seen before its page menu is tapped
 const MENU_SECONDS = .6;              // quick: Safari's page menu shows this long before Share is tapped
 const SHEET_SECONDS = .7;             // quick: the share sheet shows this long before DressYou is tapped
-const FIT_MAX = 1.2, FIT_PAD_X = 8, FIT_PAD_Y = 16;
+const FIT_PAD_X = 8, FIT_PAD_Y = 16;
 const RESIZE_SETTLE_MS = 120;
 const DIM = '#767676', INK = '#0a0a0a';  // DIM: the lightest grey at 4.5:1 on white (WCAG 1.4.3)
 const TILE_EDGE = 'inset 0 0 0 1px rgba(10,10,11,.08)', TILE_PICKED = 'inset 0 0 0 2px #0a0a0b';
@@ -31,8 +31,9 @@ const CHIP_ON = { backgroundColor: '#0a0a0b', color: '#f4f4f2', fontWeight: 700 
 export function fitPhone() {
   const stage = one(document, '.hstage');
   const scene = one(document, '.hfit');
+  const max = parseFloat(getComputedStyle(stage).getPropertyValue('--fit-max'));
   const fit = () => {
-    const k = Math.min(FIT_MAX, (stage.clientWidth - FIT_PAD_X) / scene.offsetWidth, (stage.clientHeight - FIT_PAD_Y) / scene.offsetHeight);
+    const k = Math.min(max, (stage.clientWidth - FIT_PAD_X) / scene.offsetWidth, (stage.clientHeight - FIT_PAD_Y) / scene.offsetHeight);
     scene.style.transform = `scale(${k.toFixed(3)})`;
   };
   fit();

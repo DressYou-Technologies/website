@@ -2,13 +2,13 @@
 import { COPY } from '../i18n/copy';
 import { localize, type Lang } from '../i18n/lang';
 
-// The "be notified" form, in the app dialog and in the footer. chrome.ts posts it; its answers ride as data attributes
+// The "be notified" form, in the app dialog. chrome.ts posts it; its answers ride as data attributes
 // and show below the field, never inside it.
-interface Props { lang: Lang; dark?: boolean }
-const { lang, dark = false } = Astro.props;
+interface Props { lang: Lang }
+const { lang } = Astro.props;
 const t = COPY[lang].dialog;
 ---
-<div class:list={['wrap', { dark }]}>
+<div class="wrap">
   <form class="notify" novalidate data-lang={lang} data-ok={t.says.ok} data-email={t.says.email} data-closed={t.says.closed} data-failed={t.says.failed}>
     <div class="row">
       <label class="field"><span class="sr">{t.notify.email}</span><input type="email" name="email" required autocomplete="email" inputmode="email" maxlength="254" placeholder={t.notify.placeholder} /></label>
@@ -35,19 +35,4 @@ const t = COPY[lang].dialog;
   .notify.done .row { display: none; }
   .notify.done .status { color: #0a0a0a; font-weight: 600; }
   .fine { margin: 0; max-width: 34ch; color: rgba(10,10,11,.5); font-size: .8125rem; line-height: 1.45; text-align: center; }
-
-  /* In the footer: the field and its button in one pill on the dark card, the answer on its own line under it. */
-  .dark { gap: 12px; }
-  .dark .notify { margin: 0; }
-  .dark .row { grid-template-columns: minmax(0, 1fr) auto; gap: 6px; padding: 6px; border-radius: 999px; background: rgba(255,255,255,.07); box-shadow: inset 0 0 0 1px rgba(255,255,255,.14); transition: box-shadow .2s; }
-  .dark .row:focus-within { box-shadow: inset 0 0 0 1px rgba(255,255,255,.45); }
-  .dark .field input { height: 48px; padding: 0 18px; border-radius: 999px; background: transparent; box-shadow: none; color: #fff; }
-  .dark .field input::placeholder { color: rgba(255,255,255,.42); }
-  .dark .field input:focus-visible { box-shadow: none; }
-  .dark .send { height: 48px; padding: 0 24px; border-radius: 999px; background: #fff; color: #0a0a0a; font-weight: 600; }
-  .dark .status { color: #cfcfcf; font-size: .875rem; }
-  .dark .status.error { color: #f2a59d; }
-  .dark .notify.done .status { color: #fff; font-size: 1rem; }
-  .dark .fine { max-width: 46ch; color: #8a8a8a; }
-  .dark .fine a { color: #cfcfcf; }
 </style>

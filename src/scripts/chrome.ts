@@ -99,7 +99,7 @@ const NOTIFY_URL = '/api/notify';
 type Answer = 'ok' | 'email' | 'closed' | 'failed';
 
 // "Be notified": the page posts the address to its own function, which hands it to the email list.
-// `shownAt` is when the form came into view: its dialog's opening, or the page's start for the footer's.
+// `shownAt` is when the form came into view: its dialog's opening.
 function notify(form: HTMLFormElement, shownAt: () => number) {
   const email = one<HTMLInputElement>(form, 'input[name="email"]'), trap = one<HTMLInputElement>(form, 'input[name="website"]');
   const button = one<HTMLButtonElement>(form, 'button[type="submit"]'), status = one(form, '.status');
@@ -143,7 +143,7 @@ function demo(dialog: HTMLDialogElement) {
 
 function dialogs() {
   let openedAt = 0;
-  document.querySelectorAll<HTMLFormElement>('form.notify').forEach((form) => notify(form, () => (form.closest('dialog') ? openedAt : 0)));
+  document.querySelectorAll<HTMLFormElement>('form.notify').forEach((form) => notify(form, () => openedAt));
   document.querySelectorAll<HTMLButtonElement>('[data-get]').forEach((button) => button.addEventListener('click', () => {
     const dialog = document.getElementById(`get-${button.dataset.get}`);
     if (!(dialog instanceof HTMLDialogElement)) return;

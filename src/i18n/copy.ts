@@ -20,7 +20,7 @@ const en = {
     tagline: "Try it on before it's yours.",
   },
   get: { app: 'Get the app', extension: 'Get the extension', qr: 'QR code to download the app' },
-  lang: { heading: 'Language', switchTo: 'Français', label: 'Lire en français' },
+  lang: { label: 'Lire en français' },
   menu: { label: 'Menu' },
   hero: { lines: ['Try it on', "before it's yours."], sub: 'Your Digital Twin. Your style. Your AI stylist.' },
   how: {
@@ -102,11 +102,7 @@ const en = {
     ask: 'ask your stylist',
   },
   finale: {
-    mega: ['Fashion,', 'made personal.'],
-    lede: 'Discover looks, try them on and shop with confidence.',
-    extension: 'Chrome extension',
-    soon: 'coming soon',
-    // Only pages that exist (founder, 2026-11-16). The contact address and the other language follow as their own columns.
+    // Only pages that exist (founder, 2026-11-16). The contact address follows as its own column.
     columns: [{ label: 'Legal', links: [['Legal notice', '/legal'], ['Privacy', '/privacy']] }],
     contact: 'Contact',
     rights: 'All rights reserved.',
@@ -144,7 +140,7 @@ const fr: Copy = {
     tagline: "Essayez-le avant qu'il soit à vous.",
   },
   get: { app: "Télécharger l'app", extension: "Installer l'extension", qr: "QR code pour télécharger l'app" },
-  lang: { heading: 'Langue', switchTo: 'English', label: 'Read in English' },
+  lang: { label: 'Read in English' },
   menu: { label: 'Menu' },
   hero: { lines: ['Essayez-le', "avant qu'il soit à vous."], sub: 'Votre jumeau numérique. Votre style. Votre styliste IA.' },
   how: {
@@ -219,10 +215,6 @@ const fr: Copy = {
     ask: 'demandez à votre styliste',
   },
   finale: {
-    mega: ['La mode,', 'à votre image.'],
-    lede: 'Découvrez des looks, essayez-les et achetez en toute confiance.',
-    extension: 'Extension Chrome',
-    soon: 'bientôt',
     columns: [{ label: 'Légal', links: [['Mentions légales', '/legal'], ['Confidentialité', '/privacy']] }],
     contact: 'Contact',
     rights: 'Tous droits réservés.',
