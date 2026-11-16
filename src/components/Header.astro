@@ -109,10 +109,13 @@ const t = COPY[lang];
     /* The logo and the menu button float with no plate: each turns ink over light sections and white over dark ones
        (chrome.ts). The bar between them lets taps through to the page. Both glyphs sit 20px inside the hero card's sides and
        18px below its top, clear of its 28px corners (founder, 2026-11-02): the card's 12px margin plus 6px, as each 44px tap
-       area already pads its glyph by 14px. */
-    .top, .top.folded { top: 20px; left: 18px; right: 18px; width: auto; margin: 0; padding: 0; border-radius: 16px; background-color: transparent; backdrop-filter: none; box-shadow: none; pointer-events: none; }
+       area already pads its glyph by 14px.
+       The bar itself has no height: Safari on iOS 26 and later paints a solid strip behind the status bar, in the colour
+       of any fixed box lying across the top of the screen, and grey when that box is clear (founder, 2026-11-16). With no
+       box there the page runs under the status bar. */
+    .top, .top.folded { top: 20px; left: 18px; right: 18px; width: auto; height: 0; align-items: flex-start; margin: 0; padding: 0; border-radius: 16px; background-color: transparent; backdrop-filter: none; box-shadow: none; pointer-events: none; }
     .top > * { pointer-events: auto; }
-    :global(html:not(.js)) .top { background-color: rgba(14,14,14,.6); }
+    :global(html:not(.js)) .top { height: auto; background-color: rgba(14,14,14,.6); }
     .hdr-burger:hover { background-color: transparent; }
     .hdr-burger.on-light { color: #0a0a0a; }
     /* 44 px tall to tap, and inset like the menu button's bars. */
