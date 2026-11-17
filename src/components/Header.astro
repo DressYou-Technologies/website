@@ -102,7 +102,7 @@ const t = COPY[lang];
   .menu-langs .slash { padding: 0; color: #c8c8c8; }
   /* Below 600 px the header's extension button folds away, so the menu carries both ways to get DressYou. */
   .menu-get { display: none; }
-  .menu-get :global(.menu-app), .menu-get :global(.menu-ext) { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 48px; border: 0; border-radius: 14px; font: inherit; font-weight: 600; font-size: .9375rem; text-decoration: none; cursor: pointer; }
+  .menu-get :global(.menu-app), .menu-get :global(.menu-ext) { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 52px; border: 0; border-radius: 18px; font: inherit; font-weight: 600; font-size: .9375rem; text-decoration: none; cursor: pointer; }
   .menu-get :global(.menu-app) { background: #0a0a0a; color: #fff; }
   .menu-get :global(.menu-ext) { background: #f1f1ef; color: #0a0a0a; }
   .menu-close { display: none; }
@@ -129,8 +129,8 @@ const t = COPY[lang];
     .menu-close { position: absolute; top: calc(env(safe-area-inset-top) + 20px); right: 18px; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 16px; background: rgba(255,255,255,.1); color: #fff; cursor: pointer; }
     .menu-close svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
     .menu-get { display: grid; gap: 10px; margin-top: auto; padding-top: 28px; }
-    .menu-get :global(.menu-app) { height: 54px; background: #fff; color: #0a0a0a; }
-    .menu-get :global(.menu-ext) { height: 54px; background: rgba(255,255,255,.1); color: #fff; }
+    .menu-get :global(.menu-app) { background: #fff; color: #0a0a0a; }
+    .menu-get :global(.menu-ext) { background: rgba(255,255,255,.1); color: #fff; }
     .menu-langs { margin-top: 22px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,.12); }
     .menu-langs a, .menu-langs span { color: #fff; }
     .menu-langs .slash { color: rgba(255,255,255,.3); }

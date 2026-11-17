@@ -9,6 +9,7 @@ const STEP = 1.8;                         // timeline time per question: typed, 
 const STAGE_TOP = 104, STAGE_BOTTOM = 56; // the pinned stage's padding, around the header and the input
 const PHONE_TOP = 72, PHONE_BOTTOM = 20;  // on phones the header is a single button, so the stage starts higher
 const CHAT_MAX = 760;
+const TAB_DIM = .45;   // a tab that is not the current one: 3.4:1 on white, above the 3:1 its large text needs (WCAG 1.4.3)
 const STACK_GAP = 16;
 const LABELS = ['opinion', 'day', 'trip', 'find', 'shop'];
 const POP = .18;                          // one part of the answer arriving
@@ -75,7 +76,7 @@ export const stylist: Section = (root, wide, ctx) => {
     // Every part of the answer has popped by the step's snap point, however many parts it has.
     const stagger = Math.min(ANSWER_STAGGER, (LABEL_AT - ANSWER_AT - POP) / Math.max(1, parts.length - 1));
     if (i) {
-      tl.to(tabs[i - 1], { opacity: wide ? .32 : 0, duration: .2 }, t0)
+      tl.to(tabs[i - 1], { opacity: wide ? TAB_DIM : 0, duration: .2 }, t0)
         .to(one(tabs[i - 1], '.sico'), { backgroundColor: PAPER, color: INK, duration: .2 }, t0)
         .to(tabs[i], { opacity: 1, x: 0, duration: .28, ease: 'back.out(1.8)' }, t0 + .04)
         .fromTo(one(tabs[i], '.sico'), { backgroundColor: PAPER, color: INK, scale: .6 }, { backgroundColor: INK, color: '#ffffff', scale: 1, duration: .28, ease: 'back.out(2.4)', immediateRender: false }, t0 + .04);

@@ -418,9 +418,10 @@ const NAV: Record<Shop, Icon[]> = { uniqlo: ['search', 'user', 'cart', 'menu'], 
   .hpop { position: absolute; inset: 0; pointer-events: none; }
   .hpop > * { opacity: 0; visibility: hidden; }
   .hpop.first > :not(.hdots) { opacity: 1; visibility: visible; }
-  .hsz { position: absolute; left: 322px; top: 150px; width: max-content; min-width: 226px; display: grid; gap: 6px; padding: 10px; border-radius: 20px; background: #fff; color: #0a0a0a; box-shadow: 0 28px 60px rgba(0,0,0,.22), 0 0 0 1px rgba(10,10,10,.05); }
+  .hsz { position: absolute; left: 322px; top: 150px; width: max-content; min-width: 226px; display: grid; gap: 6px; padding: 10px; border-radius: 28px; background: #fff; color: #0a0a0a; box-shadow: 0 28px 60px rgba(0,0,0,.22), 0 0 0 1px rgba(10,10,10,.05); }
   .label { padding: 2px 4px; font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: #6b6b6b; }
-  .hszr { display: flex; align-items: center; gap: 10px; padding: 7px 12px 7px 7px; border-radius: 14px; box-shadow: inset 0 0 0 1px rgba(10,10,10,.12); }
+  /* Nested corners share a centre: the row's is the letter's plus the room round it, the card's the row's plus its padding. */
+  .hszr { display: flex; align-items: center; gap: 10px; padding: 7px 12px 7px 7px; border-radius: 18px; box-shadow: inset 0 0 0 1px rgba(10,10,10,.12); }
   .hszr.chosen { box-shadow: inset 0 0 0 1.5px #0a0a0a; }
   .letter { flex: none; min-width: 34px; height: 34px; padding: 0 6px; border-radius: 11px; background: #f1f1ef; color: #0a0a0a; display: grid; place-items: center; font-size: 16px; font-weight: 700; }
   .chosen .letter { background: #0a0a0a; color: #fff; }
@@ -455,13 +456,13 @@ const NAV: Record<Shop, Icon[]> = { uniqlo: ['search', 'user', 'cart', 'menu'], 
     .hstage { --scene-w: 360px; --scene-h: 640px; --scene-ratio: calc(640 / 360); height: min(calc(100cqw * 640 / 360), calc(100 * var(--svh) - 150px)); }
     .hphone { top: 20px; left: 0; right: 0; margin-inline: auto; }
     .hpop { z-index: 7; }
-    .hsz { left: auto; right: 0; top: 108px; min-width: 0; gap: 5px; padding: 8px; border-radius: 16px; filter: opacity(calc(1 - var(--asked, 0))); }
+    .hsz { left: auto; right: 0; top: 108px; min-width: 0; gap: 5px; padding: 8px; border-radius: 22px; filter: opacity(calc(1 - var(--asked, 0))); }
     .hsz.size { min-width: 0; gap: 7px; padding: 8px 8px 10px; }
     .label { font-size: 9.5px; }
     .szchips { gap: 3px; }
     .szc { min-width: 26px; height: 28px; border-radius: 8px; font-size: 12px; }
     .sztag { gap: 5px; font-size: 12px; }
-    .hszr { gap: 8px; padding: 5px 9px 5px 5px; border-radius: 11px; }
+    .hszr { gap: 8px; padding: 5px 9px 5px 5px; border-radius: 14px; }
     .letter { min-width: 28px; height: 28px; border-radius: 9px; font-size: 13px; }
     .why b { font-size: 12px; }
     .why span { font-size: 8px; }

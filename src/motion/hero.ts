@@ -1,12 +1,13 @@
 import { gsap } from 'gsap';
 import { one } from './dom';
+import { loopWhileShown } from './hold';
 import type { Section } from './index';
 
 const DRIFT_SECONDS = 8;   // one idle drift, up or down
 const DRIFT_PX = 40;
 const PARALLAX_PX = 160;   // alternate columns travel opposite ways while the hero scrolls away
 
-export const hero: Section = (root) => {
+export const hero: Section = (root, _wide, ctx) => {
   const section = one(root, '.hero');
   const q = gsap.utils.selector(section);
   // Its entrance over, the header's place and opacity go back to its styles, which hide it on phones (Header.astro).
@@ -18,6 +19,8 @@ export const hero: Section = (root) => {
   gsap.from(q('.dock > *'), { opacity: 0, duration: .5, stagger: .08, delay: .9 });
   // Three layers so the effects never share a transform: the column's place on the cylinder (CSS),
   // scroll parallax (.lift) and idle drift (.track).
-  gsap.fromTo(q('.track'), { y: (i: number) => (i % 2 ? DRIFT_PX : -DRIFT_PX) }, { y: (i: number) => (i % 2 ? -DRIFT_PX : DRIFT_PX), duration: DRIFT_SECONDS, ease: 'sine.inOut', repeat: -1, yoyo: true, stagger: { each: .35, from: 'center' }, scrollTrigger: { trigger: section, start: 'top bottom', end: 'bottom top', toggleActions: 'play pause resume pause' } });
+  const drift = gsap.fromTo(q('.track'), { y: (i: number) => (i % 2 ? DRIFT_PX : -DRIFT_PX) }, { y: (i: number) => (i % 2 ? -DRIFT_PX : DRIFT_PX), duration: DRIFT_SECONDS, ease: 'sine.inOut', repeat: -1, yoyo: true, stagger: { each: .35, from: 'center' }, paused: true });
+  // The drift never ends, so the visitor's pause holds it with the other loops (WCAG 2.2.2).
+  loopWhileShown(ctx, { trigger: section, start: 'top bottom', end: 'bottom top' }, () => drift.play(), () => drift.pause());
   gsap.to(q('.lift'), { y: (i: number) => (i % 2 ? PARALLAX_PX : -PARALLAX_PX), ease: 'none', scrollTrigger: { trigger: section, start: 'top top', end: 'bottom top', scrub: true } });
 };
