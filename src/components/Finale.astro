@@ -1,4 +1,5 @@
 ---
+import { GUIDES, guidePath } from '../data/guides';
 import { LINKS } from '../data/site';
 import wordmark from '../assets/brand/wordmark-white.svg';
 import { COPY } from '../i18n/copy';
@@ -16,6 +17,7 @@ const year = new Date().getFullYear();
     {t.finale.columns.map(({ label, links }) => (
       <div><p>{label}</p>{links.map(([text, link]) => <a href={href(link)}>{text}</a>)}</div>
     ))}
+    <div><p>{t.guides.label}</p>{GUIDES.map(({ slug, text }) => <a href={href(guidePath(slug))}>{text[lang].link}</a>)}</div>
     <div><p>{t.finale.contact}</p><a href={`mailto:${LINKS.email}`}>{LINKS.email}</a></div>
   </nav>
   <div class="sign">

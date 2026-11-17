@@ -1,0 +1,21 @@
+---
+import Doc from '../layouts/Doc.astro';
+import { guidePath, type Guide } from '../data/guides';
+import { COPY } from '../i18n/copy';
+import { localize, type Lang } from '../i18n/lang';
+
+// One guide in one language: its intro, its sections, then the way to DressYou.
+interface Props { lang: Lang; guide: Guide }
+const { lang, guide } = Astro.props;
+const t = guide.text[lang];
+---
+<Doc lang={lang} title={t.title} path={guidePath(guide.slug)} description={t.description} updated={t.updated}>
+  <p>{t.intro}</p>
+  {t.sections.map(({ heading, blocks }) => (
+    <>
+      <h2>{heading}</h2>
+      {blocks.map((block) => typeof block === 'string' ? <p>{block}</p> : <ul>{block.map((item) => <li>{item}</li>)}</ul>)}
+    </>
+  ))}
+  <p><a href={localize(lang, '/')}>{COPY[lang].guides.home}</a></p>
+</Doc>

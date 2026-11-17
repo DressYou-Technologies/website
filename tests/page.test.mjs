@@ -3,6 +3,7 @@ import { access, readdir, readFile } from 'node:fs/promises';
 import test from 'node:test';
 import { SITE } from '../src/data/site.ts';
 import { COPY } from '../src/i18n/copy.ts';
+import { GUIDES, guidePath } from '../src/data/guides.ts';
 import { LANGS, localize } from '../src/i18n/lang.ts';
 import { SHORT_QUERY, WIDE_QUERY } from '../src/lib/constants.ts';
 
@@ -17,7 +18,7 @@ const html = home.fr;
 const metaIn = (page, attr, key) => page.match(new RegExp(`<meta[^>]*${attr}="${key}"[^>]*content="([^"]*)"`))?.[1];
 // &amp; last, so an escaped entity such as &amp;quot; is decoded once, not twice.
 const decode = (s) => s.replaceAll('&#39;', "'").replaceAll('&quot;', '"').replaceAll('&amp;', '&');
-const INDEXED = ['/', '/legal', '/privacy'];
+const INDEXED = ['/', '/legal', '/privacy', ...GUIDES.map(({ slug }) => guidePath(slug))];
 // The pages that had no content yet are gone until they have some (founder, 2026-11-16).
 const REMOVED = ['/journal', '/terms'];
 
@@ -115,6 +116,38 @@ test('the JSON-LD, llms.txt and sitemap agree with the pages', async () => {
   }
   assert.doesNotMatch(sitemap, /notified|404|journal|terms/);
   assert.doesNotMatch(llms, /\/(journal|terms)\b/, 'llms.txt lists a page in the works');
+});
+
+// The guides answer what people search before they dress (search plan, step 11; founder, 2026-11-17). Each is a page in
+// both languages with its own title and description, reached from the footer and listed for assistants.
+test('each guide is a page in both languages, with its own title and description, listed in llms.txt', async () => {
+  const llms = await read('llms.txt');
+  for (const { slug, text: guide } of GUIDES) for (const lang of LANGS) {
+    const t = guide[lang], page = await read(fileOf(lang, guidePath(slug))), body = words(page.match(/<main[\s\S]*?<\/main>/)[0]);
+    assert.equal(words(page.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)[1]), t.title, `${lang} ${slug}: the title`);
+    assert.equal(decode(page.match(/<meta name="description" content="([^"]*)"/)[1]), t.description, `${lang} ${slug}: the description`);
+    for (const line of [t.intro, ...t.sections.flatMap(({ heading, blocks }) => [heading, ...blocks.flat()]), COPY[lang].guides.home]) {
+      assert.ok(body.includes(words(line)), `${lang} ${slug}: "${line.slice(0, 40)}" is missing`);
+    }
+    assert.ok(llms.includes(`[${t.title}](${SITE.url}${localize(lang, guidePath(slug))})`), `llms.txt does not list the ${lang} ${slug}`);
+  }
+});
+
+// The search plan's rules for guides, on top of the banned list below: nothing about bodies, titles for everyone,
+// DressYou in the third person, French in tu, and the app's words.
+const GUIDE_OFF = {
+  en: /\b(we|our|us|pieces?|garments?|closet|body|bodies|figure|flatter\w*|slimming)\b/i,
+  fr: /\b(nous|notre|nos|vous|votre|vos|pièces?|garde-robe|corps|silhouette|morphologie|affine\w*|amincit)\b/i,
+};
+const GENDERED = /\b(women|woman|men|man|femmes?|hommes?)\b/i;
+test('the guides keep the copy rules for search', () => {
+  for (const { slug, text: guide } of GUIDES) for (const lang of LANGS) {
+    const t = guide[lang];
+    for (const line of [t.title, t.link, t.description, t.intro, ...t.sections.flatMap(({ heading, blocks }) => [heading, ...blocks.flat()])]) {
+      assert.doesNotMatch(line, GUIDE_OFF[lang], `${lang} ${slug}`);
+    }
+    assert.doesNotMatch(`${t.title} ${t.link}`, GENDERED, `${lang} ${slug}: a title for one sex`);
+  }
 });
 
 // Founder, 2026-10-30: no semicolons or em dashes in what people read. Plus the search plan's copy rules.
@@ -339,6 +372,7 @@ test('the footer lists only working links, the contact address and the rights li
     const local = (link) => { const [page, hash] = link.split('#'); return localize(lang, page || '/') + (hash ? `#${hash}` : ''); };
     assert.deepEqual(links, [
       ...t.finale.columns.flatMap((column) => column.links.map(([label, link]) => [label, local(link)])),
+      ...GUIDES.map(({ slug, text: guide }) => [guide[lang].link, local(guidePath(slug))]),
       ['info@dressyouapp.com', 'mailto:info@dressyouapp.com'],
     ]);
     assert.ok(decode(text(footer)).includes(`© ${new Date().getFullYear()} DressYou Technologies. ${t.finale.rights}`), `${lang}: the rights line`);
