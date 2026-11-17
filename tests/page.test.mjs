@@ -349,6 +349,15 @@ test('the footer lists only working links, the contact address and the rights li
   }
 });
 
+// The footer runs from one edge of the screen to the other and down to its end, with no page showing around it (founder,
+// 2026-11-17).
+test('the footer fills the width of the screen, with no margin, corner or gap under it', async () => {
+  const css = await builtCss(), box = css.match(/\.finale\[[^\]]*\]\{([^}]*)\}/)?.[1] ?? '', body = css.match(/(?:^|\})body\{([^}]*)\}/)?.[1] ?? '';
+  assert.ok(box && body, 'the footer or the body has no rule');
+  assert.doesNotMatch(box, /margin|border-radius/, 'the footer keeps a margin or a corner');
+  assert.doesNotMatch(body, /padding-bottom/, 'the page keeps a gap under the footer');
+});
+
 // The footer links only pages that exist (founder, 2026-11-16): every one is built, and the removed ones are not.
 test('the footer links the legal notice and privacy, each to a built page', async () => {
   const want = {

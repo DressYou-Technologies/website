@@ -1,5 +1,5 @@
 * { box-sizing: border-box; }
-body { margin: 0; background: var(--white); color: var(--ink); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; overflow-x: clip; padding-bottom: 12px; }
+body { margin: 0; background: var(--white); color: var(--ink); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; overflow-x: clip; }
 a, a:hover { color: inherit; }
 /* Anchors and keyboard focus land below the floating header (WCAG 2.4.11). */
 html { scroll-padding-top: var(--header-clear); }

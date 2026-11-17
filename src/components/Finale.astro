@@ -25,9 +25,12 @@ const year = new Date().getFullYear();
 </footer>
 
 <style>
-  /* The space above the links and between them and the name follows the card's width, like its side padding. Tied to
+  /* The footer fills the screen's width and ends the page, with no margin or corner (founder, 2026-11-17). On wide
+     screens its text keeps the place it had inside the card: the card's old 12px margin is now part of the side padding.
+     On phones it starts at the page's own 20px text edge.
+     The space above the links and between them and the name follows the screen's width, like the side padding. Tied to
      the screen's height it came out three times the side padding on a tall phone (founder, 2026-11-16). */
-  .finale { --rise: clamp(28px, 5vw, 72px); margin: 0 12px; padding: var(--rise) clamp(20px, 4vw, 56px) clamp(22px, 3 * var(--svh), 30px); border-radius: 28px; background: radial-gradient(120% 80% at 50% 0%, #2a2a2e 0%, #151517 48%, #0e0e10 100%); color: #fff; display: grid; gap: var(--rise); box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
+  .finale { --rise: clamp(28px, 5vw, 72px); padding: var(--rise) calc(12px + clamp(20px, 4vw, 56px)) clamp(22px, 3 * var(--svh), 30px); background: radial-gradient(120% 80% at 50% 0%, #2a2a2e 0%, #151517 48%, #0e0e10 100%); color: #fff; display: grid; gap: var(--rise); }
 
   /* The footer, arranged like Versine's (founder, 2026-11-16): the pages in columns, each under a bold title one size above
      its lighter links, then the name across the card, fading into it, and the rights line. No rule between them. The name
