@@ -1,5 +1,5 @@
 import { gsap } from 'gsap';
-import { FULL_MENU_QUERY, HEADER_AWAY_STEP, HEADER_FOLD_AT, HERO_PASSED_OFFSET, MENU_GAP_PX, MOTION_QUERY, TOUCH_QUERY } from '../lib/constants';
+import { FULL_MENU_QUERY, HEADER_AWAY_STEP, HEADER_FOLD_AT, HERO_PASSED_OFFSET, MOTION_QUERY, TOUCH_QUERY } from '../lib/constants';
 import { barsMoved } from '../lib/steady';
 import { all, one } from '../motion/dom';
 
@@ -58,19 +58,11 @@ function tone(top: HTMLElement, marks: HTMLElement[]) {
   update();
 }
 
-// The menu opens under the header's right edge, wherever the header's current width puts it.
-function menuPop(top: HTMLElement, menu: HTMLElement) {
-  menu.addEventListener('beforetoggle', (e) => {
-    if (!(e instanceof ToggleEvent) || e.newState !== 'open') return;
-    const edge = top.getBoundingClientRect();
-    menu.style.setProperty('--menu-top', `${edge.bottom + MENU_GAP_PX}px`);
-    menu.style.setProperty('--menu-right', `${document.documentElement.clientWidth - edge.right}px`);
-  });
+// The menu is phones only and takes the whole screen: it fades in.
+function menuPop(menu: HTMLElement) {
   menu.addEventListener('toggle', (e) => {
     if (!(e instanceof ToggleEvent) || e.newState !== 'open' || !motion()) return;
-    // On phones the menu is the whole screen: it fades in rather than growing from the header.
-    if (window.matchMedia(FULL_MENU_QUERY).matches) gsap.fromTo(menu, { opacity: 0 }, { opacity: 1, duration: .25, ease: 'power2.out' });
-    else gsap.fromTo(menu, { y: -8, scale: .94, opacity: 0 }, { y: 0, scale: 1, opacity: 1, duration: .36, ease: 'back.out(1.5)' });
+    gsap.fromTo(menu, { opacity: 0 }, { opacity: 1, duration: .25, ease: 'power2.out' });
     gsap.from(menu.querySelectorAll('.menu-item'), { y: 10, opacity: 0, duration: .3, stagger: .04, delay: .06, ease: 'power3.out' });
   });
 }
@@ -128,25 +120,6 @@ function notify(form: HTMLFormElement, shownAt: () => number) {
   });
 }
 
-// The extension demo: tap DressYou in the toolbar, the panel slides in, the twin wears the piece, the size follows.
-function demo(dialog: HTMLDialogElement) {
-  const box = dialog.querySelector<HTMLElement>('.xdemo');
-  if (!box || !motion()) return;
-  const ctx = gsap.context(() => {
-    const ext = one(box, '.xext'), ring = one(box, '.xring'), panel = one(box, '.xpanel'), twin = one(box, '.xtwin'), size = one(box, '.xsize');
-    gsap.timeline({ repeat: -1, repeatDelay: .4 })
-      .set(panel, { xPercent: 115 }).set(twin, { clipPath: 'inset(0% 0% 100% 0%)' }).set(size, { autoAlpha: 0, scale: .6 })
-      .to(ext, { scale: .82, duration: .1, ease: 'power2.in' }, .7)
-      .to(ext, { scale: 1, duration: .3, ease: 'back.out(3)' }, .8)
-      .fromTo(ring, { scale: .5, opacity: .9 }, { scale: 1.8, opacity: 0, duration: .5, ease: 'power2.out' }, .7)
-      .to(panel, { xPercent: 0, duration: .55, ease: 'power3.out' }, .95)
-      .to(twin, { clipPath: 'inset(0% 0% 0% 0%)', duration: .9, ease: 'power3.inOut' }, 1.35)
-      .to(size, { autoAlpha: 1, scale: 1, duration: .45, ease: 'back.out(2.4)' }, 2.25)
-      .to(panel, { xPercent: 115, duration: .45, ease: 'power2.in' }, 4.6);
-  }, box);
-  dialog.addEventListener('close', () => ctx.revert(), { once: true });
-}
-
 function dialogs() {
   let openedAt = 0;
   document.querySelectorAll<HTMLFormElement>('form.notify').forEach((form) => notify(form, () => openedAt));
@@ -156,7 +129,6 @@ function dialogs() {
     button.closest<HTMLElement>('[popover]')?.hidePopover();
     dialog.showModal();
     openedAt = performance.now();
-    demo(dialog);
     dialog.addEventListener('close', () => button.focus({ preventScroll: true }), { once: true });
     if (!motion()) return;
     gsap.from(dialog, { scale: .6, opacity: 0, transformOrigin: '50% 50%', duration: .5, ease: 'back.out(1.6)' });
@@ -173,7 +145,7 @@ export function startChrome() {
   document.documentElement.classList.add('js');
   steadyViewport();
   const top = document.querySelector<HTMLElement>('.top'), menu = document.querySelector<HTMLElement>('#menu');
-  if (top && menu) { header(top); menuPop(top, menu); }
+  if (top && menu) { header(top); menuPop(menu); }
   if (top) tone(top, all(top, '.brand, .hdr-burger'));
   anchors();
   dialogs();

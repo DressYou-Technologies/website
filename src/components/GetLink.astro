@@ -1,11 +1,12 @@
 ---
 import { LINKS } from '../data/site';
 
-// "Get the app" always opens its dialog (QR code, or "coming soon."); the extension links out once it has a store page.
+// The app's button always opens its dialog (QR code, or the waitlist). The extension shows only once it has a store page,
+// and links out to it (founder, 2026-11-17).
 interface Props { kind: 'app' | 'extension'; class?: string; [attr: string]: unknown }
 const { kind, class: className, ...rest } = Astro.props;
 const href = kind === 'extension' ? LINKS.extensionUrl : null;
 ---
 {href
   ? <a class={className} href={href} target="_blank" rel="noopener" {...rest}><slot /></a>
-  : <button type="button" class={className} data-get={kind} aria-haspopup="dialog" {...rest}><slot /></button>}
+  : kind === 'app' && <button type="button" class={className} data-get={kind} aria-haspopup="dialog" {...rest}><slot /></button>}

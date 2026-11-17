@@ -2,7 +2,7 @@
 import { Image, Picture } from 'astro:assets';
 import GetLink from './GetLink.astro';
 import DownloadIcon from './DownloadIcon.astro';
-import { WALL } from '../data/site';
+import { LINKS, WALL } from '../data/site';
 import { image } from '../lib/image';
 import { cylinder } from '../lib/cylinder';
 import appIcon from '../assets/brand/app-icon.png';
@@ -31,7 +31,7 @@ const columns = cylinder(WALL.length);
       <h1>{t.hero.lines.map((line) => <span class="line"><span>{line}</span></span>)}</h1>
       <p class="sub">{t.hero.sub}</p>
       <div class="dock">
-        <GetLink kind="app" class="dock-app"><Image src={appIcon} width={40} height={40} densities={[1, 2]} alt="" />{t.get.app}</GetLink>
+        <GetLink kind="app" class="dock-app"><Image src={appIcon} width={40} height={40} densities={[1, 2]} alt="" />{LINKS.appUrl ? t.get.app : t.get.waitlist}</GetLink>
         <GetLink kind="extension" class="dock-ext"><DownloadIcon size={18} />{t.get.extension}</GetLink>
       </div>
     </div>

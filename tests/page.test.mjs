@@ -4,7 +4,7 @@ import test from 'node:test';
 import { SITE } from '../src/data/site.ts';
 import { COPY } from '../src/i18n/copy.ts';
 import { LANGS, localize } from '../src/i18n/lang.ts';
-import { SHORT_QUERY, WIDE_QUERY } from '../src/lib/constants.ts';
+import { FULL_MENU_QUERY, SHORT_QUERY, WIDE_QUERY } from '../src/lib/constants.ts';
 
 // Runs over the built site: `npm run build` first.
 const DIST = new URL('../dist/', import.meta.url);
@@ -97,7 +97,7 @@ test("the stylist's lines open with a capital letter, in each language", () => {
 
 // Every string of the copy with its path, and the ones the site does not word itself: shops' and Safari's own screens.
 const leaves = (node, path = '') => typeof node === 'string' ? [[path, node]] : Object.entries(node).flatMap(([key, value]) => leaves(value, path ? `${path}.${key}` : key));
-const THEIR_WORDS = /^how\.(shops|safari)\b|^dialog\.extension\.bag$/;
+const THEIR_WORDS = /^how\.(shops|safari)\b/;
 
 // Everything but the stylist's lines is lowercase like the app, names apart (founder, 2026-11-17). Search titles, size
 // letters and the document pages keep their capitals.
@@ -215,20 +215,23 @@ const text = (s) => {
   return out.replace(/\s+/g, ' ').trim();
 };
 
-test('a null store link opens a dialog instead of linking, in each language', async () => {
+// Until the app has a store page its button says what it does, and the extension is not offered at all (founder,
+// 2026-11-17).
+test('without store links the app button offers the waitlist and the extension waits, in each language', async () => {
   const { LINKS } = await import('../src/data/site.ts');
   assert.equal(LINKS.appUrl, null);
   assert.equal(LINKS.extensionUrl, null);
   for (const lang of LANGS) {
-    for (const [label, kind] of [[COPY[lang].get.app, 'app'], [COPY[lang].get.extension, 'extension']]) {
-      const controls = [...home[lang].matchAll(/<(a|button)\b([^>]*)>([\s\S]*?)<\/\1>/g)].filter((m) => decode(text(m[3])) === label);
-      assert.ok(controls.length >= 2, `${lang}: ${label} appears ${controls.length} times`);
-      for (const [, tag, attrs] of controls) {
-        assert.equal(tag, 'button', `${label} is a link`);
-        assert.match(attrs, new RegExp(`data-get="${kind}"`));
-      }
-      assert.ok(home[lang].match(new RegExp(`<dialog[^>]*id="get-${kind}"`)), `no dialog for ${kind}`);
+    const labelled = (label) => [...home[lang].matchAll(/<(a|button)\b([^>]*)>([\s\S]*?)<\/\1>/g)].filter((m) => decode(text(m[3])) === label);
+    const waitlist = labelled(COPY[lang].get.waitlist);
+    assert.ok(waitlist.length >= 2, `${lang}: the waitlist button appears ${waitlist.length} times`);
+    for (const [, tag, attrs] of waitlist) {
+      assert.equal(tag, 'button', `${lang}: the waitlist button is a link`);
+      assert.match(attrs, /data-get="app"/);
     }
+    assert.match(home[lang], /<dialog[^>]*id="get-app"/, `${lang}: no dialog for the app`);
+    for (const label of [COPY[lang].get.app, COPY[lang].get.extension]) assert.equal(labelled(label).length, 0, `${lang}: "${label}" is offered before it exists`);
+    assert.doesNotMatch(home[lang], /data-get="extension"|id="get-extension"/, `${lang}: the extension still has a button or a dialog`);
   }
 });
 
@@ -352,15 +355,6 @@ test('the sign-up answer shows below the email field and its button, never insid
   }
 });
 
-test('without a store link the extension dialog shows its demo and no link out', () => {
-  for (const lang of LANGS) {
-    const dialog = dialogOf(lang, 'extension');
-    assert.match(dialog, /class="xdemo"/);
-    assert.ok(text(dialog).includes(COPY[lang].dialog.extension.soon));
-    assert.doesNotMatch(dialog, /chromewebstore/);
-  }
-});
-
 test('the footer lists only working links, the contact address and the rights line, and asks for nothing', () => {
   for (const lang of LANGS) {
     const footer = home[lang].match(/<footer[\s\S]*?<\/footer>/)[0], t = COPY[lang];
@@ -403,7 +397,8 @@ test('the footer links the legal notice and privacy, each to a built page', asyn
 });
 
 // Only finished pages are linked (founder, 2026-10-31): the company pages wait, so the menu keeps the other language.
-test('the header logo goes home, and the menu offers the other language with no page in the works', async () => {
+// Wide screens have no menu: the header shows the two languages itself (founder, 2026-11-17).
+test('the header logo goes home, and the header and the menu offer the other language with no page in the works', async () => {
   for (const lang of LANGS) {
     const header = home[lang].match(/<header[\s\S]*?<\/header>/)[0], other = LANGS.find((l) => l !== lang);
     const brand = header.match(/<a class="brand"[\s\S]*?<\/a>/)?.[0] ?? '';
@@ -411,9 +406,10 @@ test('the header logo goes home, and the menu offers the other language with no 
     // The wordmark alone, white and black, crossfaded as the menu button changes colour.
     assert.deepEqual([...brand.matchAll(/<img[^>]*src="[^"]*\/(wordmark-(?:white|black))[^"]*"/g)].map((m) => m[1]), ['wordmark-white', 'wordmark-black'], lang);
     assert.match(header, /<button[^>]*popovertarget="menu"/, `${lang}: no menu button`);
-    const menu = header.slice(header.indexOf('id="menu"'));
-    const links = [...menu.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)].map(([, href, label]) => [decode(text(label)), href]);
-    assert.deepEqual(links, [[other.toUpperCase(), localize(other, '/')]], lang);
+    const linksOf = (part, link) => [...part.matchAll(link)].map(([, href, label]) => [decode(text(label)), href]);
+    const bar = header.match(/<div class="bar"[\s\S]*?(?=<div id="menu")/)[0], menu = header.slice(header.indexOf('id="menu"'));
+    assert.deepEqual(linksOf(bar, /<a\b[^>]*href="([^"]+)"[^>]*hreflang[^>]*>([\s\S]*?)<\/a>/g), [[other.toUpperCase(), localize(other, '/')]], `${lang}: the header`);
+    assert.deepEqual(linksOf(menu, /<a\b[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g), [[other.toUpperCase(), localize(other, '/')]], `${lang}: the menu`);
     for (const path of ['/about', '/careers', '/press', '/help']) {
       await assert.rejects(access(new URL(fileOf(lang, path), DIST)), `${lang} ${path} is still built`);
     }
@@ -659,6 +655,12 @@ test('the script and the styles agree on a phone held sideways and on where wide
   const sideways = `(orientation:landscape) and (height<=${short})`;
   assert.ok(css.replaceAll(' ', '').includes(sideways.replaceAll(' ', '')), `no rule for ${SHORT_QUERY}`);
   assert.match(css, /\.away:not\(:focus-within,:has\(\.menu-pop:popover-open\)\)\{[^}]*opacity:0/, 'the header never leaves (Header.astro)');
+  // The menu button and the header's own language links trade places where the phone layout ends. The rule that hides
+  // the button comes after the one that lays it out, or it hides nothing.
+  const phone = FULL_MENU_QUERY.match(/max-width: ([\d.]+)px/)[1], past = Math.ceil(Number(phone));
+  const shown = css.search(/\.hdr-burger\[[^\]]*\]\{/), gone = css.search(new RegExp(`@media \\(width>=${past}px\\)\\{\\.hdr-burger[^{]*\\{display:none`));
+  assert.ok(shown >= 0 && gone > shown, 'wide screens still show the menu button');
+  assert.match(css, new RegExp(`@media \\(width<=${phone.replace('.', '\\.')}px\\)\\{[^@]*\\.hdr-langs[^{]*\\{display:none`), 'phones show the language links outside the menu');
   const wide = Number(WIDE_QUERY.match(/min-width: (\d+)px/)[1]);
   assert.ok(css.includes(`(width<=${wide - .02}px)`), `the styles' narrow layouts do not end where ${WIDE_QUERY} starts`);
 });
