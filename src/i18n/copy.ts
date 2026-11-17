@@ -106,8 +106,12 @@ const en = {
     ask: 'ask your stylist',
   },
   finale: {
-    // Only pages that exist (founder, 2026-11-16). The contact address follows as its own column.
-    columns: [{ label: 'legal', links: [['legal notice', '/legal'], ['privacy', '/privacy']] }],
+    // Only what exists (founder, 2026-11-16): the home page's sections first, under "product" (founder, 2026-11-17), then
+    // the pages. The contact address follows as its own column.
+    columns: [
+      { label: 'product', links: [['try-on', '/#how'], ['wardrobe and feed', '/#more'], ['AI stylist', '/#stylist']] },
+      { label: 'legal', links: [['legal notice', '/legal'], ['privacy', '/privacy']] },
+    ],
     contact: 'contact',
     rights: 'all rights reserved.',
     footer: 'footer',
@@ -219,7 +223,10 @@ const fr: Copy = {
     ask: 'demande à ton styliste',
   },
   finale: {
-    columns: [{ label: 'légal', links: [['mentions légales', '/legal'], ['confidentialité', '/privacy']] }],
+    columns: [
+      { label: 'produit', links: [['essayage', '/#how'], ['dressing et fil', '/#more'], ['styliste IA', '/#stylist']] },
+      { label: 'légal', links: [['mentions légales', '/legal'], ['confidentialité', '/privacy']] },
+    ],
     contact: 'contact',
     rights: 'tous droits réservés.',
     footer: 'pied de page',

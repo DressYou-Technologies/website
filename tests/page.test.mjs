@@ -381,17 +381,23 @@ test('the footer fills the width of the screen, with no margin, corner or gap un
   assert.doesNotMatch(body, /padding-bottom/, 'the page keeps a gap under the footer');
 });
 
-// The footer links only pages that exist (founder, 2026-11-16): every one is built, and the removed ones are not.
-test('the footer links the legal notice and privacy, each to a built page', async () => {
+// The footer links only what exists (founder, 2026-11-16): every page is built, every section is on the home page, and
+// the removed pages are not built. The home page's sections come first, under "product" (founder, 2026-11-17).
+test('the footer links the home page sections, then the legal notice and privacy, each to something built', async () => {
   const want = {
-    en: [['legal notice', '/legal'], ['privacy', '/privacy']],
-    fr: [['mentions légales', '/fr/legal'], ['confidentialité', '/fr/privacy']],
+    en: [['try-on', '/#how'], ['wardrobe and feed', '/#more'], ['AI stylist', '/#stylist'], ['legal notice', '/legal'], ['privacy', '/privacy']],
+    fr: [['essayage', '/fr#how'], ['dressing et fil', '/fr#more'], ['styliste IA', '/fr#stylist'], ['mentions légales', '/fr/legal'], ['confidentialité', '/fr/privacy']],
   };
   for (const lang of LANGS) {
     const nav = home[lang].match(/<nav class="cols"[\s\S]*?<\/nav>/)[0];
     const links = [...nav.matchAll(/<a\b[^>]*href="(\/[^"]*)"[^>]*>([\s\S]*?)<\/a>/g)].map(([, href, label]) => [words(label), href]);
     assert.deepEqual(links.slice(0, want[lang].length), want[lang], lang);
-    for (const [, href] of links) await access(new URL(href === '/' ? 'index.html' : `${href.slice(1)}.html`, DIST)).catch(() => assert.fail(`${lang}: ${href} is linked but not built`));
+    assert.equal(words(nav.match(/<p[^>]*>([\s\S]*?)<\/p>/)[1]), COPY[lang].finale.columns[0].label, `${lang}: the first column`);
+    for (const [, href] of links) {
+      const [page, section] = href.split('#'), file = page === '/' ? 'index.html' : `${page.slice(1)}.html`;
+      const html = await readFile(new URL(file, DIST), 'utf8').catch(() => assert.fail(`${lang}: ${href} is linked but not built`));
+      if (section) assert.match(html, new RegExp(`<section[^>]*\\sid="${section}"`), `${lang}: ${href} names a section the page lacks`);
+    }
     for (const path of REMOVED) await assert.rejects(access(new URL(fileOf(lang, path), DIST)), `${lang} ${path} is still built`);
   }
 });
