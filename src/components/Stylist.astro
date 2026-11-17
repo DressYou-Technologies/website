@@ -137,4 +137,20 @@ const TABS = (['opinion', 'day', 'trip', 'find', 'shop'] as const).map((icon, k)
   .sph { position: absolute; inset: 0; color: #6b6b6b; }
   .stype { position: absolute; inset: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .ssend { width: 48px; height: 48px; flex: none; border-radius: 50%; background: #0a0a0a; color: #fff; display: grid; place-items: center; }
+  /* On a phone the chat has about half the screen, so it is set one size down: a whole answer, with what it proposes
+     and its button, fits above the input (founder, 2026-11-17). */
+  @media (max-width: 599.98px) {
+    .sg { gap: 12px; padding-bottom: 20px; }
+    .sq { padding: 10px 16px; border-radius: 20px 20px 6px 20px; font-size: .9375rem; }
+    .sa { gap: 10px; }
+    .sbub { padding: 10px 16px; border-radius: 20px 20px 20px 6px; font-size: .9375rem; }
+    .piece.large { width: 64px; }
+    .result { gap: 12px; }
+    .result-copy b { font-size: .9375rem; }
+    .result-copy span { font-size: .875rem; }
+    .cta { height: 40px; padding: 0 18px; border-radius: 20px; font-size: .875rem; }
+    .input { height: 52px; margin: 8px 10px 10px; padding: 4px 4px 4px 18px; border-radius: 26px; }
+    .field { font-size: 1rem; }
+    .ssend { width: 44px; height: 44px; }
+  }
 </style>
