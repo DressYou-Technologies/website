@@ -654,6 +654,14 @@ test('the link to the other language is named by the letters it shows', () => {
   }
 });
 
+// On a phone the stylist's chat is set smaller than on a wide screen, so a whole answer fits above the input (founder,
+// 2026-11-17: "a bit too big on mobile phone", its end "cropped at the footer").
+test('the stylist chat is set smaller on phones', async () => {
+  const css = await builtCss(), phone = css.match(/@media \(width<=599\.98px\)\{((?:[^{}]*\{[^{}]*\})*[^{}]*\.sbub\[(?:[^{}]*\{[^{}]*\})*)\}/)?.[1] ?? '';
+  const rem = (rules, name) => Number(rules.match(new RegExp(`\\.${name}\\[[^\\]]*\\]\\{[^}]*font-size:([\\d.]+)rem`))?.[1]);
+  for (const name of ['sbub', 'sq']) assert.ok(rem(phone, name) < rem(css.replace(phone, ''), name), `${name} is not smaller on phones`);
+});
+
 // A phone held sideways: the header leaves as the page scrolls down, the demo keeps one row and the stylist sits beside
 // its chat (founder, 2026-11-16). The script and the styles name the same screen, and the same start of "wide".
 test('the script and the styles agree on a phone held sideways and on where wide starts', async () => {
