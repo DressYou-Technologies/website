@@ -342,8 +342,8 @@ test('the footer lists only working links, the contact address and the rights li
       ['info@dressyouapp.com', 'mailto:info@dressyouapp.com'],
     ]);
     assert.ok(decode(text(footer)).includes(`© ${new Date().getFullYear()} DressYou Technologies. ${t.finale.rights}`), `${lang}: the rights line`);
-    // The logo across the footer: the symbol beside the wordmark (scripts/brand.mjs).
-    assert.match(footer, /<img[^>]*src="[^"]*\/lockup-white[^"]*"[^>]*alt="DressYou"|<img[^>]*alt="DressYou"[^>]*src="[^"]*\/lockup-white/, `${lang}: the footer logo`);
+    // The name across the footer, without the symbol (founder, 2026-11-16, evening; scripts/brand.mjs).
+    assert.match(footer, /<img[^>]*src="[^"]*\/wordmark-white[^"]*\.svg"[^>]*alt="DressYou"|<img[^>]*alt="DressYou"[^>]*src="[^"]*\/wordmark-white[^"]*\.svg/, `${lang}: the footer's name`);
     assert.doesNotMatch(footer, /<form|<input|<button|<h2/, `${lang}: the footer carries a form, a button or a headline`);
     assert.doesNotMatch(footer, /<picture|<img(?![^>]*alt="DressYou")/, `${lang}: the footer shows no picture besides the logo`);
   }
