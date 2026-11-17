@@ -53,13 +53,14 @@ test('every page and llms.txt give info@dressyouapp.com, never an old address', 
 // Tags read as spaces, so words in sibling spans stay apart.
 const words = (s) => decode(s.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim());
 
-// The content brief's wording, word for word (founder, 2026-11-01). French is drafted from it and pinned by its shape.
+// The content brief's wording (founder, 2026-11-01), in lowercase with the app's word for a piece (founder, 2026-11-17).
+// French is drafted from it and pinned by its shape.
 test('the English home page says the wording the brief validated, and none of the longer lines it replaced', () => {
   const page = words(home.en);
-  for (const line of ['Try it on before it’s yours.', 'Your Digital Twin. Your style. Your AI stylist.', 'More than virtual try-on.',
-    'Your wardrobe. More looks.', 'Add pieces once. Mix and match them on your Digital Twin.',
-    'Looks that match your style.', 'Discover pieces worn by people who share your taste.',
-    'Get a second opinion.', 'Share a look. See what your friends think.', 'Ask your friends']) assert.ok(page.includes(line), line);
+  for (const line of ['try it on before it’s yours.', 'your digital twin. your style. your AI stylist.', 'more than virtual try-on.',
+    'your wardrobe. more looks.', 'add items once. mix and match them on your digital twin.',
+    'looks that match your style.', 'discover items worn by people who share your taste.',
+    'get a second opinion.', 'share a look. see what your friends think.', 'ask your friends']) assert.ok(page.includes(line), line);
   for (const old of ['Tap try on', 'More than a try-on.', 'Fill your wardrobe.', 'A feed of real people.', 'Wear it first.']) {
     assert.ok(!page.includes(old), `still says "${old}"`);
   }
@@ -72,11 +73,11 @@ const howOf = (page) => ({
 
 test('the phone demo gives each source its own heading and four steps', () => {
   assert.deepEqual(howOf(home.en), {
-    heads: ['Try on from your favorite stores.', 'Style your own wardrobe.', 'Discover looks that match your style.'],
+    heads: ['try on from your favorite stores.', 'style your own wardrobe.', 'discover looks that match your style.'],
     steps: [
-      ['01 Choose a piece', '02 Try it on', '03 Check your size', '04 Ask your stylist'],
-      ['01 Pick a piece', '02 Try it on', '03 Build a look', '04 Get styling tips'],
-      ['01 Find a look', '02 Try it on', '03 Explore pieces', '04 Get inspired'],
+      ['01 choose an item', '02 try it on', '03 check your size', '04 ask your stylist'],
+      ['01 pick an item', '02 try it on', '03 build a look', '04 get styling tips'],
+      ['01 find a look', '02 try it on', '03 explore items', '04 get inspired'],
     ],
   });
   const fr = howOf(home.fr);
@@ -85,12 +86,40 @@ test('the phone demo gives each source its own heading and four steps', () => {
 });
 
 // The stylist speaks cleanly: every line it says or ticks off opens with a capital (founder, 2026-10-31).
+const stylistLines = (lang) => {
+  const { stylist: s, how } = COPY[lang], tabs = [s.opinion, s.day, s.trip, s.find, s.buy];
+  return [s.opinion.a, s.day.a, s.trip.head, s.trip.a, s.find.fit, s.buy.a, ...how.scenes.map((scene) => scene.a),
+    ...tabs.flatMap((tab) => tab.checks.map(([, line]) => line))];
+};
 test("the stylist's lines open with a capital letter, in each language", () => {
+  for (const lang of LANGS) for (const line of stylistLines(lang)) assert.match(line, /^[\p{Lu}\d€]/u, `${lang}: "${line}"`);
+});
+
+// Every string of the copy with its path, and the ones the site does not word itself: shops' and Safari's own screens.
+const leaves = (node, path = '') => typeof node === 'string' ? [[path, node]] : Object.entries(node).flatMap(([key, value]) => leaves(value, path ? `${path}.${key}` : key));
+const THEIR_WORDS = /^how\.(shops|safari)\b|^dialog\.extension\.bag$/;
+
+// Everything but the stylist's lines is lowercase like the app, names apart (founder, 2026-11-17). Search titles, size
+// letters and the document pages keep their capitals.
+const OWN_CASE = /^(meta|doc|notFound|verified)\b|^how\.scenes\.\d+\.(sizes|fit|style)\b/;
+const NAMES = /\b(DressYou|AI|IA|Chrome|Les Deux|Benetton|QR|English)\b/g;
+test('the site writes in lowercase like the app, apart from what the stylist says', () => {
   for (const lang of LANGS) {
-    const { stylist: s, how } = COPY[lang], tabs = [s.opinion, s.day, s.trip, s.find, s.buy];
-    const lines = [s.opinion.a, s.day.a, s.trip.head, s.trip.a, s.find.fit, s.buy.a, ...how.scenes.map((scene) => scene.a),
-      ...tabs.flatMap((tab) => tab.checks.map(([, line]) => line))];
-    for (const line of lines) assert.match(line, /^[\p{Lu}\d€]/u, `${lang}: "${line}"`);
+    const said = new Set(stylistLines(lang));
+    for (const [path, line] of leaves(COPY[lang])) {
+      if (THEIR_WORDS.test(path) || OWN_CASE.test(path) || said.has(line)) continue;
+      assert.doesNotMatch(line.replace(NAMES, ''), /\p{Lu}/u, `${lang} ${path}: "${line}"`);
+    }
+  }
+});
+
+// The app's words (founder, 2026-11-16): French says tu, the wardrobe is the dressing, a piece is an item, an article or
+// a vêtement. The legal pages keep vous.
+const OLD_WORDS = { en: /\b(pieces?|garments?|closet)\b/i, fr: /\b(vous|votre|vos|pièces?|garde-robe|mensurations)\b/i };
+test('the site uses the words the app uses', async () => {
+  for (const lang of LANGS) {
+    for (const [path, line] of leaves(COPY[lang])) if (!THEIR_WORDS.test(path)) assert.doesNotMatch(line, OLD_WORDS[lang], `${lang} ${path}`);
+    assert.doesNotMatch(words(await read(fileOf(lang, '/notified'))), OLD_WORDS[lang], `${lang}: the confirmation page`);
   }
 });
 
@@ -257,7 +286,7 @@ test('the phone demo marks its three sources with a dot each, not a loading line
 // One switch pauses every looping demo (WCAG 2.2.2; founder, 2026-11-02). It sits beside the dots, outside the heading
 // that skips to the next scene, and says whether it is pressed.
 test('a pause button beside the dots stops the demos, in each language', () => {
-  for (const [lang, label] of [['en', 'Pause the demos'], ['fr', 'Mettre les démos en pause']]) {
+  for (const [lang, label] of [['en', 'pause the demos'], ['fr', 'mettre les démos en pause']]) {
     const how = home[lang].match(/<section class="how"[\s\S]*?<\/section>/)?.[0] ?? '';
     const button = how.match(/<button class="hpause"[^>]*>/)?.[0] ?? '';
     assert.match(button, /type="button"/, lang);
@@ -361,8 +390,8 @@ test('the footer fills the width of the screen, with no margin, corner or gap un
 // The footer links only pages that exist (founder, 2026-11-16): every one is built, and the removed ones are not.
 test('the footer links the legal notice and privacy, each to a built page', async () => {
   const want = {
-    en: [['Legal notice', '/legal'], ['Privacy', '/privacy']],
-    fr: [['Mentions légales', '/fr/legal'], ['Confidentialité', '/fr/privacy']],
+    en: [['legal notice', '/legal'], ['privacy', '/privacy']],
+    fr: [['mentions légales', '/fr/legal'], ['confidentialité', '/fr/privacy']],
   };
   for (const lang of LANGS) {
     const nav = home[lang].match(/<nav class="cols"[\s\S]*?<\/nav>/)[0];
@@ -444,7 +473,7 @@ test('each stylist answer first shows what it checked, in each language', () => 
     });
   }
   const find = { en: ['€150 max', 'Size M in stock', 'You like black knits', 'Goes with 3 of your outfits', 'Delivery not guaranteed by Friday'],
-    fr: ['150\u00a0€ max', 'Taille M en stock', 'Vous aimez les mailles noires', 'Va avec 3 de vos tenues', 'Livraison non garantie avant vendredi'] };
+    fr: ['150\u00a0€ max', 'Taille M en stock', 'Tu aimes les mailles noires', 'Va avec 3 de tes tenues', 'Livraison non garantie avant vendredi'] };
   for (const lang of LANGS) assert.deepEqual(COPY[lang].stylist.find.checks.map(([, line]) => line), find[lang], lang);
 });
 
