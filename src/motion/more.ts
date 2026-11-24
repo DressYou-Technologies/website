@@ -85,7 +85,8 @@ function wardrobe(card: HTMLElement, ctx: gsap.Context): () => void {
     const g0 = landAt + .55;
     state.map((st, k) => tracks[k].children[st.i]).forEach((el, k) => {
       const fly = flies[k], img = one<HTMLImageElement>(el, 'img');
-      tl.call(() => { fly.src = img.currentSrc || img.src; }, undefined, g0 - .05)
+      // The fly's own srcset (80×80 crops of the first outfit's pieces) would win over src.
+      tl.call(() => { fly.removeAttribute('srcset'); fly.src = img.currentSrc || img.src; }, undefined, g0 - .05)
         .set(fly, { x: () => rel(el).x, y: () => rel(el).y, width: () => rel(el).w, height: () => rel(el).h, opacity: 1, scale: 1 }, g0)
         .to(fly, { x: () => build.clientWidth / 2 - rel(el).w / 2, y: () => build.clientHeight / 2 - rel(el).h / 2, scale: .4, opacity: 0, duration: .7, ease: 'power3.in' }, g0 + .05 + k * .07);
     });
