@@ -110,7 +110,7 @@ const en = {
     // the pages. The contact address follows as its own column.
     columns: [
       { label: 'product', links: [['try-on', '/#how'], ['wardrobe and feed', '/#more'], ['AI stylist', '/#stylist']] },
-      { label: 'legal', links: [['legal notice', '/legal'], ['privacy', '/privacy']] },
+      { label: 'legal', links: [['legal notice', '/legal'], ['privacy', '/privacy'], ['terms of use', '/legal/terms'], ['app privacy', '/legal/privacy']] },
     ],
     contact: 'contact',
     rights: 'all rights reserved.',
@@ -225,7 +225,7 @@ const fr: Copy = {
   finale: {
     columns: [
       { label: 'produit', links: [['essayage', '/#how'], ['dressing et fil', '/#more'], ['styliste IA', '/#stylist']] },
-      { label: 'légal', links: [['mentions légales', '/legal'], ['confidentialité', '/privacy']] },
+      { label: 'légal', links: [['mentions légales', '/legal'], ['confidentialité', '/privacy'], ['conditions d’utilisation', '/legal/terms'], ['confidentialité de l’app', '/legal/privacy']] },
     ],
     contact: 'contact',
     rights: 'tous droits réservés.',

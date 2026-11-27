@@ -162,9 +162,10 @@ const readable = (page) => [
 
 test('no page, title, description or llms.txt breaks the copy rules', async () => {
   const sources = [...await Promise.all(pages.map(async (page) => [page, readable(await read(page))])), ['llms.txt', await read('llms.txt')]];
-  // The draft privacy notice and terms are counsel's text, kept word for word (they use semicolons) until counsel and the
-  // founder settle them.
-  const COUNSEL_TEXT = new Set(['privacy-draft.html', 'fr/privacy-draft.html', 'terms-draft.html', 'fr/terms-draft.html']);
+  // The privacy notice and terms, drafts and the published version 2026-12, are counsel's text, kept word for word (they
+  // use semicolons) until counsel and the founder settle them.
+  const COUNSEL_TEXT = new Set(['privacy-draft.html', 'fr/privacy-draft.html', 'terms-draft.html', 'fr/terms-draft.html',
+    'legal/privacy.html', 'fr/legal/privacy.html', 'legal/terms.html', 'fr/legal/terms.html']);
   for (const [name, body] of sources) for (const [bad, what] of BANNED) {
     if (bad === ';' && COUNSEL_TEXT.has(name)) continue;
     const at = body.toLowerCase().indexOf(bad);
